@@ -2,6 +2,7 @@
 // Kunstwerk-Detailseite /portfolio/<slug>/ — 1:1 wie WP (CreativeWork: Titel + großes Bild).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArtworkBody from '../../components/ArtworkBody.astro';
+import { portfolioBodyClass } from '../../lib/layout';
 import artworksData from '../../data/artworks.json';
 import mediaData from '../../data/artworks-media.json';
 
@@ -22,7 +23,7 @@ const catClasses = (art.categories || [])
   .map((c: any) => `portfolio_category-${c.slug}`);
 ---
 
-<BaseLayout title={`${art.title} - HAUS HOPPE`} description={`${art.title} — Werk von Olaf Hoppe.`}>
+<BaseLayout title={`${art.title} - HAUS HOPPE`} description={`${art.title} — Werk von Olaf Hoppe.`} bodyClass={portfolioBodyClass(art.id)}>
   <article class:list={['portfolio', 'type-portfolio', 'status-publish', 'has-post-thumbnail', 'ast-article-single', ...catClasses]} itemtype="https://schema.org/CreativeWork" itemscope>
     <div class="ast-post-format- single-layout-1">
       <header class="entry-header ">
