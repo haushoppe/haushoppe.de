@@ -2,6 +2,7 @@
 // Inhalt einer Kunstwerk-Detailseite: normalerweise das große Bild, bei den 5 Ordinals
 // stattdessen die Live-Inschrift (ordinalsbot-iframe) + Kauf-Link mit invertiertem Design.
 import { ordinalData } from '../lib/ordinals';
+import { artworkCaption } from '../lib/caption';
 
 interface Props {
   art: any;
@@ -10,6 +11,8 @@ interface Props {
 }
 const { art, img, lang = 'de' } = Astro.props;
 const ord = ordinalData(art);
+// Bildunterschrift (Titel+Künstler · Technik/Maße · interne Nummer) aus dem WP-Content.
+const cap = ord ? null : artworkCaption(art.content || '');
 const t =
   lang === 'en'
     ? { line: 'This art has been eternally engraved on the Bitcoin blockchain.', buy: 'Buy it on', gamma: 'Gamma' }
@@ -46,6 +49,13 @@ const t =
     <div class="entry-content clear" itemprop="text">
       <figure class="wp-block-image size-large">
         <img width={img.w} height={img.h} src={img.src} alt={art.title} loading="eager" decoding="async" />
+        {cap && (
+          <figcaption class="art-caption">
+            <span class="art-caption__title">{cap.line1}</span>
+            {cap.line2 && <span class="art-caption__tech">{cap.line2}</span>}
+            {cap.number && <span class="art-caption__num">{cap.number}</span>}
+          </figcaption>
+        )}
       </figure>
     </div>
   )
@@ -84,5 +94,22 @@ const t =
   .ordinal-caption a {
     color: #fff;
     text-decoration: underline;
+  }
+  /* Bildunterschrift: Titel+Künstler · Technik/Maße · interne Nummer. */
+  .art-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 0.9rem;
+    color: #6b6b6b;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .art-caption__title {
+    color: #3a3a3a;
+  }
+  .art-caption__num {
+    font-size: 0.82rem;
+    color: #9a9a9a;
   }
 </style>
