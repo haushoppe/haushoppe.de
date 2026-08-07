@@ -29,11 +29,17 @@ const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
   <div class="home-cols">
     <h1 class="home-h1">{content.h1}</h1>
     <figure class="home-featured">
-      <a href={content.featured.href}>
-        <img src={content.featured.img} alt={content.featured.alt} loading="lazy" decoding="async" />
-      </a>
+      {
+        content.featured.href ? (
+          <a href={content.featured.href}>
+            <img src={content.featured.img} alt={content.featured.alt} loading="lazy" decoding="async" />
+          </a>
+        ) : (
+          <img src={content.featured.img} alt={content.featured.alt} loading="lazy" decoding="async" />
+        )
+      }
       <figcaption>
-        <a href={content.featured.href} set:html={content.featured.caption} />
+        {content.featured.href ? <a href={content.featured.href} set:html={content.featured.caption} /> : <span set:html={content.featured.caption} />}
       </figcaption>
       {content.featured.award && <p class="home-award" set:html={content.featured.award} />}
     </figure>

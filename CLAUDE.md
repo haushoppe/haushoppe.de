@@ -194,6 +194,10 @@ DE↔EN-Paar eintragen (für den Sprachumschalter), danach `node scripts/gen-lan
 
 ## 7. Zweisprachigkeit (i18n)
 
+> **⭐ Deutsch ist immer führend.** DE ist die Quell-/Leitsprache, Englisch ist die
+> **1:1-Übersetzung** davon. Neue Inhalte immer zuerst auf Deutsch schreiben, dann EN
+> übersetzen. EN-Seiten sollen inhaltlich der DE-Fassung entsprechen (nicht abweichen).
+
 - **Domain = Sprache.** Lokal: DE unter `/`, EN unter `/en/`. Beim Deploy wird `/en/` zu
   haushoppe.art (Domain-Split — noch offen, siehe MIGRATION-PLAN.md [D1]).
 - Der **Sprachumschalter** (Flagge im Header) zeigt aufs jeweilige Pendant. Die Zuordnung

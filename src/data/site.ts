@@ -14,7 +14,7 @@ export const nav: Record<'de' | 'en', NavItem[]> = {
     { href: '/kontakt/', label: 'Kontakt' },
   ],
   en: [
-    { href: '/en/', label: 'Start' },
+    { href: '/en/', label: 'Home' },
     { href: '/en/videos/', label: 'Videos' },
     { href: '/en/artwork/', label: 'Artwork' },
     { href: '/en/buy-fine-art/', label: 'Buy Fine Art' },
