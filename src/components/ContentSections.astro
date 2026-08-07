@@ -9,6 +9,7 @@ interface Section {
   subtitle?: string;
   lines?: string[];
   paragraphs?: string[];
+  map?: string;
 }
 interface Props {
   hero?: { src: string; alt: string };
@@ -41,7 +42,24 @@ const { hero, title, sections } = Astro.props;
             ))}
           </ul>
         )}
-        {s.paragraphs && s.paragraphs.map((p) => <p set:html={p} />)}
+        {
+          s.map ? (
+            <div class="cp-dir">
+              <div class="cp-dir__text">{s.paragraphs && s.paragraphs.map((p) => <p set:html={p} />)}</div>
+              <div class="cp-map">
+                <iframe
+                  src={s.map}
+                  title="Karte"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen
+                />
+              </div>
+            </div>
+          ) : (
+            s.paragraphs && s.paragraphs.map((p) => <p set:html={p} />)
+          )
+        }
       </section>
     ))
   }
@@ -103,6 +121,34 @@ const { hero, title, sections } = Astro.props;
   }
   .cp-section--center .cp-lines li :global(strong) {
     min-width: 0;
+  }
+  /* Anfahrt + Karte nebeneinander (wie live). */
+  .cp-dir {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    align-items: start;
+  }
+  .cp-dir__text p:first-child {
+    margin-top: 0;
+  }
+  .cp-map {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    min-height: 320px;
+  }
+  .cp-map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 2px;
+  }
+  @media (max-width: 720px) {
+    .cp-dir {
+      grid-template-columns: 1fr;
+    }
   }
   @media (max-width: 640px) {
     .cp-lines li :global(strong) {
