@@ -24,7 +24,9 @@ const { meta, lang = 'de' } = Astro.props;
 const en = lang === 'en' ? meta.en : undefined;
 const title = en?.title || meta.title;
 const technique = (en?.technique || meta.technique || '').trim();
-const dimensions = (en?.dimensions ?? meta.dimensions ?? '').trim();
+// Maße sind sprachneutral: leeres EN fällt auf DE zurück. „?“ = unbekannt → nicht anzeigen.
+const rawDim = (en?.dimensions || meta.dimensions || '').trim();
+const dimensions = rawDim === '?' ? '' : rawDim;
 const edition = (en?.edition ?? meta.edition ?? '').trim();
 const extra = en?.extra ?? meta.extra;
 // Technik + Maße als eine saubere Zeile (kein JSX-Whitespace).

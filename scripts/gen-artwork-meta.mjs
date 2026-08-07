@@ -52,6 +52,8 @@ function normLine(s) {
       .replace(/([xX×]\s*\d+)\s+c\b(?!m)/g, '$1 cm') // „145 c“ (m verrutscht) → „145 cm“
       // Meter-Komma-Maße harmonisieren: „0,46 x 0,38 cm“ → „46 × 38 cm“, „1,50“ → „150“
       .replace(/(\d+),(\d{2})\b/g, (_, a, b) => String(parseInt(a, 10) * 100 + parseInt(b, 10)))
+      // Komma zwischen Motiv-/Blatt-/Papierformat einziehen: „cm Blattformat“ → „cm, Blattformat“
+      .replace(/(cm)\s+(Blattformat|Papierformat|Sheet size|Paper size)/gi, '$1, $2')
   )
     .replace(/\s{2,}/g, ' ')
     .trim();
@@ -179,10 +181,11 @@ function parse(content, rawTitle, slug) {
     if (s) classify(normLine(s), out);
   }
 
-  // Technik säubern: eingebettetes Jahr + baumelndes „x cm“ (fehlende Maße) raus
+  // Technik säubern: eingebettetes Jahr + baumelnder Maß-Platzhalter („? cm“, „?-x ?-cm“,
+  // „x cm“ — unbekannte Maße, die Olaf in die Technikzeile getippt hat) raus
   const technique = out.technique
     .replace(new RegExp(`\\b${YEAR.source}\\b`, 'g'), '')
-    .replace(/\s+[x×]\s*cm\.?\s*$/i, '')
+    .replace(/[\s,]*(?:\?|[x×])[?x×\s\-–]*cm\.?\s*$/i, '')
     .replace(/\s{2,}/g, ' ')
     .replace(/^[,\s]+|[,\s]+$/g, '')
     .trim();
@@ -200,7 +203,7 @@ function parse(content, rawTitle, slug) {
   };
 }
 
-// Maße wie „?“ gelten als leer → nicht anzeigen (statt wörtlich „? cm“)
+// echte Maße = enthält Ziffern; alles andere („? cm“, „x cm“, leer) gilt als „nicht vorhanden“
 const cleanDim = (s) => (s && /\d/.test(s) ? s : '');
 
 // Vorherige Datei: von Hand ergänzte Maße/Extra überleben ein erneutes `npm run meta`.
@@ -213,13 +216,15 @@ for (const a of arr) (byTrid[a.trid] ||= {})[a.lang] = a;
 
 const meta = {};
 const incomplete = [];
+const unknownDims = [];
 for (const a of arr.filter((x) => x.lang === 'de')) {
   const de = parse(a.content, a.title, a.slug);
   if (!de) continue;
   const enArt = (byTrid[a.trid] || {}).en;
   const en = enArt ? parse(enArt.content, enArt.title, enArt.slug) : null;
   const p = prev[a.trid] || {};
-  const dimensions = cleanDim(de.dimensions) || cleanDim(p.dimensions);
+  // Pflichtfeld Maße: echte Maße, sonst „?“ (unbekannt) — der Renderer blendet „?“ aus.
+  const dimensions = cleanDim(de.dimensions) || cleanDim(p.dimensions) || '?';
   meta[a.trid] = {
     slug: a.slug, // nur zur Orientierung beim Editieren — Komponente ignoriert es
     artist: 'Olaf Hoppe',
@@ -242,12 +247,14 @@ for (const a of arr.filter((x) => x.lang === 'de')) {
   };
   const missing = [];
   if (!de.technique) missing.push('technique');
-  if (!dimensions) missing.push('dimensions');
   if (!de.number) missing.push('number');
-  if (missing.length) incomplete.push(`${a.slug}: fehlt ${missing.join(', ')}  [${de.technique} | ${dimensions || '—'} | ${de.number}]`);
+  if (missing.length) incomplete.push(`${a.slug}: fehlt ${missing.join(', ')}  [${de.technique} | ${de.number}]`);
+  if (dimensions === '?') unknownDims.push(`${a.slug} — ${de.title} (${de.year})`);
 }
 
 fs.writeFileSync(outPath, JSON.stringify(meta, null, 2) + '\n');
 console.log('artwork-meta.json:', Object.keys(meta).length, 'Werke');
-console.log('unvollständige Pflichtangaben:', incomplete.length);
+console.log('echte Fehler (Technik/Nummer):', incomplete.length);
 incomplete.forEach((l) => console.log('  •', l));
+console.log('Maße unbekannt → als „?“ migriert (Renderer blendet aus):', unknownDims.length);
+unknownDims.forEach((l) => console.log('  •', l));
