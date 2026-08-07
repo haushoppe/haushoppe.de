@@ -1,0 +1,82 @@
+/* Schlanke Design-Basis — Tokens exakt aus der Live-Seite gemessen. Ersetzt schrittweise
+   das 557-KB-Astra-Bundle. Wird NACH wp-design.css geladen und gewinnt bei Konflikten. */
+:root {
+  --serif: 'Merriweather', Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+  --ink: #3a3a3a; /* Überschriften */
+  --text: #4b4f58; /* Fließtext */
+  --muted: #666; /* Links */
+  --bg: #fff;
+  --rule: #000; /* Header-Linien */
+  --footer-bg: #3a3a3a;
+  --container: 1240px;
+  --pad: 20px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--serif);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.3;
+}
+h1 {
+  font-size: 28px;
+  line-height: 1.4;
+  margin: 0 0 20px;
+}
+h2 {
+  font-size: 22px;
+  margin: 0 0 1rem;
+}
+h3 {
+  font-size: 19px;
+  margin: 0 0 0.8rem;
+}
+p {
+  margin: 0 0 1.2rem;
+}
+a {
+  color: var(--muted);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--ink);
+}
+/* Fließtext-Links unterstrichen (wie im Original), Navi/Footer/Buttons nicht. */
+.entry-content a,
+.cp a,
+.acq-text a,
+.acq-panel a {
+  text-decoration: underline;
+}
+
+/* Layout-Container + Hauptbereich */
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+.site-main {
+  padding-block: clamp(1.5rem, 4vw, 2.75rem);
+}

@@ -89,7 +89,7 @@ const translations =
     }
 
     document.addEventListener('click', function (e) {
-      if (e.target.closest('.ast-search-menu-icon')) {
+      if (e.target.closest('[data-search-trigger]')) {
         e.preventDefault();
         open();
         return;

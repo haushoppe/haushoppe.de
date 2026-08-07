@@ -1,11 +1,12 @@
 ---
-// Exaktes Astra-Chrome (Header/Footer/Body-Klasse) 1:1 aus dem Live-HTML + gebündelte
-// WP-Design-CSS + selbst gehostete Merriweather. Seiteninhalt kommt in den <slot/>.
-import chromeDe from '../data/live-chrome.json';
-import chromeEn from '../data/live-chrome-en.json';
-import { processChrome } from '../lib/nav';
+// Basis-Layout mit sauberen Header/Footer-Komponenten (statt portiertem Astra-Chrome).
+// wp-design.css bleibt vorerst geladen (Galerie/Detailseiten), global.css gewinnt bei
+// Konflikten; wird schrittweise durch schlankes CSS ersetzt.
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import Search from '../components/Search.astro';
 import '../styles/wp-design.css';
+import '../styles/global.css';
 import '@fontsource/merriweather/400.css';
 import '@fontsource/merriweather/700.css';
 
@@ -16,9 +17,8 @@ interface Props {
   lang?: 'de' | 'en';
 }
 const { title = 'HAUS HOPPE - Galerie für Bildende Kunst', description = '', bodyClass, lang = 'de' } = Astro.props;
-const chrome = lang === 'en' ? chromeEn : chromeDe;
-// Aktiven Menüpunkt setzen + Sprachumschalter aufs Pendant richten (Build-Zeit)
-const { header } = processChrome(chrome.header, Astro.url.pathname, lang);
+// Standard-Layout = volle Breite (Astra „page-builder"); Detail-/Videos-Seiten setzen eigene Klassen.
+const defaultBody = 'ast-desktop ast-page-builder-template ast-no-sidebar astra-4.13.6 ast-header-custom-item-inside ast-single-post astra-addon-4.13.5';
 ---
 
 <!doctype html>
@@ -30,20 +30,18 @@ const { header } = processChrome(chrome.header, Astro.url.pathname, lang);
     {description && <meta name="description" content={description} />}
     <link rel="icon" href="/media/2020/11/cropped-logo-haushoppe-490.png" />
   </head>
-  <body class={bodyClass ?? chrome.bodyClass}>
-    <div class="hfeed site" id="page">
-      <Fragment set:html={header} />
-      <div id="content" class="site-content">
-        <div class="ast-container">
-          <div id="primary" class="content-area primary">
-            <main id="main" class="site-main" data-pagefind-body>
-              <slot />
-            </main>
-          </div>
+  <body class={bodyClass ?? defaultBody}>
+    <Header lang={lang} />
+    <div id="content" class="site-content">
+      <div class="ast-container">
+        <div id="primary" class="content-area primary">
+          <main id="main" class="site-main" data-pagefind-body>
+            <slot />
+          </main>
         </div>
       </div>
-      <Fragment set:html={chrome.footer} />
     </div>
+    <Footer lang={lang} />
     <script is:inline src="/js/yt-facade.js"></script>
     <Search lang={lang} />
   </body>
