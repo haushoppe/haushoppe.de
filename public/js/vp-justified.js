@@ -32,10 +32,27 @@
     for (const el of items) {
       const w = parseFloat(el.dataset.w), h = parseFloat(el.dataset.h);
       if (!w || !h) continue;
-      row.push(el);
-      aspectSum += w / h;
-      // Zeile voll, sobald die zur Breite passende Höhe <= Zielhöhe fällt
-      if ((W - gap * (row.length - 1)) / aspectSum <= targetH) place(false);
+      const aspect = w / h;
+      const heightWith = (W - gap * row.length) / (aspectSum + aspect); // Höhe, wenn dieses Bild dazukommt
+      if (heightWith > targetH) {
+        // noch höher als Ziel → Bild einfach aufnehmen
+        row.push(el);
+        aspectSum += aspect;
+      } else {
+        // Aufnahme drückt die Höhe auf/unter Ziel. Wie das echte Visual Portfolio (Flickr-
+        // Justified): Bild aufnehmen ODER die Zeile ohne es umbrechen — je nachdem, was näher
+        // an der Zielhöhe liegt. Verhindert das „ein Bild zu viel" (4/Reihe statt 3/Reihe).
+        const heightWithout = row.length ? (W - gap * (row.length - 1)) / aspectSum : Infinity;
+        if (row.length && Math.abs(heightWithout - targetH) < Math.abs(heightWith - targetH)) {
+          place(false); // Zeile ohne dieses Bild umbrechen …
+          row.push(el); // … Bild beginnt die neue Zeile
+          aspectSum += aspect;
+        } else {
+          row.push(el);
+          aspectSum += aspect;
+          place(false);
+        }
+      }
     }
     place(true);
     wrap.style.position = 'relative';
