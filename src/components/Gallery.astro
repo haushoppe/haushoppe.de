@@ -86,4 +86,12 @@ const { items, cats, allLabel = 'Alle' } = Astro.props;
     display: block;
     object-fit: cover;
   }
+  /* Filter zentriert + umbrechend wie live (statt linksbündig full-width). */
+  .vp-portfolio__filter-wrap .vp-filter,
+  .vp-filter {
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    margin: 0 auto 1.75rem;
+  }
 </style>

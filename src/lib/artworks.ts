@@ -63,5 +63,5 @@ export function galleryCategories(lang: Lang): FilterCat[] {
   }
   return [...map.entries()]
     .map(([slug, { name, count }]) => ({ slug, name, count }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => a.name.localeCompare(b.name, lang === 'en' ? 'en' : 'de')); // alphabetisch wie live
 }
