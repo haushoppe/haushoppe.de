@@ -1,0 +1,98 @@
+---
+// Saubere Startseite (ersetzt die portierten Stackable-Blöcke): Hero-Video als
+// Datenschutz-Klick-Facade, darunter 2 Spalten (Willkommenstext + Signatur | Werk + Links).
+// Inhalt kommt als `content`-Objekt aus index.astro / en/index.astro (editierbar).
+interface Content {
+  video: { id: string; title: string; ratio: number };
+  h1: string;
+  intro: string[];
+  welcome: string;
+  featured: { img: string; alt: string; href: string; caption: string; award: string };
+}
+interface Props {
+  content: Content;
+}
+const { content } = Astro.props;
+const v = content.video;
+const facadeSrc = `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
+const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
+---
+
+<div class="home">
+  <div class="yt-facade home-hero" data-src={facadeSrc} style={`aspect-ratio:${100 / v.ratio}`}>
+    <button type="button" class="yt-facade__btn" aria-label={`Video abspielen: ${v.title}`}>
+      <img class="yt-facade__poster" src={poster} alt={v.title} width="1280" height="720" loading="eager" decoding="async" />
+      <span class="yt-facade__play" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="home-cols">
+    <div class="home-text">
+      <h1>{content.h1}</h1>
+      {content.intro.map((p) => <p set:html={p} />)}
+      <p class="home-signature" set:html={content.welcome} />
+    </div>
+    <figure class="home-featured">
+      <a href={content.featured.href}>
+        <img src={content.featured.img} alt={content.featured.alt} loading="lazy" decoding="async" />
+      </a>
+      <figcaption>
+        <a href={content.featured.href} set:html={content.featured.caption} />
+      </figcaption>
+      {content.featured.award && <p class="home-award" set:html={content.featured.award} />}
+    </figure>
+  </div>
+</div>
+
+<style>
+  .home {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .home-hero {
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+    border-radius: 2px;
+  }
+  .home-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+  .home-text h1 {
+    margin-top: 0;
+  }
+  .home-signature {
+    margin-top: 1.5rem;
+  }
+  .home-signature :global(img) {
+    display: block;
+    width: 300px;
+    max-width: 70%;
+    height: auto;
+    margin: 0.5rem 0;
+  }
+  .home-featured {
+    margin: 0;
+  }
+  .home-featured img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+  .home-featured figcaption {
+    margin: 0.6rem 0 1rem;
+  }
+  .home-award {
+    margin: 0;
+  }
+  @media (max-width: 720px) {
+    .home-cols {
+      grid-template-columns: 1fr;
+    }
+    .home-featured {
+      max-width: 480px;
+    }
+  }
+</style>
