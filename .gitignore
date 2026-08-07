@@ -1,5 +1,7 @@
-# build output
+# build output (dist-de = haushoppe.de, dist-art = haushoppe.art)
 dist/
+dist-de/
+dist-art/
 .astro/
 # dependencies
 node_modules/

@@ -4,6 +4,7 @@
 // + Such-Icon rechts, mobil als Hamburger. Aktiver Menüpunkt + Sprach-Pendant server-seitig.
 import { nav as navData, logo } from '../data/site';
 import langAlt from '../data/lang-alt.json';
+import { OTHER_ORIGIN } from '../lib/lang';
 
 interface Props {
   lang: 'de' | 'en';
@@ -15,13 +16,14 @@ const ALT = langAlt as Record<string, string>;
 let path = Astro.url.pathname;
 if (path !== '/' && !path.endsWith('/')) path += '/';
 let activePath = path;
-if (/^\/(en\/)?portfolio\//.test(path)) activePath = lang === 'en' ? '/en/artwork/' : '/werke/';
+if (/^\/portfolio\//.test(path)) activePath = lang === 'en' ? '/artwork/' : '/werke/';
 
-const altUrl = ALT[path] || (lang === 'en' ? '/' : '/en/');
+// Sprachwechsel: gleiches Werk/gleiche Seite auf der ANDEREN Domain (haushoppe.de ↔ haushoppe.art).
+const altUrl = OTHER_ORIGIN + (ALT[path] || '/');
 const flag = lang === 'en' ? 'de' : 'en';
 const flagLabel = lang === 'en' ? 'Zur deutschen Seite wechseln' : 'Switch to the English site';
 const searchLabel = lang === 'en' ? 'Search' : 'Suchen';
-const homeHref = lang === 'en' ? '/en/' : '/';
+const homeHref = '/';
 ---
 
 <header class="site-header">

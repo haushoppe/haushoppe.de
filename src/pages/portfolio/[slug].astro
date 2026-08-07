@@ -1,29 +1,29 @@
 ---
 // Kunstwerk-Detailseite /portfolio/<slug>/ — 1:1 wie WP (CreativeWork: Titel + großes Bild).
+// Sprache = Domain: derselbe Pfad in DE (haushoppe.de) und EN (haushoppe.art), je eigener Slug.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArtworkBody from '../../components/ArtworkBody.astro';
 import artworksData from '../../data/artworks.json';
 import mediaData from '../../data/artworks-media.json';
-
-const arts = artworksData as any[];
-const media = mediaData as Record<string, { src: string; w: number; h: number }>;
+import { LANG } from '../../lib/lang';
 
 export function getStaticPaths() {
   const arts = artworksData as any[];
   const media = mediaData as Record<string, { src: string; w: number; h: number }>;
   return arts
-    .filter((a) => a.lang === 'de' && media[a.id])
+    .filter((a) => a.lang === LANG && media[a.id])
     .map((a) => ({ params: { slug: a.slug }, props: { art: a, img: media[a.id] } }));
 }
 
 const { art, img } = Astro.props as { art: any; img: { src: string; w: number; h: number } };
+const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.title} — artwork by Olaf Hoppe.`;
 ---
 
-<BaseLayout title={`${art.title} - HAUS HOPPE`} description={`${art.title} — Werk von Olaf Hoppe.`} layout="article">
+<BaseLayout title={`${art.title} - HAUS HOPPE`} description={desc} layout="article">
   <article class="art-single" itemtype="https://schema.org/CreativeWork" itemscope>
     <header class="entry-header">
       <h1 class="entry-title" itemprop="headline">{art.title}</h1>
     </header>
-    <ArtworkBody art={art} img={img} lang="de" />
+    <ArtworkBody art={art} img={img} lang={LANG} />
   </article>
 </BaseLayout>

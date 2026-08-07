@@ -14,21 +14,23 @@ for (const a of artworks) {
   if (a.type !== 'portfolio') continue;
   (byTrid[a.trid] ||= {})[a.lang] = a.slug;
 }
+// Sprache = Domain: beide Sprachen liegen am Root ihrer Domain, KEIN /en/-Präfix.
+// Die Map bildet Pfad → Pfad des Pendants ab; der Header stellt die andere Domain davor.
 for (const t of Object.values(byTrid)) {
   if (t.de && t.en) {
-    const de = `/portfolio/${t.de}/`, en = `/en/portfolio/${t.en}/`;
+    const de = `/portfolio/${t.de}/`, en = `/portfolio/${t.en}/`;
     map[de] = en; map[en] = de;
   }
 }
 
-// Seiten: geroutete Slug-Paare (Home als Sonderfall)
+// Seiten: geroutete Slug-Paare (Home ↔ Home; videos/vita gleicher Slug in beiden Sprachen)
 const pagePairs = [
-  ['/', '/en/'],
-  ['/werke/', '/en/artwork/'],
-  ['/videos/', '/en/videos/'],
-  ['/vita/', '/en/vita/'],
-  ['/kontakt/', '/en/contact/'],
-  ['/kunst-erwerben/', '/en/buy-fine-art/'],
+  ['/', '/'],
+  ['/werke/', '/artwork/'],
+  ['/videos/', '/videos/'],
+  ['/vita/', '/vita/'],
+  ['/kontakt/', '/contact/'],
+  ['/kunst-erwerben/', '/buy-fine-art/'],
 ];
 for (const [de, en] of pagePairs) { map[de] = en; map[en] = de; }
 

@@ -1,0 +1,57 @@
+---
+// Chrome-Seiten mit SPRACHSPEZIFISCHEM Slug (die übrigen — index/videos/vita/portfolio —
+// haben eigene Dateien). Emittiert nur die Slugs der aktuellen Build-Sprache:
+//   DE: /werke/ /kunst-erwerben/ /kontakt/     EN: /artwork/ /buy-fine-art/ /contact/
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Gallery from '../components/Gallery.astro';
+import ContentSections from '../components/ContentSections.astro';
+import AcquireArt from '../components/AcquireArt.astro';
+import { galleryItems, galleryCategories } from '../lib/artworks';
+import kontakt from '../data/kontakt.json';
+import { acquire } from '../data/acquire';
+import { LANG } from '../lib/lang';
+
+export function getStaticPaths() {
+  const pages =
+    LANG === 'de'
+      ? [
+          { slug: 'werke', type: 'gallery' },
+          { slug: 'kunst-erwerben', type: 'acquire' },
+          { slug: 'kontakt', type: 'contact' },
+        ]
+      : [
+          { slug: 'artwork', type: 'gallery' },
+          { slug: 'buy-fine-art', type: 'acquire' },
+          { slug: 'contact', type: 'contact' },
+        ];
+  return pages.map((p) => ({ params: { slug: p.slug }, props: { type: p.type } }));
+}
+
+const { type } = Astro.props as { type: 'gallery' | 'acquire' | 'contact' };
+
+const META = {
+  gallery: {
+    de: { title: 'Werke - HAUS HOPPE', description: 'Gemälde und Holzschnitte von Olaf Hoppe.' },
+    en: { title: 'Artwork - HAUS HOPPE', description: 'Paintings and woodcuts by Olaf Hoppe.' },
+  },
+  acquire: {
+    de: { title: 'Kunst Erwerben - HAUS HOPPE', description: 'Kunst von Olaf Hoppe erwerben – Ratenzahlung, Leasing, Auftragswerke und individuelle Wünsche.' },
+    en: { title: 'Acquire Art - HAUS HOPPE', description: 'Acquire art by Olaf Hoppe – instalments, leasing, commissioned works and individual wishes.' },
+  },
+  contact: {
+    de: { title: 'Kontakt - HAUS HOPPE', description: 'HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Öffnungszeiten, Kontakt und Anfahrt.' },
+    en: { title: 'Contact - HAUS HOPPE', description: 'HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Opening hours, contact and directions.' },
+  },
+} as const;
+const meta = META[type][LANG];
+
+const items = type === 'gallery' ? galleryItems(LANG) : [];
+const cats = type === 'gallery' ? galleryCategories(LANG) : [];
+const allLabel = LANG === 'de' ? 'Alle' : 'All';
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  {type === 'gallery' && <Gallery items={items} cats={cats} allLabel={allLabel} />}
+  {type === 'contact' && <ContentSections sections={kontakt[LANG].sections} />}
+  {type === 'acquire' && <AcquireArt content={acquire[LANG]} />}
+</BaseLayout>

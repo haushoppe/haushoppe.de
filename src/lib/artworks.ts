@@ -21,7 +21,7 @@ function dateText(iso: string, lang: Lang): string {
   if (isNaN(d.getTime())) return '';
   return `${MONTHS[lang][d.getMonth()]} ${d.getFullYear()}`;
 }
-const prefix = (lang: Lang) => (lang === 'de' ? '' : '/en');
+// Sprache = Domain: Werk-Detail liegt in beiden Sprachen unter /portfolio/<slug>/ am Root.
 
 export interface GalleryItem {
   id: string; title: string; detailUrl: string;
@@ -41,7 +41,7 @@ export function galleryItems(lang: Lang): GalleryItem[] {
       return {
         id: a.id,
         title: a.title,
-        detailUrl: `${prefix(lang)}/portfolio/${a.slug}/`,
+        detailUrl: `/portfolio/${a.slug}/`,
         categorySlugs: pcats.map((c) => c.slug),
         primaryCategory: pcats[0]?.slug ?? '',
         img: m.src, w: m.w, h: m.h,

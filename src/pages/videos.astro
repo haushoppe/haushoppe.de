@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import VideosGallery from '../components/VideosGallery.astro';
+import { LANG } from '../lib/lang';
+
+const meta =
+  LANG === 'de'
+    ? { title: 'Videos - HAUS HOPPE', description: 'Videos rund um Olaf Hoppe und HAUS HOPPE — Holzschnitt, Malerei und mehr.' }
+    : { title: 'Videos - HAUS HOPPE', description: 'Videos about Olaf Hoppe and HAUS HOPPE — woodcut, painting and more.' };
 ---
 
-<BaseLayout
-  title="Videos - HAUS HOPPE"
-  description="Videos rund um Olaf Hoppe und HAUS HOPPE — Holzschnitt, Malerei und mehr."
-  layout="boxed"
->
-  <VideosGallery />
+<BaseLayout title={meta.title} description={meta.description} layout="boxed">
+  <VideosGallery lang={LANG} />
 </BaseLayout>

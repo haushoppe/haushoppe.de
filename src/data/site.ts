@@ -14,12 +14,12 @@ export const nav: Record<'de' | 'en', NavItem[]> = {
     { href: '/kontakt/', label: 'Kontakt' },
   ],
   en: [
-    { href: '/en/', label: 'Home' },
-    { href: '/en/videos/', label: 'Videos' },
-    { href: '/en/artwork/', label: 'Artwork' },
-    { href: '/en/buy-fine-art/', label: 'Buy Fine Art' },
-    { href: '/en/vita/', label: 'Vita' },
-    { href: '/en/contact/', label: 'Contact' },
+    { href: '/', label: 'Home' },
+    { href: '/videos/', label: 'Videos' },
+    { href: '/artwork/', label: 'Artwork' },
+    { href: '/buy-fine-art/', label: 'Buy Fine Art' },
+    { href: '/vita/', label: 'Vita' },
+    { href: '/contact/', label: 'Contact' },
   ],
 };
 
