@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ArtworkBody from '../../../components/ArtworkBody.astro';
 import artworksData from '../../../data/artworks.json';
 import mediaData from '../../../data/artworks-media.json';
 
@@ -23,11 +24,7 @@ const catClasses = (art.categories || [])
       <header class="entry-header ">
         <h1 class="entry-title" itemprop="headline">{art.title}</h1>
       </header>
-      <div class="entry-content clear" itemprop="text">
-        <figure class="wp-block-image size-large">
-          <img width={img.w} height={img.h} src={img.src} alt={art.title} loading="eager" decoding="async" />
-        </figure>
-      </div>
+      <ArtworkBody art={art} img={img} lang="en" />
     </div>
   </article>
 </BaseLayout>

@@ -3,6 +3,7 @@
 // WP-Design-CSS + selbst gehostete Merriweather. Seiteninhalt kommt in den <slot/>.
 import chromeDe from '../data/live-chrome.json';
 import chromeEn from '../data/live-chrome-en.json';
+import { processChrome } from '../lib/nav';
 import '../styles/wp-design.css';
 import '@fontsource/merriweather/400.css';
 import '@fontsource/merriweather/700.css';
@@ -15,6 +16,8 @@ interface Props {
 }
 const { title = 'HAUS HOPPE - Galerie für Bildende Kunst', description = '', bodyClass, lang = 'de' } = Astro.props;
 const chrome = lang === 'en' ? chromeEn : chromeDe;
+// Aktiven Menüpunkt setzen + Sprachumschalter aufs Pendant richten (Build-Zeit)
+const { header } = processChrome(chrome.header, Astro.url.pathname, lang);
 ---
 
 <!doctype html>
@@ -28,7 +31,7 @@ const chrome = lang === 'en' ? chromeEn : chromeDe;
   </head>
   <body class={bodyClass ?? chrome.bodyClass}>
     <div class="hfeed site" id="page">
-      <Fragment set:html={chrome.header} />
+      <Fragment set:html={header} />
       <div id="content" class="site-content">
         <div class="ast-container">
           <div id="primary" class="content-area primary">

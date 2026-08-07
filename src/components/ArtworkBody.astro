@@ -1,0 +1,88 @@
+---
+// Inhalt einer Kunstwerk-Detailseite: normalerweise das große Bild, bei den 5 Ordinals
+// stattdessen die Live-Inschrift (ordinalsbot-iframe) + Kauf-Link mit invertiertem Design.
+import { ordinalData } from '../lib/ordinals';
+
+interface Props {
+  art: any;
+  img: { src: string; w: number; h: number };
+  lang?: 'de' | 'en';
+}
+const { art, img, lang = 'de' } = Astro.props;
+const ord = ordinalData(art);
+const t =
+  lang === 'en'
+    ? { line: 'This art has been eternally engraved on the Bitcoin blockchain.', buy: 'Buy it on', gamma: 'Gamma' }
+    : { line: 'Dieses Werk ist für immer in die Bitcoin-Blockchain eingraviert.', buy: 'Erhältlich auf', gamma: 'Gamma' };
+---
+
+{
+  ord ? (
+    <div class="entry-content clear ordinal-content" itemprop="text">
+      <div class="ordinal-frame">
+        <iframe
+          src={ord.iframe}
+          title={art.title}
+          loading="lazy"
+          referrerpolicy="no-referrer"
+          sandbox="allow-scripts allow-same-origin"
+        />
+      </div>
+      <p class="ordinal-caption">
+        {t.line}
+        {ord.buy && (
+          <>
+            {' '}
+            {t.buy}{' '}
+            <a href={ord.buy} target="_blank" rel="noopener">
+              {t.gamma}
+            </a>
+            .
+          </>
+        )}
+      </p>
+    </div>
+  ) : (
+    <div class="entry-content clear" itemprop="text">
+      <figure class="wp-block-image size-large">
+        <img width={img.w} height={img.h} src={img.src} alt={art.title} loading="eager" decoding="async" />
+      </figure>
+    </div>
+  )
+}
+
+<style is:global>
+  /* Ordinals: „geflipptes" Design — dunkle Bühne für die Live-Inschrift. */
+  .ordinal-content {
+    background: #0b0b0b;
+    color: #f5f5f5;
+    padding: clamp(1rem, 3vw, 2.5rem);
+    border-radius: 4px;
+  }
+  .ordinal-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 640px;
+    margin: 0 auto;
+    background: #000;
+  }
+  .ordinal-frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .ordinal-caption {
+    text-align: center;
+    margin: 1.5rem auto 0;
+    max-width: 640px;
+    color: #d8d8d8;
+  }
+  .ordinal-caption a {
+    color: #fff;
+    text-decoration: underline;
+  }
+</style>
