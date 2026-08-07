@@ -5,7 +5,8 @@ const __dir = path.dirname(fileURLToPath(import.meta.url));
 const R = (p) => JSON.parse(fs.readFileSync(path.join(__dir, '..', p), 'utf8'));
 const arr = (x) => Array.isArray(x) ? x : Object.values(x);
 
-const artworks = arr(R('../migration/data/artworks.json'));
+// aus der SITE-Quelle (Single Source of Truth), nicht aus dem Migrations-Snapshot
+const artworks = arr(R('src/data/artworks.json'));
 const map = {};
 
 // Portfolio: nach trid gruppieren
