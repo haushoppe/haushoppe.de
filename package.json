@@ -1,0 +1,21 @@
+{
+  "name": "haushoppe-art-site",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "images": "node scripts/gen-images.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.18.2",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/merriweather": "^5.2.11"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.4",
+    "playwright": "^1.61.1"
+  }
+}

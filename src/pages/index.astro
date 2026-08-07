@@ -1,0 +1,10 @@
+---
+// Startseite (DE) — Inhalt 1:1 aus dem Live-HTML (YouTube-Video wird später zur
+// Datenschutz-Facade, aktuell noch das ayg-Custom-Element aus dem Original).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import home from '../data/live-home.json';
+---
+
+<BaseLayout title="HAUS HOPPE - Galerie für Bildende Kunst" description="Gemälde und Holzschnitte von Olaf Hoppe. Galerie und Werkstatt an der Ostsee.">
+  <Fragment set:html={home.article} />
+</BaseLayout>
