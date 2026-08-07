@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import artworksData from '../../../data/artworks.json';
+import mediaData from '../../../data/artworks-media.json';
+
+export function getStaticPaths() {
+  const arts = artworksData as any[];
+  const media = mediaData as Record<string, { src: string; w: number; h: number }>;
+  return arts
+    .filter((a) => a.lang === 'en' && media[a.id])
+    .map((a) => ({ params: { slug: a.slug }, props: { art: a, img: media[a.id] } }));
+}
+
+const { art, img } = Astro.props as { art: any; img: { src: string; w: number; h: number } };
+const catClasses = (art.categories || [])
+  .filter((c: any) => c.taxonomy === 'portfolio_category')
+  .map((c: any) => `portfolio_category-${c.slug}`);
+---
+
+<BaseLayout lang="en" title={`${art.title} - HAUS HOPPE`} description={`${art.title} — artwork by Olaf Hoppe.`}>
+  <article class:list={['portfolio', 'type-portfolio', 'status-publish', 'has-post-thumbnail', 'ast-article-single', ...catClasses]} itemtype="https://schema.org/CreativeWork" itemscope>
+    <div class="ast-post-format- single-layout-1">
+      <header class="entry-header ">
+        <h1 class="entry-title" itemprop="headline">{art.title}</h1>
+      </header>
+      <div class="entry-content clear" itemprop="text">
+        <figure class="wp-block-image size-large">
+          <img width={img.w} height={img.h} src={img.src} alt={art.title} loading="eager" decoding="async" />
+        </figure>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

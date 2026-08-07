@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import home from '../../data/live-home-en.json';
+---
+
+<BaseLayout lang="en" title="HAUS HOPPE - Gallery for Fine Art" description="Paintings and woodcuts by Olaf Hoppe. Gallery and studio at the Baltic Sea.">
+  <Fragment set:html={home.article} />
+</BaseLayout>

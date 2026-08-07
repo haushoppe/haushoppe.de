@@ -1,7 +1,8 @@
 ---
 // Exaktes Astra-Chrome (Header/Footer/Body-Klasse) 1:1 aus dem Live-HTML + gebündelte
 // WP-Design-CSS + selbst gehostete Merriweather. Seiteninhalt kommt in den <slot/>.
-import chrome from '../data/live-chrome.json';
+import chromeDe from '../data/live-chrome.json';
+import chromeEn from '../data/live-chrome-en.json';
 import '../styles/wp-design.css';
 import '@fontsource/merriweather/400.css';
 import '@fontsource/merriweather/700.css';
@@ -10,12 +11,14 @@ interface Props {
   title?: string;
   description?: string;
   bodyClass?: string;
+  lang?: 'de' | 'en';
 }
-const { title = 'HAUS HOPPE - Galerie für Bildende Kunst', description = '', bodyClass } = Astro.props;
+const { title = 'HAUS HOPPE - Galerie für Bildende Kunst', description = '', bodyClass, lang = 'de' } = Astro.props;
+const chrome = lang === 'en' ? chromeEn : chromeDe;
 ---
 
 <!doctype html>
-<html lang="de">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
