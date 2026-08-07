@@ -1,22 +1,8 @@
 ---
-// „Kunst Erwerben" / „Acquire Art" — sauberer, menschenlesbarer Nachbau der alten
-// Gutenberg/Stackable-Seite: Hero, 2-Spalten-Intro (Text | Portrait) und ein Akkordeon
-// aus nativen <details>/<summary> (kein JS, barrierefrei, editierbar). Inhalt kommt als
-// `content`-Objekt aus der jeweiligen Seite — dort leicht zu pflegen.
-interface AccordionItem {
-  title: string;
-  html: string;
-}
-interface AcquireContent {
-  title: string;
-  hero: { src: string; alt: string };
-  intro: string[];
-  portrait: { src: string; alt: string; caption: string };
-  sectionHeading: string;
-  items: AccordionItem[];
-}
+// „Kunst Erwerben" / „Acquire Art" — Rahmen (Hero + Titel) + Layout-CSS. Der Inhalt (Portrait,
+// Intro-Prosa, Akkordeon) kommt als <slot/> aus der MDX-Seite (content/pages/acquire-<lang>.mdx).
 interface Props {
-  content: AcquireContent;
+  content: { title: string; hero: { src: string; alt: string } };
 }
 const { content } = Astro.props;
 ---
@@ -25,33 +11,10 @@ const { content } = Astro.props;
   <div class="acq-hero">
     <img src={content.hero.src} alt={content.hero.alt} loading="eager" decoding="async" />
   </div>
-
-  <div class="acq-intro">
-    <div class="acq-text">
-      <h1 class="entry-title">{content.title}</h1>
-      {content.intro.map((p) => <p set:html={p} />)}
-    </div>
-    <figure class="acq-portrait">
-      <img src={content.portrait.src} alt={content.portrait.alt} loading="lazy" decoding="async" />
-      <figcaption>{content.portrait.caption}</figcaption>
-    </figure>
+  <div class="acq-body">
+    <h1 class="entry-title">{content.title}</h1>
+    <slot />
   </div>
-
-  <section class="acq-ways">
-    <h2>{content.sectionHeading}</h2>
-    <div class="acq-accordion">
-      {
-        content.items.map((it) => (
-          <details>
-            <summary>
-              <span>{it.title}</span>
-            </summary>
-            <div class="acq-panel" set:html={it.html} />
-          </details>
-        ))
-      }
-    </div>
-  </section>
 </article>
 
 <style>
@@ -68,46 +31,46 @@ const { content } = Astro.props;
     display: block;
     border-radius: 2px;
   }
-  /* 2-Spalten: Text | Portrait */
-  .acq-intro {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(1.5rem, 4vw, 3rem);
-    align-items: start;
-    margin: clamp(1.75rem, 4vw, 3rem) 0;
+  .acq-body {
+    margin-top: clamp(1.5rem, 4vw, 2.5rem);
   }
-  .acq-text p {
+  .acq-body :global(p) {
     margin: 0 0 1rem;
   }
-  .acq-portrait {
-    margin: 0;
+  /* Portrait: rechts neben der Intro-Prosa (float), räumt vor dem Akkordeon auf. */
+  .acq-body :global(.acq-portrait) {
+    float: right;
+    width: 46%;
+    max-width: 440px;
+    margin: 0.3rem 0 1rem 1.75rem;
   }
-  .acq-portrait img {
+  .acq-body :global(.acq-portrait img) {
     width: 100%;
     height: auto;
     display: block;
     border-radius: 2px;
   }
-  .acq-portrait figcaption {
+  .acq-body :global(.acq-portrait figcaption) {
     font-size: 0.85rem;
     color: #6b6b6b;
     text-align: center;
     margin-top: 0.5rem;
   }
-  .acq-ways > h2 {
-    margin: 0 0 1.25rem;
+  .acq-body :global(h2) {
+    clear: both;
+    margin: 1.75rem 0 1.25rem;
   }
   /* Akkordeon aus nativen <details> — grauer Balken + Titel, Chevron dreht beim Öffnen. */
-  .acq-accordion {
+  .acq-body :global(.acq-accordion) {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
   }
-  .acq-accordion details {
+  .acq-body :global(.acq-item) {
     border-radius: 2px;
     overflow: hidden;
   }
-  .acq-accordion summary {
+  .acq-body :global(.acq-item summary) {
     list-style: none;
     cursor: pointer;
     display: flex;
@@ -122,10 +85,10 @@ const { content } = Astro.props;
     font-weight: 700;
     transition: background 0.15s ease;
   }
-  .acq-accordion summary::-webkit-details-marker {
+  .acq-body :global(.acq-item summary::-webkit-details-marker) {
     display: none;
   }
-  .acq-accordion summary::after {
+  .acq-body :global(.acq-item summary::after) {
     content: '';
     width: 0.62em;
     height: 0.62em;
@@ -136,34 +99,31 @@ const { content } = Astro.props;
     flex: none;
     margin-top: -0.2em;
   }
-  .acq-accordion details[open] summary::after {
+  .acq-body :global(.acq-item[open] summary::after) {
     transform: rotate(-135deg);
     margin-top: 0.15em;
   }
-  .acq-accordion summary:hover {
+  .acq-body :global(.acq-item summary:hover) {
     background: #949eac;
   }
-  .acq-panel {
+  .acq-body :global(.acq-panel) {
     padding: 1.25rem 1.4rem 1.5rem;
     background: rgba(164, 173, 186, 0.08);
   }
-  .acq-panel :global(p) {
-    margin: 0 0 1rem;
-  }
-  .acq-panel :global(p:last-child) {
+  .acq-body :global(.acq-panel p:last-child) {
     margin-bottom: 0;
   }
-  .acq-panel :global(.acq-contact) {
+  .acq-body :global(.acq-contact) {
     font-style: normal;
     line-height: 1.7;
   }
-  .acq-panel :global(.acq-gallery) {
+  .acq-body :global(.acq-gallery) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1rem;
     margin-top: 1rem;
   }
-  .acq-panel :global(.acq-gallery img) {
+  .acq-body :global(.acq-gallery img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -171,11 +131,11 @@ const { content } = Astro.props;
     display: block;
   }
   @media (max-width: 720px) {
-    .acq-intro {
-      grid-template-columns: 1fr;
-    }
-    .acq-portrait {
+    .acq-body :global(.acq-portrait) {
+      float: none;
+      width: 100%;
       max-width: 420px;
+      margin: 0 auto 1.25rem;
     }
   }
 </style>

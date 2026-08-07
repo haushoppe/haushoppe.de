@@ -4,11 +4,10 @@
 //   DE: /werke/ /kunst-erwerben/ /kontakt/     EN: /artwork/ /buy-fine-art/ /contact/
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Gallery from '../components/Gallery.astro';
-import ContentSections from '../components/ContentSections.astro';
+import Kontakt from '../components/Kontakt.astro';
 import AcquireArt from '../components/AcquireArt.astro';
 import { galleryItems, galleryCategories } from '../lib/artworks';
-import kontakt from '../data/kontakt.json';
-import { acquire } from '../data/acquire';
+import { getCollection, render } from 'astro:content';
 import { LANG } from '../lib/lang';
 
 export function getStaticPaths() {
@@ -48,10 +47,30 @@ const meta = META[type][LANG];
 const items = type === 'gallery' ? galleryItems(LANG) : [];
 const cats = type === 'gallery' ? galleryCategories(LANG) : [];
 const allLabel = LANG === 'de' ? 'Alle' : 'All';
+
+// Kontakt & Kunst-Erwerben kommen aus MDX (content/pages/kontakt-<lang>.mdx / acquire-<lang>.mdx).
+let MdxContent: any = null;
+let acquireFm: any = null;
+if (type === 'contact' || type === 'acquire') {
+  const id = type === 'contact' ? `kontakt-${LANG}` : `acquire-${LANG}`;
+  const pages = await getCollection('pages');
+  const entry = pages.find((p) => p.id === id);
+  if (!entry) throw new Error(`MDX-Seite ${id} fehlt.`);
+  MdxContent = (await render(entry)).Content;
+  if (type === 'acquire') acquireFm = entry.data;
+}
 ---
 
 <BaseLayout title={meta.title} description={meta.description}>
   {type === 'gallery' && <Gallery items={items} cats={cats} allLabel={allLabel} />}
-  {type === 'contact' && <ContentSections sections={kontakt[LANG].sections} />}
-  {type === 'acquire' && <AcquireArt content={acquire[LANG]} />}
+  {type === 'contact' && MdxContent && (
+    <Kontakt>
+      <MdxContent />
+    </Kontakt>
+  )}
+  {type === 'acquire' && MdxContent && (
+    <AcquireArt content={acquireFm}>
+      <MdxContent />
+    </AcquireArt>
+  )}
 </BaseLayout>

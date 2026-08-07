@@ -11,9 +11,9 @@ Die Website der **HAUS HOPPE – Galerie für Bildende Kunst** (Künstler **Olaf
 migriert von WordPress zu einer **statischen Astro-Site**.
 
 - **Astro 5**, reines SSG (kein Server, keine DB, kein WordPress mehr).
-- **Zweisprachig**: Deutsch (Domain **haushoppe.de**) + Englisch (Domain **haushoppe.art**).
-  Lokal liegt DE unter `/`, EN unter `/en/`. **Die Domain bestimmt die Sprache** — die
-  Domain-Aufteilung passiert erst beim Deploy (Cloudflare Pages, zwei Custom-Domains).
+- **Zweisprachig, Sprache = Domain**: Deutsch → **haushoppe.de**, Englisch → **haushoppe.art**.
+  **Ein Projekt, zwei Builds** (`SITE_LANG=de|en`), jede Sprache am **Root** ihrer Domain —
+  **kein `/en/`-Pfad**. Die Build-Sprache kommt zentral aus `src/lib/lang.ts`.
 - **645 Kunstwerke**, Galerie mit Justified-Layout + Filter, Video-Seite, ein paar
   Content-Seiten, Volltextsuche.
 - **Design = wie die alte Seite** (Astra-Theme-Look), aber sauber & schlank neu gebaut:
@@ -22,43 +22,52 @@ migriert von WordPress zu einer **statischen Astro-Site**.
 ### Befehle
 
 ```bash
-npm run dev       # Entwicklung (localhost:4321) — Suche funktioniert hier NICHT (siehe Suche)
-npm run build     # Produktion: astro build + Pagefind-Suchindex
-npm run preview    # gebaute Seite lokal ansehen (inkl. Suche) — hierfür ZUM Testen nutzen
-npm run images    # Kunstwerk-Bilder neu erzeugen (scripts/gen-images.mjs)
+npm run dev         # Entwicklung (localhost:4321, DE) — Suche funktioniert hier NICHT (siehe Suche)
+                    # EN im Dev: SITE_LANG=en npm run dev
+npm run build       # Produktion: i18n-Check → BEIDE Sprach-Builds (dist-de + dist-art) + Pagefind
+npm run check       # nur der i18n-Vollständigkeits-Check (läuft auch automatisch vor jedem build)
+npm run preview     # DE-Build ansehen (dist-de, inkl. Suche) — zum Testen nutzen
+npm run preview:art # EN-Build ansehen (dist-art)
+npm run images      # Kunstwerk-Bilder neu erzeugen (scripts/gen-images.mjs → artworks-media.json)
+npm run meta        # Werk-Beschriftungen neu generieren (artwork-meta.json)
+npm run lang-alt    # Sprach-Pendant-Map neu generieren (lang-alt.json)
 ```
 
-> **Wichtig:** Die **Suche** (Pagefind) entsteht erst im `build`-Schritt. Zum Prüfen immer
-> `npm run build && npm run preview`, nicht `npm run dev`.
+> **Wichtig:** `npm run build` baut **beide** Sprachen (`dist-de` = haushoppe.de, `dist-art` =
+> haushoppe.art) und bricht ab, wenn der **i18n-Check** eine Lücke findet (siehe Abschnitt 7).
+> Die **Suche** (Pagefind) entsteht erst im `build`-Schritt — zum Prüfen `npm run build` + `preview`.
 
 ---
 
 ## 2. Projektstruktur
 
+**Kein `/en/`-Ordner mehr.** Es gibt *einen* Satz Seiten; die Sprache wählt der Build über
+`SITE_LANG` (aus `src/lib/lang.ts`). Seiten mit gleichem Slug in beiden Sprachen (Home, Videos,
+Vita, Werk-Detail) sind je *eine* Datei; die 3 Seiten mit **abweichendem** Slug stecken in einer
+dynamischen `[slug].astro`.
+
 ```
 src/
-├── pages/                    # jede Datei = eine Route
-│   ├── index.astro            # DE Startseite      → Home.astro
-│   ├── werke.astro            # DE Galerie         → Gallery.astro
-│   ├── videos.astro           # DE Videos          → VideosGallery.astro
-│   ├── vita.astro             # DE Vita            → ContentSections + data/vita.json
-│   ├── kontakt.astro          # DE Kontakt         → ContentSections + data/kontakt.json
-│   ├── kunst-erwerben.astro   # DE Kunst Erwerben  → AcquireArt.astro
-│   ├── portfolio/[slug].astro # 322 DE Detailseiten (ein Kunstwerk je Seite)
-│   └── en/…                    # dieselben Seiten auf Englisch (artwork, buy-fine-art, contact …)
+├── pages/                    # jede Datei = eine Route; Sprache aus SITE_LANG
+│   ├── index.astro            # Startseite (de/en-Objekt je Build)        → Home.astro
+│   ├── videos.astro           # Videos                                     → VideosGallery.astro
+│   ├── vita.astro             # Vita                                       → ContentSections + vita.json
+│   ├── [slug].astro           # die 3 slug-abweichenden Seiten:
+│   │                          #   werke↔artwork · kunst-erwerben↔buy-fine-art · kontakt↔contact
+│   └── portfolio/[slug].astro # 322 Werk-Detailseiten (filtert nach SITE_LANG)
+├── content/pages/*.mdx       # Prosa-Seiten: home/kontakt/acquire, je -de.mdx + -en.mdx
+├── content.config.ts        # Zod-Schema der MDX-Collection „pages"
 ├── components/               # siehe Abschnitt 4
-├── layouts/BaseLayout.astro  # HTML-Gerüst: <head>, Header, <main>, Footer, Suche
-├── lib/                      # artworks.ts (Galerie-Daten), ordinals.ts
+├── layouts/BaseLayout.astro  # HTML-Gerüst: <head> inkl. canonical + hreflang (beide Domains)
+├── lib/                      # lang.ts (SITE_LANG + Domains!), artworks.ts (Galerie-Daten), ordinals.ts
 ├── data/                     # Inhalts- & Konfig-Daten (siehe Abschnitt 5)
 ├── styles/                   # global.css (Basis) + wp-design.css (schlanke Galerie-Reste)
 public/
 ├── media/…                   # alle Bilder (aus WP-Uploads, /media/JJJJ/MM/…)
 ├── artworks/<id>.webp        # web-optimierte Kunstwerk-Bilder (gitignored, per gen-images)
-├── js/                       # vp-justified.js (Galerie-Layout), yt-facade.js (Video-Klick)
-├── vendor/jquery.min.js       # nur für den Video-Slider
-├── ayg-plugin/…              # echtes YouTube-Gallery-Plugin (nur Videos-Seite)
-└── pagefind/…                # Suchindex (wird beim build erzeugt, gitignored)
-scripts/                      # einmalige Migrations-/Generier-Skripte (siehe Abschnitt 8)
+├── js/, vendor/jquery.min.js, ayg-plugin/…   # Galerie-/Video-Slider-Assets
+dist-de/   dist-art/          # zwei Build-Outputs: DE → haushoppe.de, EN → haushoppe.art (gitignored)
+scripts/                      # Generier-/Prüf-Skripte (siehe Abschnitt 9)
 ```
 
 ---
@@ -111,24 +120,34 @@ Statt der alten Astra-Body-Klassen steuert ein `layout`-Prop an `BaseLayout` die
 | `BaseLayout.astro`    | HTML-Gerüst: `<head>` (Titel/Description/Favicon), `<Header>`, `<main class="site-main …">`, `<Footer>`, `<Search>`. Props: `title`, `description`, `lang`, `layout`. |
 | `Header.astro`        | Logo + Nav-Leiste (700 px, schwarze Linien) + Sprach-Flagge + Such-Icon; mobil Hamburger. Aktiver Menüpunkt & Sprach-Pendant server-seitig (aus `data/site.ts` + `data/lang-alt.json`). |
 | `Footer.astro`        | Dunkler Balken: „Folge uns bei" + Social-Icons + Kontakt 2-spaltig (aus `data/site.ts`). |
-| `Home.astro`          | Startseite: Hero-Video-Facade + 2 Spalten (Text/Signatur | Werk/Links). Inhalt kommt als `content`-Objekt aus `index.astro`/`en/index.astro`. |
+| `Home.astro`          | Startseite: Hero-Video-Facade + 2 Spalten (Text/Signatur | Werk/Links). Inhalt aus `index.astro` (`de`/`en`-Objekt, Auswahl über `LANG`). |
 | `Gallery.astro`       | Galerie: Kategorie-Filter + Justified-Grid (`public/js/vp-justified.js`). Items aus `lib/artworks.ts`. |
 | `VideosGallery.astro` | Video-Seite: der **echte** „ayg Classic-Slider" (Original-Plugin), Block-HTML aus `data/live-videos*.json`. |
-| `AcquireArt.astro`    | Kunst Erwerben: Hero + 2-Spalten + `<details>`-Akkordeon (kein JS). Inhalt aus `kunst-erwerben.astro`. |
-| `ContentSections.astro`| Generischer Renderer für Textseiten (Vita, Kontakt): Überschrift + Listen/Absätze + optionale Karte. Inhalt aus `data/vita.json` / `data/kontakt.json`. |
+| `AcquireArt.astro`    | Kunst Erwerben: Rahmen (Hero + Titel aus MDX-Frontmatter) + Layout-CSS; Inhalt (Portrait/Intro/Akkordeon) als `<slot/>` aus `content/pages/acquire-<lang>.mdx`. |
+| `AccordionItem.astro` | Ein `<details>`-Akkordeon-Eintrag (kein JS) für die Kunst-Erwerben-MDX (`<AccItem title="…">…</AccItem>`). |
+| `Kontakt.astro`       | Rahmen + Layout-CSS für die Kontakt-Seite; Inhalt als `<slot/>` aus `content/pages/kontakt-<lang>.mdx` (Klassen `.cp-center`, `.cp-directions`, `.cp-map`). |
+| `ContentSections.astro`| Generischer Renderer für die **Vita** (JSON-Liste): Überschrift + Listen/Absätze. Inhalt aus `data/vita.json`. |
 | `ArtworkBody.astro`   | Inhalt einer Detailseite: normal das große Bild, bei den 5 Ordinals stattdessen iframe + Kauf-Link (invertiertes Design). |
 | `Search.astro`        | Pagefind-Overlay, öffnet beim Klick auf das Such-Icon (`[data-search-trigger]`). |
 
 ---
 
-## 5. Die Daten (`src/data/`)
+## 5. Inhalt & Daten — was liegt wo?
 
-**Aktiv genutzt:**
-- `site.ts` — **Navigation, Social-Links, Kontaktadresse, Logo** (DE+EN). Zentrale Stelle fürs Chrome.
-- `vita.json`, `kontakt.json` — Inhalt der Vita-/Kontakt-Seite (Abschnitte, editierbar).
-- `artworks.json` — alle 645 Kunstwerke (id, slug, title, lang, trid, categories, date …).
-- `artworks-media.json` — je Kunstwerk `{src,w,h}` des webp-Bildes.
-- `lang-alt.json` — DE↔EN-Pendant je URL (für den Sprachumschalter). Per `scripts/gen-lang-alt.mjs`.
+**Faustregel:** **Prosa → MDX**, **strukturierte Listen/Config → JSON/TS**.
+
+**Prosa (`src/content/pages/*.mdx`, Content-Collection `pages`):**
+- `home-de.mdx` / `home-en.mdx`, `kontakt-de.mdx` / `kontakt-en.mdx`, `acquire-de.mdx` / `acquire-en.mdx`.
+- **Frontmatter** = strukturierte Assets (Bilder, Video-ID, Karte); **Body** = editierbarer Fließtext.
+- Dateiname-Konvention: `<name>-<lang>.mdx` — **Bindestrich, kein Punkt** (die Glob-`id` entfernt Punkte!). Schema/Validierung: `src/content.config.ts`.
+
+**Strukturierte Daten (`src/data/`):**
+- `site.ts` — **Navigation, Social-Links, Kontaktadresse, Logo** (DE+EN, typisiert). Config, kein Fließtext → bleibt TS.
+- `vita.json` — Vita (Ausstellungs-**Liste** etc., je `de`+`en`; strukturiert → bleibt JSON), gerendert von `ContentSections.astro`.
+- `artworks.json` — alle Kunstwerke (id, slug, title, lang, **trid**, categories, date, content …). **Site-Quelle** (Single Source of Truth).
+- `artworks-media.json` — je Kunstwerk `{src,w,h}` des webp-Bildes (per `gen-images`).
+- `artwork-meta.json` — strukturierte, **von Hand editierbare** Werk-Beschriftung je `trid` (Künstler·Titel·Jahr·Technik·Maße·Nummer + optional Auflage/Extra, DE+EN). Per `gen-artwork-meta.mjs`, gerendert von `ArtworkMeta.astro`. Unbekannte Maße = `"?"` (wird ausgeblendet).
+- `lang-alt.json` — DE↔EN-Pendant je URL, **root-relativ** (Header stellt die andere Domain davor). Per `gen-lang-alt.mjs` (liest die Site-Quelle).
 - `live-videos.json` / `live-videos-en.json` — der server-gerenderte Video-Slider-Block.
 - `videos-playlist.json` — die 25 Video-IDs/Titel (Referenz).
 
@@ -140,35 +159,42 @@ Statt der alten Astra-Body-Klassen steuert ein `layout`-Prop an `BaseLayout` die
 ## 6. ✏️ Inhalte pflegen — „morgen neue Inhalte"
 
 ### Startseite ändern (Text, Willkommen, hervorgehobenes Werk, Hero-Video)
-`src/pages/index.astro` (DE) bzw. `src/pages/en/index.astro` (EN). Oben im `content`-Objekt
-alles editierbar: `video.id` (YouTube-ID), `h1`, `intro` (Absätze, HTML erlaubt), `welcome`
-(Signaturblock), `featured` (Werkbild + Bildunterschrift + Link). Bilder in `public/media/…`.
+**MDX:** `src/content/pages/home-de.mdx` (DE) und `home-en.mdx` (EN). Der **Body** ist der Intro-Fließtext
+(Markdown). Im **Frontmatter**: `video.id` (YouTube-ID), `h1`, `welcome` (Signaturblock), `featured`
+(Werkbild + Bildunterschrift + Link). Bilder in `public/media/…`.
 
-### Vita / Kontakt ändern
-`src/data/vita.json` bzw. `kontakt.json`. Struktur = Liste von **Abschnitten**:
-`{ heading, lines[] }` (Listen), `{ heading, paragraphs[] }` (Fließtext), `center:true`
-(zentriert), `map` (Google-Maps-URL). Für EN das `en`-Objekt in derselben Datei.
+### Kontakt ändern
+**MDX:** `src/content/pages/kontakt-de.mdx` / `kontakt-en.mdx`. Fließtext (Öffnungszeiten, Adresse,
+Anfahrt) direkt im Body als Markdown. Layout-Hooks: `<div class="cp-center">…</div>` (zentrierter Block),
+`<div class="cp-directions">…</div>` (2-Spalten Anfahrt|Karte), `<iframe class="cp-map" …>` (Google-Maps-URL).
 
 ### Kunst Erwerben ändern
-`src/pages/kunst-erwerben.astro` / `en/buy-fine-art.astro`. Im `content`-Objekt: `intro`,
-`portrait`, und `items[]` (die Akkordeon-Einträge: `{ title, html }`).
+**MDX:** `src/content/pages/acquire-de.mdx` / `acquire-en.mdx`. Intro + Akkordeon als Markdown; die
+Akkordeon-Einträge sind `<AccItem title="…">…Prosa…</AccItem>`. Frontmatter: `hero` (Bild). Portrait als
+`<figure class="acq-portrait">` im Body.
+
+### Vita ändern
+`src/data/vita.json` (bleibt JSON — strukturierte Liste). Struktur = **Abschnitte**:
+`{ heading, lines[] }` (Listen), `{ heading, paragraphs[] }` (Fließtext), `center:true`. Für EN das
+`en`-Objekt in derselben Datei — **gleich viele Abschnitte** (sonst meckert der i18n-Check, Abschnitt 7).
 
 ### Navigation, Social-Links, Kontaktadresse, Logo
 **`src/data/site.ts`** — eine Datei für alles. Menüpunkte in `nav.de` / `nav.en`, Socials in
 `socials`, Adresse in `contact`.
 
 ### Neues Kunstwerk hinzufügen
-Das ist der einzige Bereich, der noch datengetrieben ist (kam aus dem WP-Export). Schritte:
-1. **Bild** als webp nach `public/artworks/<neueID>.webp` legen (max ~1400 px; `npm run images`
-   erzeugt sie sonst aus WP-Uploads).
-2. Eintrag in `src/data/artworks-media.json`: `"<neueID>": { "src":"/artworks/<neueID>.webp","w":…,"h":… }`.
-3. Eintrag(e) in `src/data/artworks.json` — je Sprache ein Objekt mit **gleicher `trid`**
-   (verbindet DE↔EN): `id, slug, title, lang, trid, date, categories:[{taxonomy:"portfolio_category",slug,name}]`.
-4. Wenn es in beiden Sprachen erscheinen soll: `npm run build` und in `scripts/gen-lang-alt.mjs`
-   ist die Portfolio-Verknüpfung schon automatisch (über `trid`).
+Datengetrieben (kam aus dem WP-Export). **Immer DE UND EN anlegen** — der i18n-Check (Abschnitt 7)
+bricht den Build sonst ab. Schritte:
+1. **Bild** als webp nach `public/artworks/<id>.webp` (max ~1400 px; `npm run images` erzeugt sie sonst
+   aus WP-Uploads).
+2. Eintrag in `src/data/artworks-media.json`: `"<id>": { "src":"/artworks/<id>.webp","w":…,"h":… }`.
+3. **Zwei** Einträge in `src/data/artworks.json` (DE + EN) mit **gleicher `trid`** (verbindet die Sprachen):
+   `id, slug, title, lang, trid, date, categories:[{taxonomy:"portfolio_category",slug,name}], content`.
+   Die Beschriftung entsteht aus `content` (figcaption) via `npm run meta`.
+4. `npm run meta` (Beschriftung) + `npm run lang-alt` (Sprachwechsel) + `npm run build`. Der Check meldet
+   sofort, falls DE oder EN (oder ein Bild) fehlt.
 
-> Tipp fürs nächste Mal: Wenn viele neue Werke kommen, lohnt eine kleine
-> `artworks/*.md`-Content-Collection statt der JSON — sag Bescheid, dann bauen wir das um.
+> Tipp: Wenn viele neue Werke kommen, lohnt eine `artworks/*.md`-Content-Collection statt der JSON.
 
 ### Video hinzufügen (Achtung: Sonderfall)
 Die Video-Seite nutzt noch den **kopierten Slider-Block** aus `data/live-videos*.json` (echtes
@@ -177,18 +203,23 @@ Unkomfortabel — wenn du die Videos öfter pflegen willst, sollten wir die Vide
 saubere, datengetriebene Variante (Liste aus `videos-playlist.json`) umstellen.
 
 ### Neue Seite anlegen
-Neue Datei unter `src/pages/` (+ `src/pages/en/`). Muster:
+**Kein `/en/`-Ordner** — es gibt einen Satz Seiten, die Sprache kommt aus `LANG` (`src/lib/lang.ts`).
+Prosa-Seite: `src/content/pages/<name>-de.mdx` + `<name>-en.mdx` anlegen, dazu eine `.astro`-Route,
+die den passenden Eintrag lädt:
 ```astro
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { LANG } from '../lib/lang';
+const pages = await getCollection('pages');
+const entry = pages.find((p) => p.id === `neueseite-${LANG}`);
+const { Content } = await render(entry!);
 ---
-<BaseLayout title="… - HAUS HOPPE" description="…">
-  <h1>Überschrift</h1>
-  <p>Inhalt …</p>
-</BaseLayout>
+<BaseLayout title={entry!.data.title} description={entry!.data.description}><Content /></BaseLayout>
 ```
-Dann in `src/data/site.ts` einen Menüpunkt ergänzen und in `scripts/gen-lang-alt.mjs` das
-DE↔EN-Paar eintragen (für den Sprachumschalter), danach `node scripts/gen-lang-alt.mjs`.
+Slug pro Sprache gleich → eigene Datei; **abweichender** Slug (wie werke↔artwork) → in die dynamische
+`src/pages/[slug].astro` aufnehmen. Danach in `src/data/site.ts` den Menüpunkt (DE+EN) und in
+`scripts/gen-lang-alt.mjs` das Pfad-Paar ergänzen, dann `npm run lang-alt`.
 
 ---
 
@@ -198,32 +229,44 @@ DE↔EN-Paar eintragen (für den Sprachumschalter), danach `node scripts/gen-lan
 > **1:1-Übersetzung** davon. Neue Inhalte immer zuerst auf Deutsch schreiben, dann EN
 > übersetzen. EN-Seiten sollen inhaltlich der DE-Fassung entsprechen (nicht abweichen).
 
-- **Domain = Sprache.** Lokal: DE unter `/`, EN unter `/en/`. Beim Deploy wird `/en/` zu
-  haushoppe.art (Domain-Split — noch offen, siehe MIGRATION-PLAN.md [D1]).
-- Der **Sprachumschalter** (Flagge im Header) zeigt aufs jeweilige Pendant. Die Zuordnung
-  steht in `src/data/lang-alt.json` (Seiten fest, Portfolio automatisch über `trid`).
+- **Domain = Sprache**, **kein `/en/`-Pfad.** Zwei Builds über `SITE_LANG` (`src/lib/lang.ts`):
+  `de` → `dist-de` → haushoppe.de, `en` → `dist-art` → haushoppe.art. `hreflang`/`canonical`
+  spannen über beide Domains (in `BaseLayout.astro`).
+- Der **Sprachumschalter** (Flagge im Header) zeigt aufs Pendant auf der **anderen Domain**
+  (absolute URL). Zuordnung: `src/data/lang-alt.json` (root-relativ; Header stellt die Domain davor).
 - Verknüpfte DE/EN-Kunstwerke haben dieselbe **`trid`** in `artworks.json`.
+
+**🔒 Vollständigkeits-Garantie (`npm run check`, läuft vor jedem `build`):**
+`scripts/check-i18n.mjs` bricht den Build ab, wenn (a) ein Werk nicht in **beiden** Sprachen
+existiert oder ein **Bild** fehlt, (b) eine **MDX-Seite** (home/kontakt/acquire) in einer Sprache
+fehlt, oder (c) `vita.json` DE/EN unterschiedlich viele Abschnitte hat. So kann nie still eine
+Übersetzung fehlen. Unbekannte Maße bei Werken werden als `"?"` migriert (Renderer blendet sie aus).
 
 ## 8. Suche (Pagefind)
 
-Clientseitige Volltextsuche. Der Index entsteht beim `build` (`pagefind --site dist`) und liegt
-unter `public`→`dist/pagefind/`. `data-pagefind-body` steckt auf `<main>`; Galerie-Grids sind
+Clientseitige Volltextsuche. Der Index entsteht beim `build` (`pagefind --site dist-de` bzw.
+`dist-art`, je Sprache getrennt) und liegt unter `dist-*/pagefind/`. `data-pagefind-body` steckt auf `<main>`; Galerie-Grids sind
 per `data-pagefind-ignore` ausgenommen (Detailseiten sind die Suchziele). DE/EN werden über
 `<html lang>` automatisch getrennt. **Nur im `preview`/Prod sichtbar, nicht im `dev`.**
 
-## 9. Migrations-Skripte (`scripts/`)
+## 9. Skripte (`scripts/`)
 
-Einmalig gelaufen, für Referenz/Regenerierung:
-- `gen-images.mjs` — WP-Uploads → `public/artworks/<id>.webp` + `artworks-media.json`.
-- `gen-lang-alt.mjs` — erzeugt `data/lang-alt.json` (Sprach-Pendants).
+Generieren/Prüfen (aus der **Site-Quelle** `src/data/`, nicht aus dem Migrations-Snapshot):
+- `check-i18n.mjs` — **Vollständigkeits-Gate** (`npm run check`, läuft vor jedem Build). Siehe Abschnitt 7.
+- `gen-artwork-meta.mjs` — `npm run meta`: baut `artwork-meta.json` (Werk-Beschriftung) aus den
+  `content`-Captions. Von Hand ergänzte Maße/Extra überleben eine Neugenerierung.
+- `gen-lang-alt.mjs` — `npm run lang-alt`: `data/lang-alt.json` (Sprach-Pendants, root-relativ).
+- `gen-images.mjs` — `npm run images`: WP-Uploads → `public/artworks/<id>.webp` + `artworks-media.json`.
+- `qa-artwork-meta.mjs` — Prüfbericht über die Werk-Beschriftungen (Parse-Anomalien).
 - `scaffold-*.mjs` / `fix-embeds.mjs` — historische Extraktion aus der Live-Seite (nicht mehr nötig).
 
 ---
 
 ## 10. Deploy (Cloudflare Pages)
 
-- Zwei Custom-Domains: **haushoppe.de** (DE) + **haushoppe.art** (EN → `/en/`).
-- Build-Command: `npm run build`, Output: `dist/`.
+- **Zwei Builds, zwei Domains:** `npm run build:de` → `dist-de/` → **haushoppe.de**,
+  `npm run build:art` → `dist-art/` → **haushoppe.art**. `npm run build` macht beide (mit i18n-Check).
+  Kein `/en/`-Pfad — jede Sprache liegt am Root ihrer Domain.
 - **CSP** (falls gesetzt) muss erlauben: `img-src i.ytimg.com`, `frame-src
   youtube-nocookie.com explorer.ordinalsbot.com www.google.com` (Video-Facade, Ordinals, Karte).
 - Braucht die Cloudflare-Secrets des Betreibers.

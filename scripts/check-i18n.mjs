@@ -32,14 +32,22 @@ for (const [key, g] of Object.entries(byTrid)) {
   }
 }
 
-// ── B) Inhaltsseiten: zweisprachige Datenquellen müssen DE+EN und gleich viele Abschnitte haben ──
+// ── B) MDX-Prosa-Seiten: jede Seite muss als <name>-de.mdx UND <name>-en.mdx existieren ──
+const mdxDir = path.join(__dir, '..', 'src/content/pages');
+const mdxFiles = new Set(fs.readdirSync(mdxDir).filter((f) => f.endsWith('.mdx')));
+for (const base of ['home', 'kontakt', 'acquire']) {
+  for (const lang of ['de', 'en']) {
+    if (!mdxFiles.has(`${base}-${lang}.mdx`)) add(`MDX-Seite ${base}-${lang}.mdx fehlt → Seite in einer Sprache nicht vorhanden`);
+  }
+}
+
+// ── C) JSON-Inhaltsseiten (strukturierte Listen): DE+EN, gleich viele Abschnitte ──
 function pair(name, obj, key) {
   if (!obj || !obj.de || !obj.en) return add(`${name}: fehlt de oder en`);
   const dn = (obj.de[key] || []).length, en = (obj.en[key] || []).length;
   if (dn !== en) add(`${name}: „${key}" unterschiedlich lang (DE ${dn} vs EN ${en}) → Inhalt fehlt in einer Sprache`);
 }
 pair('vita.json', R('src/data/vita.json'), 'sections');
-pair('kontakt.json', R('src/data/kontakt.json'), 'sections');
 
 // ── Ergebnis ──
 const nWorks = Object.keys(byTrid).length;
@@ -49,4 +57,4 @@ if (problems.length) {
   console.error('\nBuild abgebrochen. Bitte fehlende Übersetzung/Bild ergänzen.\n');
   process.exit(1);
 }
-console.log(`✓ i18n-Check bestanden: ${nWorks} Werke vollständig DE+EN (mit Bild), vita/kontakt parallel.`);
+console.log(`✓ i18n-Check bestanden: ${nWorks} Werke vollständig DE+EN (mit Bild), MDX-Seiten (home/kontakt/acquire) DE+EN, vita parallel.`);

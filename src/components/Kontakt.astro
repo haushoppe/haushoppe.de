@@ -1,0 +1,54 @@
+---
+// Rahmen für die Kontakt-Seite: rendert den MDX-Body (<slot/>) und trägt das Layout-CSS.
+// Prosa/Inhalt: src/content/pages/kontakt-<lang>.mdx. Klassen dort: .cp-center, .cp-directions, .cp-map.
+---
+
+<div class="kontakt"><slot /></div>
+
+<style>
+  .kontakt {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  /* Zentrierte Blöcke: Öffnungszeiten + Kontakt */
+  .kontakt :global(.cp-center) {
+    text-align: center;
+    margin-bottom: clamp(2rem, 5vw, 3.25rem);
+  }
+  .kontakt :global(.cp-center h2) {
+    margin: 2rem 0 0.7rem;
+  }
+  .kontakt :global(.cp-center h2:first-child) {
+    margin-top: 0;
+  }
+  .kontakt :global(.cp-center p) {
+    margin: 0;
+    line-height: 1.85;
+  }
+  /* Anfahrt: Text | Karte */
+  .kontakt :global(h2) {
+    margin: 0 0 0.4rem;
+  }
+  .kontakt :global(.cp-directions) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+    margin-top: 1.25rem;
+  }
+  .kontakt :global(.cp-directions p) {
+    margin: 0 0 1rem;
+  }
+  .kontakt :global(.cp-map) {
+    width: 100%;
+    height: clamp(340px, 34vw, 440px);
+    border: 0;
+    border-radius: 2px;
+    display: block;
+  }
+  @media (max-width: 720px) {
+    .kontakt :global(.cp-directions) {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
