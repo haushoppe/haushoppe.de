@@ -135,4 +135,7 @@ Es ist eine **WordPress-Multisite mit WPML**:
 
 ## 9. Status-Log
 
-- **2026-08-07** — Analyse abgeschlossen; Entscheidungen 3. fixiert; dieses Plan-Dokument erstellt. Nächster Schritt: **Phase A**.
+- **2026-08-07** — Analyse abgeschlossen; Entscheidungen 3. fixiert; dieses Plan-Dokument erstellt.
+- **2026-08-07** — Repo `haushoppe/haushoppe.de` (public) angelegt. Tooling-Recon: Docker läuft (nicht nötig), **beide Live-Sites (haushoppe.de/.art) erreichbar → dienen als exakte Design-Referenz** statt Docker-WP; DB-Extraktion per eigenem Node-Parser (kein MySQL nötig). **[D1] entschieden:** ein Astro-Projekt, Inhalte de/en, lokal beide prüfbar, Domain-Split erst beim Deploy.
+- **2026-08-07** — **Content-Extraktor** (`migration/extract.mjs`) gebaut + gelaufen → JSON unter `migration/data/`: **645 Kunstwerke** (de 323 / en 322), **19 Seiten** (de 9 / en 10), 18 Menü-Items, **1283 WPML-Paare**, 994 Attachments (alle mit Datei gemappt). Kategorien sauber bilingual (gemaelde/paintings, holzschnitte/woodcuts, zeichnungen/drawings, digitale-kunst/digital-art). Verifiziert: **643/645 Featured-Bilder als Originale auf Platte vorhanden** (0 mit Größen-Suffix). Werk-Metadaten stecken im Titel/Dateinamen → Titel exakt erhalten, Schema schlank. **Roh-Archiv = `wordpress/wp-content/uploads` (unverändert, durabel)**; Web-Ableitungen später ins Repo.
+- **Nächste Schritte:** Design-Referenz von den Live-Sites ziehen (Screenshots + CSS), Astro-Scaffold, Bild-Pipeline, dann Content-Wiring + Galerie/i18n. Loop läuft autonom bis lokal prüfbares Ergebnis oder Blocker.
