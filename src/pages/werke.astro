@@ -8,9 +8,5 @@ const cats = galleryCategories('de');
 ---
 
 <BaseLayout title="Werke - HAUS HOPPE" description="Gemälde und Holzschnitte von Olaf Hoppe.">
-  <article class="page type-page ast-article-single">
-    <div class="entry-content clear" itemprop="text">
-      <Gallery items={items} cats={cats} allLabel="Alle" />
-    </div>
-  </article>
+  <Gallery items={items} cats={cats} allLabel="Alle" />
 </BaseLayout>

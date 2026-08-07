@@ -80,3 +80,16 @@ a:hover {
 .site-main {
   padding-block: clamp(1.5rem, 4vw, 2.75rem);
 }
+/* Inhaltsbreiten — ersetzen die Astra-Body-Klassen (ast-page-builder/plain/separate).
+   Ohne Modifier: volle Breite (Content-Komponenten zentrieren selbst, Galerie full-bleed). */
+.site-main--boxed,
+.site-main--article {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+/* Werk-Detailseite: weißer Artikel-Kasten mit Innenabstand (wie Astra separate-container). */
+.art-single {
+  background: #fff;
+  padding: clamp(1.5rem, 5vw, 3rem);
+}

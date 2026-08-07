@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ArtworkBody from '../../../components/ArtworkBody.astro';
-import { portfolioBodyClass } from '../../../lib/layout';
 import artworksData from '../../../data/artworks.json';
 import mediaData from '../../../data/artworks-media.json';
 
@@ -14,18 +13,13 @@ export function getStaticPaths() {
 }
 
 const { art, img } = Astro.props as { art: any; img: { src: string; w: number; h: number } };
-const catClasses = (art.categories || [])
-  .filter((c: any) => c.taxonomy === 'portfolio_category')
-  .map((c: any) => `portfolio_category-${c.slug}`);
 ---
 
-<BaseLayout lang="en" title={`${art.title} - HAUS HOPPE`} description={`${art.title} — artwork by Olaf Hoppe.`} bodyClass={portfolioBodyClass(art.id)}>
-  <article class:list={['portfolio', 'type-portfolio', 'status-publish', 'has-post-thumbnail', 'ast-article-single', ...catClasses]} itemtype="https://schema.org/CreativeWork" itemscope>
-    <div class="ast-post-format- single-layout-1">
-      <header class="entry-header ">
-        <h1 class="entry-title" itemprop="headline">{art.title}</h1>
-      </header>
-      <ArtworkBody art={art} img={img} lang="en" />
-    </div>
+<BaseLayout lang="en" title={`${art.title} - HAUS HOPPE`} description={`${art.title} — artwork by Olaf Hoppe.`} layout="article">
+  <article class="art-single" itemtype="https://schema.org/CreativeWork" itemscope>
+    <header class="entry-header">
+      <h1 class="entry-title" itemprop="headline">{art.title}</h1>
+    </header>
+    <ArtworkBody art={art} img={img} lang="en" />
   </article>
 </BaseLayout>

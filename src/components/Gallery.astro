@@ -33,7 +33,7 @@ const { items, cats, allLabel = 'Alle' } = Astro.props;
       <div class="vp-portfolio__items vp-portfolio__items-style-fade vp-portfolio__items-show-overlay-hover">
         {items.map((it) => (
           <article
-            class:list={['vp-portfolio__item-wrap', 'portfolio', 'type-portfolio', 'has-post-thumbnail', 'ast-article-single', ...it.categorySlugs.map((s) => `portfolio_category-${s}`)]}
+            class="vp-portfolio__item-wrap"
             data-vp-filter={it.categorySlugs.join(' ')}
             data-w={it.w}
             data-h={it.h}

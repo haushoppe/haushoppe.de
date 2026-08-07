@@ -13,12 +13,12 @@ import '@fontsource/merriweather/700.css';
 interface Props {
   title?: string;
   description?: string;
-  bodyClass?: string;
   lang?: 'de' | 'en';
+  // Inhaltsbreite: undefined = volle Breite (Content/Galerie), 'boxed' = 1200 zentriert
+  // (Videos), 'article' = 1200 + weißer Kasten (Werk-Detail).
+  layout?: 'boxed' | 'article';
 }
-const { title = 'HAUS HOPPE - Galerie für Bildende Kunst', description = '', bodyClass, lang = 'de' } = Astro.props;
-// Standard-Layout = volle Breite (Astra „page-builder"); Detail-/Videos-Seiten setzen eigene Klassen.
-const defaultBody = 'ast-desktop ast-page-builder-template ast-no-sidebar astra-4.13.6 ast-header-custom-item-inside ast-single-post astra-addon-4.13.5';
+const { title = 'HAUS HOPPE - Galerie für Bildende Kunst', description = '', lang = 'de', layout } = Astro.props;
 ---
 
 <!doctype html>
@@ -30,17 +30,11 @@ const defaultBody = 'ast-desktop ast-page-builder-template ast-no-sidebar astra-
     {description && <meta name="description" content={description} />}
     <link rel="icon" href="/media/2020/11/cropped-logo-haushoppe-490.png" />
   </head>
-  <body class={bodyClass ?? defaultBody}>
+  <body>
     <Header lang={lang} />
-    <div id="content" class="site-content">
-      <div class="ast-container">
-        <div id="primary" class="content-area primary">
-          <main id="main" class="site-main" data-pagefind-body>
-            <slot />
-          </main>
-        </div>
-      </div>
-    </div>
+    <main class:list={['site-main', layout && `site-main--${layout}`]} data-pagefind-body>
+      <slot />
+    </main>
     <Footer lang={lang} />
     <script is:inline src="/js/yt-facade.js"></script>
     <Search lang={lang} />

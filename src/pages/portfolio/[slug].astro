@@ -2,7 +2,6 @@
 // Kunstwerk-Detailseite /portfolio/<slug>/ — 1:1 wie WP (CreativeWork: Titel + großes Bild).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArtworkBody from '../../components/ArtworkBody.astro';
-import { portfolioBodyClass } from '../../lib/layout';
 import artworksData from '../../data/artworks.json';
 import mediaData from '../../data/artworks-media.json';
 
@@ -18,18 +17,13 @@ export function getStaticPaths() {
 }
 
 const { art, img } = Astro.props as { art: any; img: { src: string; w: number; h: number } };
-const catClasses = (art.categories || [])
-  .filter((c: any) => c.taxonomy === 'portfolio_category')
-  .map((c: any) => `portfolio_category-${c.slug}`);
 ---
 
-<BaseLayout title={`${art.title} - HAUS HOPPE`} description={`${art.title} — Werk von Olaf Hoppe.`} bodyClass={portfolioBodyClass(art.id)}>
-  <article class:list={['portfolio', 'type-portfolio', 'status-publish', 'has-post-thumbnail', 'ast-article-single', ...catClasses]} itemtype="https://schema.org/CreativeWork" itemscope>
-    <div class="ast-post-format- single-layout-1">
-      <header class="entry-header ">
-        <h1 class="entry-title" itemprop="headline">{art.title}</h1>
-      </header>
-      <ArtworkBody art={art} img={img} lang="de" />
-    </div>
+<BaseLayout title={`${art.title} - HAUS HOPPE`} description={`${art.title} — Werk von Olaf Hoppe.`} layout="article">
+  <article class="art-single" itemtype="https://schema.org/CreativeWork" itemscope>
+    <header class="entry-header">
+      <h1 class="entry-title" itemprop="headline">{art.title}</h1>
+    </header>
+    <ArtworkBody art={art} img={img} lang="de" />
   </article>
 </BaseLayout>
