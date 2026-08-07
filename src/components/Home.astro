@@ -5,10 +5,10 @@
 interface Content {
   video: { id: string; title: string; ratio: number };
   h1: string;
-  intro: string[];
   welcome: string;
   featured: { img: string; alt: string; href: string; caption: string; award: string };
 }
+// Der Intro-Fließtext kommt als <slot/> (aus der MDX-Seite), Struktur aus `content`.
 interface Props {
   content: Content;
 }
@@ -44,7 +44,7 @@ const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
       {content.featured.award && <p class="home-award" set:html={content.featured.award} />}
     </figure>
     <div class="home-text">
-      {content.intro.map((p) => <p set:html={p} />)}
+      <slot />
       <p class="home-signature" set:html={content.welcome} />
     </div>
   </div>

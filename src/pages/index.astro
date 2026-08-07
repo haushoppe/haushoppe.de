@@ -1,62 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
+import { getCollection, render } from 'astro:content';
 import { LANG } from '../lib/lang';
 
-// Sprache = Domain: haushoppe.de zeigt die DE-Startseite, haushoppe.art die EN (1:1-Übersetzung).
-const de = {
-  video: { id: 'rt5aLRLl1eM', title: 'Olaf Hoppe – Der letzte Schnitt | Teil 4', ratio: 56.5 },
-  h1: 'Kunst – Ausdruck der kreativen Kraft.',
-  intro: [
-    'Von 1980 – 1985 studierte ich an der Kunsthochschule Berlin Weißensee. Während dieser Zeit kauften wir, meine Frau und ich, ein altes Bauernhaus an der Ostseeküste, welches wir als Galerie und Werkstatt umgebaut haben. Auf einer Ausstellungsfläche von ca. 400 m² können Sie jetzt zahlreiche Gemälde und mehrfarbige Holzschnitte betrachten oder erwerben.',
-    'Nutzen Sie bei Ihrem Besuch die Möglichkeit, an einer Führung durch das HAUS HOPPE – Galerie für Bildende Kunst teilzunehmen, bei der Ihnen das Oeuvre des Künstlers vorgestellt wird und Ihre Fragen zu Handwerk, Komposition, Kunst und Kunstgeschichte beantwortet werden. Erleben Sie die kostbaren Holzschnitte, über die „Das internationale Kunsthaus ARTES®" schreibt: <a href="/media/2020/12/Artes-1.jpg">„…Der Maler und Grafiker Olaf Hoppe ist einer der besten Holzschneider Deutschlands…"</a>.',
-  ],
-  welcome:
-    'Herzlich Willkommen Ihr<br><img src="/media/2021/05/unterschrift.jpg" width="300" height="181" alt="Unterschrift Olaf Hoppe"><br>Olaf Hoppe',
-  featured: {
-    img: '/media/2021/08/Olaf-Hoppe-Die-geschlossene-Tuer-2015-Farbholzschnitt-von-9-Holzstoecken-Auflage145-Exemplareauf-Rives-Buetten-Motiv-35-x-47cm-ueberarbeitet--1024x746.jpg',
-    alt: '„Die geschlossene Tür", 2015 – Farbholzschnitt von Olaf Hoppe',
-    href: '', // das 2015er Werk hat keine Detailseite (war schon auf der alten Seite ein toter Link)
-    caption: '„Die geschlossene Tür" 2015',
-    award:
-      '<a href="https://www.kulturkalender.greifswald.de/events/54395?start_on=2024-03-20">1. Platz im bundesweiten Kunst-Wettbewerb „250 Druckgrafiken für Caspar David Friedrich" Greifswald</a>',
-  },
-};
-
-const en = {
-  video: { id: 'rt5aLRLl1eM', title: 'Olaf Hoppe – Der letzte Schnitt | Teil 4', ratio: 56.5 },
-  h1: 'Art – an expression of creative power.',
-  intro: [
-    'From 1980 to 1985 I studied at the Kunsthochschule Berlin Weißensee. During this time my wife and I bought an old farmhouse on the Baltic coast, which we converted into a gallery and workshop. On an exhibition area of about 400 m² you can now view or purchase numerous paintings and multi-coloured woodcuts.',
-    'During your visit, take the opportunity to join a guided tour of HAUS HOPPE – Galerie für Bildende Kunst, where you will be introduced to the artist’s oeuvre and have your questions about craft, composition, art and art history answered. Experience my precious woodcuts, about which the international gallery „ARTES®" writes: <a href="/media/2020/12/Artes-1.jpg">„…The painter and graphic artist Olaf Hoppe is one of the best woodcutters in Germany…"</a>.',
-  ],
-  welcome:
-    'Welcome to my gallery<br><img src="/media/2021/05/unterschrift.jpg" width="300" height="181" alt="Signature Olaf Hoppe"><br>Olaf Hoppe',
-  featured: {
-    img: '/media/2021/08/Olaf-Hoppe-Die-geschlossene-Tuer-2015-Farbholzschnitt-von-9-Holzstoecken-Auflage145-Exemplareauf-Rives-Buetten-Motiv-35-x-47cm-ueberarbeitet--1024x746.jpg',
-    alt: '„The Closed Door", 2015 – colour woodcut by Olaf Hoppe',
-    href: '',
-    caption: '„The Closed Door" 2015',
-    award:
-      '<a href="https://www.kulturkalender.greifswald.de/events/54395?start_on=2024-03-20">1st place in the nationwide art competition „250 prints for Caspar David Friedrich" Greifswald</a>',
-  },
-};
-
-const content = LANG === 'de' ? de : en;
-const meta =
-  LANG === 'de'
-    ? {
-        title: 'HAUS HOPPE – Galerie für Bildende Kunst',
-        description:
-          'HAUS HOPPE – Galerie für Bildende Kunst an der Ostseeküste. Gemälde und mehrfarbige Holzschnitte von Olaf Hoppe.',
-      }
-    : {
-        title: 'HAUS HOPPE – Gallery for Fine Art',
-        description:
-          'HAUS HOPPE – Gallery for Fine Art on the Baltic coast. Paintings and multi-coloured woodcuts by Olaf Hoppe.',
-      };
+// Startseite: Struktur (Video, Werk, Signatur) aus dem MDX-Frontmatter, Intro-Prosa aus dem
+// MDX-Body (content/pages/home.<lang>.mdx). Sprache = Domain (LANG).
+const pages = await getCollection('pages');
+const entry = pages.find((p) => p.id === `home-${LANG}`);
+if (!entry) throw new Error(`MDX-Seite home-${LANG} fehlt. Vorhandene ids: ${pages.map((p) => p.id).join(', ')}`);
+const { Content } = await render(entry);
+const fm = entry.data;
 ---
 
-<BaseLayout title={meta.title} description={meta.description}>
-  <Home content={content} />
+<BaseLayout title={fm.title} description={fm.description}>
+  <Home content={fm as any}>
+    <Content />
+  </Home>
 </BaseLayout>

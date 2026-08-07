@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import mdx from '@astrojs/mdx';
 
 // Sprache = Domain (kein /en/-Pfad). Zwei Builds aus einer Quelle, gesteuert über SITE_LANG:
 //   SITE_LANG=de  → haushoppe.de  → dist-de
@@ -9,7 +10,7 @@ const LANG = process.env.SITE_LANG === 'en' ? 'en' : 'de';
 export default defineConfig({
   site: LANG === 'en' ? 'https://haushoppe.art' : 'https://haushoppe.de',
   outDir: LANG === 'en' ? './dist-art' : './dist-de',
-  integrations: [sitemap()],
+  integrations: [mdx(), sitemap()],
   image: {
     // Kunstwerke werden vorab als webp erzeugt (scripts/gen-images.mjs) und statisch
     // ausgeliefert; astro:assets bleibt für spätere Feinbild-Optimierung verfügbar.
