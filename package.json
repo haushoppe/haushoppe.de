@@ -8,7 +8,8 @@
     "build:astro": "astro build",
     "preview": "astro preview",
     "images": "node scripts/gen-images.mjs",
-    "astro": "astro"
+    "astro": "astro",
+    "meta": "node scripts/gen-artwork-meta.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
