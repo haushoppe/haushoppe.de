@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentSections from '../../components/ContentSections.astro';
+import kontakt from '../../data/kontakt.json';
+const c = kontakt.en;
+---
+
+<BaseLayout lang="en" title="Contact - HAUS HOPPE" description="HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Opening hours, contact and directions.">
+  <ContentSections sections={c.sections} />
+</BaseLayout>

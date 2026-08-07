@@ -10,7 +10,8 @@ const pages = livePages as Record<string, { title: string; article: string }>;
 export function getStaticPaths() {
   const pages = livePages as Record<string, { title: string; article: string }>;
   return Object.entries(pages)
-    .filter(([slug]) => slug !== 'videos' && slug !== 'kunst-erwerben') // eigene Seiten (Videos-Grid, Kunst-Erwerben-Neubau)
+    // alle Content-Seiten haben inzwischen eigene, sauber gebaute Astro-Seiten
+    .filter(([slug]) => !['videos', 'kunst-erwerben', 'vita', 'kontakt'].includes(slug))
     .map(([slug, data]) => ({ params: { page: slug }, props: { data } }));
 }
 

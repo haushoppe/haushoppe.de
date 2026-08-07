@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContentSections from '../components/ContentSections.astro';
+import vita from '../data/vita.json';
+const c = vita.de;
+---
+
+<BaseLayout title="Vita - HAUS HOPPE" description="Vita von Olaf Hoppe — Lebenslauf, Ausstellungsverzeichnis, vertretende Galerien und Sammlungen.">
+  <ContentSections hero={{ src: c.hero, alt: c.heroAlt }} title={c.title} sections={c.sections} />
+</BaseLayout>

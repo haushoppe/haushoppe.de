@@ -5,7 +5,8 @@ import livePages from '../../data/live-pages-en.json';
 export function getStaticPaths() {
   const pages = livePages as Record<string, { title: string; article: string }>;
   return Object.entries(pages)
-    .filter(([slug]) => slug !== 'videos' && slug !== 'buy-fine-art') // eigene Seiten (Videos-Grid, Buy-Fine-Art-Neubau)
+    // alle Content-Seiten haben inzwischen eigene, sauber gebaute Astro-Seiten
+    .filter(([slug]) => !['videos', 'buy-fine-art', 'vita', 'contact'].includes(slug))
     .map(([slug, data]) => ({ params: { page: slug }, props: { data } }));
 }
 
