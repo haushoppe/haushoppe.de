@@ -1,0 +1,32 @@
+---
+// Video-Grid aus der YouTube-Playlist (25 Videos) — jede Kachel eine Klick-Facade
+// (Poster + Play, lädt erst bei Klick das youtube-nocookie-iframe). Ersetzt den
+// ursprünglichen Slick-Slider durch ein responsives Grid.
+import playlist from '../data/videos-playlist.json';
+const videos = playlist as { id: string; title: string }[];
+---
+
+<div class="videos-grid">
+  {videos.map((v) => (
+    <figure class="videos-grid__item">
+      <div class="yt-facade" data-src={`https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0`} data-title={v.title} style="aspect-ratio:1.7778">
+        <button type="button" class="yt-facade__btn" aria-label={`Video abspielen: ${v.title}`}>
+          <img class="yt-facade__poster" src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt={v.title} loading="lazy" decoding="async" width="480" height="360" />
+          <span class="yt-facade__play" aria-hidden="true"></span>
+        </button>
+      </div>
+      <figcaption class="videos-grid__title">{v.title}</figcaption>
+    </figure>
+  ))}
+</div>
+
+<style>
+  .videos-grid {
+    display: grid;
+    gap: 1.5rem 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    margin: 1.5rem 0;
+  }
+  .videos-grid__item { margin: 0; }
+  .videos-grid__title { margin: 0.55rem 0 0; font-size: 0.92rem; line-height: 1.4; }
+</style>

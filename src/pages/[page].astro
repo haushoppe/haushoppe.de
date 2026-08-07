@@ -9,7 +9,9 @@ const pages = livePages as Record<string, { title: string; article: string }>;
 
 export function getStaticPaths() {
   const pages = livePages as Record<string, { title: string; article: string }>;
-  return Object.entries(pages).map(([slug, data]) => ({ params: { page: slug }, props: { data } }));
+  return Object.entries(pages)
+    .filter(([slug]) => slug !== 'videos') // /videos hat eine eigene Seite (Playlist-Grid)
+    .map(([slug, data]) => ({ params: { page: slug }, props: { data } }));
 }
 
 const { data } = Astro.props as { data: { title: string; article: string } };
