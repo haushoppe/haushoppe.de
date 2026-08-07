@@ -4,6 +4,7 @@
 import chromeDe from '../data/live-chrome.json';
 import chromeEn from '../data/live-chrome-en.json';
 import { processChrome } from '../lib/nav';
+import Search from '../components/Search.astro';
 import '../styles/wp-design.css';
 import '@fontsource/merriweather/400.css';
 import '@fontsource/merriweather/700.css';
@@ -35,7 +36,7 @@ const { header } = processChrome(chrome.header, Astro.url.pathname, lang);
       <div id="content" class="site-content">
         <div class="ast-container">
           <div id="primary" class="content-area primary">
-            <main id="main" class="site-main">
+            <main id="main" class="site-main" data-pagefind-body>
               <slot />
             </main>
           </div>
@@ -44,6 +45,7 @@ const { header } = processChrome(chrome.header, Astro.url.pathname, lang);
       <Fragment set:html={chrome.footer} />
     </div>
     <script is:inline src="/js/yt-facade.js"></script>
+    <Search lang={lang} />
   </body>
 </html>
 

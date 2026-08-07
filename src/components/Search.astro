@@ -1,0 +1,160 @@
+---
+// Clientseitige Volltextsuche via Pagefind. Der Index wird nach dem Astro-Build
+// erzeugt (`pagefind --site dist`) und liegt unter /pagefind/. Ein Klick auf das
+// originale Astra-Such-Icon (.ast-search-menu-icon) öffnet ein Overlay; die UI wird
+// erst dann lazy geladen. Pagefind trennt DE/EN automatisch über <html lang>.
+interface Props {
+  lang?: 'de' | 'en';
+}
+const { lang = 'de' } = Astro.props;
+
+const translations =
+  lang === 'de'
+    ? {
+        placeholder: 'Suchen',
+        clear_search: 'Zurücksetzen',
+        load_more: 'Mehr Ergebnisse laden',
+        search_label: 'Website durchsuchen',
+        filters_label: 'Filter',
+        zero_results: 'Keine Ergebnisse für [SEARCH_TERM]',
+        many_results: '[COUNT] Ergebnisse für [SEARCH_TERM]',
+        one_result: '[COUNT] Ergebnis für [SEARCH_TERM]',
+        alt_search: 'Keine Ergebnisse für [SEARCH_TERM]. Zeige stattdessen Ergebnisse für [DIFFERENT_TERM]',
+        search_suggestion: 'Keine Ergebnisse für [SEARCH_TERM]. Versuche eine der folgenden Suchen:',
+        searching: 'Suche nach [SEARCH_TERM] …',
+      }
+    : {};
+---
+
+<div id="search-overlay" class="search-overlay" hidden>
+  <div class="search-overlay__backdrop" data-search-close></div>
+  <div class="search-overlay__box" role="dialog" aria-modal="true" aria-label={lang === 'de' ? 'Suche' : 'Search'}>
+    <button type="button" class="search-overlay__close" data-search-close aria-label={lang === 'de' ? 'Schließen' : 'Close'}>
+      &times;
+    </button>
+    <div id="pagefind-search"></div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+<script is:inline define:vars={{ translations }}>
+  (function () {
+    var overlay = document.getElementById('search-overlay');
+    if (!overlay) return;
+    var loading = false,
+      ready = false;
+
+    function loadScript(src) {
+      return new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.onload = res;
+        s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+
+    function ensureUI() {
+      if (ready || loading) return;
+      loading = true;
+      loadScript('/pagefind/pagefind-ui.js')
+        .then(function () {
+          /* global PagefindUI */
+          new PagefindUI({
+            element: '#pagefind-search',
+            showImages: true,
+            showSubResults: true,
+            translations: translations,
+          });
+          ready = true;
+          var input = overlay.querySelector('input');
+          if (input) input.focus();
+        })
+        .catch(function (e) {
+          loading = false;
+          console.error('Pagefind konnte nicht geladen werden:', e);
+        });
+    }
+
+    function open() {
+      overlay.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      ensureUI();
+      var input = overlay.querySelector('input');
+      if (input) input.focus();
+    }
+    function close() {
+      overlay.hidden = true;
+      document.documentElement.style.overflow = '';
+    }
+
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('.ast-search-menu-icon')) {
+        e.preventDefault();
+        open();
+        return;
+      }
+      if (e.target.closest('[data-search-close]')) close();
+    });
+    // Das originale Astra-Formular (Action /?s=) würde statisch ins Leere laufen → abfangen.
+    document.addEventListener('submit', function (e) {
+      if (e.target.closest('.search-form')) {
+        e.preventDefault();
+        open();
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !overlay.hidden) close();
+    });
+  })();
+</script>
+
+<style is:global>
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .search-overlay[hidden] {
+    display: none;
+  }
+  .search-overlay__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .search-overlay__box {
+    position: relative;
+    background: #fff;
+    margin-top: 8vh;
+    width: min(680px, 92vw);
+    max-height: 84vh;
+    overflow: auto;
+    padding: 2.5rem 2rem 2rem;
+    border-radius: 4px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+  .search-overlay__close {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.75rem;
+    border: 0;
+    background: none;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #333;
+  }
+  /* Pagefind-UI an die Seiten-Typo/Marke angleichen. */
+  #pagefind-search {
+    --pagefind-ui-primary: #212121;
+    --pagefind-ui-text: #212121;
+    --pagefind-ui-background: #fff;
+    --pagefind-ui-border: #dcdcdc;
+    --pagefind-ui-font: inherit;
+    --pagefind-ui-border-radius: 3px;
+  }
+</style>
