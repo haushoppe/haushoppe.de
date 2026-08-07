@@ -1,0 +1,181 @@
+---
+// „Kunst Erwerben" / „Acquire Art" — sauberer, menschenlesbarer Nachbau der alten
+// Gutenberg/Stackable-Seite: Hero, 2-Spalten-Intro (Text | Portrait) und ein Akkordeon
+// aus nativen <details>/<summary> (kein JS, barrierefrei, editierbar). Inhalt kommt als
+// `content`-Objekt aus der jeweiligen Seite — dort leicht zu pflegen.
+interface AccordionItem {
+  title: string;
+  html: string;
+}
+interface AcquireContent {
+  title: string;
+  hero: { src: string; alt: string };
+  intro: string[];
+  portrait: { src: string; alt: string; caption: string };
+  sectionHeading: string;
+  items: AccordionItem[];
+}
+interface Props {
+  content: AcquireContent;
+}
+const { content } = Astro.props;
+---
+
+<article class="acq">
+  <div class="acq-hero">
+    <img src={content.hero.src} alt={content.hero.alt} loading="eager" decoding="async" />
+  </div>
+
+  <div class="acq-intro">
+    <div class="acq-text">
+      <h1 class="entry-title">{content.title}</h1>
+      {content.intro.map((p) => <p set:html={p} />)}
+    </div>
+    <figure class="acq-portrait">
+      <img src={content.portrait.src} alt={content.portrait.alt} loading="lazy" decoding="async" />
+      <figcaption>{content.portrait.caption}</figcaption>
+    </figure>
+  </div>
+
+  <section class="acq-ways">
+    <h2>{content.sectionHeading}</h2>
+    <div class="acq-accordion">
+      {
+        content.items.map((it) => (
+          <details>
+            <summary>
+              <span>{it.title}</span>
+            </summary>
+            <div class="acq-panel" set:html={it.html} />
+          </details>
+        ))
+      }
+    </div>
+  </section>
+</article>
+
+<style>
+  .acq {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .acq-hero img {
+    width: 100%;
+    height: auto;
+    max-height: 460px;
+    object-fit: cover;
+    object-position: center 35%;
+    display: block;
+    border-radius: 2px;
+  }
+  /* 2-Spalten: Text | Portrait */
+  .acq-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+    margin: clamp(1.75rem, 4vw, 3rem) 0;
+  }
+  .acq-text p {
+    margin: 0 0 1rem;
+  }
+  .acq-portrait {
+    margin: 0;
+  }
+  .acq-portrait img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+  }
+  .acq-portrait figcaption {
+    font-size: 0.85rem;
+    color: #6b6b6b;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  .acq-ways > h2 {
+    margin: 0 0 1.25rem;
+  }
+  /* Akkordeon aus nativen <details> — grauer Balken + Titel, Chevron dreht beim Öffnen. */
+  .acq-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .acq-accordion details {
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .acq-accordion summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: #a4adba;
+    color: #fff;
+    padding: 0.95rem 1.4rem;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    transition: background 0.15s ease;
+  }
+  .acq-accordion summary::-webkit-details-marker {
+    display: none;
+  }
+  .acq-accordion summary::after {
+    content: '';
+    width: 0.62em;
+    height: 0.62em;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    flex: none;
+    margin-top: -0.2em;
+  }
+  .acq-accordion details[open] summary::after {
+    transform: rotate(-135deg);
+    margin-top: 0.15em;
+  }
+  .acq-accordion summary:hover {
+    background: #949eac;
+  }
+  .acq-panel {
+    padding: 1.25rem 1.4rem 1.5rem;
+    background: rgba(164, 173, 186, 0.08);
+  }
+  .acq-panel :global(p) {
+    margin: 0 0 1rem;
+  }
+  .acq-panel :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .acq-panel :global(.acq-contact) {
+    font-style: normal;
+    line-height: 1.7;
+  }
+  .acq-panel :global(.acq-gallery) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .acq-panel :global(.acq-gallery img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+  }
+  @media (max-width: 720px) {
+    .acq-intro {
+      grid-template-columns: 1fr;
+    }
+    .acq-portrait {
+      max-width: 420px;
+    }
+  }
+</style>

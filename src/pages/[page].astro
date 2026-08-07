@@ -10,7 +10,7 @@ const pages = livePages as Record<string, { title: string; article: string }>;
 export function getStaticPaths() {
   const pages = livePages as Record<string, { title: string; article: string }>;
   return Object.entries(pages)
-    .filter(([slug]) => slug !== 'videos') // /videos hat eine eigene Seite (Playlist-Grid)
+    .filter(([slug]) => slug !== 'videos' && slug !== 'kunst-erwerben') // eigene Seiten (Videos-Grid, Kunst-Erwerben-Neubau)
     .map(([slug, data]) => ({ params: { page: slug }, props: { data } }));
 }
 

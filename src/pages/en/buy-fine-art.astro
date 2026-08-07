@@ -1,0 +1,60 @@
+---
+// Acquire Art (EN) — clean rebuild of the old Stackable page. Content is editable here;
+// layout + accordion live in AcquireArt.astro.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AcquireArt from '../../components/AcquireArt.astro';
+
+const content = {
+  title: 'Acquire Art',
+  hero: { src: '/media/2020/11/olaf-hoppe-druck.jpg', alt: 'Olaf Hoppe at the printing press' },
+  intro: [
+    'I warmly invite you to visit <a href="/en/contact/">my gallery at the Baltic Sea</a>. Here you can discover many of my works on an exhibition area of about 400 m². Purchase numerous paintings and multi-coloured woodcuts directly on site. You can already get an overview online with the help of the <a href="/en/artwork/">Artwork page</a>.',
+    'During your visit, take advantage of the opportunity to join a personal guided tour of HAUS HOPPE – Galerie für Bildende Kunst, where you will be introduced to the artist’s oeuvre and have your questions about craft, composition, art and art history answered.',
+  ],
+  portrait: {
+    src: '/media/2020/12/Foto-Thomas-Haentzschel-nordlicht-Olaf-Hoppe-Garten-2010.jpg',
+    alt: 'Olaf Hoppe in his garden',
+    caption: 'Olaf Hoppe, Photo: Thomas Haentzschel',
+  },
+  sectionHeading: 'Innovative ways to art',
+  items: [
+    {
+      title: 'Art in Instalments',
+      html: '<p>For the private sector, I offer you the possibility to pay for your art purchase in monthly instalments – e.g. a total value of 500,– € in 10 payments of 50,– € each.</p>',
+    },
+    {
+      title: 'Art Leasing',
+      html: `<p>Leasing instalments are immediately tax-deductible as business expenses. This is, among other things, an advantage with regard to trade tax. Once the agreed residual value has been determined, you decide on the further „use" of the work of art.</p>
+<p>With HW Leasing GmbH I have had a reliable partner for years who realises your ideas quickly and flexibly. If you have any further questions, please do not hesitate to contact me.</p>
+<p class="acq-contact">HW Leasing GmbH<br>Spiegelberg 57<br>23966 Wismar<br>Phone: +49 3841 711111<br>Fax: +49 3841 711148<br><a href="mailto:info@hw-leasing.de">info@hw-leasing.de</a></p>`,
+    },
+    {
+      title: 'Art on Commission',
+      html: `<p>Many of my art friends have been with me for years. Of course, in the first half of your life you mainly take care of your family, children and job. That leaves little room for acquiring a valuable work of art. Many hope to make up for the purchase later — but later is often too late, because my works usually find a new home quickly.</p>
+<p>That is why it is a special pleasure for me to fulfil my friends’ wishes nevertheless: I create a second original of the favourite motif as a commission. Gladly for you, too! See for yourself:</p>
+<div class="acq-gallery">
+  <img src="/media/2020/12/Brot-und-Wasser.jpg" alt="Brot und Wasser" loading="lazy">
+  <img src="/media/2020/12/Sawila.jpg" alt="Sawila" loading="lazy">
+</div>`,
+    },
+    {
+      title: 'Individual wishes',
+      html: `<p>Would you like to have your grandchild portrayed, design a façade or commission a work of art for a very special occasion? Just contact me! The following three examples represent a range of individual works:</p>
+<ul>
+  <li>„View of Schwaan Castle" for a retirement home</li>
+  <li>House altar – homage to Hieronymus Bosch</li>
+  <li>Design of a swimming pool</li>
+</ul>
+<div class="acq-gallery">
+  <img src="/media/2021/05/burg-schwaan.jpg" alt="View of Schwaan Castle" loading="lazy">
+  <img src="/media/2021/05/20180112_163221_1.jpg" alt="Individual commission" loading="lazy">
+  <img src="/media/2021/05/20180112_163149.jpg" alt="Individual commission" loading="lazy">
+</div>`,
+    },
+  ],
+};
+---
+
+<BaseLayout lang="en" title="Acquire Art - HAUS HOPPE" description="Acquire art by Olaf Hoppe – instalments, leasing, commissioned works and individual wishes.">
+  <AcquireArt content={content} />
+</BaseLayout>
