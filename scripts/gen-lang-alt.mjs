@@ -29,8 +29,6 @@ const pagePairs = [
   ['/vita/', '/en/vita/'],
   ['/kontakt/', '/en/contact/'],
   ['/kunst-erwerben/', '/en/buy-fine-art/'],
-  ['/nft-kaufen/', '/en/nft-buy/'],
-  ['/hintergrundwissen-zu-blockchain-token/', '/en/background-knowledge-to-blockchain-token/'],
 ];
 for (const [de, en] of pagePairs) { map[de] = en; map[en] = de; }
 
