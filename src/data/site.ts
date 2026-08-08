@@ -29,7 +29,6 @@ export interface Social {
   color: string;
 }
 export const socials: Social[] = [
-  { name: 'Discord', href: 'https://discord.gg/F25NEDuyEb', color: '#404eed' },
   { name: 'Instagram', href: 'https://www.instagram.com/haushoppe/', color: '#e95950' },
   { name: 'YouTube', href: 'https://www.youtube.com/channel/UCJ4sTJguVRXhnZYii4Ncl5A', color: '#ff0000' },
 ];
