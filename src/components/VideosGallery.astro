@@ -3,7 +3,8 @@
 // Pfeilen & Punkten darunter, Klick auf Thumbnail wechselt oben), aber OHNE das
 // WordPress-Plugin, jQuery oder Slick — schlank in Vanilla-JS. YouTube-Klick-Facade:
 // das iframe lädt erst beim Klick (kein YouTube-Kontakt beim Seitenaufruf).
-// Daten: src/data/videos.json.
+// Daten: src/data/videos.json. Styles bewusst is:global (.vg__*-Namespace), damit sie
+// auch für die per JS erzeugten Elemente (Punkte, getauschte Facade) greifen.
 import videos from '../data/videos.json';
 
 interface Props {
@@ -20,7 +21,6 @@ const embed = (id: string) =>
 ---
 
 <section class="vg" data-play-label={t.play}>
-  <!-- Großer Player oben -->
   <div class="vg__featured">
     <div class="yt-facade vg__player" data-src={embed(first.id)} data-title={first.title} style="aspect-ratio: 16 / 9">
       <button type="button" class="yt-facade__btn" aria-label={`${t.play}: ${first.title}`}>
@@ -39,7 +39,6 @@ const embed = (id: string) =>
     <h2 class="vg__featured-title">{first.title}</h2>
   </div>
 
-  <!-- Thumbnail-Karussell -->
   <div class="vg__carousel">
     <button type="button" class="vg__nav vg__nav--prev" aria-label={t.prev}>&lsaquo;</button>
     <ul class="vg__track">
@@ -83,35 +82,22 @@ const embed = (id: string) =>
     const dots = root.querySelector<HTMLElement>('.vg__dots')!;
     const prev = root.querySelector<HTMLButtonElement>('.vg__nav--prev')!;
     const next = root.querySelector<HTMLButtonElement>('.vg__nav--next')!;
-    const playLabel = root.dataset.playLabel || 'Video abspielen';
-
-    // maxres->hq Fallback (wie yt-facade.js) für dynamisch gesetzte Poster
-    function fixPoster(img: HTMLImageElement) {
-      if (img.naturalWidth && img.naturalWidth <= 120 && img.src.includes('/maxresdefault.jpg')) {
-        img.src = img.src.replace('/maxresdefault.jpg', '/hqdefault.jpg');
-      }
-    }
-
-    // Featured auf ein Video setzen (als Facade — spielt erst auf Klick des Play-Buttons)
+    // Klick auf ein Thumbnail spielt oben SOFORT ab (wie das Original): iframe mit
+    // autoplay laden. (Beim Seitenaufruf bleibt der große Player eine Facade — kein
+    // YouTube-Kontakt vor der ersten Interaktion.)
     function feature(id: string, ttl: string) {
-      player.dataset.src =
+      const src =
         'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+      player.dataset.src = src;
       player.dataset.title = ttl;
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'yt-facade__btn';
-      btn.setAttribute('aria-label', playLabel + ': ' + ttl);
-      const img = document.createElement('img');
-      img.className = 'yt-facade__poster';
-      img.src = 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg';
-      img.alt = ttl;
-      img.decoding = 'async';
-      img.addEventListener('load', () => fixPoster(img));
-      const play = document.createElement('span');
-      play.className = 'yt-facade__play';
-      play.setAttribute('aria-hidden', 'true');
-      btn.append(img, play);
-      player.replaceChildren(btn);
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = ttl;
+      iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen; picture-in-picture');
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('loading', 'lazy');
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
+      player.replaceChildren(iframe);
       title.textContent = ttl;
     }
 
@@ -120,7 +106,7 @@ const embed = (id: string) =>
         track.querySelectorAll('.vg__thumb').forEach((b) => b.removeAttribute('aria-current'));
         thumb.setAttribute('aria-current', 'true');
         feature(thumb.dataset.id!, thumb.dataset.title!);
-        player.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
 
@@ -129,7 +115,7 @@ const embed = (id: string) =>
     next.addEventListener('click', () => pageBy(1));
 
     function buildDots() {
-      const pages = Math.max(1, Math.round(track.scrollWidth / track.clientWidth));
+      const pages = Math.max(1, Math.ceil(track.scrollWidth / track.clientWidth - 0.05));
       dots.replaceChildren();
       for (let i = 0; i < pages; i++) {
         const d = document.createElement('button');
@@ -154,27 +140,32 @@ const embed = (id: string) =>
   }
 </script>
 
-<style>
+<style is:global>
   .vg {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
   }
-  /* Großer Player + Titel */
   .vg__featured .yt-facade {
     border-radius: 2px;
   }
   .vg__featured-title {
     margin: 0.9rem 0 0;
+    font-family: var(--serif);
     font-size: clamp(1.4rem, 4vw, 1.9rem);
     font-weight: 400;
+    color: var(--ink);
     line-height: 1.3;
   }
-  /* Karussell */
+  /* Karussell: Pfeile flankieren den Track (überdecken nichts). */
   .vg__carousel {
-    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   .vg__track {
+    flex: 1 1 0;
+    min-width: 0;
     display: flex;
     gap: clamp(0.6rem, 2vw, 1rem);
     overflow-x: auto;
@@ -187,7 +178,7 @@ const embed = (id: string) =>
     display: none;
   }
   .vg__slide {
-    flex: 0 0 clamp(140px, 30%, 220px);
+    flex: 0 0 clamp(140px, 30%, 200px);
     scroll-snap-align: start;
     margin: 0;
     list-style: none;
@@ -219,10 +210,10 @@ const embed = (id: string) =>
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 44px;
-    height: 30px;
-    background: rgba(0, 0, 0, 0.65);
-    border-radius: 8px;
+    width: 40px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 7px;
     transition: background 0.2s;
   }
   .vg__thumb-play::before {
@@ -232,7 +223,7 @@ const embed = (id: string) =>
     top: 50%;
     transform: translate(-40%, -50%);
     border-style: solid;
-    border-width: 7px 0 7px 12px;
+    border-width: 6px 0 6px 11px;
     border-color: transparent transparent transparent #fff;
   }
   .vg__thumb:hover .vg__thumb-play {
@@ -240,7 +231,7 @@ const embed = (id: string) =>
   }
   .vg__slide-title {
     margin: 0.5rem 0 0;
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     line-height: 1.4;
     color: var(--ink);
     min-height: 2.55em;
@@ -250,36 +241,31 @@ const embed = (id: string) =>
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  /* Pfeile */
+  /* Pfeile — kleine runde Buttons, flankieren den Track. Auf Mobil aus (Wischen + Punkte). */
   .vg__nav {
-    position: absolute;
-    top: calc(50% - 1rem);
-    transform: translateY(-50%);
-    z-index: 2;
+    flex: none;
     width: 40px;
-    height: 56px;
+    height: 40px;
     border: 0;
-    background: rgba(0, 0, 0, 0.55);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
     color: #fff;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     line-height: 1;
     cursor: pointer;
-    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .vg__nav:hover {
-    background: rgba(0, 0, 0, 0.8);
-  }
-  .vg__nav--prev {
-    left: 0;
-  }
-  .vg__nav--next {
-    right: 0;
+    background: rgba(0, 0, 0, 0.85);
   }
   /* Punkte */
   .vg__dots {
     display: flex;
     justify-content: center;
-    gap: 0.55rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-top: 0.25rem;
   }
   .vg__dot {
@@ -294,11 +280,9 @@ const embed = (id: string) =>
   .vg__dot[aria-current='true'] {
     background: var(--ink);
   }
-  @media (max-width: 600px) {
+  @media (max-width: 720px) {
     .vg__nav {
-      width: 32px;
-      height: 46px;
-      font-size: 1.4rem;
+      display: none;
     }
   }
 </style>
