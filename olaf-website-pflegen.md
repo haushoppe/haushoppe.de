@@ -19,6 +19,8 @@ Die **Claude-GitHub-App** muss auf der Organisation **`haushoppe`** installiert 
 
 > Ohne diese Installation scheitert jeder Push mit **„403 Resource not accessible by integration"** — Claude kann dann lesen/klonen, aber keinen Branch/PR anlegen.
 
+**Für Bild-Upload (Google Drive):** In claude.ai/code → Environment-/Cloud-Einstellungen → **„Network access"** die Google-Drive-Hosts erlauben — unter **„Custom"**: `drive.google.com`, `drive.usercontent.google.com`, `googleusercontent.com` (oder schlicht **„Full"**). Sonst kann Claude keine Dateien aus Drive laden. Und einen **Google-Drive-Ordner mit Olaf teilen**, in den er Fotos legt.
+
 ## Olaf — so machst du eine Änderung
 1. **https://claude.ai/code** öffnen, anmelden, oben das Repo **`haushoppe/haushoppe.de`** auswählen.
 2. **Modus prüfen:** oben muss **„Accept edits"** (oder „Auto") stehen — **nicht „Plan"**. Im Plan-Modus schaut Claude nur, ändert und pusht aber nichts.
@@ -30,6 +32,15 @@ Die **Claude-GitHub-App** muss auf der Organisation **`haushoppe`** installiert 
 6. Der Pull Request erscheint auf GitHub. **Johannes prüft und merged** → dann ist es automatisch live.
 
 Die Regeln (immer **Deutsch + Englisch**, nur Inhalts-Dateien, Build muss grün sein) stehen im Repo in **`CLAUDE.md`** und werden von claude.ai/code **automatisch geladen** — Claude hält sich daran.
+
+## Fotos & Bilder hinzufügen (über Google Drive)
+Ein **ins Chat-Fenster gezogenes Bild** kann Claude **nicht** übernehmen — es *sieht* das Bild nur, hat es aber nicht als Datei. Der Weg für Bilder ist deshalb **Google Drive**:
+
+1. Lade das Foto in den **mit dir geteilten Google-Drive-Ordner** und gib es frei: Rechtsklick → Teilen → **„Jeder, der über den Link verfügt"**.
+2. **Link kopieren** und Claude im Chat schicken, z. B.: *„Hier das Foto: <Link> — bau es auf der Seite ‚Kunst & Camping' oben ein."*
+3. Claude lädt das Bild aus Drive, **verkleinert es fürs Web** und baut es in **beide Sprachen** ein → ganz normaler PR mit Vorschau.
+
+> Mehrere Bilder? Einfach mehrere Links schicken und dazuschreiben, welches wohin soll.
 
 ## Wenn gar kein Branch / kein PR erscheint
 - **„403 Resource not accessible by integration" oder kein Branch** → die Claude-GitHub-App fehlt oder hat kein Schreibrecht auf der Org → siehe **„Einmalig — von Johannes"**.

@@ -46,6 +46,25 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
 
 ---
 
+## 📎 Bilder & Dateien einfügen — über Google Drive
+
+**Ein in den Chat eingefügtes/„gepastetes" Bild kannst du NICHT committen** — es kommt nur als Bildinhalt an (du siehst es), nicht als Datei mit Bytes. **Bild- und Dateiaustausch läuft deshalb über den geteilten Google-Drive-Ordner:**
+
+1. Olaf legt die Datei in den **geteilten Google-Drive-Ordner** und gibt sie frei („Jeder mit dem Link").
+2. Olaf schickt dir den **Freigabe-Link** im Chat.
+3. **Du** lädst die Datei aus Drive herunter (die Session hat Google-Drive-Zugriff), **verkleinerst Bilder** auf ~1500 px lange Kante (web-tauglich, JPEG), speicherst sie unter **`public/media/<jahr>/<monat>/`** mit sprechendem Dateinamen und bindest sie in **DE UND EN** an der gewünschten Stelle ein — z. B.:
+   ```html
+   <figure>
+     <img src="/media/2026/08/mein-bild.jpg" alt="kurze Bildbeschreibung" loading="lazy" decoding="async" />
+   </figure>
+   ```
+
+> Kommt eine Bild-/Datei-Aufgabe **ohne** Drive-Link, **frag nach dem Google-Drive-Link** — versuche NICHT, ein gepastetes Bild oder einen PR-Kommentar-Anhang zu committen (beides schlägt fehl).
+>
+> **Werk-Bilder (neue Kunstwerke)** sind ein Sonderfall — siehe Rezept E; das Werk-Bild-Verzeichnis wird gerade umgebaut, im Zweifel im PR notieren „Bild-Einbindung bitte Johannes".
+
+---
+
 ## 📋 Rezepte (finde deine Aufgabe und folge den Schritten)
 
 ### A) Text auf einer Seite ändern (Startseite · Kontakt · Kunst Erwerben · Vita)
