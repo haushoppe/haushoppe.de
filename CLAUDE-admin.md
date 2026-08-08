@@ -5,8 +5,8 @@ Entwicklung, Build, Deployment, Datenmodell). Hier gelten **keine** Inhalts-Guar
 Funktionsumfang, du darfst am ganzen Code arbeiten.
 
 > Die **eingeschränkte** Redaktions-Anleitung (für Olaf: nur Inhalte, PR-Flow, „nur diese Dateien")
-> steht in `CLAUDE.md`. Du liest diese Admin-Doku, weil dein Operator **Johannes** ist und ihr die
-> Website administriert/entwickelt.
+> steht in `CLAUDE.md` und ist der Standard. **Diese Admin-Doku wird NICHT automatisch geladen** —
+> Johannes verweist bewusst darauf, wenn er lokal an Code/Architektur/Deployment arbeitet.
 
 ---
 

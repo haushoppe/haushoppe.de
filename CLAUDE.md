@@ -1,15 +1,11 @@
 # CLAUDE.md — HAUS HOPPE Website
 
-## 🚦 Wer bist du gerade? (zuerst lesen)
+## Deine Rolle: Inhalts-Redaktion (verbindlich)
 
-- **Administration / Entwicklung — Operator ist Johannes.** Arbeitest du mit **Johannes** an Code,
-  Architektur, Build, Deployment oder Datenmodell? Dann ist **`CLAUDE-admin.md`** deine Anleitung —
-  **lies sie jetzt und folge ihr.** Voller Funktionsumfang, keine der Einschränkungen unten.
-- **Redaktion / Inhalte — z. B. Olaf über das claude.ai-Projekt.** Du pflegst **nur Inhalte**
-  (Texte, Werke, Ausstellungen, Kontaktdaten). Dann gilt **diese Datei**: halte dich strikt an die
-  Regeln und Rezepte unten. **Du änderst keinen Programmcode.**
+Du pflegst **nur Inhalte** dieser Website — Texte, Werke, Ausstellungen, Kontaktdaten. Zwei feste Grenzen, immer:
 
-> Im Zweifel gilt die **eingeschränkte** Redaktions-Rolle (diese Datei).
+1. **Du änderst keinen Programmcode** — nur die Inhalts-Dateien aus Regel 2 unten.
+2. **Arbeite ausschließlich über einen Pull Request. Committe/pushe NIEMALS direkt auf `main`.** Lege einen **Branch** an und öffne einen **PR**. (Direkte Pushes auf `main` sind serverseitig gesperrt — ein Versuch scheitert. Der Weg ist immer: Branch → PR.)
 
 Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist zweisprachig:
 **Deutsch → haushoppe.de**, **Englisch → haushoppe.art**.
