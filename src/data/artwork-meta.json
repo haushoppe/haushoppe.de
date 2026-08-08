@@ -1,4 +1,58 @@
 {
+  "487": {
+    "slug": "90-02-h-winter-im-dorf",
+    "artist": "Olaf Hoppe",
+    "title": "1990/02 – H Winter im Dorf",
+    "year": "1999",
+    "technique": "Original Farbholzschnitt von 5 Druckplatten",
+    "dimensions": "Motiv 36 × 51 cm",
+    "edition": "Auflage -xxx- Exemplare auf Karton.",
+    "number": "1990-02-H",
+    "extra": "",
+    "en": {
+      "title": "1990/02 - H Winter in the village",
+      "technique": "Original color woodcut from 5 printing plates",
+      "dimensions": "Motif 36 × 51 cm",
+      "edition": "Edition -xxx- copies on cardboard.",
+      "extra": ""
+    }
+  },
+  "492": {
+    "slug": "1990-03-h-weiden",
+    "artist": "Olaf Hoppe",
+    "title": "1990/03 – H Weiden",
+    "year": "1990",
+    "technique": "Original Farbholzschnitt von 5 Druckplatten",
+    "dimensions": "Motiv , 30 × 51 cm",
+    "edition": "Auflage 100 Exemplare auf Kunstdruckpapier.",
+    "number": "1990-03-H",
+    "extra": "",
+    "en": {
+      "title": "1990/03 - H Pastures",
+      "technique": "Original color woodcut from 5 printing plates",
+      "dimensions": "motif , 30 × 51 cm",
+      "edition": "Edition of 100 copies on art paper.",
+      "extra": ""
+    }
+  },
+  "654": {
+    "slug": "1976-02-landschaft-wismar",
+    "artist": "Olaf Hoppe",
+    "title": "Landschaft Wismar",
+    "year": "1976",
+    "technique": "Tuschzeichnung auf Bütten",
+    "dimensions": "14 × 16 cm",
+    "edition": "",
+    "number": "",
+    "extra": "1976-03",
+    "en": {
+      "title": "Landscape Wismar",
+      "technique": "Ink drawing on handmade paper",
+      "dimensions": "14 × 16 cm",
+      "edition": "",
+      "extra": "1976-03"
+    }
+  },
   "961": {
     "slug": "holzschnitt-atlantis",
     "artist": "Olaf Hoppe",
@@ -284,6 +338,24 @@
       "technique": "Original woodblock print from 12 plates",
       "dimensions": "motif 45 × 33 cm, paper size 67 × 52 cm",
       "edition": "Edition of 20 copies on Torinoko Japan paper.",
+      "extra": ""
+    }
+  },
+  "1061": {
+    "slug": "sommer-im-2-4-takt-1994",
+    "artist": "Olaf Hoppe",
+    "title": "Sommer im 2/4 Takt",
+    "year": "1994",
+    "technique": "Original Farbholzschnitt von 5 Druckplatten",
+    "dimensions": "Motiv 50 × 42 cm, Papierformat 65 × 50 cm",
+    "edition": "Auflage 120 Exemplare auf Rives-Bütten.",
+    "number": "1994-03-HZ",
+    "extra": "",
+    "en": {
+      "title": "Summer in 2/4 Time",
+      "technique": "Original color woodcut from 5 plates",
+      "dimensions": "motif 50 × 42 cm, paper size 65 × 50 cm",
+      "edition": "Edition of 120 copies on Rives handmade paper.",
       "extra": ""
     }
   },
@@ -1687,6 +1759,78 @@
       "title": "Mars",
       "technique": "Acrylic on canvas",
       "dimensions": "65 × 185 cm",
+      "edition": "",
+      "extra": ""
+    }
+  },
+  "1324": {
+    "slug": "portraet-1",
+    "artist": "Olaf Hoppe",
+    "title": "porträt 1",
+    "year": "2021",
+    "technique": "",
+    "dimensions": "?",
+    "edition": "",
+    "number": "",
+    "extra": "",
+    "en": {
+      "title": "portrait 1",
+      "technique": "",
+      "dimensions": "",
+      "edition": "",
+      "extra": ""
+    }
+  },
+  "1327": {
+    "slug": "plovdiv",
+    "artist": "Olaf Hoppe",
+    "title": "Plovdiv",
+    "year": "2021",
+    "technique": "Zeichnung",
+    "dimensions": "?",
+    "edition": "",
+    "number": "",
+    "extra": "",
+    "en": {
+      "title": "Plovdiv",
+      "technique": "Drawing",
+      "dimensions": "",
+      "edition": "",
+      "extra": ""
+    }
+  },
+  "1330": {
+    "slug": "wintermaerchen",
+    "artist": "Olaf Hoppe",
+    "title": "wintermärchen",
+    "year": "2021",
+    "technique": "Zeichnung",
+    "dimensions": "?",
+    "edition": "",
+    "number": "",
+    "extra": "",
+    "en": {
+      "title": "winters tale",
+      "technique": "Drawing",
+      "dimensions": "",
+      "edition": "",
+      "extra": ""
+    }
+  },
+  "1333": {
+    "slug": "portraet-2",
+    "artist": "Olaf Hoppe",
+    "title": "porträt 2",
+    "year": "2021",
+    "technique": "",
+    "dimensions": "?",
+    "edition": "",
+    "number": "",
+    "extra": "",
+    "en": {
+      "title": "portrait 2",
+      "technique": "",
+      "dimensions": "",
       "edition": "",
       "extra": ""
     }

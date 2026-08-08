@@ -18,7 +18,7 @@ const R = (p) => JSON.parse(fs.readFileSync(path.join(__dir, '..', p), 'utf8'));
 const arr = Object.values(R('src/data/artworks.json')).filter((a) => a.type === 'portfolio');
 
 // Stichwort-Sätze (Deutsch UND Englisch)
-const TECH = /Acryl|Öl|Farbholzschnitt|Holzschnitt|Aquarell|Radierung|Lithografie|Mischtechnik|woodcut|woodblock|acrylic|\boil\b|watercolou?r|etching|lithograph|mixed media/i;
+const TECH = /Acryl|Öl|Farbholzschnitt|Holzschnitt|Aquarell|Radierung|Lithografie|Mischtechnik|Tuschzeichnung|Zeichnung|woodcut|woodblock|acrylic|\boil\b|watercolou?r|etching|lithograph|mixed media|ink drawing|drawing/i;
 const EDITION = /Auflage|Exemplare|Bütten|nummeriert|handsigniert|handsignierte|Edition of|copies|handmade paper|numbered|signed/i;
 // Zum TRENNEN Technik|Auflage nur „starke“ Auflage-Wörter — NICHT „Bütten/paper“ allein,
 // sonst zerschneidet „Aquarell auf Bütten 70 × 100 cm“ falsch (Bütten = Malgrund, keine Auflage).
@@ -44,9 +44,16 @@ function normLine(s) {
   return harmDim(
     s
       .replace(/-x-/gi, ' x ')
+      .replace(/(\d)\s*[x×]\s*,\s*(\d)/gi, '$1 x $2') // „30 x,51“ → „30 x 51“ (Olaf-Tippfehler)
       .replace(/(\d)\s*-\s*cm/gi, '$1 cm')
       .replace(/(Bütten|Papier|Kunstdruckpapier|paper)\s*(nummeriert|numbered)/gi, '$1, $2')
       .replace(/(\d)\s*-\s*(Exemplare|Exemplaren|copies)/gi, '$1 $2')
+      // Zusammengeklebten Fließtext (ein <p> ohne <br>) an Caption-Stichworten trennen:
+      // „DruckplattenAuflage“ → „Druckplatten Auflage“, „handsigniertMotiv“, „1999Original“ …
+      .replace(
+        /([A-Za-zÄÖÜäöüß0-9])(Auflage|Motivgröße|Motiv|Blattformat|Papierformat|nummeriert|handsigniert|Exemplare|Original|Farbholzschnitt|Holzschnitt)/g,
+        '$1 $2',
+      )
       .replace(/\bcryl\b/gi, 'Acryl') // Olaf-Tippfehler: „©A // cryl…“ verklebt
       .replace(/\bAcyl\b/gi, 'Acryl')
       .replace(/([xX×]\s*\d+)\s+c\b(?!m)/g, '$1 cm') // „145 c“ (m verrutscht) → „145 cm“
@@ -65,11 +72,15 @@ function captionLines(content) {
   const fc = (content || '').match(/<figcaption>([\s\S]*?)<\/figcaption>/i);
   if (fc && strip(fc[1])) block = fc[1];
   else
-    for (const m of (content || '').matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi))
-      if (/Olaf Hoppe/i.test(m[1]) && (TECH.test(m[1]) || EDITION.test(m[1]))) {
+    for (const m of (content || '').matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)) {
+      // Gegen den DEKODIERTEN Text testen (roh steht dort „Olaf&nbsp; Hoppe“ — Entity, kein Space).
+      // „Olaf Hoppe“ tolerant: auch Doppel-Leerzeichen / Bindestrich zwischen den Wörtern.
+      const t = strip(m[1]);
+      if (/Olaf[\s\-]+Hoppe/i.test(t) && (TECH.test(t) || EDITION.test(t))) {
         block = m[1];
         break;
       }
+    }
   if (!block) return null;
   const lines = block
     .split(/<br\s*\/?>/i)
@@ -174,10 +185,13 @@ function parse(content, rawTitle, slug) {
 
   // Verklebter Einzeiler (alles in Zeile 0, kein <br>): Präfix „Olaf … ©“ + Nummer wegschneiden
   if (!out.technique && !out.dimensions && (TECH.test(lines[0] || '') || DIMRE.test(lines[0] || ''))) {
-    const s = (lines[0] || '')
+    let s = (lines[0] || '')
       .replace(/^.*?©\s*/, '')
       .replace(/(\d{4})\s*[-–/ ]\s*\d{1,3}\s*[-–/ ]\s*[A-Z]{1,3}\b.*$/, '')
       .trim();
+    // Kein © → „Olaf Hoppe „Titel“ Jahr“-Präfix vor dem ersten Technik-Stichwort abschneiden
+    const tm = s.match(TECH);
+    if (tm && tm.index > 0) s = s.slice(tm.index).trim();
     if (s) classify(normLine(s), out);
   }
 
@@ -206,6 +220,50 @@ function parse(content, rawTitle, slug) {
 // echte Maße = enthält Ziffern; alles andere („? cm“, „x cm“, leer) gilt als „nicht vorhanden“
 const cleanDim = (s) => (s && /\d/.test(s) ? s : '');
 
+// Ordinals (Krypto-Werke): eigener Zweig in ArtworkBody → NIE eine Meta erzeugen.
+const ORDINAL = /Bitcoin blockchain|ordinalsbot|Buy it on Gamma/i;
+
+// Technik aus dem Bild-Dateinamen ableiten (Fallback, wenn der Content keine Caption enthält).
+const FILE_TECH = [
+  [/Tuschzeichnung/i, 'Tuschzeichnung', 'Ink drawing'],
+  [/Aquarell/i, 'Aquarell', 'Watercolour'],
+  [/Farbholzschnitt/i, 'Farbholzschnitt', 'Colour woodcut'],
+  [/Holzschnitt/i, 'Holzschnitt', 'Woodcut'],
+  [/Radierung/i, 'Radierung', 'Etching'],
+  [/Zeichnung/i, 'Zeichnung', 'Drawing'],
+  [/Acryl/i, 'Acryl auf Leinwand', 'Acrylic on canvas'],
+];
+function fromFile(thumbFile) {
+  const f = thumbFile || '';
+  const ymd = f.match(/\b(19|20)(\d{2})(?:0\d|1[0-2])(?:[0-2]\d|3[01])\b/); // Kamera: YYYYMMDD
+  const y4 = f.match(/(?:^|[^\d])((?:18|19|20)\d{2})(?:[^\d]|$)/); // freistehendes Jahr
+  const year = ymd ? ymd[1] + ymd[2] : y4 ? y4[1] : '';
+  let tech = '',
+    techEn = '';
+  for (const [re, de, en] of FILE_TECH)
+    if (re.test(f)) {
+      tech = de;
+      techEn = en;
+      break;
+    }
+  return { year, tech, techEn };
+}
+// Minimal-Beschriftung, wenn keine Caption parsebar ist: Künstler·Titel·Jahr (+ Technik aus Dateiname).
+const minimalMeta = (a) => {
+  const ff = fromFile(a.thumbFile);
+  const ct = cleanTitle(a.title);
+  return {
+    title: ct.title,
+    year: ct.year || ff.year || (a.slug.match(YEAR) || [''])[0] || (a.date || '').slice(0, 4) || '',
+    technique: ff.tech,
+    dimensions: '',
+    edition: '',
+    number: '',
+    extra: '',
+  };
+};
+const minimalMetaEn = (a) => ({ title: cleanTitle(a.title).title, technique: fromFile(a.thumbFile).techEn, dimensions: '', edition: '', extra: '' });
+
 // Vorherige Datei: von Hand ergänzte Maße/Extra überleben ein erneutes `npm run meta`.
 const outPath = path.join(__dir, '..', 'src/data/artwork-meta.json');
 const prev = fs.existsSync(outPath) ? JSON.parse(fs.readFileSync(outPath, 'utf8')) : {};
@@ -218,10 +276,12 @@ const meta = {};
 const incomplete = [];
 const unknownDims = [];
 for (const a of arr.filter((x) => x.lang === 'de')) {
-  const de = parse(a.content, a.title, a.slug);
-  if (!de) continue;
+  if (ORDINAL.test(a.content || '')) continue; // Ordinals: eigener Zweig in ArtworkBody, keine Meta
+  let de = parse(a.content, a.title, a.slug);
+  if (!de) de = minimalMeta(a); // nie überspringen — wenigstens Künstler·Titel·Jahr (+ Technik aus Dateiname)
   const enArt = (byTrid[a.trid] || {}).en;
-  const en = enArt ? parse(enArt.content, enArt.title, enArt.slug) : null;
+  let en = enArt ? parse(enArt.content, enArt.title, enArt.slug) : null;
+  if (enArt && !en) en = minimalMetaEn(enArt);
   const p = prev[a.trid] || {};
   // Pflichtfeld Maße: echte Maße, sonst „?“ (unbekannt) — der Renderer blendet „?“ aus.
   const dimensions = cleanDim(de.dimensions) || cleanDim(p.dimensions) || '?';
