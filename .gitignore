@@ -17,5 +17,6 @@ npm-debug.log*
 .vscode/
 .idea/
 
-# generierte Kunstwerk-webp (vor Deploy committen)
-public/artworks/
+# HINWEIS: public/artworks/ (geteilte Werk-webp — DE und EN nutzen dieselbe Datei) wird
+# BEWUSST versioniert. Sonst fehlen die Galerie-Bilder im CI-Deploy (Cloudflare liefert
+# dann den SPA-Fallback statt der Bilder). Nicht wieder ignorieren.

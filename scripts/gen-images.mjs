@@ -27,10 +27,10 @@ for (const a of artworks) {
   const dst = path.join(OUT, out);
   try {
     if (bySource.has(a.thumbFile)) {
-      // identische Quelle -> bereits erzeugtes Bild wiederverwenden (kopieren)
+      // identische Quelle -> DIESELBE Datei teilen (KEINE Kopie). DE und EN eines Werks nutzen
+      // dasselbe Bild; nur die media-src zeigt auf die bereits erzeugte Datei. Spart die Hälfte.
       const prev = bySource.get(a.thumbFile);
-      fs.copyFileSync(path.join(OUT, prev.file), dst);
-      media[a.id] = { src: `/artworks/${out}`, w: prev.w, h: prev.h };
+      media[a.id] = { src: `/artworks/${prev.file}`, w: prev.w, h: prev.h };
     } else {
       const info = await sharp(src)
         .rotate()
