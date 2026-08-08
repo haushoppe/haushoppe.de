@@ -1,45 +1,74 @@
 ---
-// Videos-Seite — EXAKT wie im Original: der Automatic-YouTube-Gallery „Classic Slider"
-// (großer Player oben + Slick-Karussell der 25 Playlist-Videos mit Pfeilen & Dots).
-// Wir rendern den unveränderten, server-gerenderten ayg-Block von der Live-Seite und
-// binden die echten Plugin-Assets ein (jQuery → Slick → ayg-Core → Theme-Slider). Die
-// Plugin-Asset-Struktur ist unter /ayg-plugin/ gespiegelt, damit alle relativen url()
-// (Spinner etc.) auflösen; `ayg_config` (sonst von WP inline gesetzt) wird lokalisiert
-// bereitgestellt. Die Custom Elements <ayg-player>/<ayg-theme-slider> hydrieren 1:1.
-import liveVideosDe from '../data/live-videos.json';
-import liveVideosEn from '../data/live-videos-en.json';
+// Videos-Seite — schlanke Neufassung. Ersetzt das portierte WordPress-Plugin
+// „Automatic YouTube Gallery" samt jQuery/Slick (an dem wir keine Lizenz haben).
+// Grid aus YouTube-Klick-Facades: das (youtube-nocookie-)iframe lädt erst beim Klick —
+// kein YouTube-Kontakt beim Seitenaufruf (s. /js/yt-facade.js, in BaseLayout eingebunden).
+// Daten: src/data/videos.json (id + Titel, DE/EN identisch).
+import videos from '../data/videos.json';
 
 interface Props {
   lang?: 'de' | 'en';
 }
 const { lang = 'de' } = Astro.props;
-const gallery = (lang === 'en' ? liveVideosEn : liveVideosDe).html as string;
-
-const aygConfig = {
-  plugin_url: '/ayg-plugin/',
-  plugin_version: '2.8.1',
-  ajax_url: '',
-  ajax_nonce: '',
-  current_page_url: '',
-  current_gallery_id: '',
-  player_type: 'youtube',
-  player_color: '#00b3ff',
-  privacy_enhanced_mode: '0',
-  origin: '',
-  cookieconsent: '0',
-  top_offset: '10',
-  i18n: { show_more: 'Show More', show_less: 'Show Less' },
-};
+const playLabel = lang === 'en' ? 'Play video' : 'Video abspielen';
 ---
 
-<link rel="stylesheet" href="/ayg-plugin/vendor/slick/slick.min.css" />
-<link rel="stylesheet" href="/ayg-plugin/public/assets/css/public.min.css" />
-<link rel="stylesheet" href="/ayg-plugin/premium/public/assets/css/public.min.css" />
+<ul class="videos">
+  {
+    videos.map((v) => (
+      <li class="videos__item">
+        <div
+          class="yt-facade"
+          data-src={`https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`}
+          data-title={v.title}
+          style="aspect-ratio: 16 / 9"
+        >
+          <button type="button" class="yt-facade__btn" aria-label={`${playLabel}: ${v.title}`}>
+            <img
+              class="yt-facade__poster"
+              src={`https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`}
+              alt={v.title}
+              width="480"
+              height="270"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="yt-facade__play" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="videos__title">{v.title}</p>
+      </li>
+    ))
+  }
+</ul>
 
-<Fragment set:html={gallery} />
-
-<script is:inline set:html={`var ayg_config = ${JSON.stringify(aygConfig)};`}></script>
-<script is:inline src="/vendor/jquery.min.js"></script>
-<script is:inline src="/ayg-plugin/vendor/slick/slick.min.js"></script>
-<script is:inline src="/ayg-plugin/public/assets/js/public.min.js"></script>
-<script is:inline src="/ayg-plugin/premium/public/assets/js/theme-slider.min.js"></script>
+<style>
+  .videos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .videos__item {
+    margin: 0;
+  }
+  .videos .yt-facade {
+    border-radius: 2px;
+  }
+  .videos__title {
+    margin: 0.6rem 0 0;
+    font-size: 1.02rem;
+    line-height: 1.4;
+    color: var(--ink);
+    /* Auf 2 Zeilen kürzen (Ellipsis) — kein endloser Umbruch/Wortbruch mehr,
+       gleiche Kartenhöhe dank reservierter 2 Zeilen. */
+    min-height: 2.8em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
