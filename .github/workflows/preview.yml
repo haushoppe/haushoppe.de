@@ -1,0 +1,70 @@
+name: preview
+
+# Bei jedem Pull Request: beide Sprachen bauen und als Cloudflare-Pages-PREVIEW
+# (Nicht-Produktion, eigene URL pro Branch) deployen, dann die Vorschau-Links als
+# Kommentar an den PR hängen. Nur PRs aus diesem Repo (Fork-PRs haben keine Secrets).
+on:
+  pull_request:
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  preview:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: 95a53d0584028b2a64d1a3a991a7fd14
+      GH_TOKEN: ${{ github.token }}
+      BRANCH: ${{ github.head_ref }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      # Kein blockierender i18n-Check hier — die Vorschau soll auch einen (noch)
+      # unvollständigen Stand zeigen. Der Merge-Gate-Check läuft in ci.yml.
+      - name: Beide Sprachen bauen
+        run: npm run data && npm run build:de && npm run build:art
+
+      - name: Preview-Deploy haushoppe.de
+        id: de
+        run: |
+          out=$(./node_modules/.bin/wrangler pages deploy dist-de --project-name=haushoppe-de --branch="$BRANCH" --commit-dirty=true 2>&1)
+          echo "$out"
+          echo "url=$(echo "$out" | grep -oE 'https://[a-z0-9-]+\.haushoppe-de\.pages\.dev' | tail -1)" >> "$GITHUB_OUTPUT"
+
+      - name: Preview-Deploy haushoppe.art
+        id: art
+        run: |
+          out=$(./node_modules/.bin/wrangler pages deploy dist-art --project-name=haushoppe-art --branch="$BRANCH" --commit-dirty=true 2>&1)
+          echo "$out"
+          echo "url=$(echo "$out" | grep -oE 'https://[a-z0-9-]+\.haushoppe-art\.pages\.dev' | tail -1)" >> "$GITHUB_OUTPUT"
+
+      - name: Vorschau-Links an den PR (sticky Kommentar)
+        env:
+          DE_URL: ${{ steps.de.outputs.url }}
+          ART_URL: ${{ steps.art.outputs.url }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          BODY=$(printf '%s\n### 🔍 Vorschau dieses PRs (nicht die Live-Seite)\n\n| Sprache | Vorschau |\n|---|---|\n| 🇩🇪 Deutsch (haushoppe.de) | %s |\n| 🇬🇧 English (haushoppe.art) | %s |\n\n_Aktualisiert sich bei jedem Push auf diesen PR._' '<!-- preview-bot -->' "$DE_URL" "$ART_URL")
+          id=$(gh api "repos/$REPO/issues/$PR/comments" --paginate --jq '.[] | select(.body | contains("<!-- preview-bot -->")) | .id' | head -1)
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$id" -f body="$BODY" >/dev/null && echo "Kommentar aktualisiert ($id)"
+          else
+            gh api -X POST "repos/$REPO/issues/$PR/comments" -f body="$BODY" >/dev/null && echo "Kommentar erstellt"
+          fi
