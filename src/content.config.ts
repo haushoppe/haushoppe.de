@@ -1,7 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// Prosa-Seiten als MDX: <name>.<lang>.mdx (z. B. home.de.mdx, kontakt.en.mdx).
+// Prosa-Seiten als MDX: <name>-<lang>.mdx (z. B. home-de.mdx, kontakt-en.mdx).
+// WICHTIG: Bindestrich, KEIN Punkt — die Glob-`id` entfernt Punkte (home.de → homede).
 // Body = editierbarer Fließtext; Frontmatter = strukturierte Assets (Bilder, Video-ID, Karte).
 // Strukturierte Listen (Vita, Werke) bleiben JSON; Config (Nav) bleibt site.ts.
 const pages = defineCollection({

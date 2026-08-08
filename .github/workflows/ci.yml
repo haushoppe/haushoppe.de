@@ -1,0 +1,32 @@
+name: CI
+
+# Prüft jeden Pull Request (und Pushes auf main): Ist der Inhalt in DE UND EN
+# vollständig, und bauen beide Sprach-Versionen fehlerfrei? Ein roter Lauf =
+# der PR darf nicht gemergt werden (siehe Branch-Protection in den Repo-Settings).
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: i18n-Vollständigkeit prüfen (jedes Werk & jede Seite in DE + EN)
+        run: npm run check
+
+      - name: Deutsche Seite bauen (haushoppe.de)
+        run: npm run build:de
+
+      - name: Englische Seite bauen (haushoppe.art)
+        run: npm run build:art
