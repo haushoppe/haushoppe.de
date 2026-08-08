@@ -1,74 +1,304 @@
 ---
-// Videos-Seite — schlanke Neufassung. Ersetzt das portierte WordPress-Plugin
-// „Automatic YouTube Gallery" samt jQuery/Slick (an dem wir keine Lizenz haben).
-// Grid aus YouTube-Klick-Facades: das (youtube-nocookie-)iframe lädt erst beim Klick —
-// kein YouTube-Kontakt beim Seitenaufruf (s. /js/yt-facade.js, in BaseLayout eingebunden).
-// Daten: src/data/videos.json (id + Titel, DE/EN identisch).
+// Videos-Seite — Look wie das Original (großer Player oben + Thumbnail-Karussell mit
+// Pfeilen & Punkten darunter, Klick auf Thumbnail wechselt oben), aber OHNE das
+// WordPress-Plugin, jQuery oder Slick — schlank in Vanilla-JS. YouTube-Klick-Facade:
+// das iframe lädt erst beim Klick (kein YouTube-Kontakt beim Seitenaufruf).
+// Daten: src/data/videos.json.
 import videos from '../data/videos.json';
 
 interface Props {
   lang?: 'de' | 'en';
 }
 const { lang = 'de' } = Astro.props;
-const playLabel = lang === 'en' ? 'Play video' : 'Video abspielen';
+const t =
+  lang === 'en'
+    ? { play: 'Play video', prev: 'Previous', next: 'Next' }
+    : { play: 'Video abspielen', prev: 'Zurück', next: 'Weiter' };
+const first = videos[0];
+const embed = (id: string) =>
+  `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
 ---
 
-<ul class="videos">
-  {
-    videos.map((v) => (
-      <li class="videos__item">
-        <div
-          class="yt-facade"
-          data-src={`https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`}
-          data-title={v.title}
-          style="aspect-ratio: 16 / 9"
-        >
-          <button type="button" class="yt-facade__btn" aria-label={`${playLabel}: ${v.title}`}>
-            <img
-              class="yt-facade__poster"
-              src={`https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`}
-              alt={v.title}
-              width="480"
-              height="270"
-              loading="lazy"
-              decoding="async"
-            />
-            <span class="yt-facade__play" aria-hidden="true"></span>
-          </button>
-        </div>
-        <p class="videos__title">{v.title}</p>
-      </li>
-    ))
+<section class="vg" data-play-label={t.play}>
+  <!-- Großer Player oben -->
+  <div class="vg__featured">
+    <div class="yt-facade vg__player" data-src={embed(first.id)} data-title={first.title} style="aspect-ratio: 16 / 9">
+      <button type="button" class="yt-facade__btn" aria-label={`${t.play}: ${first.title}`}>
+        <img
+          class="yt-facade__poster"
+          src={`https://i.ytimg.com/vi/${first.id}/maxresdefault.jpg`}
+          alt={first.title}
+          width="1280"
+          height="720"
+          loading="eager"
+          decoding="async"
+        />
+        <span class="yt-facade__play" aria-hidden="true"></span>
+      </button>
+    </div>
+    <h2 class="vg__featured-title">{first.title}</h2>
+  </div>
+
+  <!-- Thumbnail-Karussell -->
+  <div class="vg__carousel">
+    <button type="button" class="vg__nav vg__nav--prev" aria-label={t.prev}>&lsaquo;</button>
+    <ul class="vg__track">
+      {
+        videos.map((v, i) => (
+          <li class="vg__slide">
+            <button
+              type="button"
+              class="vg__thumb"
+              data-id={v.id}
+              data-title={v.title}
+              aria-label={`${t.play}: ${v.title}`}
+              aria-current={i === 0 ? 'true' : undefined}
+            >
+              <img
+                src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
+                alt={v.title}
+                width="480"
+                height="360"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="vg__thumb-play" aria-hidden="true" />
+            </button>
+            <p class="vg__slide-title">{v.title}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <button type="button" class="vg__nav vg__nav--next" aria-label={t.next}>&rsaquo;</button>
+  </div>
+  <div class="vg__dots" aria-hidden="true"></div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.vg');
+  if (root) {
+    const player = root.querySelector<HTMLElement>('.vg__player')!;
+    const title = root.querySelector<HTMLElement>('.vg__featured-title')!;
+    const track = root.querySelector<HTMLElement>('.vg__track')!;
+    const dots = root.querySelector<HTMLElement>('.vg__dots')!;
+    const prev = root.querySelector<HTMLButtonElement>('.vg__nav--prev')!;
+    const next = root.querySelector<HTMLButtonElement>('.vg__nav--next')!;
+    const playLabel = root.dataset.playLabel || 'Video abspielen';
+
+    // maxres->hq Fallback (wie yt-facade.js) für dynamisch gesetzte Poster
+    function fixPoster(img: HTMLImageElement) {
+      if (img.naturalWidth && img.naturalWidth <= 120 && img.src.includes('/maxresdefault.jpg')) {
+        img.src = img.src.replace('/maxresdefault.jpg', '/hqdefault.jpg');
+      }
+    }
+
+    // Featured auf ein Video setzen (als Facade — spielt erst auf Klick des Play-Buttons)
+    function feature(id: string, ttl: string) {
+      player.dataset.src =
+        'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+      player.dataset.title = ttl;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'yt-facade__btn';
+      btn.setAttribute('aria-label', playLabel + ': ' + ttl);
+      const img = document.createElement('img');
+      img.className = 'yt-facade__poster';
+      img.src = 'https://i.ytimg.com/vi/' + id + '/maxresdefault.jpg';
+      img.alt = ttl;
+      img.decoding = 'async';
+      img.addEventListener('load', () => fixPoster(img));
+      const play = document.createElement('span');
+      play.className = 'yt-facade__play';
+      play.setAttribute('aria-hidden', 'true');
+      btn.append(img, play);
+      player.replaceChildren(btn);
+      title.textContent = ttl;
+    }
+
+    track.querySelectorAll<HTMLButtonElement>('.vg__thumb').forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        track.querySelectorAll('.vg__thumb').forEach((b) => b.removeAttribute('aria-current'));
+        thumb.setAttribute('aria-current', 'true');
+        feature(thumb.dataset.id!, thumb.dataset.title!);
+        player.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+
+    const pageBy = (dir: number) => track.scrollBy({ left: dir * track.clientWidth * 0.9, behavior: 'smooth' });
+    prev.addEventListener('click', () => pageBy(-1));
+    next.addEventListener('click', () => pageBy(1));
+
+    function buildDots() {
+      const pages = Math.max(1, Math.round(track.scrollWidth / track.clientWidth));
+      dots.replaceChildren();
+      for (let i = 0; i < pages; i++) {
+        const d = document.createElement('button');
+        d.type = 'button';
+        d.className = 'vg__dot';
+        d.addEventListener('click', () => track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' }));
+        dots.appendChild(d);
+      }
+      updateDots();
+    }
+    function updateDots() {
+      const idx = Math.round(track.scrollLeft / track.clientWidth);
+      dots.querySelectorAll('.vg__dot').forEach((d, i) => d.setAttribute('aria-current', String(i === idx)));
+    }
+    track.addEventListener('scroll', updateDots, { passive: true });
+    let rt: number | undefined;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(buildDots, 150);
+    });
+    buildDots();
   }
-</ul>
+</script>
 
 <style>
-  .videos {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: clamp(1.5rem, 3vw, 2.25rem);
+  .vg {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
   }
-  .videos__item {
-    margin: 0;
-  }
-  .videos .yt-facade {
+  /* Großer Player + Titel */
+  .vg__featured .yt-facade {
     border-radius: 2px;
   }
-  .videos__title {
-    margin: 0.6rem 0 0;
-    font-size: 1.02rem;
+  .vg__featured-title {
+    margin: 0.9rem 0 0;
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  /* Karussell */
+  .vg__carousel {
+    position: relative;
+  }
+  .vg__track {
+    display: flex;
+    gap: clamp(0.6rem, 2vw, 1rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.25rem;
+  }
+  .vg__track::-webkit-scrollbar {
+    display: none;
+  }
+  .vg__slide {
+    flex: 0 0 clamp(140px, 30%, 220px);
+    scroll-snap-align: start;
+    margin: 0;
+    list-style: none;
+  }
+  .vg__thumb {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    border: 0;
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #000;
+  }
+  .vg__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .vg__thumb[aria-current='true'] {
+    outline: 3px solid var(--ink);
+    outline-offset: 2px;
+  }
+  .vg__thumb-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+  .vg__thumb-play::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-40%, -50%);
+    border-style: solid;
+    border-width: 7px 0 7px 12px;
+    border-color: transparent transparent transparent #fff;
+  }
+  .vg__thumb:hover .vg__thumb-play {
+    background: #f00;
+  }
+  .vg__slide-title {
+    margin: 0.5rem 0 0;
+    font-size: 0.92rem;
     line-height: 1.4;
     color: var(--ink);
-    /* Auf 2 Zeilen kürzen (Ellipsis) — kein endloser Umbruch/Wortbruch mehr,
-       gleiche Kartenhöhe dank reservierter 2 Zeilen. */
-    min-height: 2.8em;
+    min-height: 2.55em;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  /* Pfeile */
+  .vg__nav {
+    position: absolute;
+    top: calc(50% - 1rem);
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 40px;
+    height: 56px;
+    border: 0;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .vg__nav:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  .vg__nav--prev {
+    left: 0;
+  }
+  .vg__nav--next {
+    right: 0;
+  }
+  /* Punkte */
+  .vg__dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-top: 0.25rem;
+  }
+  .vg__dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #cfcfcf;
+    cursor: pointer;
+  }
+  .vg__dot[aria-current='true'] {
+    background: var(--ink);
+  }
+  @media (max-width: 600px) {
+    .vg__nav {
+      width: 32px;
+      height: 46px;
+      font-size: 1.4rem;
+    }
   }
 </style>
