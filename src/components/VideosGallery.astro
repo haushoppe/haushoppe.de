@@ -180,6 +180,9 @@ const embed = (id: string) =>
   .vg__track {
     display: flex;
     gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
@@ -282,6 +285,7 @@ const embed = (id: string) =>
     z-index: 9;
     width: 40px;
     height: 40px;
+    padding: 0;
     border: 0;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.55);
@@ -298,8 +302,8 @@ const embed = (id: string) =>
     background: rgba(0, 0, 0, 0.8);
   }
   .vg__nav[disabled] {
-    opacity: 0.25;
-    cursor: default;
+    opacity: 0;
+    pointer-events: none;
   }
   .vg__nav--prev {
     left: 4px;
