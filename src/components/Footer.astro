@@ -2,12 +2,18 @@
 // Sauberer Footer (ersetzt das portierte Astra-Markup inkl. ugb-spacer): dunkler Balken,
 // „Folge uns bei" + Social-Icons (Discord/Instagram/YouTube), darunter Kontakt 2-spaltig.
 import { socials, contact } from '../data/site';
+import { getCollection } from 'astro:content';
 
 interface Props {
   lang: 'de' | 'en';
 }
 const { lang } = Astro.props;
 const t = lang === 'en' ? { follow: 'Follow us', contact: 'Contact' } : { follow: 'Folge uns bei', contact: 'Kontakt' };
+
+// Standalone-Seiten mit placement:'footer' (z. B. Impressum, Datenschutz) als Link-Zeile unten.
+const footerPages = (await getCollection('pages'))
+  .filter((p) => p.data.standalone && p.data.placement === 'footer' && p.data.path && p.id.endsWith(`-${lang}`))
+  .map((p) => ({ href: `/${p.data.path}/`, label: p.data.navLabel || p.data.title }));
 
 const icons: Record<string, string> = {
   Discord:
@@ -51,6 +57,15 @@ const icons: Record<string, string> = {
       </div>
     </div>
   </div>
+  {
+    footerPages.length > 0 && (
+      <nav class="site-footer__legal" aria-label={lang === 'en' ? 'Legal' : 'Rechtliches'}>
+        {footerPages.map((p) => (
+          <a href={p.href}>{p.label}</a>
+        ))}
+      </nav>
+    )
+  }
 </footer>
 
 <style>
@@ -123,5 +138,14 @@ const icons: Record<string, string> = {
     .site-footer__meta {
       text-align: left;
     }
+  }
+  /* Rechtliches/Standalone-Links: zentrierte Zeile unter dem Kontaktblock */
+  .site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    padding: 0 1rem 2rem;
+    font-size: 0.9rem;
   }
 </style>

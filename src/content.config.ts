@@ -27,6 +27,13 @@ const pages = defineCollection({
     hero: z.object({ src: z.string(), alt: z.string() }).optional(),
     // Kontakt
     map: z.string().optional(),
+    // Standalone-Seiten (Impressum, Datenschutz, Presse …): eigener Slug + optionale Verlinkung.
+    // standalone:true → eigene Route unter /<slug>/. placement steuert Verlinkung.
+    standalone: z.boolean().default(false),
+    // WICHTIG: nicht „slug" nennen — das ist in Astro-Collections reserviert (überschreibt die id).
+    path: z.string().optional(),
+    navLabel: z.string().optional(),
+    placement: z.enum(['none', 'nav', 'footer']).default('none'),
   }),
 });
 

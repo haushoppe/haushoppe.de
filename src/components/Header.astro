@@ -5,12 +5,17 @@
 import { nav as navData, logo } from '../data/site';
 import { OTHER_ORIGIN } from '../lib/lang';
 import { normPath, altOf } from '../lib/paths';
+import { getCollection } from 'astro:content';
 
 interface Props {
   lang: 'de' | 'en';
 }
 const { lang } = Astro.props;
-const items = navData[lang];
+// Standalone-Seiten mit placement:'nav' hinten ans Menü hängen (aktuelle Sprache).
+const navPages = (await getCollection('pages'))
+  .filter((p) => p.data.standalone && p.data.placement === 'nav' && p.data.path && p.id.endsWith(`-${lang}`))
+  .map((p) => ({ href: `/${p.data.path}/`, label: p.data.navLabel || p.data.title }));
+const items = [...navData[lang], ...navPages];
 
 const path = normPath(Astro.url.pathname);
 let activePath = path;

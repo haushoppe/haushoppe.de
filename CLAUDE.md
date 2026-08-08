@@ -177,6 +177,29 @@ Ein Werk braucht **immer beide Sprachen**, verbunden über dieselbe `trid` (eine
 
 ---
 
+### F) Neue Seite anlegen (z. B. Impressum, Datenschutz, Presse)
+
+**Frag den Auftraggeber zuerst, WO die Seite verlinkt werden soll** — `footer` (üblich für Impressum/Datenschutz), `nav` (Hauptmenü) oder `none` (nur per URL erreichbar). Dann:
+
+1. Lege **zwei** MDX-Dateien in `src/content/pages/` an: `<name>-de.mdx` **und** `<name>-en.mdx` (gleicher `<name>`, nur `-de`/`-en` unterschiedlich).
+2. Frontmatter (zwischen den `---`), Beispiel Impressum:
+   ```yaml
+   ---
+   title: Impressum
+   description: Impressum der Galerie HAUS HOPPE.
+   standalone: true
+   path: impressum       # URL-Pfad in DIESER Sprache; EN-Datei z. B. path: imprint
+   navLabel: Impressum   # Link-Text (nur bei placement nav/footer nötig)
+   placement: footer     # footer | nav | none
+   ---
+   ```
+   - **`path`** = der URL-Slug (ergibt `/impressum/`). In der EN-Datei einen englischen Pfad setzen. **Nicht `slug` nennen** (in Astro reserviert). Muss eindeutig sein (nicht `werke`/`kontakt`/`vita`/`videos`/`kunst-erwerben`/`artwork`/`contact`/`buy-fine-art`).
+   - **`placement`** = wie vom Auftraggeber genannt.
+3. Unter den `---` den Inhalt als **Markdown** schreiben — in **beiden** Dateien (DE + EN). Der `title` wird automatisch als Überschrift gesetzt.
+4. `npm run build` → grün. Danach ist die Seite unter `/<path>/` live, wird (bei `nav`/`footer`) automatisch verlinkt, und der Sprachwechsler verbindet DE- und EN-Fassung.
+
+---
+
 ## ✅ Änderung prüfen (Pflicht, bevor du den PR öffnest)
 
 ```bash

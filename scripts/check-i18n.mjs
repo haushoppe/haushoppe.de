@@ -47,7 +47,13 @@ for (const [key, g] of Object.entries(byTrid)) {
 // ── B) MDX-Prosa-Seiten: jede Seite muss als <name>-de.mdx UND <name>-en.mdx existieren ──
 const mdxDir = path.join(__dir, '..', 'src/content/pages');
 const mdxFiles = new Set(fs.readdirSync(mdxDir).filter((f) => f.endsWith('.mdx')));
-for (const base of ['home', 'kontakt', 'acquire', 'vita']) {
+// Alle Seiten-Bases aus den Dateinamen ableiten → deckt auch neue Standalone-Seiten automatisch ab.
+const pageBases = new Set();
+for (const f of mdxFiles) {
+  const m = f.match(/^(.*)-(de|en)\.mdx$/);
+  if (m) pageBases.add(m[1]);
+}
+for (const base of pageBases) {
   for (const lang of ['de', 'en']) {
     if (!mdxFiles.has(`${base}-${lang}.mdx`)) add(`MDX-Seite ${base}-${lang}.mdx fehlt → Seite in einer Sprache nicht vorhanden`);
   }
@@ -61,4 +67,4 @@ if (problems.length) {
   console.error('\nBuild abgebrochen. Bitte fehlende Übersetzung/Bild ergänzen.\n');
   process.exit(1);
 }
-console.log(`✓ i18n-Check bestanden: ${nWorks} Werke vollständig DE+EN (mit Bild + Beschriftung), MDX-Seiten (home/kontakt/acquire/vita) DE+EN.`);
+console.log(`✓ i18n-Check bestanden: ${nWorks} Werke vollständig DE+EN (mit Bild + Beschriftung), ${pageBases.size} MDX-Seiten DE+EN.`);

@@ -37,5 +37,22 @@ const pagePairs = [
 ];
 for (const [de, en] of pagePairs) { map[de] = en; map[en] = de; }
 
+// Standalone-Seiten: DE↔EN-Slug-Paare aus dem MDX-Frontmatter (standalone: true + slug).
+const pagesDir = path.join(__dir, '..', 'src/content/pages');
+const byBase = {};
+for (const f of fs.readdirSync(pagesDir).filter((x) => x.endsWith('.mdx'))) {
+  const m = f.match(/^(.*)-(de|en)\.mdx$/);
+  if (!m) continue;
+  const src = fs.readFileSync(path.join(pagesDir, f), 'utf8');
+  const end = src.indexOf('---', 3);
+  const fm = end > 0 ? src.slice(0, end) : '';
+  if (!/^\s*standalone:\s*true\b/m.test(fm)) continue;
+  const sm = fm.match(/^\s*path:\s*["']?([^"'\n]+?)["']?\s*$/m);
+  if (sm) (byBase[m[1]] ||= {})[m[2]] = sm[1].trim();
+}
+for (const t of Object.values(byBase)) {
+  if (t.de && t.en) { map[`/${t.de}/`] = `/${t.en}/`; map[`/${t.en}/`] = `/${t.de}/`; }
+}
+
 fs.writeFileSync(path.join(__dir, '..', 'src/data/lang-alt.json'), JSON.stringify(map, null, 0));
 console.log('lang-alt.json:', Object.keys(map).length, 'Einträge');

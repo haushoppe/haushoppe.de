@@ -1,0 +1,39 @@
+---
+// Generischer Rahmen für Standalone-Prosa-Seiten (Impressum, Datenschutz, Presse …):
+// Titel als H1 + MDX-Body. Inhalt: src/content/pages/<name>-<lang>.mdx (standalone: true).
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<article class="page">
+  <h1 class="page__title">{title}</h1>
+  <div class="page__body"><slot /></div>
+</article>
+
+<style>
+  .page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 2.5rem) 1rem;
+  }
+  .page__title {
+    margin: 0 0 1.25rem;
+  }
+  .page__body :global(h2) {
+    margin: 1.8rem 0 0.6rem;
+  }
+  .page__body :global(h3) {
+    margin: 1.4rem 0 0.5rem;
+  }
+  .page__body :global(p),
+  .page__body :global(ul),
+  .page__body :global(ol) {
+    margin: 0 0 1rem;
+    line-height: 1.8;
+  }
+  .page__body :global(a) {
+    text-decoration: underline;
+  }
+</style>

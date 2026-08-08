@@ -8,10 +8,12 @@ import Kontakt from '../components/Kontakt.astro';
 import AcquireArt from '../components/AcquireArt.astro';
 import { galleryItems, galleryCategories } from '../lib/artworks';
 import { loadPage } from '../lib/pages';
+import Page from '../components/Page.astro';
+import { getCollection } from 'astro:content';
 import { LANG } from '../lib/lang';
 
-export function getStaticPaths() {
-  const pages =
+export async function getStaticPaths() {
+  const core =
     LANG === 'de'
       ? [
           { slug: 'werke', type: 'gallery' },
@@ -23,10 +25,21 @@ export function getStaticPaths() {
           { slug: 'buy-fine-art', type: 'acquire' },
           { slug: 'contact', type: 'contact' },
         ];
-  return pages.map((p) => ({ params: { slug: p.slug }, props: { type: p.type } }));
+  // Standalone-Seiten (Impressum/Datenschutz/…) aus dem MDX-Frontmatter der aktuellen Sprache.
+  const suffix = `-${LANG}`;
+  const standalone = (await getCollection('pages'))
+    .filter((p) => p.data.standalone && p.data.path && p.id.endsWith(suffix))
+    .map((p) => ({ slug: p.data.path!, type: 'standalone', base: p.id.slice(0, -suffix.length) }));
+  return [...core, ...standalone].map((p) => ({
+    params: { slug: p.slug },
+    props: { type: p.type, base: (p as any).base },
+  }));
 }
 
-const { type } = Astro.props as { type: 'gallery' | 'acquire' | 'contact' };
+const { type, base } = Astro.props as {
+  type: 'gallery' | 'acquire' | 'contact' | 'standalone';
+  base?: string;
+};
 
 const META = {
   gallery: {
@@ -42,7 +55,19 @@ const META = {
     en: { title: 'Contact - HAUS HOPPE', description: 'HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Opening hours, contact and directions.' },
   },
 } as const;
-const meta = META[type][LANG];
+// Standalone-Seite: Inhalt + Titel/Beschreibung aus dem MDX-Frontmatter.
+let StandaloneContent: any = null;
+let standaloneFm: any = null;
+if (type === 'standalone' && base) {
+  const loaded = await loadPage(base);
+  StandaloneContent = loaded.Content;
+  standaloneFm = loaded.data;
+}
+
+const meta =
+  type === 'standalone'
+    ? { title: `${standaloneFm.title} – HAUS HOPPE`, description: standaloneFm.description }
+    : META[type as 'gallery' | 'acquire' | 'contact'][LANG];
 
 const items = type === 'gallery' ? galleryItems(LANG) : [];
 const cats = type === 'gallery' ? galleryCategories(LANG) : [];
@@ -69,5 +94,10 @@ if (type === 'contact' || type === 'acquire') {
     <AcquireArt content={acquireFm}>
       <MdxContent />
     </AcquireArt>
+  )}
+  {type === 'standalone' && StandaloneContent && (
+    <Page title={standaloneFm.title}>
+      <StandaloneContent />
+    </Page>
   )}
 </BaseLayout>
