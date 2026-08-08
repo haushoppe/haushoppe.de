@@ -24,8 +24,9 @@ migriert von WordPress zu einer **statischen Astro-Site**.
 ```bash
 npm run dev         # Entwicklung (localhost:4321, DE) — Suche funktioniert hier NICHT (siehe Suche)
                     # EN im Dev: SITE_LANG=en npm run dev
-npm run build       # Produktion: i18n-Check → BEIDE Sprach-Builds (dist-de + dist-art) + Pagefind
-npm run check       # nur der i18n-Vollständigkeits-Check (läuft auch automatisch vor jedem build)
+npm run build       # Produktion: Daten erneuern (meta+lang-alt) → i18n-Check → BEIDE Builds + Pagefind
+npm run check       # nur der i18n-Vollständigkeits-Check (läuft auch automatisch im build)
+npm run data        # nur die abgeleiteten Daten erneuern: artwork-meta.json + lang-alt.json
 npm run preview     # DE-Build ansehen (dist-de, inkl. Suche) — zum Testen nutzen
 npm run preview:art # EN-Build ansehen (dist-art)
 npm run images      # Kunstwerk-Bilder neu erzeugen (scripts/gen-images.mjs → artworks-media.json)
@@ -190,9 +191,10 @@ bricht den Build sonst ab. Schritte:
 2. Eintrag in `src/data/artworks-media.json`: `"<id>": { "src":"/artworks/<id>.webp","w":…,"h":… }`.
 3. **Zwei** Einträge in `src/data/artworks.json` (DE + EN) mit **gleicher `trid`** (verbindet die Sprachen):
    `id, slug, title, lang, trid, date, categories:[{taxonomy:"portfolio_category",slug,name}], content`.
-   Die Beschriftung entsteht aus `content` (figcaption) via `npm run meta`.
-4. `npm run meta` (Beschriftung) + `npm run lang-alt` (Sprachwechsel) + `npm run build`. Der Check meldet
-   sofort, falls DE oder EN (oder ein Bild) fehlt.
+   Die Beschriftung entsteht automatisch aus `content` (figcaption); ist keine parsebar, gibt's einen
+   Minimal-Eintrag (Künstler·Titel·Jahr + Technik aus dem Dateinamen). Ordinals werden ausgenommen.
+4. `npm run build` — erzeugt Beschriftung + Sprachwechsel selbst, prüft und baut. Der Check meldet sofort,
+   falls DE oder EN, ein Bild **oder eine Beschriftung** fehlt (blanke Detailseiten fallen auf).
 
 > Tipp: Wenn viele neue Werke kommen, lohnt eine `artworks/*.md`-Content-Collection statt der JSON.
 
