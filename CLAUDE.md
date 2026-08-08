@@ -51,7 +51,7 @@ src/
 ├── pages/                    # jede Datei = eine Route; Sprache aus SITE_LANG
 │   ├── index.astro            # Startseite (de/en-Objekt je Build)        → Home.astro
 │   ├── videos.astro           # Videos                                     → VideosGallery.astro
-│   ├── vita.astro             # Vita                                       → ContentSections + vita.json
+│   ├── vita.astro             # Vita                                       → Vita.astro + vita-<lang>.mdx
 │   ├── [slug].astro           # die 3 slug-abweichenden Seiten:
 │   │                          #   werke↔artwork · kunst-erwerben↔buy-fine-art · kontakt↔contact
 │   └── portfolio/[slug].astro # 322 Werk-Detailseiten (filtert nach SITE_LANG)
@@ -126,7 +126,7 @@ Statt der alten Astra-Body-Klassen steuert ein `layout`-Prop an `BaseLayout` die
 | `AcquireArt.astro`    | Kunst Erwerben: Rahmen (Hero + Titel aus MDX-Frontmatter) + Layout-CSS; Inhalt (Portrait/Intro/Akkordeon) als `<slot/>` aus `content/pages/acquire-<lang>.mdx`. |
 | `AccordionItem.astro` | Ein `<details>`-Akkordeon-Eintrag (kein JS) für die Kunst-Erwerben-MDX (`<AccItem title="…">…</AccItem>`). |
 | `Kontakt.astro`       | Rahmen + Layout-CSS für die Kontakt-Seite; Inhalt als `<slot/>` aus `content/pages/kontakt-<lang>.mdx` (Klassen `.cp-center`, `.cp-directions`, `.cp-map`). |
-| `ContentSections.astro`| Generischer Renderer für die **Vita** (JSON-Liste): Überschrift + Listen/Absätze. Inhalt aus `data/vita.json`. |
+| `Vita.astro`          | Rahmen für die Vita (Hero + Titel aus MDX-Frontmatter) + Listen-CSS (Jahres-Spalte via `li strong`); Inhalt als `<slot/>` aus `content/pages/vita-<lang>.mdx`. |
 | `ArtworkBody.astro`   | Inhalt einer Detailseite: normal das große Bild, bei den 5 Ordinals stattdessen iframe + Kauf-Link (invertiertes Design). |
 | `Search.astro`        | Pagefind-Overlay, öffnet beim Klick auf das Such-Icon (`[data-search-trigger]`). |
 
@@ -136,14 +136,14 @@ Statt der alten Astra-Body-Klassen steuert ein `layout`-Prop an `BaseLayout` die
 
 **Faustregel:** **Prosa → MDX**, **strukturierte Listen/Config → JSON/TS**.
 
-**Prosa (`src/content/pages/*.mdx`, Content-Collection `pages`):**
-- `home-de.mdx` / `home-en.mdx`, `kontakt-de.mdx` / `kontakt-en.mdx`, `acquire-de.mdx` / `acquire-en.mdx`.
-- **Frontmatter** = strukturierte Assets (Bilder, Video-ID, Karte); **Body** = editierbarer Fließtext.
+**Prosa/Inhalt (`src/content/pages/*.mdx`, Content-Collection `pages`):**
+- `home-*`, `kontakt-*`, `acquire-*`, `vita-*` (je `-de.mdx` + `-en.mdx`).
+- **Frontmatter** = strukturierte Assets (Bilder, Video-ID, Karte, Titel); **Body** = editierbarer Markdown-Inhalt
+  (bei der Vita auch die Listen als Markdown-Bullets — leicht zu erweitern).
 - Dateiname-Konvention: `<name>-<lang>.mdx` — **Bindestrich, kein Punkt** (die Glob-`id` entfernt Punkte!). Schema/Validierung: `src/content.config.ts`.
 
 **Strukturierte Daten (`src/data/`):**
 - `site.ts` — **Navigation, Social-Links, Kontaktadresse, Logo** (DE+EN, typisiert). Config, kein Fließtext → bleibt TS.
-- `vita.json` — Vita (Ausstellungs-**Liste** etc., je `de`+`en`; strukturiert → bleibt JSON), gerendert von `ContentSections.astro`.
 - `artworks.json` — alle Kunstwerke (id, slug, title, lang, **trid**, categories, date, content …). **Site-Quelle** (Single Source of Truth).
 - `artworks-media.json` — je Kunstwerk `{src,w,h}` des webp-Bildes (per `gen-images`).
 - `artwork-meta.json` — strukturierte, **von Hand editierbare** Werk-Beschriftung je `trid` (Künstler·Titel·Jahr·Technik·Maße·Nummer + optional Auflage/Extra, DE+EN). Per `gen-artwork-meta.mjs`, gerendert von `ArtworkMeta.astro`. Unbekannte Maße = `"?"` (wird ausgeblendet).
@@ -174,9 +174,9 @@ Akkordeon-Einträge sind `<AccItem title="…">…Prosa…</AccItem>`. Frontmatt
 `<figure class="acq-portrait">` im Body.
 
 ### Vita ändern
-`src/data/vita.json` (bleibt JSON — strukturierte Liste). Struktur = **Abschnitte**:
-`{ heading, lines[] }` (Listen), `{ heading, paragraphs[] }` (Fließtext), `center:true`. Für EN das
-`en`-Objekt in derselben Datei — **gleich viele Abschnitte** (sonst meckert der i18n-Check, Abschnitt 7).
+**MDX:** `src/content/pages/vita-de.mdx` / `vita-en.mdx`. Abschnitte als `## Überschrift`, Lebenslauf/
+Ausstellungen als Markdown-Listen (`- <strong>Jahr</strong> …` bzw. `- 1987 …`). Neue Ausstellung =
+eine neue Bullet-Zeile. Frontmatter: `title`, `h1` (Seiten-Überschrift „Olaf Hoppe"), `hero`.
 
 ### Navigation, Social-Links, Kontaktadresse, Logo
 **`src/data/site.ts`** — eine Datei für alles. Menüpunkte in `nav.de` / `nav.en`, Socials in
@@ -238,9 +238,8 @@ Slug pro Sprache gleich → eigene Datei; **abweichender** Slug (wie werke↔art
 
 **🔒 Vollständigkeits-Garantie (`npm run check`, läuft vor jedem `build`):**
 `scripts/check-i18n.mjs` bricht den Build ab, wenn (a) ein Werk nicht in **beiden** Sprachen
-existiert oder ein **Bild** fehlt, (b) eine **MDX-Seite** (home/kontakt/acquire) in einer Sprache
-fehlt, oder (c) `vita.json` DE/EN unterschiedlich viele Abschnitte hat. So kann nie still eine
-Übersetzung fehlen. Unbekannte Maße bei Werken werden als `"?"` migriert (Renderer blendet sie aus).
+existiert oder ein **Bild** fehlt, oder (b) eine **MDX-Seite** (home/kontakt/acquire/vita) in einer
+Sprache fehlt. So kann nie still eine Übersetzung fehlen. Unbekannte Maße bei Werken werden als `"?"` migriert (Renderer blendet sie aus).
 
 ## 8. Suche (Pagefind)
 

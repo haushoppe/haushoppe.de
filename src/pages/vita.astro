@@ -1,16 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ContentSections from '../components/ContentSections.astro';
-import vita from '../data/vita.json';
+import Vita from '../components/Vita.astro';
+import { getCollection, render } from 'astro:content';
 import { LANG } from '../lib/lang';
 
-const c = vita[LANG];
-const meta =
-  LANG === 'de'
-    ? { title: 'Vita - HAUS HOPPE', description: 'Vita von Olaf Hoppe — Lebenslauf, Ausstellungsverzeichnis, vertretende Galerien und Sammlungen.' }
-    : { title: 'Vita - HAUS HOPPE', description: 'Olaf Hoppe — curriculum vitae, list of exhibitions, representing galleries and collections.' };
+// Vita: Struktur (Hero, Titel) aus dem MDX-Frontmatter, Inhalt (Lebenslauf/Ausstellungen als
+// Markdown-Listen) aus dem Body (content/pages/vita-<lang>.mdx).
+const pages = await getCollection('pages');
+const entry = pages.find((p) => p.id === `vita-${LANG}`);
+if (!entry) throw new Error(`MDX-Seite vita-${LANG} fehlt. Vorhandene ids: ${pages.map((p) => p.id).join(', ')}`);
+const { Content } = await render(entry);
+const fm = entry.data;
 ---
 
-<BaseLayout title={meta.title} description={meta.description}>
-  <ContentSections hero={{ src: c.hero, alt: c.heroAlt }} title={c.title} sections={c.sections} />
+<BaseLayout title={fm.title} description={fm.description}>
+  <Vita hero={fm.hero} h1={fm.h1}>
+    <Content />
+  </Vita>
 </BaseLayout>
