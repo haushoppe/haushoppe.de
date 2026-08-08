@@ -284,7 +284,7 @@ for (const a of arr.filter((x) => x.lang === 'de')) {
   if (enArt && !en) en = minimalMetaEn(enArt);
   const p = prev[a.trid] || {};
   // Pflichtfeld Maße: echte Maße, sonst „?“ (unbekannt) — der Renderer blendet „?“ aus.
-  const dimensions = cleanDim(de.dimensions) || cleanDim(p.dimensions) || '?';
+  const dimensions = (cleanDim(de.dimensions) || cleanDim(p.dimensions) || '?').replace(/(\d+)\s*×\s*(\d+)\s*cm/g, '$1 cm × $2 cm');
   meta[a.trid] = {
     slug: a.slug, // nur zur Orientierung beim Editieren — Komponente ignoriert es
     artist: 'Olaf Hoppe',
@@ -299,7 +299,7 @@ for (const a of arr.filter((x) => x.lang === 'de')) {
       ? {
           title: en.title,
           technique: en.technique,
-          dimensions: cleanDim(en.dimensions) || cleanDim(p.en?.dimensions),
+          dimensions: (cleanDim(en.dimensions) || cleanDim(p.en?.dimensions) || '').replace(/(\d+)\s*×\s*(\d+)\s*cm/g, '$1 cm × $2 cm'),
           edition: en.edition || p.en?.edition || '',
           extra: en.extra || p.en?.extra || '',
         }

@@ -25,7 +25,8 @@ const en = lang === 'en' ? meta.en : undefined;
 const title = en?.title || meta.title;
 const technique = (en?.technique || meta.technique || '').trim();
 // Maße sind sprachneutral: leeres EN fällt auf DE zurück. „?“ = unbekannt → nicht anzeigen.
-const rawDim = (en?.dimensions || meta.dimensions || '').trim();
+// Maße dimensional eindeutig: „79 × 110 cm“ → „79 cm × 110 cm“ (idempotent, greift auch bei Handeingaben).
+const rawDim = (en?.dimensions || meta.dimensions || '').trim().replace(/(\d+)\s*×\s*(\d+)\s*cm/g, '$1 cm × $2 cm');
 const dimensions = rawDim === '?' ? '' : rawDim;
 // leeres EN fällt auf DE zurück (wie Titel/Technik/Maße) — nicht ??, sonst bleibt EN leer statt DE.
 const edition = (en?.edition || meta.edition || '').trim();
@@ -57,10 +58,6 @@ const techLine = [technique, dimensions].filter(Boolean).join(', ');
   }
   .art-meta__edition {
     font-size: 0.85rem;
-  }
-  .art-meta__num {
-    font-size: 0.82rem;
-    color: #9a9a9a;
   }
   .art-meta__extra {
     margin-top: 0.5rem;
