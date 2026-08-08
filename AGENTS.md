@@ -8,6 +8,23 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
 
 ---
 
+## ⚡ Pflicht-Ablauf für JEDE Änderung (genau in dieser Reihenfolge)
+
+1. Änderung machen — **immer in Deutsch UND Englisch** (Regeln + Rezepte unten).
+2. Im Terminal ausführen und **auf grün warten**:
+   ```bash
+   npm install        # beim ersten Mal (installiert Abhängigkeiten)
+   npm run build      # macht ALLES: Beschriftungen/Verknüpfungen erneuern → Vollständigkeit (DE+EN)
+                      # prüfen → beide Sprachen bauen. Bricht mit klarer Meldung ab, wenn etwas fehlt.
+   ```
+3. Meckert etwas? **Meldung lesen**, betroffene Datei korrigieren, Schritt 2 wiederholen — bis alles grün ist.
+4. **Erst wenn `npm run build` grün durchläuft**, committen und den Pull Request öffnen. **Öffne NIE einen PR, solange der Build rot ist.**
+   Hinweis: `npm run build` kann `artwork-meta.json` und `lang-alt.json` automatisch aktualisieren — **committe diese Änderungen mit** (`git add -A`).
+
+> Falls `npm install` in deiner Sandbox nicht läuft (kein Netz): mach die Änderung trotzdem sauber und öffne den PR — die **CI auf GitHub** führt `check` + Build automatisch aus und markiert den PR rot/grün. Prüfe aber lokal, wann immer du kannst.
+
+---
+
 ## ⭐ Die 6 goldenen Regeln (IMMER befolgen)
 
 1. **Deutsch zuerst, dann Englisch 1:1.** Jede Änderung muss in **BEIDEN** Sprachen gemacht werden. Fehlt eine Sprache, schlägt der automatische Test (`npm run check`) fehl und der PR kann **nicht** gemergt werden.
