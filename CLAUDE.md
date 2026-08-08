@@ -1,290 +1,208 @@
-# CLAUDE.md — HAUS HOPPE (haushoppe.de / haushoppe.art)
+# CLAUDE.md — HAUS HOPPE Website
 
-Arbeitsanleitung & Architektur-Doku für dieses Repo. Für Claude Code **und** für Menschen,
-die morgen Inhalte pflegen wollen.
+## 🚦 Wer bist du gerade? (zuerst lesen)
 
-> **Machst du Inhalts-Änderungen (Texte, Werke, Ausstellungen)?** Folge zuerst der importierten
-> Schritt-für-Schritt-Anleitung unten (Pflicht-Ablauf, Rezepte, „nur diese Dateien"). Der Rest
-> dieser Datei ist die technische Architektur-Doku für Entwickler.
+- **Administration / Entwicklung — Operator ist Johannes.** Arbeitest du mit **Johannes** an Code,
+  Architektur, Build, Deployment oder Datenmodell? Dann ist **`CLAUDE-admin.md`** deine Anleitung —
+  **lies sie jetzt und folge ihr.** Voller Funktionsumfang, keine der Einschränkungen unten.
+- **Redaktion / Inhalte — z. B. Olaf über das claude.ai-Projekt.** Du pflegst **nur Inhalte**
+  (Texte, Werke, Ausstellungen, Kontaktdaten). Dann gilt **diese Datei**: halte dich strikt an die
+  Regeln und Rezepte unten. **Du änderst keinen Programmcode.**
 
-@AGENTS.md
+> Im Zweifel gilt die **eingeschränkte** Redaktions-Rolle (diese Datei).
+
+Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist zweisprachig:
+**Deutsch → haushoppe.de**, **Englisch → haushoppe.art**.
 
 ---
 
-## 1. Was ist das?
+## ⚡ Pflicht-Ablauf für JEDE Inhalts-Änderung (genau in dieser Reihenfolge)
 
-Die Website der **HAUS HOPPE – Galerie für Bildende Kunst** (Künstler **Olaf Hoppe**),
-migriert von WordPress zu einer **statischen Astro-Site**.
+1. Änderung machen — **immer in Deutsch UND Englisch** (Regeln + Rezepte unten).
+2. Im Terminal ausführen und **auf grün warten**:
+   ```bash
+   npm install        # beim ersten Mal (installiert Abhängigkeiten)
+   npm run build      # macht ALLES: Beschriftungen/Verknüpfungen erneuern → Vollständigkeit (DE+EN)
+                      # prüfen → beide Sprachen bauen. Bricht mit klarer Meldung ab, wenn etwas fehlt.
+   ```
+3. Meckert etwas? **Meldung lesen**, betroffene Datei korrigieren, Schritt 2 wiederholen — bis alles grün ist.
+4. **Erst wenn `npm run build` grün durchläuft**, committen und den Pull Request öffnen. **Öffne NIE einen PR, solange der Build rot ist.**
+   Hinweis: `npm run build` kann `artwork-meta.json` und `lang-alt.json` automatisch aktualisieren — **committe diese Änderungen mit** (`git add -A`).
 
-- **Astro 5**, reines SSG (kein Server, keine DB, kein WordPress mehr).
-- **Zweisprachig, Sprache = Domain**: Deutsch → **haushoppe.de**, Englisch → **haushoppe.art**.
-  **Ein Projekt, zwei Builds** (`SITE_LANG=de|en`), jede Sprache am **Root** ihrer Domain —
-  **kein `/en/`-Pfad**. Die Build-Sprache kommt zentral aus `src/lib/lang.ts`.
-- **645 Kunstwerke**, Galerie mit Justified-Layout + Filter, Video-Seite, ein paar
-  Content-Seiten, Volltextsuche.
-- **Design = wie die alte Seite** (Astra-Theme-Look), aber sauber & schlank neu gebaut:
-  kein Gutenberg-Markup mehr, kein `ast-*`-Theme-Ballast, CSS von 557 → 53 KB.
+> Falls `npm install` in deiner Sandbox nicht läuft (kein Netz): mach die Änderung trotzdem sauber und öffne den PR — die **CI auf GitHub** führt `check` + Build automatisch aus und markiert den PR rot/grün. Prüfe aber lokal, wann immer du kannst.
 
-### Befehle
+---
+
+## ⭐ Die 6 goldenen Regeln (IMMER befolgen)
+
+1. **Deutsch zuerst, dann Englisch 1:1.** Jede Änderung muss in **BEIDEN** Sprachen gemacht werden. Fehlt eine Sprache, schlägt der automatische Test (`npm run check`) fehl und der PR kann **nicht** gemergt werden.
+2. **Fass NUR diese Dateien an:**
+   - `src/content/pages/*.mdx` — die Seitentexte (Startseite, Kontakt, Kunst Erwerben, Vita)
+   - `src/data/artwork-meta.json` — Werk-Beschriftungen / fehlende Maße
+   - `src/data/site.ts` — Navigation, Kontaktadresse, Social-Links
+   - `src/data/artworks.json` + `src/data/artworks-media.json` — nur beim Hinzufügen neuer Werke (fortgeschritten)
+
+   **NIEMALS anfassen:** `src/components/`, `src/lib/`, `src/layouts/`, `src/pages/`, `scripts/`, `astro.config.mjs`, `package.json`, `src/content.config.ts`.
+3. **Echte Umlaute** schreiben: `ä ö ü ß Ä Ö Ü` — niemals `ae/oe/ue/ss`. Typografische Zeichen benutzen: Anführungszeichen `„ "`, Gedankenstrich `–`, Maß-Kreuz `×` (nicht `x`).
+4. **Vor jedem PR prüfen:** `npm install` (einmal), dann `npm run check`. Muss **grün** sein.
+5. **Gültiges JSON/Markdown.** Bei JSON-Dateien auf Kommas und Anführungszeichen achten — eine kaputte Klammer bricht alles. Nichts an der Struktur ändern, nur die Text-Werte.
+6. **Ein PR = eine Sache.** Kleine, klare Änderung, aussagekräftiger Titel, 1–2 Sätze Beschreibung.
+
+---
+
+## 📋 Rezepte (finde deine Aufgabe und folge den Schritten)
+
+### A) Text auf einer Seite ändern (Startseite · Kontakt · Kunst Erwerben · Vita)
+
+Jede Seite hat **zwei** Dateien in `src/content/pages/`:
+
+| Seite | Deutsch | Englisch |
+|---|---|---|
+| Startseite | `home-de.mdx` | `home-en.mdx` |
+| Kontakt | `kontakt-de.mdx` | `kontakt-en.mdx` |
+| Kunst Erwerben | `acquire-de.mdx` | `acquire-en.mdx` |
+| Vita | `vita-de.mdx` | `vita-en.mdx` |
+
+**Schritte:**
+1. Öffne die deutsche Datei und ändere den Text **unter** dem `---`-Block (das ist normales Markdown).
+2. Mach die **gleiche** Änderung in der englischen Datei — inhaltlich identisch, nur übersetzt.
+3. `npm run check` ausführen → grün.
+
+**Beispiel** (Öffnungszeiten in `kontakt-de.mdx` ändern):
+```diff
+- 13:00 – 17:00 Uhr und nach telefonischer Absprache
++ 14:00 – 18:00 Uhr und nach telefonischer Absprache
+```
+Dann in `kontakt-en.mdx` genauso:
+```diff
+- 13:00 – 17:00 and by prior arrangement
++ 14:00 – 18:00 and by prior arrangement
+```
+
+> Der Bereich zwischen den beiden `---` ganz oben (das „Frontmatter": `title`, `hero`, …) enthält Struktur — **dort nur ändern, wenn ausdrücklich verlangt**.
+
+---
+
+### B) Neue Ausstellung in die Vita eintragen
+
+Die Ausstellungen stehen als **Markdown-Tabelle** in `vita-de.mdx` und `vita-en.mdx` unter der Überschrift `## Ausstellungsverzeichnis` (DE) bzw. `## List of Exhibitions` (EN).
+
+**Schritte:**
+1. In `vita-de.mdx` **eine neue Zeile ans Ende der Tabelle** hinzufügen (letzte `| … |`-Zeile). Format:
+   ```
+   | 2025 | Name der Ausstellung, Ort | EA |
+   ```
+   - **Spalte 1** = Jahr.
+   - **Spalte 2** = Ausstellung + Ort.
+   - **Spalte 3 „Art"** = `EA` (Einzelausstellung, nur Olaf) oder `AB` (Ausstellungsbeteiligung, mit anderen). Trifft nichts zu, lass sie leer: `| 2025 | … | |`.
+2. In `vita-en.mdx` **dieselbe** Zeile ans Ende der dortigen Tabelle — Name/Ort auf Englisch.
+3. `npm run check`.
+
+**Beispiel** (`vita-de.mdx`):
+```diff
+  | 2024 | Kunstausstellung „NATUR – MENSCH", Sankt Andreasberg |  |
++ | 2025 | Kunsthalle Wittenhagen | EA |
+```
+`vita-en.mdx`:
+```diff
+  | 2024 | Art exhibition „NATURE – PEOPLE", Sankt Andreasberg |  |
++ | 2025 | Wittenhagen Art Gallery | EA |
+```
+
+---
+
+### C) Fehlendes Maß bei einem Werk nachtragen
+
+Manche Werke haben `"?"` als Maß (weil es unbekannt war). So trägst du das echte Maß nach:
+
+**Schritte:**
+1. Öffne `src/data/artwork-meta.json`.
+2. Suche den Eintrag über den **`slug`** (steht in der Datei). Beispiel-Eintrag:
+   ```json
+   "1410": {
+     "slug": "die-geburt-der-venus-prinz-2006",
+     "artist": "Olaf Hoppe",
+     "title": "Die Geburt der Venus ( Prinz )",
+     "year": "2006",
+     "technique": "Acryl auf Leinwand",
+     "dimensions": "?",
+     "number": "2006-06-A",
+     ...
+   }
+   ```
+3. Ersetze bei `"dimensions"` das `"?"` durch das echte Maß — **Breite × Höhe** mit dem Zeichen `×`:
+   ```diff
+   -     "dimensions": "?",
+   +     "dimensions": "90 × 120 cm",
+   ```
+4. Fertig. Die **englische** Seite übernimmt das Maß automatisch (Zahlen sind sprachneutral). `npm run check`.
+
+> Nur den `"dimensions"`-Wert ändern, sonst nichts an dem Eintrag.
+
+---
+
+### D) Kontaktdaten, Menü oder Social-Links ändern
+
+Datei: `src/data/site.ts`. Nur die Texte in den `'…'`-Anführungszeichen ändern, Struktur lassen.
+- **Adresse/Telefon/E-Mail:** im Block `export const contact = { … }`.
+- **Menüpunkte:** in `nav.de` **und** `nav.en` (beide Sprachen!).
+- **Social-Links:** in `socials`.
+
+> ⚠️ E-Mail-Adressen niemals eigenmächtig ändern/einsetzen — nur wenn ausdrücklich genannt.
+
+---
+
+### E) Neues Werk hinzufügen — FORTGESCHRITTEN
+
+Das ist die einzige komplexe Aufgabe (Bild + zwei Daten-Einträge + Beschriftung). **Wenn du unsicher bist: nur die Daten eintragen und im PR schreiben „Bild + `npm run meta` bitte ergänzen" — Johannes macht den Rest.**
+
+Ein Werk braucht **immer beide Sprachen**, verbunden über dieselbe `trid` (eine eindeutige Zahl):
+
+1. **Bild:** `public/artworks/<ID>.webp` (max. 1400 px lange Kante). *(Kann das Bild nicht committet werden, weil `public/artworks/` in `.gitignore` steht → Johannes fragen.)*
+2. **Bildmaße** in `src/data/artworks-media.json` ergänzen:
+   ```json
+   "<ID>": { "src": "/artworks/<ID>.webp", "w": 1400, "h": 1002 }
+   ```
+3. **Zwei** Einträge in `src/data/artworks.json` (Array) — Vorlage (Gemälde). `<ID>` und `<trid>` durch neue, noch nicht vergebene Zahlen ersetzen; für die englische Fassung `<ID>` z. B. mit `-en`:
+   ```json
+   {
+     "id": "<ID>", "type": "portfolio", "status": "publish",
+     "slug": "mein-neues-werk-2025", "title": "„Mein neues Werk" 2025",
+     "date": "2025-06-01 12:00:00", "menuOrder": 0, "lang": "de", "trid": "<trid>",
+     "thumbFile": "2025/06/mein-neues-werk.jpg",
+     "categories": [{ "name": "Gemälde", "slug": "gemaelde", "taxonomy": "portfolio_category" }],
+     "tags": [],
+     "content": "<figure class=\"wp-block-image size-large\"><figcaption>Olaf Hoppe „Mein neues Werk" 2025<br>Acryl auf Leinwand 90 × 120 cm<br>2025-01-A</figcaption></figure>",
+     "excerpt": "", "metaKeys": []
+   }
+   ```
+   Und derselbe Eintrag noch einmal mit `"id": "<ID>-en"`, `"lang": "en"`, **gleicher** `"trid"`, englischem `title`/`content` und `"categories": [{ "name": "Paintings", "slug": "paintings", "taxonomy": "portfolio_category" }]`. (Kategorien: Gemälde/Paintings · Holzschnitte/Woodcuts · Zeichnungen/Drawings · Digitale Kunst/Digital Art.)
+4. Danach: `npm run meta` (erzeugt die Beschriftung aus dem `content`) + `npm run check`.
+
+---
+
+## ✅ Änderung prüfen (Pflicht, bevor du den PR öffnest)
 
 ```bash
-npm run dev         # Entwicklung (localhost:4321, DE) — Suche funktioniert hier NICHT (siehe Suche)
-                    # EN im Dev: SITE_LANG=en npm run dev
-npm run build       # Produktion: Daten erneuern (meta+lang-alt) → i18n-Check → BEIDE Builds + Pagefind
-npm run check       # nur der i18n-Vollständigkeits-Check (läuft auch automatisch im build)
-npm run data        # nur die abgeleiteten Daten erneuern: artwork-meta.json + lang-alt.json
-npm run preview     # DE-Build ansehen (dist-de, inkl. Suche) — zum Testen nutzen
-npm run preview:art # EN-Build ansehen (dist-art)
-npm run images      # Kunstwerk-Bilder neu erzeugen (scripts/gen-images.mjs → artworks-media.json)
-npm run meta        # Werk-Beschriftungen neu generieren (artwork-meta.json)
-npm run lang-alt    # Sprach-Pendant-Map neu generieren (lang-alt.json)
+npm install        # nur beim ersten Mal nötig
+npm run check      # i18n-Vollständigkeit — MUSS grün sein
+npm run build:de   # baut die deutsche Seite (findet Tippfehler/kaputtes Markdown)
 ```
 
-> **Wichtig:** `npm run build` baut **beide** Sprachen (`dist-de` = haushoppe.de, `dist-art` =
-> haushoppe.art) und bricht ab, wenn der **i18n-Check** eine Lücke findet (siehe Abschnitt 7).
-> Die **Suche** (Pagefind) entsteht erst im `build`-Schritt — zum Prüfen `npm run build` + `preview`.
+- **`npm run check` meckert?** Dann fehlt genau das Gemeldete. Beispiele:
+  - „*MDX-Seite vita-en.mdx fehlt*" → englische Datei anlegen/ergänzen.
+  - „*Werk … : fehlt EN-Übersetzung*" → zweiten (englischen) Eintrag mit gleicher `trid` hinzufügen.
+  - „*Werk … : kein Bild*" → Bild + `artworks-media.json`-Eintrag ergänzen.
+- **`npm run build:de` bricht ab?** Meist ein Markdown-/JSON-Fehler (fehlendes Komma, kaputte Klammer) in der gerade geänderten Datei. Fehlermeldung lesen, Datei korrigieren.
+
+Die **CI** (GitHub Actions) macht dieselben Prüfungen automatisch bei jedem PR. Ist der grüne Haken da, passt's; ist er rot, sagt der Log genau, was fehlt — dann nachbessern und erneut committen.
 
 ---
 
-## 2. Projektstruktur
+## 🚫 Was du NIE tust (Redaktions-Rolle)
 
-**Kein `/en/`-Ordner mehr.** Es gibt *einen* Satz Seiten; die Sprache wählt der Build über
-`SITE_LANG` (aus `src/lib/lang.ts`). Seiten mit gleichem Slug in beiden Sprachen (Home, Videos,
-Vita, Werk-Detail) sind je *eine* Datei; die 3 Seiten mit **abweichendem** Slug stecken in einer
-dynamischen `[slug].astro`.
-
-```
-src/
-├── pages/                    # jede Datei = eine Route; Sprache aus SITE_LANG
-│   ├── index.astro            # Startseite (de/en-Objekt je Build)        → Home.astro
-│   ├── videos.astro           # Videos                                     → VideosGallery.astro
-│   ├── vita.astro             # Vita                                       → Vita.astro + vita-<lang>.mdx
-│   ├── [slug].astro           # die 3 slug-abweichenden Seiten:
-│   │                          #   werke↔artwork · kunst-erwerben↔buy-fine-art · kontakt↔contact
-│   └── portfolio/[slug].astro # 322 Werk-Detailseiten (filtert nach SITE_LANG)
-├── content/pages/*.mdx       # Prosa-Seiten: home/kontakt/acquire, je -de.mdx + -en.mdx
-├── content.config.ts        # Zod-Schema der MDX-Collection „pages"
-├── components/               # siehe Abschnitt 4
-├── layouts/BaseLayout.astro  # HTML-Gerüst: <head> inkl. canonical + hreflang (beide Domains)
-├── lib/                      # lang.ts (SITE_LANG + Domains!), artworks.ts (Galerie-Daten), ordinals.ts
-├── data/                     # Inhalts- & Konfig-Daten (siehe Abschnitt 5)
-├── styles/                   # global.css (Basis) + wp-design.css (schlanke Galerie-Reste)
-public/
-├── media/…                   # alle Bilder (aus WP-Uploads, /media/JJJJ/MM/…)
-├── artworks/<id>.webp        # web-optimierte Kunstwerk-Bilder (gitignored, per gen-images)
-├── js/, vendor/jquery.min.js, ayg-plugin/…   # Galerie-/Video-Slider-Assets
-dist-de/   dist-art/          # zwei Build-Outputs: DE → haushoppe.de, EN → haushoppe.art (gitignored)
-scripts/                      # Generier-/Prüf-Skripte (siehe Abschnitt 9)
-```
-
----
-
-## 3. Das CSS-System
-
-Bewusst klein und in **drei Ebenen**:
-
-### a) `src/styles/global.css` — die Basis (Design-Tokens + Typo + Layout)
-Alle Farben/Fonts/Abstände als CSS-Variablen, **exakt aus der Live-Seite gemessen**:
-
-```css
---serif   Merriweather (Überschriften)      --ink    #3a3a3a (Überschriften)
---sans    System-Sans (Fließtext)           --text   #4b4f58 (Text)
---rule    #000 (Header-Linien)              --muted  #666    (Links)
---footer-bg #3a3a3a                         --container 1240px, --pad 20px
-```
-
-Hier stehen: Body-Typo, `h1`–`h3`, Links, und das **Layout-System** (siehe unten).
-
-### b) Komponenten-CSS (scoped)
-Jede `.astro`-Komponente bringt ihr eigenes `<style>` mit (Astro scoped das automatisch).
-Kein globales Durcheinander. Beispiele: `.acq-*` (Kunst Erwerben), `.cp-*` (Vita/Kontakt),
-`.home-*` (Startseite), `.site-header`/`.mainnav`, `.site-footer`.
-
-### c) `src/styles/wp-design.css` — schlanker Galerie-Rest (53 KB)
-Der eingedampfte Rest des alten Astra/Visual-Portfolio-CSS, **nur noch für die Galerie**
-(`.vp-portfolio*`-Klassen: Kacheln, Overlay-Hover, Filter). Per PurgeCSS auf das tatsächlich
-Genutzte reduziert. **Nicht von Hand editieren** — bei Bedarf neu purgen:
-```bash
-npx purgecss --css src/styles/wp-design.css --content 'dist/**/*.html' 'public/js/**/*.js' \
-  --safelist 'vp-portfolio__ready' '/^vp-/' '/^slick/' '/^wp-block/' '/^entry/' --output …
-```
-
-### Das Layout-System (Inhaltsbreiten)
-Statt der alten Astra-Body-Klassen steuert ein `layout`-Prop an `BaseLayout` die Breite:
-
-| `layout`      | Wirkung                                   | wer nutzt es               |
-|---------------|-------------------------------------------|----------------------------|
-| *(keins)*     | volle Breite (Komponenten zentrieren selbst; Galerie full-bleed) | Home, Vita, Kontakt, Kunst-Erwerben, **Werke** |
-| `"boxed"`     | Inhalt 1200 px zentriert                  | Videos                     |
-| `"article"`   | 1200 px + weißer Kasten (`.art-single`, 48 px Innenabstand) | Werk-Detailseiten |
-
----
-
-## 4. Die Komponenten
-
-| Komponente            | Aufgabe |
-|-----------------------|---------|
-| `BaseLayout.astro`    | HTML-Gerüst: `<head>` (Titel/Description/Favicon), `<Header>`, `<main class="site-main …">`, `<Footer>`, `<Search>`. Props: `title`, `description`, `lang`, `layout`. |
-| `Header.astro`        | Logo + Nav-Leiste (700 px, schwarze Linien) + Sprach-Flagge + Such-Icon; mobil Hamburger. Aktiver Menüpunkt & Sprach-Pendant server-seitig (aus `data/site.ts` + `data/lang-alt.json`). |
-| `Footer.astro`        | Dunkler Balken: „Folge uns bei" + Social-Icons + Kontakt 2-spaltig (aus `data/site.ts`). |
-| `Home.astro`          | Startseite: Hero-Video-Facade + 2 Spalten (Text/Signatur | Werk/Links). Inhalt aus `index.astro` (`de`/`en`-Objekt, Auswahl über `LANG`). |
-| `Gallery.astro`       | Galerie: Kategorie-Filter + Justified-Grid (`public/js/vp-justified.js`). Items aus `lib/artworks.ts`. |
-| `VideosGallery.astro` | Video-Seite: der **echte** „ayg Classic-Slider" (Original-Plugin), Block-HTML aus `data/live-videos*.json`. |
-| `AcquireArt.astro`    | Kunst Erwerben: Rahmen (Hero + Titel aus MDX-Frontmatter) + Layout-CSS; Inhalt (Portrait/Intro/Akkordeon) als `<slot/>` aus `content/pages/acquire-<lang>.mdx`. |
-| `AccordionItem.astro` | Ein `<details>`-Akkordeon-Eintrag (kein JS) für die Kunst-Erwerben-MDX (`<AccItem title="…">…</AccItem>`). |
-| `Kontakt.astro`       | Rahmen + Layout-CSS für die Kontakt-Seite; Inhalt als `<slot/>` aus `content/pages/kontakt-<lang>.mdx` (Klassen `.cp-center`, `.cp-directions`, `.cp-map`). |
-| `Vita.astro`          | Rahmen für die Vita (Hero + Titel aus MDX-Frontmatter) + Listen-CSS (Jahres-Spalte via `li strong`); Inhalt als `<slot/>` aus `content/pages/vita-<lang>.mdx`. |
-| `ArtworkBody.astro`   | Inhalt einer Detailseite: normal das große Bild, bei den 5 Ordinals stattdessen iframe + Kauf-Link (invertiertes Design). |
-| `Search.astro`        | Pagefind-Overlay, öffnet beim Klick auf das Such-Icon (`[data-search-trigger]`). |
-
----
-
-## 5. Inhalt & Daten — was liegt wo?
-
-**Faustregel:** **Prosa → MDX**, **strukturierte Listen/Config → JSON/TS**.
-
-**Prosa/Inhalt (`src/content/pages/*.mdx`, Content-Collection `pages`):**
-- `home-*`, `kontakt-*`, `acquire-*`, `vita-*` (je `-de.mdx` + `-en.mdx`).
-- **Frontmatter** = strukturierte Assets (Bilder, Video-ID, Karte, Titel); **Body** = editierbarer Markdown-Inhalt
-  (bei der Vita auch die Listen als Markdown-Bullets — leicht zu erweitern).
-- Dateiname-Konvention: `<name>-<lang>.mdx` — **Bindestrich, kein Punkt** (die Glob-`id` entfernt Punkte!). Schema/Validierung: `src/content.config.ts`.
-
-**Strukturierte Daten (`src/data/`):**
-- `site.ts` — **Navigation, Social-Links, Kontaktadresse, Logo** (DE+EN, typisiert). Config, kein Fließtext → bleibt TS.
-- `artworks.json` — alle Kunstwerke (id, slug, title, lang, **trid**, categories, date, content …). **Site-Quelle** (Single Source of Truth).
-- `artworks-media.json` — je Kunstwerk `{src,w,h}` des webp-Bildes (per `gen-images`).
-- `artwork-meta.json` — strukturierte, **von Hand editierbare** Werk-Beschriftung je `trid` (Künstler·Titel·Jahr·Technik·Maße·Nummer + optional Auflage/Extra, DE+EN). Per `gen-artwork-meta.mjs`, gerendert von `ArtworkMeta.astro`. Unbekannte Maße = `"?"` (wird ausgeblendet).
-- `lang-alt.json` — DE↔EN-Pendant je URL, **root-relativ** (Header stellt die andere Domain davor). Per `gen-lang-alt.mjs` (liest die Site-Quelle).
-- `live-videos.json` / `live-videos-en.json` — der server-gerenderte Video-Slider-Block.
-- `videos-playlist.json` — die 25 Video-IDs/Titel (Referenz).
-
-**Migrations-Altlasten (nicht importiert, können ignoriert/gelöscht werden):**
-`attachments.json`, `menus.json`, `pages.json`, `translations.json`.
-
----
-
-## 6. ✏️ Inhalte pflegen — „morgen neue Inhalte"
-
-### Startseite ändern (Text, Willkommen, hervorgehobenes Werk, Hero-Video)
-**MDX:** `src/content/pages/home-de.mdx` (DE) und `home-en.mdx` (EN). Der **Body** ist der Intro-Fließtext
-(Markdown). Im **Frontmatter**: `video.id` (YouTube-ID), `h1`, `welcome` (Signaturblock), `featured`
-(Werkbild + Bildunterschrift + Link). Bilder in `public/media/…`.
-
-### Kontakt ändern
-**MDX:** `src/content/pages/kontakt-de.mdx` / `kontakt-en.mdx`. Fließtext (Öffnungszeiten, Adresse,
-Anfahrt) direkt im Body als Markdown. Layout-Hooks: `<div class="cp-center">…</div>` (zentrierter Block),
-`<div class="cp-directions">…</div>` (2-Spalten Anfahrt|Karte), `<iframe class="cp-map" …>` (Google-Maps-URL).
-
-### Kunst Erwerben ändern
-**MDX:** `src/content/pages/acquire-de.mdx` / `acquire-en.mdx`. Intro + Akkordeon als Markdown; die
-Akkordeon-Einträge sind `<AccItem title="…">…Prosa…</AccItem>`. Frontmatter: `hero` (Bild). Portrait als
-`<figure class="acq-portrait">` im Body.
-
-### Vita ändern
-**MDX:** `src/content/pages/vita-de.mdx` / `vita-en.mdx`. Lebenslauf = Markdown-**Tabelle** (`| Jahr | Ereignis |`),
-Ausstellungen = 3-Spalten-**Tabelle** (`| Jahr | Ausstellung | Art |`, Art = AB/EA), Galerien/Museen = Bullet-Listen.
-Neue Ausstellung = eine neue Tabellenzeile. Frontmatter: `title`, `h1` („Olaf Hoppe"), `hero`.
-
-### Navigation, Social-Links, Kontaktadresse, Logo
-**`src/data/site.ts`** — eine Datei für alles. Menüpunkte in `nav.de` / `nav.en`, Socials in
-`socials`, Adresse in `contact`.
-
-### Neues Kunstwerk hinzufügen
-Datengetrieben (kam aus dem WP-Export). **Immer DE UND EN anlegen** — der i18n-Check (Abschnitt 7)
-bricht den Build sonst ab. Schritte:
-1. **Bild** als webp nach `public/artworks/<id>.webp` (max ~1400 px; `npm run images` erzeugt sie sonst
-   aus WP-Uploads).
-2. Eintrag in `src/data/artworks-media.json`: `"<id>": { "src":"/artworks/<id>.webp","w":…,"h":… }`.
-3. **Zwei** Einträge in `src/data/artworks.json` (DE + EN) mit **gleicher `trid`** (verbindet die Sprachen):
-   `id, slug, title, lang, trid, date, categories:[{taxonomy:"portfolio_category",slug,name}], content`.
-   Die Beschriftung entsteht automatisch aus `content` (figcaption); ist keine parsebar, gibt's einen
-   Minimal-Eintrag (Künstler·Titel·Jahr + Technik aus dem Dateinamen). Ordinals werden ausgenommen.
-4. `npm run build` — erzeugt Beschriftung + Sprachwechsel selbst, prüft und baut. Der Check meldet sofort,
-   falls DE oder EN, ein Bild **oder eine Beschriftung** fehlt (blanke Detailseiten fallen auf).
-
-> Tipp: Wenn viele neue Werke kommen, lohnt eine `artworks/*.md`-Content-Collection statt der JSON.
-
-### Video hinzufügen (Achtung: Sonderfall)
-Die Video-Seite nutzt noch den **kopierten Slider-Block** aus `data/live-videos*.json` (echtes
-Plugin-Markup). Ein Video ergänzen = ein `<div class="ayg-video …">…</div>` im JSON nachbauen.
-Unkomfortabel — wenn du die Videos öfter pflegen willst, sollten wir die Video-Seite auf eine
-saubere, datengetriebene Variante (Liste aus `videos-playlist.json`) umstellen.
-
-### Neue Seite anlegen
-**Kein `/en/`-Ordner** — es gibt einen Satz Seiten, die Sprache kommt aus `LANG` (`src/lib/lang.ts`).
-Prosa-Seite: `src/content/pages/<name>-de.mdx` + `<name>-en.mdx` anlegen, dazu eine `.astro`-Route,
-die den passenden Eintrag lädt:
-```astro
----
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection, render } from 'astro:content';
-import { LANG } from '../lib/lang';
-const pages = await getCollection('pages');
-const entry = pages.find((p) => p.id === `neueseite-${LANG}`);
-const { Content } = await render(entry!);
----
-<BaseLayout title={entry!.data.title} description={entry!.data.description}><Content /></BaseLayout>
-```
-Slug pro Sprache gleich → eigene Datei; **abweichender** Slug (wie werke↔artwork) → in die dynamische
-`src/pages/[slug].astro` aufnehmen. Danach in `src/data/site.ts` den Menüpunkt (DE+EN) und in
-`scripts/gen-lang-alt.mjs` das Pfad-Paar ergänzen, dann `npm run lang-alt`.
-
----
-
-## 7. Zweisprachigkeit (i18n)
-
-> **⭐ Deutsch ist immer führend.** DE ist die Quell-/Leitsprache, Englisch ist die
-> **1:1-Übersetzung** davon. Neue Inhalte immer zuerst auf Deutsch schreiben, dann EN
-> übersetzen. EN-Seiten sollen inhaltlich der DE-Fassung entsprechen (nicht abweichen).
-
-- **Domain = Sprache**, **kein `/en/`-Pfad.** Zwei Builds über `SITE_LANG` (`src/lib/lang.ts`):
-  `de` → `dist-de` → haushoppe.de, `en` → `dist-art` → haushoppe.art. `hreflang`/`canonical`
-  spannen über beide Domains (in `BaseLayout.astro`).
-- Der **Sprachumschalter** (Flagge im Header) zeigt aufs Pendant auf der **anderen Domain**
-  (absolute URL). Zuordnung: `src/data/lang-alt.json` (root-relativ; Header stellt die Domain davor).
-- Verknüpfte DE/EN-Kunstwerke haben dieselbe **`trid`** in `artworks.json`.
-
-**🔒 Vollständigkeits-Garantie (`npm run check`, läuft vor jedem `build`):**
-`scripts/check-i18n.mjs` bricht den Build ab, wenn (a) ein Werk nicht in **beiden** Sprachen
-existiert oder ein **Bild** fehlt, oder (b) eine **MDX-Seite** (home/kontakt/acquire/vita) in einer
-Sprache fehlt. So kann nie still eine Übersetzung fehlen. Unbekannte Maße bei Werken werden als `"?"` migriert (Renderer blendet sie aus).
-
-## 8. Suche (Pagefind)
-
-Clientseitige Volltextsuche. Der Index entsteht beim `build` (`pagefind --site dist-de` bzw.
-`dist-art`, je Sprache getrennt) und liegt unter `dist-*/pagefind/`. `data-pagefind-body` steckt auf `<main>`; Galerie-Grids sind
-per `data-pagefind-ignore` ausgenommen (Detailseiten sind die Suchziele). DE/EN werden über
-`<html lang>` automatisch getrennt. **Nur im `preview`/Prod sichtbar, nicht im `dev`.**
-
-## 9. Skripte (`scripts/`)
-
-Generieren/Prüfen (aus der **Site-Quelle** `src/data/`, nicht aus dem Migrations-Snapshot):
-- `check-i18n.mjs` — **Vollständigkeits-Gate** (`npm run check`, läuft vor jedem Build). Siehe Abschnitt 7.
-- `gen-artwork-meta.mjs` — `npm run meta`: baut `artwork-meta.json` (Werk-Beschriftung) aus den
-  `content`-Captions. Von Hand ergänzte Maße/Extra überleben eine Neugenerierung.
-- `gen-lang-alt.mjs` — `npm run lang-alt`: `data/lang-alt.json` (Sprach-Pendants, root-relativ).
-- `gen-images.mjs` — `npm run images`: WP-Uploads → `public/artworks/<id>.webp` + `artworks-media.json`.
-- `qa-artwork-meta.mjs` — Prüfbericht über die Werk-Beschriftungen (Parse-Anomalien).
-- `scaffold-*.mjs` / `fix-embeds.mjs` — historische Extraktion aus der Live-Seite (nicht mehr nötig).
-
----
-
-## 10. Deploy (Cloudflare Pages)
-
-- **Zwei Builds, zwei Domains:** `npm run build:de` → `dist-de/` → **haushoppe.de**,
-  `npm run build:art` → `dist-art/` → **haushoppe.art**. `npm run build` macht beide (mit i18n-Check).
-  Kein `/en/`-Pfad — jede Sprache liegt am Root ihrer Domain.
-- **CSP** (falls gesetzt) muss erlauben: `img-src i.ytimg.com`, `frame-src
-  youtube-nocookie.com explorer.ordinalsbot.com www.google.com` (Video-Facade, Ordinals, Karte).
-- Braucht die Cloudflare-Secrets des Betreibers.
-
-## 11. Gotchas / Entscheidungen
-
-- **Design-Referenz ist die Live-Seite** (haushoppe.de/.art sind noch online). Bei Änderungen
-  am Look immer per Playwright/Screenshot gegen live vergleichen.
-- **Kunstwerk-Bilder** sind höher aufgelöst als früher (1400 px statt 1024 px) — bewusst, für
-  Schärfe; die Detailseite zeigt Kunst in voller Breite.
-- **5 „Ordinals"** (Krypto-Werke) haben ein invertiertes Sonderdesign (`ArtworkBody.astro`).
-- `public/artworks/` (webp) und `dist/`, `pagefind/` sind **gitignored** — beim Deploy neu erzeugt.
-- Ausführliche Historie & Entscheidungen: **`MIGRATION-PLAN.md`**.
-```
+- Dateien außerhalb der Liste in Regel 2 ändern.
+- Eine Sprache weglassen (immer DE **und** EN).
+- JSON/TS-Struktur kaputt machen (ungültiges JSON = alles bricht).
+- Große, gemischte PRs mit vielen unzusammenhängenden Änderungen.
+- Direkt auf `main` pushen oder `--force` benutzen — immer über einen Pull Request.

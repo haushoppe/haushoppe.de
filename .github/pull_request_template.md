@@ -1,4 +1,4 @@
-<!-- Kurz und konkret. Ein PR = eine Sache. Anleitung für KI-Agenten: CLAUDE.md (bzw. AGENTS.md) im Repo-Root. -->
+<!-- Kurz und konkret. Ein PR = eine Sache. Anleitung für KI-Agenten: CLAUDE.md im Repo-Root (Redaktions-Rolle). -->
 
 ## Was ändert dieser PR?
 
