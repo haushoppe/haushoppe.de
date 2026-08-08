@@ -1,6 +1,6 @@
 # AGENTS.md — Anleitung für KI-Agenten (Inhalts-Änderungen)
 
-**Diese Datei sagt dir — dem KI-Agenten (z. B. ChatGPT/Codex) — genau, wie du Inhalte dieser Website änderst und als guten Pull Request einreichst. Halte dich Schritt für Schritt daran.**
+**Diese Datei sagt dir — dem KI-Agenten (z. B. Claude über claude.ai/code) — genau, wie du Inhalte dieser Website änderst und als guten Pull Request einreichst. Halte dich Schritt für Schritt daran.**
 
 Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist zweisprachig:
 **Deutsch → haushoppe.de**, **Englisch → haushoppe.art**. Du machst **nur Inhalts-Änderungen**

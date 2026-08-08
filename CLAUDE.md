@@ -3,6 +3,12 @@
 Arbeitsanleitung & Architektur-Doku für dieses Repo. Für Claude Code **und** für Menschen,
 die morgen Inhalte pflegen wollen.
 
+> **Machst du Inhalts-Änderungen (Texte, Werke, Ausstellungen)?** Folge zuerst der importierten
+> Schritt-für-Schritt-Anleitung unten (Pflicht-Ablauf, Rezepte, „nur diese Dateien"). Der Rest
+> dieser Datei ist die technische Architektur-Doku für Entwickler.
+
+@AGENTS.md
+
 ---
 
 ## 1. Was ist das?
