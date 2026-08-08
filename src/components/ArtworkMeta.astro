@@ -27,8 +27,9 @@ const technique = (en?.technique || meta.technique || '').trim();
 // Maße sind sprachneutral: leeres EN fällt auf DE zurück. „?“ = unbekannt → nicht anzeigen.
 const rawDim = (en?.dimensions || meta.dimensions || '').trim();
 const dimensions = rawDim === '?' ? '' : rawDim;
-const edition = (en?.edition ?? meta.edition ?? '').trim();
-const extra = en?.extra ?? meta.extra;
+// leeres EN fällt auf DE zurück (wie Titel/Technik/Maße) — nicht ??, sonst bleibt EN leer statt DE.
+const edition = (en?.edition || meta.edition || '').trim();
+const extra = en?.extra || meta.extra;
 // Technik + Maße als eine saubere Zeile (kein JSX-Whitespace).
 const techLine = [technique, dimensions].filter(Boolean).join(', ');
 ---

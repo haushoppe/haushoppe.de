@@ -11,7 +11,7 @@ export function getStaticPaths() {
   const arts = artworksData as any[];
   const media = mediaData as Record<string, { src: string; w: number; h: number }>;
   return arts
-    .filter((a) => a.lang === LANG && media[a.id])
+    .filter((a) => a.type === 'portfolio' && a.lang === LANG && media[a.id])
     .map((a) => ({ params: { slug: a.slug }, props: { art: a, img: media[a.id] } }));
 }
 

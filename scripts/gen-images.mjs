@@ -4,10 +4,12 @@
 // (für das Masonry-Seitenverhältnis der Galerie). Dedupliziert identische Quelldateien.
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
-const BASE = path.resolve(process.env.HOME, 'Work/haushoppe.de-astro-rebuild');
-const SITE = path.join(BASE, 'site');
+// Pfade relativ zum Skript (site/scripts/) auflösen — nicht an einen festen Klon-Ort binden.
+const SITE = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const BASE = path.resolve(SITE, '..');
 const UP = path.join(BASE, 'wordpress/wp-content/uploads');
 const OUT = path.join(SITE, 'public/artworks');
 fs.mkdirSync(OUT, { recursive: true });

@@ -25,8 +25,6 @@ const pages = defineCollection({
       .optional(),
     // Kunst Erwerben
     hero: z.object({ src: z.string(), alt: z.string() }).optional(),
-    portrait: z.object({ src: z.string(), alt: z.string(), caption: z.string() }).optional(),
-    sectionHeading: z.string().optional(),
     // Kontakt
     map: z.string().optional(),
   }),

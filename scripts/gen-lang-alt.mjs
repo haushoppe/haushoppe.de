@@ -12,7 +12,9 @@ const map = {};
 // Portfolio: nach trid gruppieren
 const byTrid = {};
 for (const a of artworks) {
-  if (a.type !== 'portfolio') continue;
+  // ohne trid keine Sprach-Verknüpfung — sonst landen alle null-trid-Werke im selben „null“-Topf
+  // und würden fälschlich als DE↔EN-Paar verlinkt.
+  if (a.type !== 'portfolio' || !a.trid) continue;
   (byTrid[a.trid] ||= {})[a.lang] = a.slug;
 }
 // Sprache = Domain: beide Sprachen liegen am Root ihrer Domain, KEIN /en/-Präfix.

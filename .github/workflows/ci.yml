@@ -22,6 +22,9 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
+      - name: Abgeleitete Daten neu generieren (Beschriftungen + Sprach-Pendants)
+        run: npm run data
+
       - name: i18n-Vollständigkeit prüfen (jedes Werk & jede Seite in DE + EN)
         run: npm run check
 

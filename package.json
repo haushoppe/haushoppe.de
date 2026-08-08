@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run check && npm run build:de && npm run build:art",
+    "build": "npm run data && npm run check && npm run build:de && npm run build:art",
+    "data": "npm run meta && npm run lang-alt",
     "check": "node scripts/check-i18n.mjs",
     "build:de": "SITE_LANG=de astro build && pagefind --site dist-de",
     "build:art": "SITE_LANG=en astro build && pagefind --site dist-art",

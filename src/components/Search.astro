@@ -1,8 +1,8 @@
 ---
 // Clientseitige Volltextsuche via Pagefind. Der Index wird nach dem Astro-Build
-// erzeugt (`pagefind --site dist`) und liegt unter /pagefind/. Ein Klick auf das
-// originale Astra-Such-Icon (.ast-search-menu-icon) öffnet ein Overlay; die UI wird
-// erst dann lazy geladen. Pagefind trennt DE/EN automatisch über <html lang>.
+// erzeugt (`pagefind --site dist-de` bzw. `dist-art`) und liegt unter /pagefind/. Ein Klick
+// auf das Such-Icon im Header ([data-search-trigger]) öffnet ein Overlay; die UI wird erst
+// dann lazy geladen. Pagefind trennt DE/EN automatisch über <html lang>.
 interface Props {
   lang?: 'de' | 'en';
 }
@@ -95,13 +95,6 @@ const translations =
         return;
       }
       if (e.target.closest('[data-search-close]')) close();
-    });
-    // Das originale Astra-Formular (Action /?s=) würde statisch ins Leere laufen → abfangen.
-    document.addEventListener('submit', function (e) {
-      if (e.target.closest('.search-form')) {
-        e.preventDefault();
-        open();
-      }
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !overlay.hidden) close();

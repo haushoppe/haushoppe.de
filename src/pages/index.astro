@@ -11,6 +11,11 @@ const entry = pages.find((p) => p.id === `home-${LANG}`);
 if (!entry) throw new Error(`MDX-Seite home-${LANG} fehlt. Vorhandene ids: ${pages.map((p) => p.id).join(', ')}`);
 const { Content } = await render(entry);
 const fm = entry.data;
+// Klare Meldung statt kryptischem „Cannot read properties of undefined“, falls ein Pflicht-
+// Frontmatter-Block der Startseite fehlt (Home.astro braucht diese Felder).
+for (const req of ['video', 'h1', 'welcome', 'featured']) {
+  if (!fm[req]) throw new Error(`${entry.id}.mdx: Frontmatter-Feld „${req}“ fehlt (Pflicht auf der Startseite).`);
+}
 ---
 
 <BaseLayout title={fm.title} description={fm.description}>
