@@ -1,16 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
-import { getCollection, render } from 'astro:content';
-import { LANG } from '../lib/lang';
+import { loadPage } from '../lib/pages';
 
 // Startseite: Struktur (Video, Werk, Signatur) aus dem MDX-Frontmatter, Intro-Prosa aus dem
-// MDX-Body (content/pages/home.<lang>.mdx). Sprache = Domain (LANG).
-const pages = await getCollection('pages');
-const entry = pages.find((p) => p.id === `home-${LANG}`);
-if (!entry) throw new Error(`MDX-Seite home-${LANG} fehlt. Vorhandene ids: ${pages.map((p) => p.id).join(', ')}`);
-const { Content } = await render(entry);
-const fm = entry.data;
+// MDX-Body (content/pages/home-<lang>.mdx). Sprache = Domain (LANG).
+const { entry, Content, data: fm } = await loadPage('home');
 // Klare Meldung statt kryptischem „Cannot read properties of undefined“, falls ein Pflicht-
 // Frontmatter-Block der Startseite fehlt (Home.astro braucht diese Felder).
 for (const req of ['video', 'h1', 'welcome', 'featured']) {

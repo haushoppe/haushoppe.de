@@ -1,16 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Vita from '../components/Vita.astro';
-import { getCollection, render } from 'astro:content';
-import { LANG } from '../lib/lang';
+import { loadPage } from '../lib/pages';
 
 // Vita: Struktur (Hero, Titel) aus dem MDX-Frontmatter, Inhalt (Lebenslauf/Ausstellungen als
 // Markdown-Listen) aus dem Body (content/pages/vita-<lang>.mdx).
-const pages = await getCollection('pages');
-const entry = pages.find((p) => p.id === `vita-${LANG}`);
-if (!entry) throw new Error(`MDX-Seite vita-${LANG} fehlt. Vorhandene ids: ${pages.map((p) => p.id).join(', ')}`);
-const { Content } = await render(entry);
-const fm = entry.data;
+const { Content, data: fm } = await loadPage('vita');
 ---
 
 <BaseLayout title={fm.title} description={fm.description}>

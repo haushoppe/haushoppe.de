@@ -6,7 +6,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Search from '../components/Search.astro';
 import { LANG, DE_ORIGIN, EN_ORIGIN, SELF_ORIGIN } from '../lib/lang';
-import langAlt from '../data/lang-alt.json';
+import { normPath, altOf } from '../lib/paths';
 import '../styles/wp-design.css';
 import '../styles/global.css';
 import '@fontsource/merriweather/400.css';
@@ -23,10 +23,8 @@ interface Props {
 const { title = 'HAUS HOPPE - Galerie für Bildende Kunst', description = '', lang = LANG, layout } = Astro.props;
 
 // canonical + hreflang über die zwei Domains (Sprache = Domain, kein /en/-Pfad).
-const ALT = langAlt as Record<string, string>;
-let path = Astro.url.pathname;
-if (path !== '/' && !path.endsWith('/')) path += '/';
-const otherPath = ALT[path] || path;
+const path = normPath(Astro.url.pathname);
+const otherPath = altOf(path) || path;
 const dePath = lang === 'de' ? path : otherPath;
 const enPath = lang === 'en' ? path : otherPath;
 const canonical = SELF_ORIGIN + path;

@@ -3,23 +3,21 @@
 // Navigation als 700-px-Leiste mit schwarzen Linien oben/unten (wie live), Sprach-Flagge
 // + Such-Icon rechts, mobil als Hamburger. Aktiver Menüpunkt + Sprach-Pendant server-seitig.
 import { nav as navData, logo } from '../data/site';
-import langAlt from '../data/lang-alt.json';
 import { OTHER_ORIGIN } from '../lib/lang';
+import { normPath, altOf } from '../lib/paths';
 
 interface Props {
   lang: 'de' | 'en';
 }
 const { lang } = Astro.props;
 const items = navData[lang];
-const ALT = langAlt as Record<string, string>;
 
-let path = Astro.url.pathname;
-if (path !== '/' && !path.endsWith('/')) path += '/';
+const path = normPath(Astro.url.pathname);
 let activePath = path;
 if (/^\/portfolio\//.test(path)) activePath = lang === 'en' ? '/artwork/' : '/werke/';
 
 // Sprachwechsel: gleiches Werk/gleiche Seite auf der ANDEREN Domain (haushoppe.de ↔ haushoppe.art).
-const altUrl = OTHER_ORIGIN + (ALT[path] || '/');
+const altUrl = OTHER_ORIGIN + (altOf(path) || '/');
 const flag = lang === 'en' ? 'de' : 'en';
 const flagLabel = lang === 'en' ? 'Zur deutschen Seite wechseln' : 'Switch to the English site';
 const searchLabel = lang === 'en' ? 'Search' : 'Suchen';

@@ -7,7 +7,7 @@ import Gallery from '../components/Gallery.astro';
 import Kontakt from '../components/Kontakt.astro';
 import AcquireArt from '../components/AcquireArt.astro';
 import { galleryItems, galleryCategories } from '../lib/artworks';
-import { getCollection, render } from 'astro:content';
+import { loadPage } from '../lib/pages';
 import { LANG } from '../lib/lang';
 
 export function getStaticPaths() {
@@ -52,12 +52,9 @@ const allLabel = LANG === 'de' ? 'Alle' : 'All';
 let MdxContent: any = null;
 let acquireFm: any = null;
 if (type === 'contact' || type === 'acquire') {
-  const id = type === 'contact' ? `kontakt-${LANG}` : `acquire-${LANG}`;
-  const pages = await getCollection('pages');
-  const entry = pages.find((p) => p.id === id);
-  if (!entry) throw new Error(`MDX-Seite ${id} fehlt.`);
-  MdxContent = (await render(entry)).Content;
-  if (type === 'acquire') acquireFm = entry.data;
+  const { Content, data } = await loadPage(type === 'contact' ? 'kontakt' : 'acquire');
+  MdxContent = Content;
+  if (type === 'acquire') acquireFm = data;
 }
 ---
 
