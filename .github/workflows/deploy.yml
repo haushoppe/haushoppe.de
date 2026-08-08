@@ -3,9 +3,13 @@ name: deploy
 # Nach jedem Merge auf main: bauen (Daten + i18n-Check + beide Sprachen) und beide
 # Cloudflare-Pages-Projekte automatisch deployen. Schlägt Build oder Check fehl,
 # wird NICHT deployt. Manuell auslösbar über „Run workflow" (workflow_dispatch).
+# Zusätzlich nächtlich (03:00 UTC): der Build zieht dabei die aktuelle YouTube-Playlist
+# (scripts/gen-videos.mjs), sodass neue Videos automatisch auf der Seite erscheinen.
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '0 3 * * *'
   workflow_dispatch:
 
 concurrency:
@@ -20,6 +24,9 @@ jobs:
       # kein Credential und darf im Klartext stehen.
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: 95a53d0584028b2a64d1a3a991a7fd14
+      # YouTube-Data-API-Key für scripts/gen-videos.mjs (im data-Step). Fehlt der Key,
+      # behält der Generator die committete Liste — der Build bricht NICHT ab.
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "npm run data && npm run check && npm run build:de && npm run build:art",
-    "data": "npm run meta && npm run lang-alt",
+    "data": "npm run meta && npm run lang-alt && npm run videos",
     "check": "node scripts/check-i18n.mjs",
     "build:de": "SITE_LANG=de astro build && pagefind --site dist-de",
     "build:art": "SITE_LANG=en astro build && pagefind --site dist-art",
@@ -17,7 +17,8 @@
     "images": "node scripts/gen-images.mjs",
     "astro": "astro",
     "meta": "node scripts/gen-artwork-meta.mjs",
-    "lang-alt": "node scripts/gen-lang-alt.mjs"
+    "lang-alt": "node scripts/gen-lang-alt.mjs",
+    "videos": "node scripts/gen-videos.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
