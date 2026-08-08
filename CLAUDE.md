@@ -174,9 +174,9 @@ Akkordeon-Einträge sind `<AccItem title="…">…Prosa…</AccItem>`. Frontmatt
 `<figure class="acq-portrait">` im Body.
 
 ### Vita ändern
-**MDX:** `src/content/pages/vita-de.mdx` / `vita-en.mdx`. Abschnitte als `## Überschrift`, Lebenslauf/
-Ausstellungen als Markdown-Listen (`- <strong>Jahr</strong> …` bzw. `- 1987 …`). Neue Ausstellung =
-eine neue Bullet-Zeile. Frontmatter: `title`, `h1` (Seiten-Überschrift „Olaf Hoppe"), `hero`.
+**MDX:** `src/content/pages/vita-de.mdx` / `vita-en.mdx`. Lebenslauf = Markdown-**Tabelle** (`| Jahr | Ereignis |`),
+Ausstellungen = 3-Spalten-**Tabelle** (`| Jahr | Ausstellung | Art |`, Art = AB/EA), Galerien/Museen = Bullet-Listen.
+Neue Ausstellung = eine neue Tabellenzeile. Frontmatter: `title`, `h1` („Olaf Hoppe"), `hero`.
 
 ### Navigation, Social-Links, Kontaktadresse, Logo
 **`src/data/site.ts`** — eine Datei für alles. Menüpunkte in `nav.de` / `nav.en`, Socials in

@@ -48,24 +48,46 @@ const { hero, h1 } = Astro.props;
   .vita :global(p) {
     margin: 0 0 0.9rem;
   }
-  /* Listen (Lebenslauf, Ausstellungen): ohne Bullets; führendes <strong> = fixe Jahres-Spalte. */
+  /* Listen (Vertretende Galerie, Museen) — echte Bullets */
   .vita :global(ul) {
-    list-style: none;
-    margin: 0 0 1rem;
-    padding: 0;
+    margin: 0 0 1.25rem;
+    padding-left: 1.25rem;
   }
   .vita :global(li) {
-    margin: 0 0 0.35rem;
+    margin: 0 0 0.3rem;
     line-height: 1.55;
   }
-  .vita :global(li strong) {
-    display: inline-block;
-    min-width: 5.5rem;
+  /* Tabellen: Lebenslauf (Jahr | Ereignis), Ausstellungen (Jahr | Ausstellung | Art) */
+  .vita :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+  }
+  .vita :global(th) {
+    text-align: left;
+    padding: 0.5rem 0.7rem;
+    border-bottom: 2px solid var(--ink);
+    font-weight: 700;
+  }
+  .vita :global(td) {
+    padding: 0.5rem 0.7rem;
+    border-bottom: 1px solid #e8e6e2;
+    vertical-align: top;
+  }
+  /* Jahres-Spalte: schmal, Ziffern gleich breit */
+  .vita :global(td:first-child) {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
   }
   @media (max-width: 640px) {
-    .vita :global(li strong) {
-      display: block;
-      min-width: 0;
+    .vita :global(table) {
+      font-size: 0.88rem;
+    }
+    .vita :global(th),
+    .vita :global(td) {
+      padding: 0.4rem 0.5rem;
     }
   }
 </style>
