@@ -63,7 +63,10 @@ const { hero, h1 } = Astro.props;
     width: 100%;
     border-collapse: collapse;
     margin: 0 0 1.5rem;
-    font-size: 0.95rem;
+    /* KEIN rem: das alte Astra-wp-design.css verkleinert auf Mobil die html-Root-Größe,
+       wodurch rem-Werte in der Tabelle stärker schrumpfen als der Fließtext (Bullets = 16px).
+       Mit em/Erben bleibt die Tabelle exakt so groß wie der restliche Text. */
+    font-size: 1em;
   }
   .vita :global(th) {
     text-align: left;
@@ -83,9 +86,6 @@ const { hero, h1 } = Astro.props;
     color: var(--ink);
   }
   @media (max-width: 640px) {
-    .vita :global(table) {
-      font-size: 0.88rem;
-    }
     .vita :global(th),
     .vita :global(td) {
       padding: 0.4rem 0.5rem;
