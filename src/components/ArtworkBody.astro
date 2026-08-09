@@ -1,16 +1,18 @@
 ---
 // Inhalt einer Kunstwerk-Detailseite: normalerweise das große Bild, bei den 5 Ordinals
 // stattdessen die Live-Inschrift (ordinalsbot-iframe) + Kauf-Link mit invertiertem Design.
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { ordinalData } from '../lib/ordinals';
 import ArtworkMeta from './ArtworkMeta.astro';
 import metaData from '../data/artwork-meta.json';
 
 interface Props {
   art: any;
-  img: { src: string; w: number; h: number };
+  image: ImageMetadata;
   lang?: 'de' | 'en';
 }
-const { art, img, lang = 'de' } = Astro.props;
+const { art, image, lang = 'de' } = Astro.props;
 const ord = ordinalData(art);
 // Strukturierte Werk-Beschriftung (Ordinals bekommen keine — eigener Sonderfall).
 // Key = trid (für DE + EN identisch).
@@ -50,7 +52,15 @@ const t =
   ) : (
     <div class="entry-content clear" itemprop="text">
       <figure class="wp-block-image size-large">
-        <img width={img.w} height={img.h} src={img.src} alt={art.title} loading="eager" decoding="async" />
+        <Picture
+          src={image}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[480, 960, 1440]}
+          sizes="(max-width: 1000px) 92vw, 900px"
+          alt={art.title}
+          loading="eager"
+        />
         {meta && <ArtworkMeta meta={meta} lang={lang} />}
       </figure>
     </div>

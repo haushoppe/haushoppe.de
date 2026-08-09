@@ -1,5 +1,6 @@
 ---
 // Wiederverwendbare Visual-Portfolio-Galerie (justified Layout + Kategorie-Filter), DE & EN.
+import { Picture } from 'astro:assets';
 import type { GalleryItem, FilterCat } from '../lib/artworks';
 interface Props {
   items: GalleryItem[];
@@ -42,7 +43,16 @@ const { items, cats, allLabel = 'Alle' } = Astro.props;
               <div class="vp-portfolio__item-img-wrap">
                 <div class="vp-portfolio__item-img">
                   <a href={it.detailUrl} aria-label={it.title}>
-                    <img width={it.w} height={it.h} src={it.img} alt="" loading="lazy" decoding="async" />
+                    <Picture
+                      src={it.image}
+                      formats={['avif', 'webp']}
+                      fallbackFormat="webp"
+                      widths={[240, 480, 720]}
+                      sizes="(max-width: 600px) 45vw, 340px"
+                      layout="none"
+                      alt=""
+                      loading="lazy"
+                    />
                   </a>
                 </div>
               </div>
@@ -80,7 +90,8 @@ const { items, cats, allLabel = 'Alle' } = Astro.props;
 <style is:global>
   .vp-portfolio__item-img,
   .vp-portfolio__item-img > a,
-  .vp-portfolio__item-img > a > img {
+  .vp-portfolio__item-img > a > picture,
+  .vp-portfolio__item-img > a > picture > img {
     width: 100%;
     height: 100%;
     display: block;

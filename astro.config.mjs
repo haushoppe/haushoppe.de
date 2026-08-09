@@ -12,8 +12,11 @@ export default defineConfig({
   outDir: LANG === 'en' ? './dist-art' : './dist-de',
   integrations: [mdx(), sitemap()],
   image: {
-    // Kunstwerke werden vorab als webp erzeugt (scripts/gen-images.mjs) und statisch
-    // ausgeliefert; astro:assets bleibt für spätere Feinbild-Optimierung verfügbar.
+    // Werke liegen als Master unter src/artwork-originals/ (Nachlass) und werden beim Build
+    // über astro:assets zu AVIF+WebP in mehreren Größen optimiert (<Picture> in der Galerie
+    // + Detailseite). Nichts Abgeleitetes wird versioniert. Setup wie bei haushoppe-its.de:
+    // ein Default-`layout` erzeugt width-basierte srcsets, `responsiveStyles` die Skalier-CSS.
+    layout: 'constrained',
     responsiveStyles: true,
   },
   vite: {

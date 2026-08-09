@@ -36,13 +36,35 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
    - `src/content/pages/*.mdx` — die Seitentexte (Startseite, Kontakt, Kunst Erwerben, Vita)
    - `src/data/artwork-meta.json` — Werk-Beschriftungen / fehlende Maße
    - `src/data/site.ts` — Navigation, Kontaktadresse, Social-Links
-   - `src/data/artworks.json` + `src/data/artworks-media.json` — nur beim Hinzufügen neuer Werke (fortgeschritten)
+   - `src/data/artworks.json` — nur beim Hinzufügen neuer Werke (fortgeschritten); die Werk-**Bilder** liegen im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv")
 
    **NIEMALS anfassen:** `src/components/`, `src/lib/`, `src/layouts/`, `src/pages/`, `scripts/`, `astro.config.mjs`, `package.json`, `src/content.config.ts`.
 3. **Echte Umlaute** schreiben: `ä ö ü ß Ä Ö Ü` — niemals `ae/oe/ue/ss`. Typografische Zeichen benutzen: Anführungszeichen `„ "`, Gedankenstrich `–`, Maß-Kreuz `×` (nicht `x`).
 4. **Vor jedem PR prüfen:** `npm install` (einmal), dann `npm run check`. Muss **grün** sein.
 5. **Gültiges JSON/Markdown.** Bei JSON-Dateien auf Kommas und Anführungszeichen achten — eine kaputte Klammer bricht alles. Nichts an der Struktur ändern, nur die Text-Werte.
 6. **Ein PR = eine Sache.** Kleine, klare Änderung, aussagekräftiger Titel, 1–2 Sätze Beschreibung.
+
+---
+
+## 🗄️ Das Langzeit-Archiv der Werke (Olafs digitaler Nachlass) — VERBINDLICH
+
+`src/artwork-originals/` ist das **digitale Langzeit-Archiv** von Olaf Hoppes Werk — der wertvollste und oft **unwiederbringliche** Bestand dieses Repos. Es ist die **einzige versionierte Bildquelle**: Die auf der Website ausgelieferten Bilder (AVIF + WebP, mehrere Größen) erzeugt Astro **beim Build automatisch aus diesem Archiv**. Nichts Abgeleitetes wird versioniert.
+
+**Deshalb gilt für jedes Werk-Bild: so hochauflösend und originalgetreu wie möglich archivieren.**
+
+### So wird ein Werk-Bild in bester Auflösung abgelegt
+1. **Beste verfügbare Originaldatei nehmen** — höchste Auflösung, unbeschnitten, farbecht, unkomprimiert oder nur gering komprimiert. Liegen mehrere Fassungen vor, immer die **größte/beste**.
+2. Ablage unter `src/artwork-originals/<jahr>/<monat>/<sprechender-name>.<endung>`. Der **Dateiname trägt die Metadaten** (Titel · Jahr · Technik · Maße) — bewusst so lassen.
+3. **Format:** **AVIF** (visuell verlustfrei, Qualität 80) für große Fotos; bereits kleine oder verlustfreie Quellen **verlustfrei** ablegen. **Kein BMP** (nicht web-tauglich → nach AVIF wandeln). Der Generator `npm run archive` macht das korrekt und pflegt `manifest.json` (Datei → Werk-IDs, Titel, Datum, Maße).
+4. **Volle Auflösung behalten.**
+
+### ⛔ Niemals hochskalieren — wir nehmen, was wir haben
+Auflösung wird **nie künstlich vergrößert** (kein KI-Upscaling, kein „Aufblasen"). Das würde Details **erfinden** und den Nachlass verfälschen — ein hochskaliertes Bild ist nicht mehr das echte Werk. Manche **alten Werke existieren nur in schwacher Auflösung**, weil es schlicht **kein besseres Original mehr gibt**. Das ist **in Ordnung**: Das Archiv hält den **besten verfügbaren Stand** fest — nicht mehr, aber auch nicht weniger.
+
+### ✅ Bessere Versionen sind jederzeit willkommen
+Taucht später eine **bessere Datei** auf — ein neues, hochauflösendes Foto des physischen Werks oder ein besserer Scan —, **darf und soll** sie hochgeladen werden; sie ersetzt die schwächere. Das Archiv soll über die Zeit **besser** werden.
+
+> **Auftrag an dich (Assistent):** Fällt dir auf, dass ein Werk nur in **schwacher Auflösung** vorliegt, **ermutige den Nutzer aktiv**, eine bessere Aufnahme des physischen Werks nachzureichen — das Original hängt ja bei Olaf. Nicht drängen, aber freundlich darauf hinweisen, dass sich das Archiv jederzeit verbessern lässt.
 
 ---
 
@@ -61,7 +83,7 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
 
 > Kommt eine Bild-/Datei-Aufgabe **ohne** Drive-Link, **frag nach dem Google-Drive-Link** — versuche NICHT, ein gepastetes Bild oder einen PR-Kommentar-Anhang zu committen (beides schlägt fehl).
 >
-> **Werk-Bilder (neue Kunstwerke)** sind ein Sonderfall — siehe Rezept E; das Werk-Bild-Verzeichnis wird gerade umgebaut, im Zweifel im PR notieren „Bild-Einbindung bitte Johannes".
+> **Werk-Bilder (neue Kunstwerke)** sind ein Sonderfall — sie kommen **nicht** nach `public/media/`, sondern als **hochauflösendes Original** ins Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv" + Rezept E). Im Zweifel im PR notieren „Werk-Bild bitte Johannes".
 
 ---
 
@@ -173,11 +195,8 @@ Das ist die einzige komplexe Aufgabe (Bild + zwei Daten-Einträge + Beschriftung
 
 Ein Werk braucht **immer beide Sprachen**, verbunden über dieselbe `trid` (eine eindeutige Zahl):
 
-1. **Bild:** `public/artworks/<ID>.webp` (max. 1400 px lange Kante). *(Kann das Bild nicht committet werden, weil `public/artworks/` in `.gitignore` steht → Johannes fragen.)*
-2. **Bildmaße** in `src/data/artworks-media.json` ergänzen:
-   ```json
-   "<ID>": { "src": "/artworks/<ID>.webp", "w": 1400, "h": 1002 }
-   ```
+1. **Original-Bild ins Archiv:** die **bestaufgelöste** Datei des Werks unter `src/artwork-originals/<jahr>/<monat>/<name>.avif` ablegen — **volle Auflösung, kein Upscaling** (siehe „🗄️ Langzeit-Archiv"). Die Website-Bilder (AVIF + WebP, responsive) entstehen daraus **automatisch beim Build** — es gibt **kein** `public/artworks/` und **keine** `artworks-media.json` mehr.
+2. Die Zuordnung Werk-ID ↔ Archiv-Datei erzeugt `npm run archive` im `manifest.json` (aus dem `thumbFile` des `artworks.json`-Eintrags, Schritt 3). *(Das ist fortgeschritten — im Zweifel im PR „Werk-Bild bitte Johannes" notieren.)*
 3. **Zwei** Einträge in `src/data/artworks.json` (Array) — Vorlage (Gemälde). `<ID>` und `<trid>` durch neue, noch nicht vergebene Zahlen ersetzen; für die englische Fassung `<ID>` z. B. mit `-en`:
    ```json
    {
@@ -230,7 +249,7 @@ npm run build:de   # baut die deutsche Seite (findet Tippfehler/kaputtes Markdow
 - **`npm run check` meckert?** Dann fehlt genau das Gemeldete. Beispiele:
   - „*MDX-Seite vita-en.mdx fehlt*" → englische Datei anlegen/ergänzen.
   - „*Werk … : fehlt EN-Übersetzung*" → zweiten (englischen) Eintrag mit gleicher `trid` hinzufügen.
-  - „*Werk … : kein Bild*" → Bild + `artworks-media.json`-Eintrag ergänzen.
+  - „*Werk … : kein Bild*" → das Werk-Bild fehlt im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv").
 - **`npm run build:de` bricht ab?** Meist ein Markdown-/JSON-Fehler (fehlendes Komma, kaputte Klammer) in der gerade geänderten Datei. Fehlermeldung lesen, Datei korrigieren.
 
 Die **CI** (GitHub Actions) macht dieselben Prüfungen automatisch bei jedem PR. Ist der grüne Haken da, passt's; ist er rot, sagt der Log genau, was fehlt — dann nachbessern und erneut committen.

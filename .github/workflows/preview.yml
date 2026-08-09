@@ -35,6 +35,16 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
+      # Astros Bild-Cache wiederverwenden (siehe deploy.yml) — Vorschau-Builds bleiben schnell,
+      # solange sich die Werke nicht ändern.
+      - name: Astro-Bild-Cache wiederherstellen
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ hashFiles('src/artwork-originals/manifest.json') }}
+          restore-keys: |
+            astro-assets-
+
       # Kein blockierender i18n-Check hier — die Vorschau soll auch einen (noch)
       # unvollständigen Stand zeigen. Der Merge-Gate-Check läuft in ci.yml.
       - name: Beide Sprachen bauen
