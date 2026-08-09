@@ -99,6 +99,14 @@ const translations =
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !overlay.hidden) close();
     });
+    // Klick aufs Ergebnis-Bild führt zum Werk (wie der Titel-Link).
+    overlay.addEventListener('click', function (e) {
+      var thumb = e.target.closest('.pagefind-ui__result-thumb');
+      if (!thumb) return;
+      var result = thumb.closest('.pagefind-ui__result');
+      var link = result && result.querySelector('.pagefind-ui__result-link');
+      if (link) window.location.href = link.href;
+    });
   })();
 </script>
 
@@ -127,7 +135,6 @@ const translations =
     max-height: 84vh;
     overflow: auto;
     padding: 2.5rem 2rem 2rem;
-    border-radius: 4px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   }
   .search-overlay__close {
@@ -148,6 +155,28 @@ const translations =
     --pagefind-ui-background: #fff;
     --pagefind-ui-border: #dcdcdc;
     --pagefind-ui-font: inherit;
-    --pagefind-ui-border-radius: 3px;
+  }
+  /* Eckig: die Variable muss auf .pagefind-ui selbst — dort setzt Pagefind seinen 8px-Default. */
+  #pagefind-search .pagefind-ui {
+    --pagefind-ui-border-radius: 0;
+  }
+  /* Ergebnis-Bild klickbar (führt wie der Titel zum Werk) + eckig (Pagefind setzt sonst 8px). */
+  #pagefind-search .pagefind-ui__result-thumb,
+  #pagefind-search .pagefind-ui__result-image {
+    border-radius: 0;
+  }
+  #pagefind-search .pagefind-ui__result-thumb {
+    cursor: pointer;
+  }
+  /* Dezentes statt grelles Highlight. */
+  #pagefind-search mark {
+    background: rgba(0, 0, 0, 0.08);
+    color: inherit;
+  }
+  /* Fokusring markenkonform (statt UA-Blau), eckig + barrierefrei. */
+  #pagefind-search .pagefind-ui__search-input:focus,
+  #pagefind-search .pagefind-ui__search-input:focus-visible {
+    outline: 2px solid #212121;
+    outline-offset: 2px;
   }
 </style>
