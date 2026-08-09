@@ -1,6 +1,7 @@
-// Justified-Layout wie Visual Portfolio (data-vp-layout="justified"): Zeilen werden auf die
-// Container-Breite gestreckt bei Zielhöhe ~200px; letzte Zeile linksbündig. Plus Kategorie-
-// Filter. Bildmaße kommen aus data-w/data-h (kein Warten aufs Laden nötig).
+// Justified-Layout wie Visual Portfolio (Zeilen auf Container-Breite, Zielhöhe ~200px, letzte
+// Zeile linksbündig) + Kategorie-Filter + Infinite Scroll wie im Original. Die Galerie liefert
+// nur den ersten Batch als HTML; alle Werke stecken als JSON (.vp-portfolio__data) in der Seite.
+// Filter arbeitet über ALLE Werke; beim Scrollen werden weitere Kacheln aus den Daten gebaut.
 (function () {
   function layout(vp) {
     const wrap = vp.querySelector('.vp-portfolio__items');
@@ -33,19 +34,15 @@
       const w = parseFloat(el.dataset.w), h = parseFloat(el.dataset.h);
       if (!w || !h) continue;
       const aspect = w / h;
-      const heightWith = (W - gap * row.length) / (aspectSum + aspect); // Höhe, wenn dieses Bild dazukommt
+      const heightWith = (W - gap * row.length) / (aspectSum + aspect);
       if (heightWith > targetH) {
-        // noch höher als Ziel → Bild einfach aufnehmen
         row.push(el);
         aspectSum += aspect;
       } else {
-        // Aufnahme drückt die Höhe auf/unter Ziel. Wie das echte Visual Portfolio (Flickr-
-        // Justified): Bild aufnehmen ODER die Zeile ohne es umbrechen — je nachdem, was näher
-        // an der Zielhöhe liegt. Verhindert das „ein Bild zu viel" (4/Reihe statt 3/Reihe).
         const heightWithout = row.length ? (W - gap * (row.length - 1)) / aspectSum : Infinity;
         if (row.length && Math.abs(heightWithout - targetH) < Math.abs(heightWith - targetH)) {
-          place(false); // Zeile ohne dieses Bild umbrechen …
-          row.push(el); // … Bild beginnt die neue Zeile
+          place(false);
+          row.push(el);
           aspectSum += aspect;
         } else {
           row.push(el);
@@ -60,29 +57,82 @@
     vp.classList.add('vp-portfolio__ready');
   }
 
-  function initFilter(vp) {
+  const esc = (s) =>
+    String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  // Kachel-HTML aus einem Datensatz (identisch zur serverseitig gerenderten Kachel).
+  function buildItem(d) {
+    const t = esc(d.t);
+    const num = d.n
+      ? `<div class="vp-portfolio__item-meta-inline"><div class="vp-portfolio__item-meta-part vp-portfolio__item-meta-date"><span class="vp-portfolio__item-meta-part-text">${esc(d.n)}</span></div></div>`
+      : '';
+    return (
+      `<article class="vp-portfolio__item-wrap" data-vp-filter="${esc(d.c)}" data-w="${d.w}" data-h="${d.h}">` +
+      `<figure class="vp-portfolio__item"><div class="vp-portfolio__item-img-wrap"><div class="vp-portfolio__item-img">` +
+      `<a href="${esc(d.u)}" aria-label="${t}"><picture>` +
+      `<source srcset="${esc(d.a)}" type="image/avif"><source srcset="${esc(d.p)}" type="image/webp">` +
+      `<img src="${esc(d.p)}" width="${d.w}" height="${d.h}" alt="" loading="lazy" decoding="async"></picture></a>` +
+      `</div></div><figcaption class="vp-portfolio__item-overlay vp-portfolio__item-overlay-text-align-center">` +
+      `<div class="vp-portfolio__item-meta-wrap vp-portfolio__custom-scrollbar">` +
+      `<a href="${esc(d.u)}" tabindex="-1" class="vp-portfolio__item-meta" aria-label="${t}">` +
+      `<h2 class="vp-portfolio__item-meta-title">${t}</h2>${num}</a></div></figcaption></figure></article>`
+    );
+  }
+
+  function initGallery(vp) {
+    const wrap = vp.querySelector('.vp-portfolio__items');
     const filter = vp.querySelector('.vp-filter');
-    if (!filter) return;
-    filter.addEventListener('click', (e) => {
-      const a = e.target.closest('a[data-vp-filter]');
-      if (!a) return;
-      e.preventDefault();
-      const val = a.getAttribute('data-vp-filter');
-      filter.querySelectorAll('.vp-filter__item').forEach((i) => i.classList.remove('vp-filter__item-active'));
-      a.closest('.vp-filter__item').classList.add('vp-filter__item-active');
-      vp.querySelectorAll('.vp-portfolio__item-wrap').forEach((el) => {
-        const cats = (el.getAttribute('data-vp-filter') || '').split(/\s+/);
-        el.style.display = val === '*' || cats.includes(val) ? '' : 'none';
-      });
+    const sentinel = vp.querySelector('.vp-portfolio__sentinel');
+    const dataEl = vp.querySelector('.vp-portfolio__data');
+    const BATCH = parseInt(vp.dataset.vpBatch || '36', 10);
+    let all = [];
+    try { all = JSON.parse(dataEl.textContent || '[]'); } catch (e) { all = []; }
+
+    let cur = '*';
+    let list = all; // aktuell gefilterte Liste
+    let rendered = wrap.querySelectorAll('.vp-portfolio__item-wrap').length; // erster Batch steht schon im HTML
+
+    function appendMore() {
+      if (rendered >= list.length) return;
+      const next = list.slice(rendered, rendered + BATCH);
+      wrap.insertAdjacentHTML('beforeend', next.map(buildItem).join(''));
+      rendered += next.length;
       layout(vp);
-    });
+    }
+
+    function setFilter(val) {
+      cur = val;
+      list = val === '*' ? all : all.filter((d) => (' ' + d.c + ' ').indexOf(' ' + val + ' ') >= 0);
+      wrap.innerHTML = '';
+      rendered = 0;
+      appendMore();
+      // Falls der erste Batch den Viewport nicht füllt, nachladen bis er es tut (max. paar Runden).
+      let guard = 0;
+      while (sentinel && rendered < list.length && sentinel.getBoundingClientRect().top < window.innerHeight && guard++ < 20) appendMore();
+    }
+
+    if (filter) {
+      filter.addEventListener('click', (e) => {
+        const a = e.target.closest('a[data-vp-filter]');
+        if (!a) return;
+        e.preventDefault();
+        filter.querySelectorAll('.vp-filter__item').forEach((i) => i.classList.remove('vp-filter__item-active'));
+        a.closest('.vp-filter__item').classList.add('vp-filter__item-active');
+        setFilter(a.getAttribute('data-vp-filter'));
+      });
+    }
+
+    if (sentinel && 'IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        if (entries.some((en) => en.isIntersecting)) appendMore();
+      }, { rootMargin: '800px 0px' }).observe(sentinel);
+    }
+
+    layout(vp);
   }
 
   function run() {
-    document.querySelectorAll('.vp-portfolio[data-vp-layout="justified"]').forEach((vp) => {
-      initFilter(vp);
-      layout(vp);
-    });
+    document.querySelectorAll('.vp-portfolio[data-vp-layout="justified"]').forEach(initGallery);
   }
 
   let t;
@@ -92,6 +142,5 @@
   });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
   else run();
-  // nach vollständigem Laden nochmal (Fonts/Layout-Shift)
   window.addEventListener('load', () => document.querySelectorAll('.vp-portfolio[data-vp-layout="justified"]').forEach(layout));
 })();
