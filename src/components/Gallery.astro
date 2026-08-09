@@ -1,9 +1,9 @@
 ---
-// Visual-Portfolio-Galerie (justified Layout + Kategorie-Filter + Infinite Scroll wie im
-// Original), DE & EN. Beim Build werden für ALLE Werke die AVIF/WebP-URLs (Galerie-Breite
-// 480px) via getImage() vorberechnet. Nur die ersten BATCH Kacheln kommen als HTML (schnelle
-// Mobil-FCP); der Rest steckt als kompakte JSON-Daten in der Seite und wird von
-// /js/vp-justified.js beim Scrollen nachgebaut. Der Filter arbeitet über ALLE Werke.
+// Eigene Werk-Galerie (justified Layout + Kategorie-Filter + Infinite Scroll). Vollständig
+// eigener Code/Benennung — kein WordPress-/Visual-Portfolio-Erbe. Beim Build werden für ALLE
+// Werke die AVIF/WebP-URLs (Breite 480) via getImage() vorberechnet; nur die ersten BATCH
+// Kacheln kommen als HTML (schnelle Mobil-FCP), der Rest steckt als kompakte JSON-Daten in der
+// Seite und wird von /js/gallery.js beim Scrollen nachgebaut. Der Filter arbeitet über ALLE Werke.
 import { getImage } from 'astro:assets';
 import type { GalleryItem, FilterCat } from '../lib/artworks';
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 const { items, cats, allLabel = 'Alle' } = Astro.props;
 
 const BATCH = 36;
-// Kompakte Kacheldaten mit vorberechneten Bild-URLs (kurze Keys sparen Bytes im JSON):
+// Kompakte Kacheldaten mit vorberechneten Bild-URLs (kurze Keys sparen Bytes):
 // u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer · a=avif · p=webp
 const data = await Promise.all(
   items.map(async (it) => {
@@ -26,93 +26,157 @@ const data = await Promise.all(
   }),
 );
 const initial = data.slice(0, BATCH);
-// `<` escapen, damit ein Titel den <script>-Block nicht sprengen kann.
 const dataJson = JSON.stringify(data).replace(/</g, '\\u003c');
 ---
 
-<div class="wp-block-visual-portfolio" data-pagefind-ignore>
-  <div
-    class="vp-portfolio vp-uid-hh vp-id-gallery"
-    data-vp-layout="justified"
-    data-vp-items-gap="15"
-    data-vp-justified-row-height="200"
-    data-vp-justified-row-height-tolerance="0.25"
-    data-vp-justified-last-row="left"
-    data-vp-batch={BATCH}
-  >
-    <div class="vp-portfolio__filter-wrap">
-      <div class="vp-filter vp-filter__style-default">
-        <div class="vp-filter__item vp-filter__item-active"><a href="#" data-vp-filter="*">{allLabel}</a></div>
-        {cats.map((c) => (
-          <div class="vp-filter__item">
-            <a href="#" data-vp-filter={c.slug}>{c.name} <span class="vp-filter__item-count">{c.count}</span></a>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <div class="vp-portfolio__items-wrap">
-      <div class="vp-portfolio__items vp-portfolio__items-style-fade vp-portfolio__items-show-overlay-hover">
-        {initial.map((d, i) => (
-          <article class="vp-portfolio__item-wrap" data-vp-filter={d.c} data-w={d.w} data-h={d.h}>
-            <figure class="vp-portfolio__item">
-              <div class="vp-portfolio__item-img-wrap">
-                <div class="vp-portfolio__item-img">
-                  <a href={d.u} aria-label={d.t}>
-                    <picture>
-                      <source srcset={d.a} type="image/avif" />
-                      <source srcset={d.p} type="image/webp" />
-                      <img src={d.p} width={d.w} height={d.h} alt="" loading={i < 8 ? 'eager' : 'lazy'} fetchpriority={i < 4 ? 'high' : undefined} />
-                    </picture>
-                  </a>
-                </div>
-              </div>
-              <figcaption class="vp-portfolio__item-overlay vp-portfolio__item-overlay-text-align-center">
-                <div class="vp-portfolio__item-meta-wrap vp-portfolio__custom-scrollbar">
-                  <a href={d.u} tabindex="-1" class="vp-portfolio__item-meta" aria-label={d.t}>
-                    <h2 class="vp-portfolio__item-meta-title">{d.t}</h2>
-                    {d.n && (
-                      <div class="vp-portfolio__item-meta-inline">
-                        <div class="vp-portfolio__item-meta-part vp-portfolio__item-meta-date">
-                          <span class="vp-portfolio__item-meta-part-text">{d.n}</span>
-                        </div>
-                      </div>
-                    )}
-                  </a>
-                </div>
-              </figcaption>
-            </figure>
-          </article>
-        ))}
-      </div>
-    </div>
-
-    <div class="vp-portfolio__sentinel" aria-hidden="true"></div>
-    <script type="application/json" class="vp-portfolio__data" set:html={dataJson}></script>
+<div class="gallery" data-gallery data-gap="15" data-row-height="200" data-batch={BATCH} data-pagefind-ignore>
+  <div class="gallery__filter">
+    <a href="#" class="gallery__filter-btn is-active" data-cat="*">{allLabel}</a>
+    {cats.map((c) => (
+      <a href="#" class="gallery__filter-btn" data-cat={c.slug}>{c.name} <span class="gallery__filter-count">{c.count}</span></a>
+    ))}
   </div>
+
+  <div class="gallery__grid">
+    {initial.map((d, i) => (
+      <article class="gallery__item" data-cats={d.c} data-w={d.w} data-h={d.h}>
+        <a href={d.u} class="gallery__link" aria-label={d.t}>
+          <picture class="gallery__thumb">
+            <source srcset={d.a} type="image/avif" />
+            <source srcset={d.p} type="image/webp" />
+            <img src={d.p} width={d.w} height={d.h} alt="" loading={i < 8 ? 'eager' : 'lazy'} fetchpriority={i < 4 ? 'high' : undefined} />
+          </picture>
+          <span class="gallery__overlay">
+            <span class="gallery__title">{d.t}</span>
+            {d.n && <span class="gallery__number">{d.n}</span>}
+          </span>
+        </a>
+      </article>
+    ))}
+  </div>
+
+  <div class="gallery__sentinel" aria-hidden="true"></div>
+  <script type="application/json" class="gallery__data" set:html={dataJson}></script>
 </div>
 
-<script is:inline src="/js/vp-justified.js"></script>
+<script is:inline src="/js/gallery.js"></script>
 
 <style is:global>
-  .vp-portfolio__item-img,
-  .vp-portfolio__item-img > a,
-  .vp-portfolio__item-img > a > picture,
-  .vp-portfolio__item-img > a > picture > img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
+  /* ── Werk-Galerie (eigenes Stylesheet) ───────────────────────────────────── */
+  .gallery {
+    position: relative;
   }
-  /* Filter zentriert + umbrechend wie live (statt linksbündig full-width). */
-  .vp-portfolio__filter-wrap .vp-filter,
-  .vp-filter {
-    justify-content: center;
+  /* Kategorie-Filter */
+  .gallery__filter {
+    display: flex;
     flex-wrap: wrap;
-    row-gap: 10px;
+    justify-content: center;
+    gap: 10px;
     margin: 0 auto 1.75rem;
   }
-  .vp-portfolio__sentinel {
+  .gallery__filter-btn {
+    display: block;
+    background: #f7f7f7;
+    color: #6c7781;
+    padding: 0.7em 1.3em;
+    font-size: 0.9em;
+    font-weight: 600;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+  .gallery__filter-btn:hover {
+    background: #e8e8e8;
+    color: #4b4b4b;
+  }
+  .gallery__filter-btn.is-active {
+    background: #c0c0c0;
+    color: #fff;
+    cursor: default;
+  }
+  .gallery__filter-count {
+    font-size: 0.6em;
+    vertical-align: super;
+    margin-left: 0.3em;
+  }
+  /* Justified-Raster (Positionen setzt gallery.js absolut). Fade-in, wenn fertig gelegt. */
+  .gallery__grid {
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  .gallery.is-ready .gallery__grid {
+    opacity: 1;
+  }
+  .gallery__item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+  }
+  .gallery__link,
+  .gallery__thumb,
+  .gallery__thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .gallery__link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .gallery__thumb img {
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+  .gallery__item:hover .gallery__thumb img {
+    transform: scale(1.05);
+  }
+  /* Hover-Overlay: Bild blendet zu Schwarz, Titel + Nummer erscheinen (gestaffelt). */
+  .gallery__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    padding: 1.5em;
+    text-align: center;
+    color: #fff;
+    background: #000;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .gallery__item:hover .gallery__overlay {
+    opacity: 1;
+  }
+  .gallery__overlay > * {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .gallery__item:hover .gallery__overlay > * {
+    opacity: 1;
+    transform: none;
+  }
+  .gallery__item:hover .gallery__number {
+    transition-delay: 0.07s;
+  }
+  .gallery__title {
+    font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
+    font-size: 1.3em;
+    line-height: 1.3;
+  }
+  .gallery__number {
+    font-size: 0.9em;
+    opacity: 0.8;
+    font-variant-numeric: tabular-nums;
+  }
+  .gallery__sentinel {
     height: 1px;
   }
 </style>
