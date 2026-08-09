@@ -86,9 +86,11 @@ const canonical = SELF_ORIGIN + path;
     body.theme-invert .site-header__inner {
       border-bottom-color: rgba(255, 255, 255, 0.35);
     }
-    body.theme-invert .mainnav__burger span,
-    body.theme-invert .mainnav__burger span::before,
-    body.theme-invert .mainnav__burger span::after {
+    /* .site-header davor: Astro scoped den Burger als Nachfahren-Selektor mit höherer
+       Spezifität — sonst bleibt der Balken schwarz-auf-schwarz. */
+    body.theme-invert .site-header .mainnav__burger span,
+    body.theme-invert .site-header .mainnav__burger span::before,
+    body.theme-invert .site-header .mainnav__burger span::after {
       background: #f4f4f4;
     }
     body.theme-invert .mainnav__list {
