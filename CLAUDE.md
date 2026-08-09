@@ -68,6 +68,14 @@ Taucht später eine **bessere Datei** auf — ein neues, hochauflösendes Foto d
 
 ---
 
+## 🎨 Design-Regel: keine runden Ecken (VERBINDLICH)
+
+**`border-radius` ist bei normalen Elementen verboten.** Bilder, Kästen, Buttons, Karten, Overlays, Eingabefelder, Such-UI — alles bleibt **eckig**. Das ist die Designsprache der Seite; kein `2px`/`4px`/`12px`-„Abrunden für die Optik".
+
+**Einzige Ausnahme — ein bewusster Trick:** echte **Kreise** via `border-radius: 50%` (z. B. runde Social-Icons, Karussell-Punkte/-Pfeile). Wenn nicht klar ein Kreis-Trick, dann **keine** Rundung.
+
+---
+
 ## 📎 Bilder & Dateien einfügen — über Google Drive
 
 **Ein in den Chat eingefügtes/„gepastetes" Bild kannst du NICHT committen** — es kommt nur als Bildinhalt an (du siehst es), nicht als Datei mit Bytes. **Bild- und Dateiaustausch läuft deshalb über den geteilten Google-Drive-Ordner:**
