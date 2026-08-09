@@ -11,43 +11,53 @@ interface Props {
   art: any;
   image: ImageMetadata;
   lang?: 'de' | 'en';
+  title?: string;
 }
-const { art, image, lang = 'de' } = Astro.props;
+const { art, image, lang = 'de', title } = Astro.props;
 const ord = ordinalData(art);
 // Strukturierte Werk-Beschriftung (Ordinals bekommen keine — eigener Sonderfall).
 // Key = trid (für DE + EN identisch).
 const meta = ord ? null : (metaData as Record<string, any>)[art.trid];
 const t =
   lang === 'en'
-    ? { line: 'This art has been eternally engraved on the Bitcoin blockchain.', buy: 'Buy it on', gamma: 'Gamma' }
-    : { line: 'Dieses Werk ist für immer in die Bitcoin-Blockchain eingraviert.', buy: 'Erhältlich auf', gamma: 'Gamma' };
+    ? {
+        eyebrow: 'Bitcoin Ordinal · On-Chain',
+        line: 'This art has been eternally engraved on the Bitcoin blockchain.',
+        buy: 'Available on Gamma',
+      }
+    : {
+        eyebrow: 'Bitcoin-Ordinal · On-Chain',
+        line: 'Dieses Werk ist für immer in die Bitcoin-Blockchain eingraviert.',
+        buy: 'Auf Gamma erhältlich',
+      };
 ---
 
 {
   ord ? (
     <div class="entry-content clear ordinal-content" itemprop="text">
-      <div class="ordinal-frame">
-        <iframe
-          src={ord.iframe}
-          title={art.title}
-          loading="lazy"
-          referrerpolicy="no-referrer"
-          sandbox="allow-scripts allow-same-origin"
-        />
-      </div>
-      <p class="ordinal-caption">
-        {t.line}
-        {ord.buy && (
-          <>
-            {' '}
-            {t.buy}{' '}
-            <a href={ord.buy} target="_blank" rel="noopener">
-              {t.gamma}
-            </a>
-            .
-          </>
+      <div class="ordinal-inner">
+        <p class="ordinal-eyebrow">{t.eyebrow}</p>
+        {title && (
+          <h1 class="ordinal-title" itemprop="headline">
+            {title}
+          </h1>
         )}
-      </p>
+        <div class="ordinal-frame">
+          <iframe
+            src={ord.iframe}
+            title={art.title}
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            sandbox="allow-scripts allow-same-origin"
+          />
+        </div>
+        <p class="ordinal-caption">{t.line}</p>
+        {ord.buy && (
+          <a class="ordinal-buy" href={ord.buy} target="_blank" rel="noopener">
+            {t.buy} <span aria-hidden="true">→</span>
+          </a>
+        )}
+      </div>
     </div>
   ) : (
     <div class="entry-content clear" itemprop="text">
@@ -68,20 +78,42 @@ const t =
 }
 
 <style is:global>
-  /* Ordinals: „geflipptes" Design — dunkle Bühne für die Live-Inschrift. */
+  /* Ordinals: durchgehend schwarze Bühne für die On-Chain-Inschrift (full-bleed, wie eine
+     dunkle Galeriewand). Titel + Inschrift + CTA gestapelt und zentriert. */
   .ordinal-content {
-    background: #0b0b0b;
-    color: #f5f5f5;
-    padding: clamp(1rem, 3vw, 2.5rem);
-    border-radius: 4px;
+    background: #000;
+    color: #f4f4f4;
+    padding: clamp(2.5rem, 6vw, 5rem) var(--pad);
+  }
+  .ordinal-inner {
+    max-width: 720px;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .ordinal-eyebrow {
+    margin: 0 0 0.9rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #9a9a9a;
+  }
+  .ordinal-title {
+    margin: 0 0 clamp(1.75rem, 4vw, 2.75rem);
+    font-family: var(--serif);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #fff;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    text-wrap: balance;
   }
   .ordinal-frame {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    max-width: 640px;
+    max-width: 620px;
     margin: 0 auto;
     background: #000;
+    border: 1px solid #262626;
   }
   .ordinal-frame iframe {
     position: absolute;
@@ -92,13 +124,29 @@ const t =
     display: block;
   }
   .ordinal-caption {
-    text-align: center;
-    margin: 1.5rem auto 0;
-    max-width: 640px;
-    color: #d8d8d8;
+    margin: clamp(1.75rem, 4vw, 2.5rem) auto 0;
+    max-width: 560px;
+    color: #b4b4b4;
+    line-height: 1.6;
   }
-  .ordinal-caption a {
-    color: #fff;
-    text-decoration: underline;
+  /* Eckige CTA (kein Border-Radius): Outline → Hover invertiert. */
+  .ordinal-buy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 1.5rem;
+    padding: 0.75em 1.5em;
+    border: 1px solid #f4f4f4;
+    color: #f4f4f4;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+  }
+  .ordinal-buy:hover,
+  .ordinal-buy:focus-visible {
+    background: #f4f4f4;
+    color: #000;
   }
 </style>

@@ -80,6 +80,10 @@ a:hover {
 .site-main {
   padding-block: clamp(1.5rem, 4vw, 2.75rem);
 }
+/* Full-bleed ohne vertikales Padding (Ordinals: schwarze Bühne bündig an Nav/Footer). */
+.site-main--bleed {
+  padding-block: 0;
+}
 /* Inhaltsbreiten — ersetzen die Theme-Body-Klassen (ast-page-builder/plain/separate).
    Ohne Modifier: volle Breite (Content-Komponenten zentrieren selbst, Galerie full-bleed). */
 .site-main--boxed,
@@ -92,4 +96,9 @@ a:hover {
 .art-single {
   background: #fff;
   padding: clamp(1.5rem, 5vw, 3rem);
+}
+/* Ordinals: kein weißer Kasten — die schwarze Bühne (.ordinal-content) trägt Fläche + Padding. */
+.art-single--ordinal {
+  background: transparent;
+  padding: 0;
 }

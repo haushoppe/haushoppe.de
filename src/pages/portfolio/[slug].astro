@@ -6,6 +6,7 @@ import ArtworkBody from '../../components/ArtworkBody.astro';
 import artworksData from '../../data/artworks.json';
 import type { ImageMetadata } from 'astro';
 import { artworkImage, hasArtworkImage } from '../../lib/artwork-images';
+import { ordinalData } from '../../lib/ordinals';
 import { LANG } from '../../lib/lang';
 
 export function getStaticPaths() {
@@ -17,13 +18,19 @@ export function getStaticPaths() {
 
 const { art, image } = Astro.props as { art: any; image: ImageMetadata };
 const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.title} — artwork by Olaf Hoppe.`;
+// Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
+const isOrdinal = ordinalData(art) != null;
 ---
 
-<BaseLayout title={`${art.title} - HAUS HOPPE`} description={desc} layout="article">
-  <article class="art-single" itemtype="https://schema.org/CreativeWork" itemscope>
-    <header class="entry-header">
-      <h1 class="entry-title" itemprop="headline">{art.title}</h1>
-    </header>
-    <ArtworkBody art={art} image={image} lang={LANG} />
+<BaseLayout title={`${art.title} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'}>
+  <article class:list={['art-single', isOrdinal && 'art-single--ordinal']} itemtype="https://schema.org/CreativeWork" itemscope>
+    {
+      !isOrdinal && (
+        <header class="entry-header">
+          <h1 class="entry-title" itemprop="headline">{art.title}</h1>
+        </header>
+      )
+    }
+    <ArtworkBody art={art} image={image} lang={LANG} title={art.title} />
   </article>
 </BaseLayout>
