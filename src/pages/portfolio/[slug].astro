@@ -22,7 +22,7 @@ const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.ti
 const isOrdinal = ordinalData(art) != null;
 ---
 
-<BaseLayout title={`${art.title} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'}>
+<BaseLayout title={`${art.title} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal}>
   <article class:list={['art-single', isOrdinal && 'art-single--ordinal']} itemtype="https://schema.org/CreativeWork" itemscope>
     {
       !isOrdinal && (
