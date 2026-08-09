@@ -92,10 +92,16 @@ a:hover {
   margin-inline: auto;
   padding-inline: var(--pad);
 }
-/* Werk-Detailseite: weißer Artikel-Kasten mit Innenabstand (wie Theme separate-container). */
+/* Detailseite: oberes Doppel-Padding auflösen — der Titel soll ~48px unter der Navi
+   sitzen (nicht ~92px). Oben trägt nur noch der Kasten seinen Innenabstand. */
+.site-main--article {
+  padding-top: 0;
+}
+/* Werk-Detailseite: weißer Artikel-Kasten mit Innenabstand (wie Theme separate-container).
+   Oben bewusst schlanker als seitlich/unten, damit der Titel nah an die Navi rückt. */
 .art-single {
   background: #fff;
-  padding: clamp(1.5rem, 5vw, 3rem);
+  padding: 1.75rem clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 5vw, 3rem);
 }
 /* Ordinals: kein weißer Kasten — die schwarze Bühne (.ordinal-content) trägt Fläche + Padding. */
 .art-single--ordinal {
