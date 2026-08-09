@@ -87,7 +87,8 @@ const homeHref = '/';
   }
   .site-logo {
     display: block;
-    padding-bottom: 16px;
+    /* Luft Logo → erster schwarzer Streifen: wie live ~22px (dort 2em − 10px Nav-Overlap). */
+    padding-bottom: 22px;
   }
   .site-logo img {
     width: 350px;
@@ -98,7 +99,6 @@ const homeHref = '/';
   .mainnav {
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    margin-top: -10px;
     margin-bottom: 20px;
     width: 100%;
     max-width: 700px;
@@ -106,17 +106,23 @@ const homeHref = '/';
   .mainnav__list {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     flex-wrap: wrap;
     gap: 0;
     list-style: none;
     margin: 0;
     padding: 0;
-    min-height: 64px;
+    /* Zeilenhöhe wie live (~45px), Text mittig → ~12px Luft zu den Streifen. */
+    min-height: 46px;
+  }
+  .mainnav__list > li:not(.mainnav__extra) {
+    display: flex;
+    align-items: stretch;
   }
   .mainnav__link {
-    display: block;
-    padding: 0.5rem 16px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
     font-weight: 400;
     color: #000;
     line-height: 1.2;
