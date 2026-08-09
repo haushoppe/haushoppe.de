@@ -306,6 +306,7 @@ for (const a of arr.filter((x) => x.lang === 'de')) {
   const p = prev[a.trid] || {};
   // Pflichtfeld Maße: echte Maße, sonst „?“ (unbekannt) — der Renderer blendet „?“ aus.
   const dimensions = (cleanDim(de.dimensions) || cleanDim(p.dimensions) || '?').replace(/(\d+)\s*×\s*(\d+)\s*cm/g, '$1 cm × $2 cm');
+  const number = NUMBER_OVERRIDES[a.trid] || de.number;
   meta[a.trid] = {
     slug: a.slug, // nur zur Orientierung beim Editieren — Komponente ignoriert es
     artist: 'Olaf Hoppe',
@@ -314,8 +315,9 @@ for (const a of arr.filter((x) => x.lang === 'de')) {
     technique: de.technique,
     dimensions,
     edition: de.edition || p.edition || '',
-    number: NUMBER_OVERRIDES[a.trid] || de.number,
-    extra: de.extra || p.extra || '', // freier Zusatztext (Quelle etc.)
+    number,
+    // freier Zusatztext (Quelle etc.); die Nummer NICHT doppelt zeigen → aus extra strippen
+    extra: number ? (de.extra || p.extra || '').split(number).join('').replace(/\s{2,}/g, ' ').replace(/^[\s·,]+|[\s·,]+$/g, '').trim() : de.extra || p.extra || '',
     en: en
       ? {
           title: en.title,
