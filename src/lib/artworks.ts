@@ -1,4 +1,5 @@
 import artworksData from '../data/artworks.json';
+import metaData from '../data/artwork-meta.json';
 import type { ImageMetadata } from 'astro';
 import { artworkImage, hasArtworkImage } from './artwork-images';
 
@@ -11,29 +12,31 @@ type RawArtwork = {
 
 const arts = artworksData as unknown as RawArtwork[];
 
-const MONTHS: Record<Lang, string[]> = {
-  de: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-};
-function dateText(iso: string, lang: Lang): string {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return '';
-  return `${MONTHS[lang][d.getMonth()]} ${d.getFullYear()}`;
+const meta = metaData as Record<string, { number?: string } | undefined>;
+// Werk-Nummer (Format „YYYY-MM-…", z. B. „1990-02-H") = chronologischer Sortier- UND Anzeige-
+// Schlüssel (das frühere Datum war nur Behelf). Fehlt sie (10 Werke), Fallback aufs Datum
+// (nur für die Sortierung) und kein Nummer-Badge.
+function artworkNumber(trid: string | null): string {
+  const n = trid ? meta[trid]?.number : undefined;
+  return n && /^\d{4}-/.test(n) ? n.trim() : ''; // „1976-03", „2016-??", „2024-02-O1" …
+}
+function sortKey(a: RawArtwork): string {
+  return artworkNumber(a.trid) || (a.date || '').slice(0, 7); // „YYYY-MM"
 }
 // Sprache = Domain: Werk-Detail liegt in beiden Sprachen unter /portfolio/<slug>/ am Root.
 
 export interface GalleryItem {
   id: string; title: string; detailUrl: string;
   categorySlugs: string[]; primaryCategory: string;
-  image: ImageMetadata; w: number; h: number; dateText: string;
+  image: ImageMetadata; w: number; h: number; number: string;
 }
 export interface FilterCat { slug: string; name: string; count: number; }
 
-// Kunstwerke einer Sprache, die ein web-Bild haben — nach Datum absteigend (VP-Default).
+// Kunstwerke einer Sprache, die ein web-Bild haben — nach Werk-Nummer absteigend (neueste zuerst).
 export function galleryItems(lang: Lang): GalleryItem[] {
   return arts
     .filter((a) => a.lang === lang && hasArtworkImage(a.id))
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime() || b.menuOrder - a.menuOrder)
+    .sort((a, b) => sortKey(b).localeCompare(sortKey(a)) || b.menuOrder - a.menuOrder)
     .map((a) => {
       const pcats = a.categories.filter((c) => c.taxonomy === 'portfolio_category');
       const image = artworkImage(a.id)!;
@@ -44,7 +47,7 @@ export function galleryItems(lang: Lang): GalleryItem[] {
         categorySlugs: pcats.map((c) => c.slug),
         primaryCategory: pcats[0]?.slug ?? '',
         image, w: image.width, h: image.height,
-        dateText: dateText(a.date, lang),
+        number: artworkNumber(a.trid),
       };
     });
 }

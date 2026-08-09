@@ -45,6 +45,10 @@ for (const [key, g] of Object.entries(byTrid)) {
   if (complete && !ORDINAL.test(g.de.content || '') && !meta[key]) {
     add(`Werk „${other.title}" (${other.slug}, trid ${key}): keine Beschriftung in artwork-meta.json → Detailseite bleibt blank (npm run meta)`);
   }
+  // Nummer = PFLICHTFELD (Sortier- und Anzeigeschlüssel der Galerie) — gilt auch für Ordinals.
+  if (complete && !meta[key]?.number) {
+    add(`Werk „${other.title}" (${other.slug}, trid ${key}): keine Nummer (Pflichtfeld „YYYY-…") → in gen-artwork-meta.mjs (NUMBER_OVERRIDES) ergänzen`);
+  }
 }
 
 // ── B) MDX-Prosa-Seiten: jede Seite muss als <name>-de.mdx UND <name>-en.mdx existieren ──

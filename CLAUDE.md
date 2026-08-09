@@ -250,6 +250,7 @@ npm run build:de   # baut die deutsche Seite (findet Tippfehler/kaputtes Markdow
   - „*MDX-Seite vita-en.mdx fehlt*" → englische Datei anlegen/ergänzen.
   - „*Werk … : fehlt EN-Übersetzung*" → zweiten (englischen) Eintrag mit gleicher `trid` hinzufügen.
   - „*Werk … : kein Bild*" → das Werk-Bild fehlt im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv").
+  - „*Werk … : keine Nummer*" → **jedes** Werk braucht eine **Nummer** `YYYY-MM-…` (z. B. `2025-01-A`) — sie ist die **letzte Zeile** der Bildunterschrift im `content` und steuert Sortierung + Anzeige in der Galerie. **Pflichtfeld** — ohne Nummer bricht der Build ab. Ist der Monat unbekannt, `YYYY-??` schreiben (ehrlicher Platzhalter).
 - **`npm run build:de` bricht ab?** Meist ein Markdown-/JSON-Fehler (fehlendes Komma, kaputte Klammer) in der gerade geänderten Datei. Fehlermeldung lesen, Datei korrigieren.
 
 Die **CI** (GitHub Actions) macht dieselben Prüfungen automatisch bei jedem PR. Ist der grüne Haken da, passt's; ist er rot, sagt der Log genau, was fehlt — dann nachbessern und erneut committen.

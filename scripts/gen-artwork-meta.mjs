@@ -220,8 +220,24 @@ function parse(content, rawTitle, slug) {
 // echte Maße = enthält Ziffern; alles andere („? cm“, „x cm“, leer) gilt als „nicht vorhanden“
 const cleanDim = (s) => (s && /\d/.test(s) ? s : '');
 
-// Ordinals (Krypto-Werke): eigener Zweig in ArtworkBody → NIE eine Meta erzeugen.
+// Ordinals (Krypto-Werke): eigener Zweig in ArtworkBody. Sie bekommen einen MINIMAL-Eintrag
+// (nur Titel + Nummer), damit die Galerie ihre Nummer zum Sortieren/Anzeigen hat.
 const ORDINAL = /Bitcoin blockchain|ordinalsbot|Buy it on Gamma/i;
+
+// Nummern, die NICHT (sauber) aus der Caption parsebar sind — recherchiert/belegt, nicht erfunden:
+//  • 654 „Landschaft Wismar": Nummer „1976-03" stand OHNE Buchstaben-Kürzel in der Caption
+//    (der Parser verlangt eins) → hier fest hinterlegt.
+//  • 4 Zeichnungen/Porträts: nur das JAHR ist per Signatur belegt (der Dateiname wäre das
+//    Foto-Datum) → ehrlicher Platzhalter „YYYY-??" für den unbekannten Monat.
+//  • 5 Ordinals: Datum aus den On-Chain-Inscriptions (mempool.space) — alle 2024-02, das
+//    Suffix O1–O5 folgt der Block-Höhe (Inscription-Reihenfolge).
+const NUMBER_OVERRIDES = {
+  '654': '1976-03',
+  '1324': '2016-??', '1333': '2016-??', //  porträt 1 / porträt 2  (Signatur „Hoppe 2016")
+  '1327': '2015-??', '1330': '2015-??', //  Plovdiv / wintermärchen (Signatur „Hoppe 2015")
+  '5036': '2024-02-O1', '5051': '2024-02-O2', '5054': '2024-02-O3', // GRINDING / EXIT LIQUIDITY / BROKE
+  '5057': '2024-02-O4', '5059': '2024-02-O5', //                       THE CABAL / LEGENDS
+};
 
 // Technik aus dem Bild-Dateinamen ableiten (Fallback, wenn der Content keine Caption enthält).
 const FILE_TECH = [
@@ -276,7 +292,12 @@ const meta = {};
 const incomplete = [];
 const unknownDims = [];
 for (const a of arr.filter((x) => x.lang === 'de')) {
-  if (ORDINAL.test(a.content || '')) continue; // Ordinals: eigener Zweig in ArtworkBody, keine Meta
+  if (ORDINAL.test(a.content || '')) {
+    // Ordinals: keine Beschriftung (eigener Zweig in ArtworkBody), aber Nummer für die Galerie.
+    meta[a.trid] = { slug: a.slug, artist: 'Olaf Hoppe', title: cleanTitle(a.title).title, ordinal: true, number: NUMBER_OVERRIDES[a.trid] || '' };
+    if (!NUMBER_OVERRIDES[a.trid]) incomplete.push(`${a.slug}: fehlt number (Ordinal)`);
+    continue;
+  }
   let de = parse(a.content, a.title, a.slug);
   if (!de) de = minimalMeta(a); // nie überspringen — wenigstens Künstler·Titel·Jahr (+ Technik aus Dateiname)
   const enArt = (byTrid[a.trid] || {}).en;
@@ -289,11 +310,11 @@ for (const a of arr.filter((x) => x.lang === 'de')) {
     slug: a.slug, // nur zur Orientierung beim Editieren — Komponente ignoriert es
     artist: 'Olaf Hoppe',
     title: de.title,
-    year: de.year,
+    year: (NUMBER_OVERRIDES[a.trid] || '').slice(0, 4) || de.year, // „2016-??" → Jahr 2016
     technique: de.technique,
     dimensions,
     edition: de.edition || p.edition || '',
-    number: de.number,
+    number: NUMBER_OVERRIDES[a.trid] || de.number,
     extra: de.extra || p.extra || '', // freier Zusatztext (Quelle etc.)
     en: en
       ? {
@@ -307,7 +328,7 @@ for (const a of arr.filter((x) => x.lang === 'de')) {
   };
   const missing = [];
   if (!de.technique) missing.push('technique');
-  if (!de.number) missing.push('number');
+  if (!(NUMBER_OVERRIDES[a.trid] || de.number)) missing.push('number');
   if (missing.length) incomplete.push(`${a.slug}: fehlt ${missing.join(', ')}  [${de.technique} | ${de.number}]`);
   if (dimensions === '?') unknownDims.push(`${a.slug} — ${de.title} (${de.year})`);
 }

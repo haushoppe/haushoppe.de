@@ -43,7 +43,7 @@
     "technique": "Tuschzeichnung auf Bütten",
     "dimensions": "14 cm × 16 cm",
     "edition": "",
-    "number": "",
+    "number": "1976-03",
     "extra": "1976-03",
     "en": {
       "title": "Landscape Wismar",
@@ -1767,11 +1767,11 @@
     "slug": "portraet-1",
     "artist": "Olaf Hoppe",
     "title": "porträt 1",
-    "year": "2021",
+    "year": "2016",
     "technique": "",
     "dimensions": "?",
     "edition": "",
-    "number": "",
+    "number": "2016-??",
     "extra": "",
     "en": {
       "title": "portrait 1",
@@ -1785,11 +1785,11 @@
     "slug": "plovdiv",
     "artist": "Olaf Hoppe",
     "title": "Plovdiv",
-    "year": "2021",
+    "year": "2015",
     "technique": "Zeichnung",
     "dimensions": "?",
     "edition": "",
-    "number": "",
+    "number": "2015-??",
     "extra": "",
     "en": {
       "title": "Plovdiv",
@@ -1803,11 +1803,11 @@
     "slug": "wintermaerchen",
     "artist": "Olaf Hoppe",
     "title": "wintermärchen",
-    "year": "2021",
+    "year": "2015",
     "technique": "Zeichnung",
     "dimensions": "?",
     "edition": "",
-    "number": "",
+    "number": "2015-??",
     "extra": "",
     "en": {
       "title": "winters tale",
@@ -1821,11 +1821,11 @@
     "slug": "portraet-2",
     "artist": "Olaf Hoppe",
     "title": "porträt 2",
-    "year": "2021",
+    "year": "2016",
     "technique": "",
     "dimensions": "?",
     "edition": "",
-    "number": "",
+    "number": "2016-??",
     "extra": "",
     "en": {
       "title": "portrait 2",
@@ -5669,6 +5669,13 @@
       "extra": ""
     }
   },
+  "5036": {
+    "slug": "grinding-johannes-x-olaf-2024",
+    "artist": "Olaf Hoppe",
+    "title": "GRINDING (Johannes x Olaf)",
+    "ordinal": true,
+    "number": "2024-02-O1"
+  },
   "5038": {
     "slug": "riomangore",
     "artist": "Olaf Hoppe",
@@ -5704,5 +5711,33 @@
       "edition": "",
       "extra": ""
     }
+  },
+  "5051": {
+    "slug": "exit-liquidity-johannes-x-olaf-2024",
+    "artist": "Olaf Hoppe",
+    "title": "EXIT LIQUIDITY (Johannes x Olaf)",
+    "ordinal": true,
+    "number": "2024-02-O2"
+  },
+  "5054": {
+    "slug": "broke-johannes-x-olaf-2024",
+    "artist": "Olaf Hoppe",
+    "title": "BROKE (Johannes x Olaf)",
+    "ordinal": true,
+    "number": "2024-02-O3"
+  },
+  "5057": {
+    "slug": "the-cabal-johannes-x-olaf-2024",
+    "artist": "Olaf Hoppe",
+    "title": "THE CABAL (Johannes x Olaf)",
+    "ordinal": true,
+    "number": "2024-02-O4"
+  },
+  "5059": {
+    "slug": "legends-johannes-x-olaf-2024",
+    "artist": "Olaf Hoppe",
+    "title": "LEGENDS (Johannes x Olaf)",
+    "ordinal": true,
+    "number": "2024-02-O5"
   }
 }

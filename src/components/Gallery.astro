@@ -32,7 +32,7 @@ const { items, cats, allLabel = 'Alle' } = Astro.props;
 
     <div class="vp-portfolio__items-wrap">
       <div class="vp-portfolio__items vp-portfolio__items-style-fade vp-portfolio__items-show-overlay-hover">
-        {items.map((it) => (
+        {items.map((it, i) => (
           <article
             class="vp-portfolio__item-wrap"
             data-vp-filter={it.categorySlugs.join(' ')}
@@ -47,11 +47,11 @@ const { items, cats, allLabel = 'Alle' } = Astro.props;
                       src={it.image}
                       formats={['avif', 'webp']}
                       fallbackFormat="webp"
-                      widths={[240, 480, 720]}
-                      sizes="(max-width: 600px) 45vw, 340px"
+                      widths={[480]}
                       layout="none"
                       alt=""
-                      loading="lazy"
+                      loading={i < 8 ? 'eager' : 'lazy'}
+                      fetchpriority={i < 4 ? 'high' : undefined}
                     />
                   </a>
                 </div>
@@ -60,17 +60,10 @@ const { items, cats, allLabel = 'Alle' } = Astro.props;
                 <div class="vp-portfolio__item-meta-wrap vp-portfolio__custom-scrollbar">
                   <a href={it.detailUrl} tabindex="-1" class="vp-portfolio__item-meta" aria-label={it.title}>
                     <h2 class="vp-portfolio__item-meta-title">{it.title}</h2>
-                    {it.dateText && (
+                    {it.number && (
                       <div class="vp-portfolio__item-meta-inline">
                         <div class="vp-portfolio__item-meta-part vp-portfolio__item-meta-date">
-                          <span class="vp-portfolio__item-meta-part-icon">
-                            <svg class="vp-svg-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <rect x="1" y="3.5" width="18" height="15.5" rx="3" stroke="currentColor" stroke-width="1.5" fill="transparent"></rect>
-                              <path d="M6 5V1M14 5V1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="transparent"></path>
-                              <path d="M18.5 9H1.5" stroke="currentColor" stroke-width="1.5" fill="transparent"></path>
-                            </svg>
-                          </span>
-                          <span class="vp-portfolio__item-meta-part-text">{it.dateText}</span>
+                          <span class="vp-portfolio__item-meta-part-text">{it.number}</span>
                         </div>
                       </div>
                     )}
