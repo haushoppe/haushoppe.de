@@ -20,9 +20,12 @@ const { art, image } = Astro.props as { art: any; image: ImageMetadata };
 const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.title} — artwork by Olaf Hoppe.`;
 // Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
 const isOrdinal = ordinalData(art) != null;
+// Auf der Ordinal-Detailseite steht die Kollab schon im Eyebrow (Johannes × Olaf) — daher
+// das „(Johannes x Olaf)" aus dem angezeigten Titel entfernen. In der Galerie bleibt es.
+const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf\)/i, '') : art.title;
 ---
 
-<BaseLayout title={`${art.title} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal}>
+<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal}>
   <article class:list={['art-single', isOrdinal && 'art-single--ordinal']} itemtype="https://schema.org/CreativeWork" itemscope>
     {
       !isOrdinal && (
@@ -31,6 +34,6 @@ const isOrdinal = ordinalData(art) != null;
         </header>
       )
     }
-    <ArtworkBody art={art} image={image} lang={LANG} title={art.title} />
+    <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} />
   </article>
 </BaseLayout>
