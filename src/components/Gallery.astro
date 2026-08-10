@@ -1,7 +1,9 @@
 ---
 // Eigene Werk-Galerie (justified Layout + Kategorie-Filter + Infinite Scroll). Vollständig
 // eigener Code/Benennung — kein WordPress-/Visual-Portfolio-Erbe. Beim Build werden für ALLE
-// Werke die AVIF/WebP-URLs (Breite 480) via getImage() vorberechnet; nur die ersten BATCH
+// Werke die AVIF/WebP-URLs (feste Höhe 480 → flache/breite Werke bekommen automatisch genug
+// Breite aus dem hochauflösenden Original, statt bei fester Breite hochskaliert zu werden) via
+// getImage() vorberechnet; nur die ersten BATCH
 // Kacheln kommen als HTML (schnelle Mobil-FCP), der Rest steckt als kompakte JSON-Daten in der
 // Seite und wird von /js/gallery.js beim Scrollen nachgebaut. Der Filter arbeitet über ALLE Werke.
 import { getImage } from 'astro:assets';
@@ -19,8 +21,8 @@ const BATCH = 36;
 const data = await Promise.all(
   items.map(async (it) => {
     const [a, p] = await Promise.all([
-      getImage({ src: it.image, format: 'avif', width: 480 }),
-      getImage({ src: it.image, format: 'webp', width: 480 }),
+      getImage({ src: it.image, format: 'avif', height: 480 }),
+      getImage({ src: it.image, format: 'webp', height: 480 }),
     ]);
     return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), w: it.w, h: it.h, n: it.number, a: a.src, p: p.src };
   }),
@@ -65,6 +67,9 @@ const dataJson = JSON.stringify(data).replace(/</g, '\\u003c');
   /* ── Werk-Galerie (eigenes Stylesheet) ───────────────────────────────────── */
   .gallery {
     position: relative;
+    /* Außenabstand = Abstand der Werke zueinander (data-gap), damit die Kacheln nicht am
+       Fensterrand kleben. Fängt zugleich den Sub-Pixel-Überstand des Justified-Layouts ab. */
+    padding-inline: 15px;
   }
   /* Kategorie-Filter */
   .gallery__filter {

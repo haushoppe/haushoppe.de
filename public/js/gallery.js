@@ -9,8 +9,12 @@
     if (!grid) return;
     const gap = parseInt(g.dataset.gap || '15', 10);
     const targetH = parseInt(g.dataset.rowHeight || '200', 10);
-    const W = grid.clientWidth;
-    if (!W) return;
+    // 1px Reserve: die Zeilen füllen rechnerisch exakt W, aber die Kachelbreiten sind
+    // Fließkomma-Pixel. Je nach Display-Skalierung/Zoom rundet der Browser die letzte Kachel
+    // minimal auf und sie ragt Bruchteile über den Rand → dünner horizontaler Scrollbalken.
+    // W-1 verhindert das deterministisch (der 15px-Außenabstand fängt den Rest ab).
+    const W = grid.clientWidth - 1;
+    if (W < 1) return;
     const items = [...grid.querySelectorAll('.gallery__item')].filter((el) => el.style.display !== 'none');
     let y = 0, row = [], aspectSum = 0;
 
