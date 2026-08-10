@@ -75,7 +75,8 @@ const homeHref = '/';
 
 <style>
   .site-header {
-    padding-top: clamp(1.25rem, 3vw, 2rem);
+    /* Etwas weniger Luft oben, um das größere Logo auszugleichen. */
+    padding-top: clamp(0.75rem, 2vw, 1.25rem);
   }
   .site-header__inner {
     display: flex;
@@ -91,8 +92,9 @@ const homeHref = '/';
     padding-bottom: 22px;
   }
   .site-logo img {
-    /* SVG-Logo (viewBox ~5.95:1): 285px Breite → ~48px Höhe, wie das alte PNG. */
-    width: 285px;
+    /* SVG-Logo (viewBox ~5.95:1): etwas größer als das alte PNG, damit die feine Tagline
+       besser lesbar ist. 330px Breite → ~55px Höhe. */
+    width: 330px;
     height: auto;
     max-width: 100%;
   }
@@ -185,7 +187,7 @@ const homeHref = '/';
       padding-bottom: 0;
     }
     .site-logo img {
-      width: 280px;
+      width: 300px;
       max-width: calc(100vw - 90px);
     }
     .mainnav {
