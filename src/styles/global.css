@@ -67,7 +67,9 @@ a:hover {
 .entry-content a,
 .cp a,
 .acq-text a,
-.acq-panel a {
+.acq-panel a,
+.vita a,
+.home-award a {
   text-decoration: underline;
 }
 
