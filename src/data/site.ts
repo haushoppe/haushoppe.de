@@ -42,8 +42,10 @@ export const contact = {
 };
 
 export const logo = {
-  src: '/media/2020/11/cropped-logo-haushoppe-490.png',
-  width: 350,
-  height: 47,
+  // Vektor-Logo (Master unter brand/Stempel vectorized.svg). viewBox 244×41 (~5.95:1),
+  // skaliert im Header auf ~48px Höhe.
+  src: '/logo.svg',
+  width: 285,
+  height: 48,
   alt: 'HAUS HOPPE – Galerie für Bildende Kunst',
 };
