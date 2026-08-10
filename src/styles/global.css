@@ -71,6 +71,8 @@ a:hover {
 .vita a,
 .home-award a {
   text-decoration: underline;
+  /* Linie etwas vom Text absetzen (Standard klebt am Text). */
+  text-underline-offset: 0.2em;
 }
 
 /* Layout-Container + Hauptbereich */
