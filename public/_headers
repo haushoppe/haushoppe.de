@@ -1,18 +1,9 @@
-# Cloudflare-Pages Header-Regeln (dist/_headers). Behebt das „lädt immer wieder neu":
-# gehashte Build-Assets sind unveränderlich -> 1 Jahr immutable cachen (keine Revalidierung
-# bei jeder Navigation mehr). HTML bleibt beim Default (max-age=0, must-revalidate).
-
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+  X-Cache-Test: astro-immutable
 
-# Statische, selten wechselnde Assets: eine Woche.
 /media/*
   Cache-Control: public, max-age=604800
-/logo.svg
-  Cache-Control: public, max-age=604800
-/favicon.svg
-  Cache-Control: public, max-age=604800
 
-# Eigene, nicht gehashte Skripte (können sich ändern): ein Tag.
 /js/*
   Cache-Control: public, max-age=86400
