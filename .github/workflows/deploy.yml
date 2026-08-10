@@ -38,15 +38,14 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
-      # Astros Bild-Cache (node_modules/.astro) über Läufe hinweg wiederverwenden: dann
-      # verarbeitet der Build nur GEÄNDERTE Werke zu AVIF+WebP neu (statt aller ~322). Key
-      # am Manifest -> ändert sich nur, wenn Werke dazukommen/ersetzt werden; restore-keys
-      # holt sonst den letzten Cache (inkrementell). Erst-/Änderungs-Build ~19 Min, sonst schnell.
+      # Astros Bild-Cache (node_modules/.astro) wiederverwenden -> nur geänderte Werke neu codieren.
+      # Key rollt pro Commit (github.sha), sonst speichert actions/cache nach dem ersten Treffer nie
+      # wieder und der Cache friert ein. restore-keys holt den zuletzt gespeicherten Stand.
       - name: Astro-Bild-Cache wiederherstellen
         uses: actions/cache@v4
         with:
           path: node_modules/.astro
-          key: astro-assets-${{ hashFiles('src/artwork-originals/manifest.json') }}
+          key: astro-assets-${{ github.sha }}
           restore-keys: |
             astro-assets-
 
