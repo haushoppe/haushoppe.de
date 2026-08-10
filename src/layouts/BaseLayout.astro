@@ -5,6 +5,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Search from '../components/Search.astro';
+import Lightbox from '../components/Lightbox.astro';
 import { LANG, DE_ORIGIN, EN_ORIGIN, SELF_ORIGIN } from '../lib/lang';
 import { normPath, altOf } from '../lib/paths';
 import '../styles/wp-design.css';
@@ -58,6 +59,7 @@ const canonical = SELF_ORIGIN + path;
     <Footer lang={lang} />
     <script is:inline src="/js/yt-facade.js"></script>
     <Search lang={lang} />
+    <Lightbox lang={lang} />
   </body>
 </html>
 
