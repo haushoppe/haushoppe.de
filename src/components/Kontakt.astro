@@ -26,6 +26,11 @@
     margin: 0;
     line-height: 1.85;
   }
+  /* Abstand zwischen aufeinanderfolgenden Absätzen im zentrierten Block (z. B. Adresse ↔
+     Telefon/E-Mail), ohne die einzelnen Zeilen (per <br/>) zu lockern. */
+  .kontakt :global(.cp-center p + p) {
+    margin-top: 1.5rem;
+  }
   /* Anfahrt: Text | Karte */
   .kontakt :global(h2) {
     margin: 0 0 0.4rem;
