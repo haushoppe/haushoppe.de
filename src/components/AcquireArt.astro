@@ -118,6 +118,14 @@ const { content } = Astro.props;
     object-fit: cover;
     display: block;
   }
+  /* <Img> rendert <picture><img></picture> — der Wrapper muss Grid-/Float-Kind sein. */
+  .acq-body :global(.acq-gallery picture) {
+    display: block;
+    height: 100%;
+  }
+  .acq-body :global(.acq-portrait picture) {
+    display: block;
+  }
   @media (max-width: 720px) {
     .acq-body :global(.acq-portrait) {
       float: none;

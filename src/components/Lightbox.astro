@@ -27,7 +27,8 @@ const closeLabel = lang === 'en' ? 'Close' : 'Schließen';
     var lbCap = lb.querySelector('.lightbox__caption');
 
     function open(img) {
-      lbImg.src = img.currentSrc || img.src;
+      // data-full = große Version (von <Img>); sonst das aktuell geladene Bild.
+      lbImg.src = img.dataset.full || img.currentSrc || img.src;
       lbImg.alt = img.alt || '';
       lbCap.textContent = img.alt || '';
       lbCap.style.display = img.alt ? '' : 'none';
