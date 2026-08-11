@@ -9817,7 +9817,7 @@
     "type": "portfolio",
     "status": "publish",
     "slug": "der-sonnenkoenig1994",
-    "title": "„Der Sonnenkönig\"1994",
+    "title": "„Der Sonnenkönig – Memento, homo, quia pulvis es“ 1994",
     "guid": "https://haushoppe.de/?post_type=portfolio&#038;p=1776",
     "date": "1994-01-29 09:54:00",
     "menuOrder": 0,
@@ -25097,7 +25097,7 @@
     "type": "portfolio",
     "status": "publish",
     "slug": "the-sun-king-1994",
-    "title": "\"The Sun King\" 1994",
+    "title": "\"The Sun King – Memento, homo, quia pulvis es\" 1994",
     "guid": "https://haushoppe.de/portfolio/der-sonnenkoenig1994",
     "date": "1994-01-29 09:54:00",
     "menuOrder": 0,
@@ -27808,5 +27808,305 @@
     "tags": [],
     "content": "<figure class=\"wp-block-image size-large\"><figcaption>Olaf Hoppe \"Genesis IV\" (Yellow Dandelion) 2001©<br>Original color woodcut from 6 woodblocks<br>Edition of 200 copies on handmade paper, numbered and signed by hand<br>Motif size 37 x 37 cm Sheet size 52 x 52 cm<br>2001-04-HZ</figcaption></figure>",
     "excerpt": ""
+  },
+  {
+    "id": "9001",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1975-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2020/12/erzgebirge-1975.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "erzgebirge-1975",
+    "title": "„Erzgebirge“ 1975",
+    "lang": "de",
+    "trid": "9001",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Erzgebirge“ 1975 © <br>Aquarell auf Bütten 17 x 25 cm<br>1975-01</figcaption></figure>"
+  },
+  {
+    "id": "9101",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1975-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2020/12/erzgebirge-1975.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "ore-mountains-1975",
+    "title": "\"Ore Mountains\" 1975",
+    "lang": "en",
+    "trid": "9001",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Ore Mountains“ 1975 © <br>Watercolour on handmade paper 17 x 25 cm<br>1975-01</figcaption></figure>"
+  },
+  {
+    "id": "9002",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1976-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2020/12/landschaft-wolken-1976.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "landschaft-wolken-1976",
+    "title": "„Landschaft (Wolken)“ 1976",
+    "lang": "de",
+    "trid": "9002",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Landschaft (Wolken)“ 1976 © <br>Pastell auf Bütten 19 x 26 cm<br>1976-01</figcaption></figure>"
+  },
+  {
+    "id": "9102",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1976-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2020/12/landschaft-wolken-1976.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "landscape-clouds-1976",
+    "title": "\"Landscape (Clouds)\" 1976",
+    "lang": "en",
+    "trid": "9002",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Landscape (Clouds)“ 1976 © <br>Pastel on handmade paper 19 x 26 cm<br>1976-01</figcaption></figure>"
+  },
+  {
+    "id": "9003",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1976-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2020/12/landschaft-reinshagen-1976.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "landschaft-reinshagen-1976",
+    "title": "„Landschaft (Reinshagen)“ 1976",
+    "lang": "de",
+    "trid": "9003",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Landschaft (Reinshagen)“ 1976 © <br>Pastell auf Bütten 18 x 19 cm<br>1976-02</figcaption></figure>"
+  },
+  {
+    "id": "9103",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1976-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2020/12/landschaft-reinshagen-1976.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "landscape-reinshagen-1976",
+    "title": "\"Landscape (Reinshagen)\" 1976",
+    "lang": "en",
+    "trid": "9003",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Landscape (Reinshagen)“ 1976 © <br>Pastel on handmade paper 18 x 19 cm<br>1976-02</figcaption></figure>"
+  },
+  {
+    "id": "9004",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1992-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2021/04/das-vogelnest-1992.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "das-vogelnest-1992",
+    "title": "„Das Vogelnest“ 1992",
+    "lang": "de",
+    "trid": "9004",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Das Vogelnest“ 1992 © <br>Acryl auf Leinwand 85 x 75 cm<br>1992-23-A</figcaption></figure>"
+  },
+  {
+    "id": "9104",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1992-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2021/04/das-vogelnest-1992.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "the-birds-nest-1992",
+    "title": "\"The Bird’s Nest\" 1992",
+    "lang": "en",
+    "trid": "9004",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „The Bird’s Nest“ 1992 © <br>Acrylic on canvas 85 x 75 cm<br>1992-23-A</figcaption></figure>"
+  },
+  {
+    "id": "9005",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1996-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2021/04/das-wunschkind-1996.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "das-wunschkind-1996",
+    "title": "„Das Wunschkind“ 1996",
+    "lang": "de",
+    "trid": "9005",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Das Wunschkind“ 1996 © <br>Acryl auf Leinwand 30 x 30 cm<br>1996-01-A</figcaption></figure>"
+  },
+  {
+    "id": "9105",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1996-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2021/04/das-wunschkind-1996.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "the-longed-for-child-1996",
+    "title": "\"The Longed-for Child\" 1996",
+    "lang": "en",
+    "trid": "9005",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „The Longed-for Child“ 1996 © <br>Acrylic on canvas 30 x 30 cm<br>1996-01-A</figcaption></figure>"
+  },
+  {
+    "id": "9006",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1998-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2021/04/der-tiefflieger-axt-1998.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "der-tiefflieger-axt-1998",
+    "title": "„Der Tiefflieger (Axt)“ 1998",
+    "lang": "de",
+    "trid": "9006",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „Der Tiefflieger (Axt)“ 1998 © <br>Acryl auf Leinwand 55 x 65 cm<br>1998-07-A</figcaption></figure>"
+  },
+  {
+    "id": "9106",
+    "type": "portfolio",
+    "status": "publish",
+    "guid": "",
+    "date": "1998-06-15 12:00:00",
+    "menuOrder": 0,
+    "thumbId": "",
+    "thumbFile": "2021/04/der-tiefflieger-axt-1998.jpg",
+    "categories": [
+      {
+        "name": "Gemälde",
+        "slug": "gemaelde",
+        "taxonomy": "portfolio_category"
+      }
+    ],
+    "tags": [],
+    "excerpt": "",
+    "metaKeys": [],
+    "slug": "the-low-flyer-axe-1998",
+    "title": "\"The Low-Flyer (Axe)\" 1998",
+    "lang": "en",
+    "trid": "9006",
+    "content": "<figure class=\"wp-block-image size-large\"><img src=\"\" alt=\"\"/><figcaption><br>Olaf Hoppe „The Low-Flyer (Axe)“ 1998 © <br>Acrylic on canvas 55 x 65 cm<br>1998-07-A</figcaption></figure>"
   }
 ]

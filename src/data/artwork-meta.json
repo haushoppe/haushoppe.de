@@ -3794,14 +3794,14 @@
   "1776": {
     "slug": "der-sonnenkoenig1994",
     "artist": "Olaf Hoppe",
-    "title": "Der Sonnenkönig",
+    "title": "Der Sonnenkönig – Memento, homo, quia pulvis es",
     "year": "1994",
     "technique": "Acryl auf Leinwand",
     "dimensions": "115 cm × 65 cm",
     "edition": "",
     "number": "1994-01-A",
     "en": {
-      "title": "The Sun King",
+      "title": "The Sun King – Memento, homo, quia pulvis es",
       "technique": "Acrylic on canvas",
       "dimensions": "115 cm × 65 cm",
       "edition": ""
@@ -5185,5 +5185,101 @@
     "title": "LEGENDS (Johannes x Olaf)",
     "ordinal": true,
     "number": "2024-02-O5"
+  },
+  "9001": {
+    "slug": "erzgebirge-1975",
+    "artist": "Olaf Hoppe",
+    "title": "Erzgebirge",
+    "year": "1975",
+    "technique": "Aquarell auf Bütten",
+    "dimensions": "17 cm × 25 cm",
+    "edition": "",
+    "number": "1975-01",
+    "en": {
+      "title": "Ore Mountains",
+      "technique": "Watercolour on handmade paper",
+      "dimensions": "17 cm × 25 cm",
+      "edition": ""
+    }
+  },
+  "9002": {
+    "slug": "landschaft-wolken-1976",
+    "artist": "Olaf Hoppe",
+    "title": "Landschaft (Wolken)",
+    "year": "1976",
+    "technique": "Pastell auf Bütten",
+    "dimensions": "19 cm × 26 cm",
+    "edition": "",
+    "number": "1976-01",
+    "en": {
+      "title": "Landscape (Clouds)",
+      "technique": "Pastel on handmade paper",
+      "dimensions": "19 cm × 26 cm",
+      "edition": ""
+    }
+  },
+  "9003": {
+    "slug": "landschaft-reinshagen-1976",
+    "artist": "Olaf Hoppe",
+    "title": "Landschaft (Reinshagen)",
+    "year": "1976",
+    "technique": "Pastell auf Bütten",
+    "dimensions": "18 cm × 19 cm",
+    "edition": "",
+    "number": "1976-02",
+    "en": {
+      "title": "Landscape (Reinshagen)",
+      "technique": "Pastel on handmade paper",
+      "dimensions": "18 cm × 19 cm",
+      "edition": ""
+    }
+  },
+  "9004": {
+    "slug": "das-vogelnest-1992",
+    "artist": "Olaf Hoppe",
+    "title": "Das Vogelnest",
+    "year": "1992",
+    "technique": "Acryl auf Leinwand",
+    "dimensions": "85 cm × 75 cm",
+    "edition": "",
+    "number": "1992-23-A",
+    "en": {
+      "title": "The Birds Nest",
+      "technique": "Acrylic on canvas",
+      "dimensions": "85 cm × 75 cm",
+      "edition": ""
+    }
+  },
+  "9005": {
+    "slug": "das-wunschkind-1996",
+    "artist": "Olaf Hoppe",
+    "title": "Das Wunschkind",
+    "year": "1996",
+    "technique": "Acryl auf Leinwand",
+    "dimensions": "30 cm × 30 cm",
+    "edition": "",
+    "number": "1996-01-A",
+    "en": {
+      "title": "The Longed-for Child",
+      "technique": "Acrylic on canvas",
+      "dimensions": "30 cm × 30 cm",
+      "edition": ""
+    }
+  },
+  "9006": {
+    "slug": "der-tiefflieger-axt-1998",
+    "artist": "Olaf Hoppe",
+    "title": "Der Tiefflieger (Axt)",
+    "year": "1998",
+    "technique": "Acryl auf Leinwand",
+    "dimensions": "55 cm × 65 cm",
+    "edition": "",
+    "number": "1998-07-A",
+    "en": {
+      "title": "The Low-Flyer (Axe)",
+      "technique": "Acrylic on canvas",
+      "dimensions": "55 cm × 65 cm",
+      "edition": ""
+    }
   }
 }

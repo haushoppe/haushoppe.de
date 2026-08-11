@@ -5230,5 +5230,101 @@
     "hoehe": 3370,
     "bytes_original": 10705621,
     "bytes_archiv": 2720176
+  },
+  {
+    "datei": "2020/12/erzgebirge-1975.jpg",
+    "quelle": "2020/12/erzgebirge-1975.jpg",
+    "werk_ids": [
+      "9001",
+      "9101"
+    ],
+    "titel_de": "„Erzgebirge“ 1975",
+    "titel_en": "\"Ore Mountains\" 1975",
+    "datum": "1975-06-15 12:00:00",
+    "format": "jpg (Original)",
+    "breite": 3516,
+    "hoehe": 2518,
+    "bytes_original": 5366007,
+    "bytes_archiv": 5366007
+  },
+  {
+    "datei": "2020/12/landschaft-wolken-1976.jpg",
+    "quelle": "2020/12/landschaft-wolken-1976.jpg",
+    "werk_ids": [
+      "9002",
+      "9102"
+    ],
+    "titel_de": "„Landschaft (Wolken)“ 1976",
+    "titel_en": "\"Landscape (Clouds)\" 1976",
+    "datum": "1976-06-15 12:00:00",
+    "format": "jpg (Original)",
+    "breite": 3736,
+    "hoehe": 2799,
+    "bytes_original": 5948569,
+    "bytes_archiv": 5948569
+  },
+  {
+    "datei": "2020/12/landschaft-reinshagen-1976.jpg",
+    "quelle": "2020/12/landschaft-reinshagen-1976.jpg",
+    "werk_ids": [
+      "9003",
+      "9103"
+    ],
+    "titel_de": "„Landschaft (Reinshagen)“ 1976",
+    "titel_en": "\"Landscape (Reinshagen)\" 1976",
+    "datum": "1976-06-15 12:00:00",
+    "format": "jpg (Original)",
+    "breite": 2717,
+    "hoehe": 2640,
+    "bytes_original": 4961032,
+    "bytes_archiv": 4961032
+  },
+  {
+    "datei": "2021/04/das-vogelnest-1992.jpg",
+    "quelle": "2021/04/das-vogelnest-1992.jpg",
+    "werk_ids": [
+      "9004",
+      "9104"
+    ],
+    "titel_de": "„Das Vogelnest“ 1992",
+    "titel_en": "\"The Bird’s Nest\" 1992",
+    "datum": "1992-06-15 12:00:00",
+    "format": "jpg (Original)",
+    "breite": 387,
+    "hoehe": 435,
+    "bytes_original": 44540,
+    "bytes_archiv": 44540
+  },
+  {
+    "datei": "2021/04/das-wunschkind-1996.jpg",
+    "quelle": "2021/04/das-wunschkind-1996.jpg",
+    "werk_ids": [
+      "9005",
+      "9105"
+    ],
+    "titel_de": "„Das Wunschkind“ 1996",
+    "titel_en": "\"The Longed-for Child\" 1996",
+    "datum": "1996-06-15 12:00:00",
+    "format": "jpg (Original)",
+    "breite": 443,
+    "hoehe": 435,
+    "bytes_original": 13653,
+    "bytes_archiv": 13653
+  },
+  {
+    "datei": "2021/04/der-tiefflieger-axt-1998.jpg",
+    "quelle": "2021/04/der-tiefflieger-axt-1998.jpg",
+    "werk_ids": [
+      "9006",
+      "9106"
+    ],
+    "titel_de": "„Der Tiefflieger (Axt)“ 1998",
+    "titel_en": "\"The Low-Flyer (Axe)\" 1998",
+    "datum": "1998-06-15 12:00:00",
+    "format": "jpg (Original)",
+    "breite": 518,
+    "hoehe": 435,
+    "bytes_original": 36017,
+    "bytes_archiv": 36017
   }
 ]
