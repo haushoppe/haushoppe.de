@@ -1,9 +1,10 @@
-// Werk-Galerie — reine Progressive-Enhancement-Veredelung. ALLE Werke stehen server-seitig im
-// HTML (ohne JS ein einfaches CSS-Raster, voll sichtbar + crawlbar, siehe Gallery.astro).
-// Mit JS: (1) Justified-Layout, (2) Kategorie-Filter (blendet vorhandene Kacheln ein/aus),
-// (3) Infinite Scroll durch schrittweises EINBLENDEN der zunächst versteckten Kacheln — kein
-// Nachbau, kein JSON. Global im BaseLayout geladen, damit der astro:page-load-Listener schon
-// beim ersten Vollladen registriert ist und nach jeder View-Transition feuert.
+// Werk-Galerie — reine Progressive-Enhancement-Veredelung. ALLE Werke der jeweiligen Seite (Alle
+// oder eine Kategorie) stehen server-seitig im HTML (ohne JS ein einfaches CSS-Raster, voll
+// sichtbar + crawlbar, siehe Gallery.astro). Der Kategorie-Filter sind echte Links auf eigene URLs
+// — kein Client-Filter hier. Mit JS: (1) Justified-Layout, (2) Infinite Scroll durch schrittweises
+// EINBLENDEN der zunächst versteckten Kacheln (kein Nachbau, kein JSON). Global im BaseLayout
+// geladen, damit der astro:page-load-Listener schon beim ersten Vollladen registriert ist und nach
+// jeder View-Transition feuert.
 (function () {
   function layout(g, tries) {
     const grid = g.querySelector('.gallery__grid');
@@ -63,48 +64,26 @@
     g.classList.add('is-ready');
   }
 
-  const matches = (el, cat) => cat === '*' || (' ' + (el.dataset.cats || '') + ' ').indexOf(' ' + cat + ' ') >= 0;
-
   function init(g) {
-    // Nur EINMAL binden (Filter, IntersectionObserver); Layout darf beliebig oft laufen.
+    // Nur EINMAL binden (IntersectionObserver); Layout darf beliebig oft laufen.
     // Nach einem Client-Wechsel ist g ein frisches Element -> neu binden.
     if (g.__galleryBound) { layout(g); return; }
     g.__galleryBound = true;
     const grid = g.querySelector('.gallery__grid');
-    const filter = g.querySelector('.gallery__filter');
     const sentinel = g.querySelector('.gallery__sentinel');
     const BATCH = parseInt(g.dataset.batch || '36', 10);
     const all = [...grid.querySelectorAll('.gallery__item')];
-    let cat = '*';
-    let shown = BATCH; // wie viele der aktuell gefilterten Kacheln eingeblendet sind
-
-    const filteredCount = () => all.reduce((n, el) => n + (matches(el, cat) ? 1 : 0), 0);
+    let shown = Math.min(BATCH, all.length); // wie viele Kacheln aktuell eingeblendet sind
 
     function render() {
-      let seen = 0;
-      for (const el of all) {
-        if (!matches(el, cat)) { el.style.display = 'none'; continue; }
-        el.style.display = seen < shown ? '' : 'none';
-        seen++;
-      }
+      for (let i = 0; i < all.length; i++) all[i].style.display = i < shown ? '' : 'none';
       layout(g);
-    }
-
-    if (filter) {
-      filter.addEventListener('click', (e) => {
-        const b = e.target.closest('.gallery__filter-btn');
-        if (!b) return;
-        cat = b.getAttribute('data-cat');
-        shown = BATCH;
-        filter.querySelectorAll('.gallery__filter-btn').forEach((x) => x.classList.toggle('is-active', x === b));
-        render();
-      });
     }
 
     if (sentinel && 'IntersectionObserver' in window) {
       new IntersectionObserver((entries) => {
-        if (entries.some((en) => en.isIntersecting) && shown < filteredCount()) {
-          shown += BATCH;
+        if (entries.some((en) => en.isIntersecting) && shown < all.length) {
+          shown = Math.min(shown + BATCH, all.length);
           render();
         }
       }, { rootMargin: '600px 0px' }).observe(sentinel);

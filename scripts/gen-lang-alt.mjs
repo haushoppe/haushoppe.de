@@ -30,6 +30,11 @@ for (const t of Object.values(byTrid)) {
 const pagePairs = [
   ['/', '/'],
   ['/werke/', '/artwork/'],
+  // Galerie-Kategorien (echte URLs statt Filter) — Slug-Paare DE↔EN.
+  ['/werke/gemaelde/', '/artwork/paintings/'],
+  ['/werke/holzschnitte/', '/artwork/woodcuts/'],
+  ['/werke/digitale-kunst/', '/artwork/digital-art/'],
+  ['/werke/zeichnungen/', '/artwork/drawings/'],
   ['/videos/', '/videos/'],
   ['/vita/', '/vita/'],
   ['/kontakt/', '/contact/'],

@@ -1,0 +1,32 @@
+---
+// Galerie-Kategorieseiten: ECHTE URLs statt Client-Filter (/werke/<kat>/ bzw. /artwork/<cat>/).
+// Sichtbarer Seitenwechsel, ohne JS voll sichtbar + crawlbar; mit ClientRouter sanfter Übergang.
+// Emittiert nur die Kategorien der aktuellen Build-Sprache (LANG bestimmt Wurzel + Slugs).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Gallery from '../../components/Gallery.astro';
+import { galleryItems, galleryCategories } from '../../lib/artworks';
+import { LANG } from '../../lib/lang';
+
+export async function getStaticPaths() {
+  const slug = LANG === 'de' ? 'werke' : 'artwork';
+  return galleryCategories(LANG).map((c) => ({
+    params: { slug, category: c.slug },
+    props: { cat: c },
+  }));
+}
+
+const { cat } = Astro.props as { cat: { slug: string; name: string; count: number } };
+const base = LANG === 'de' ? '/werke' : '/artwork';
+const allLabel = LANG === 'de' ? 'Alle' : 'All';
+const cats = galleryCategories(LANG);
+const items = galleryItems(LANG).filter((it) => it.categorySlugs.includes(cat.slug));
+const title = `${cat.name} - HAUS HOPPE`;
+const description =
+  LANG === 'de'
+    ? `${cat.name} von Olaf Hoppe – HAUS HOPPE, Galerie für Bildende Kunst.`
+    : `${cat.name} by Olaf Hoppe – HAUS HOPPE fine art gallery.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} />
+</BaseLayout>

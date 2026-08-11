@@ -19,7 +19,10 @@ const items = [...navData[lang], ...navPages];
 
 const path = normPath(Astro.url.pathname);
 let activePath = path;
-if (/^\/portfolio\//.test(path)) activePath = lang === 'en' ? '/artwork/' : '/werke/';
+// Werk-Detail (/portfolio/…) UND Galerie-Kategorien (/werke/<kat>/, /artwork/<cat>/) zählen als „Werke".
+if (/^\/portfolio\//.test(path) || /^\/(werke|artwork)\//.test(path)) {
+  activePath = lang === 'en' ? '/artwork/' : '/werke/';
+}
 
 // Sprachwechsel: gleiches Werk/gleiche Seite auf der ANDEREN Domain (haushoppe.de ↔ haushoppe.art).
 const altUrl = OTHER_ORIGIN + (altOf(path) || '/');

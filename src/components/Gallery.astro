@@ -1,17 +1,20 @@
 ---
-// Eigene Werk-Galerie. ALLE Werke stehen server-seitig im HTML — so ist die Galerie OHNE JS
-// vollständig sichtbar (einfaches CSS-Raster, s. u.) und komplett crawlbar (SEO). /js/gallery.js
-// ist reine Veredelung: es legt die vorhandenen Kacheln ins Justified-Layout und blendet beim
-// Kategorie-Filter Kacheln ein/aus. KEIN JSON, KEIN Infinite-Scroll — Bilder laden nativ per
-// loading="lazy". Beim Build werden für alle Werke die AVIF/WebP-URLs (feste Höhe 480) vorberechnet.
+// Eigene Werk-Galerie. ALLE (der Kategorie zugehörigen) Werke stehen server-seitig im HTML — so
+// ist die Galerie OHNE JS vollständig sichtbar (einfaches CSS-Raster, s. u.) und crawlbar (SEO).
+// Der Kategorie-Filter sind ECHTE Links auf eigene URLs (/werke/<kat>/): sichtbarer Seitenwechsel,
+// kein SPA-Zustand; mit ClientRouter als sanfter Übergang. /js/gallery.js ist reine Veredelung:
+// Justified-Layout + Infinite Scroll (blendet die zunächst versteckten Kacheln beim Scrollen ein).
+// Beim Build werden je Werk die AVIF/WebP-URLs (feste Höhe 480) vorberechnet.
 import { getImage } from 'astro:assets';
 import type { GalleryItem, FilterCat } from '../lib/artworks';
 interface Props {
   items: GalleryItem[];
   cats: FilterCat[];
   allLabel?: string;
+  base: string; // Galerie-Wurzel der Sprache: '/werke' oder '/artwork'
+  activeCat?: string; // '*' = Alle, sonst Kategorie-Slug
 }
-const { items, cats, allLabel = 'Alle' } = Astro.props;
+const { items, cats, allLabel = 'Alle', base, activeCat = '*' } = Astro.props;
 
 // Kacheldaten mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
 const data = await Promise.all(
@@ -26,12 +29,12 @@ const data = await Promise.all(
 ---
 
 <div class="gallery" data-gallery data-gap="15" data-row-height="200" data-batch="36" data-pagefind-ignore>
-  <div class="gallery__filter">
-    <button type="button" class="gallery__filter-btn is-active" data-cat="*">{allLabel}</button>
+  <nav class="gallery__filter" aria-label={allLabel}>
+    <a href={`${base}/`} class:list={['gallery__filter-btn', activeCat === '*' && 'is-active']} aria-current={activeCat === '*' ? 'page' : undefined}>{allLabel}</a>
     {cats.map((c) => (
-      <button type="button" class="gallery__filter-btn" data-cat={c.slug}>{c.name} <span class="gallery__filter-count">{c.count}</span></button>
+      <a href={`${base}/${c.slug}/`} class:list={['gallery__filter-btn', activeCat === c.slug && 'is-active']} aria-current={activeCat === c.slug ? 'page' : undefined}>{c.name} <span class="gallery__filter-count">{c.count}</span></a>
     ))}
-  </div>
+  </nav>
 
   {/* ALLE Werke server-seitig — ohne JS ein CSS-Raster (voll sichtbar + crawlbar). Mit JS
       versteckt gallery.js zunächst alles jenseits der ersten Charge und blendet beim Scrollen

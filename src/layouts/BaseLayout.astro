@@ -10,6 +10,7 @@ import Lightbox from '../components/Lightbox.astro';
 import { LANG, DE_ORIGIN, EN_ORIGIN, SELF_ORIGIN } from '../lib/lang';
 import { normPath, altOf } from '../lib/paths';
 import { galleryJsonLd } from '../lib/seo';
+import { assetVersion } from '../lib/asset-version';
 import '../styles/wp-design.css';
 import '../styles/global.css';
 import '@fontsource/merriweather/400.css';
@@ -99,11 +100,11 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
       <slot />
     </main>
     <Footer lang={lang} />
-    <script is:inline src="/js/yt-facade.js" data-cfasync="false"></script>
+    <script is:inline src={`/js/yt-facade.js?v=${assetVersion('/js/yt-facade.js')}`} data-cfasync="false"></script>
     {/* Global geladen (nicht in Gallery.astro): so ist der astro:page-load-Listener schon beim
         ersten Vollladen registriert und baut die Werk-Galerie nach JEDEM Wechsel neu auf. Auf
-        Nicht-Galerie-Seiten ist der Aufruf ein No-op. */}
-    <script is:inline src="/js/gallery.js" data-cfasync="false"></script>
+        Nicht-Galerie-Seiten ist der Aufruf ein No-op. ?v=<hash> bricht den Cache bei JS-Änderung. */}
+    <script is:inline src={`/js/gallery.js?v=${assetVersion('/js/gallery.js')}`} data-cfasync="false"></script>
     <Search lang={lang} />
     <Lightbox lang={lang} />
     <script>

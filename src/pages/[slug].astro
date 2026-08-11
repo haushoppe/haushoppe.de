@@ -74,6 +74,7 @@ const meta =
 const items = type === 'gallery' ? galleryItems(LANG) : [];
 const cats = type === 'gallery' ? galleryCategories(LANG) : [];
 const allLabel = LANG === 'de' ? 'Alle' : 'All';
+const galleryBase = LANG === 'de' ? '/werke' : '/artwork';
 
 // Kontakt & Kunst-Erwerben kommen aus MDX (content/pages/kontakt-<lang>.mdx / acquire-<lang>.mdx).
 let MdxContent: any = null;
@@ -90,7 +91,7 @@ const ogImage = ogSrc ? (await getImage({ src: ogSrc, format: 'jpeg', width: 120
 ---
 
 <BaseLayout title={meta.title} description={meta.description} image={ogImage}>
-  {type === 'gallery' && <Gallery items={items} cats={cats} allLabel={allLabel} />}
+  {type === 'gallery' && <Gallery items={items} cats={cats} allLabel={allLabel} base={galleryBase} activeCat="*" />}
   {type === 'contact' && MdxContent && (
     <Kontakt>
       <MdxContent />
