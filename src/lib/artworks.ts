@@ -2,6 +2,7 @@ import artworksData from '../data/artworks.json';
 import metaData from '../data/artwork-meta.json';
 import type { ImageMetadata } from 'astro';
 import { artworkImage, hasArtworkImage } from './artwork-images';
+import { smartQuotes } from './text';
 
 type Lang = 'de' | 'en';
 type Cat = { name: string; slug: string; taxonomy: string };
@@ -42,7 +43,7 @@ export function galleryItems(lang: Lang): GalleryItem[] {
       const image = artworkImage(a.id)!;
       return {
         id: a.id,
-        title: a.title,
+        title: smartQuotes(a.title, lang),
         detailUrl: `/portfolio/${a.slug}/`,
         categorySlugs: pcats.map((c) => c.slug),
         primaryCategory: pcats[0]?.slug ?? '',

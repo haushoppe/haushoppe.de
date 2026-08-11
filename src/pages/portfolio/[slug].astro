@@ -10,6 +10,7 @@ import { artworkImage, hasArtworkImage } from '../../lib/artwork-images';
 import { galleryItems } from '../../lib/artworks';
 import { ordinalData } from '../../lib/ordinals';
 import { artworkJsonLd } from '../../lib/seo';
+import { smartQuotes } from '../../lib/text';
 import { LANG, SELF_ORIGIN } from '../../lib/lang';
 
 export function getStaticPaths() {
@@ -41,7 +42,11 @@ export function getStaticPaths() {
       lbNext: hasImgChain ? imgOrder[(j + 1) % imgOrder.length].detailUrl : null,
     };
   };
-  return detailArts.map((a) => ({ params: { slug: a.slug }, props: { art: a, image: artworkImage(a.id), ...around(a) } }));
+  // Titel typografisch säubern (DE „…“, EN “…”) — an dieser Wurzel, damit art.title überall stimmt.
+  return detailArts.map((a) => ({
+    params: { slug: a.slug },
+    props: { art: { ...a, title: smartQuotes(a.title, LANG) }, image: artworkImage(a.id), ...around(a) },
+  }));
 }
 
 const { art, image, prev, next, lbPrev, lbNext } = Astro.props as {
