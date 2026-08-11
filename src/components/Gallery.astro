@@ -2,8 +2,9 @@
 // Eigene Werk-Galerie. ALLE (der Kategorie zugehörigen) Werke stehen server-seitig im HTML — so
 // ist die Galerie OHNE JS vollständig sichtbar (einfaches CSS-Raster, s. u.) und crawlbar (SEO).
 // Der Kategorie-Filter sind ECHTE Links auf eigene URLs (/werke/<kat>/): sichtbarer Seitenwechsel,
-// kein SPA-Zustand; mit ClientRouter als sanfter Übergang. /js/gallery.js ist reine Veredelung:
-// Justified-Layout + Infinite Scroll (blendet die zunächst versteckten Kacheln beim Scrollen ein).
+// kein SPA-Zustand; mit ClientRouter als sanfter Übergang. Das Galerie-Skript (src/scripts/gallery.js,
+// via Astro gebündelt) ist reine Veredelung: Justified-Layout + Infinite Scroll (blendet die zunächst
+// versteckten Kacheln beim Scrollen ein).
 // Beim Build werden je Werk die AVIF/WebP-URLs (feste Höhe 480) vorberechnet.
 import { getImage } from 'astro:assets';
 import type { GalleryItem, FilterCat } from '../lib/artworks';

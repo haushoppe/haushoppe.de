@@ -10,7 +10,6 @@ import Lightbox from '../components/Lightbox.astro';
 import { LANG, DE_ORIGIN, EN_ORIGIN, SELF_ORIGIN } from '../lib/lang';
 import { normPath, altOf } from '../lib/paths';
 import { galleryJsonLd } from '../lib/seo';
-import { assetVersion } from '../lib/asset-version';
 import '../styles/wp-design.css';
 import '../styles/global.css';
 import '@fontsource/merriweather/400.css';
@@ -100,14 +99,16 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
       <slot />
     </main>
     <Footer lang={lang} />
-    <script is:inline src={`/js/yt-facade.js?v=${assetVersion('/js/yt-facade.js')}`} data-cfasync="false"></script>
-    {/* Global geladen (nicht in Gallery.astro): so ist der astro:page-load-Listener schon beim
-        ersten Vollladen registriert und baut die Werk-Galerie nach JEDEM Wechsel neu auf. Auf
-        Nicht-Galerie-Seiten ist der Aufruf ein No-op. ?v=<hash> bricht den Cache bei JS-Änderung. */}
-    <script is:inline src={`/js/gallery.js?v=${assetVersion('/js/gallery.js')}`} data-cfasync="false"></script>
     <Search lang={lang} />
     <Lightbox lang={lang} />
+    {/* Ein gebündeltes Modul für alle globalen Seiten-Skripte. Weil es aus astro:transitions/client
+        importiert (gemeinsamer Chunk), EXTRAHIERT Astro es nach /_astro/<hash>.js statt es inline ins
+        HTML zu legen — Content-Hash im Dateinamen = automatisches Cache-Busting, einmal geladen und
+        über alle Seiten gecacht. Läuft genau EINMAL; die importierten Skripte registrieren ihre
+        astro:page-load-Listener selbst und feuern nach JEDEM View-Transition-Wechsel neu. */}
     <script>
+      import '../scripts/yt-facade.js';
+      import '../scripts/gallery.js';
       import { navigate } from 'astro:transitions/client';
       // Werk-zu-Werk-Navigation per Pfeiltasten UND Lightbox-Knöpfen (data-lb-nav). Geschlossene
       // Lightbox: durch ALLE Werke (rel=prev/next, chronologisch inkl. Ordinals). Offene Lightbox:
