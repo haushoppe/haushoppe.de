@@ -45,6 +45,7 @@ const homeHref = '/';
                 href={it.href}
                 class:list={['mainnav__link', it.href === activePath && 'is-active']}
                 aria-current={it.href === activePath ? 'page' : undefined}
+                data-text={it.label}
               >
                 {it.label}
               </a>
@@ -122,12 +123,26 @@ const homeHref = '/';
     align-items: stretch;
   }
   .mainnav__link {
-    display: flex;
+    display: inline-flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 0 16px;
     font-weight: 400;
     color: #000;
     line-height: 1.2;
+  }
+  /* Kein Verrutschen der Nav beim Fettschalten des aktiven Punkts: eine unsichtbare, fett
+     gesetzte Kopie des Labels reserviert immer die Bold-Breite (height:0 → belegt keinen Platz,
+     ändert nur die Mindestbreite). */
+  .mainnav__link::after {
+    content: attr(data-text);
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
   }
   .mainnav__link:hover,
   .mainnav__link.is-active {

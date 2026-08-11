@@ -106,20 +106,30 @@ const dataJson = JSON.stringify(data).replace(/</g, '\\u003c');
     vertical-align: super;
     margin-left: 0.3em;
   }
-  /* Justified-Raster (Positionen setzt gallery.js absolut). Fade-in, wenn fertig gelegt. */
+  /* Progressive Enhancement: OHNE JS ein einfaches, sofort sichtbares Raster — die serverseitig
+     gerenderte erste Charge steht so IMMER im Bild, unabhängig von View-Transition-Timing oder
+     Browser. Sobald gallery.js gelaufen ist (.is-ready), wird auf das absolute Justified-Layout
+     umgeschaltet. Kein opacity:0-Gate mehr, das die Galerie bei fehlendem JS leer ließ. */
   .gallery__grid {
-    position: relative;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-  }
-  .gallery.is-ready .gallery__grid {
-    opacity: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 15px;
   }
   .gallery__item {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  /* JS-veredelt: Justified-Layout (gallery.js setzt Breite/Höhe/Position der Kacheln absolut). */
+  .gallery.is-ready .gallery__grid {
+    display: block;
+    position: relative;
+  }
+  .gallery.is-ready .gallery__item {
     position: absolute;
     top: 0;
     left: 0;
-    overflow: hidden;
+    aspect-ratio: auto;
   }
   .gallery__link,
   .gallery__thumb,
