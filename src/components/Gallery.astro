@@ -1,11 +1,9 @@
 ---
-// Eigene Werk-Galerie (justified Layout + Kategorie-Filter + Infinite Scroll). Vollständig
-// eigener Code/Benennung — kein WordPress-/Visual-Portfolio-Erbe. Beim Build werden für ALLE
-// Werke die AVIF/WebP-URLs (feste Höhe 480 → flache/breite Werke bekommen automatisch genug
-// Breite aus dem hochauflösenden Original, statt bei fester Breite hochskaliert zu werden) via
-// getImage() vorberechnet; nur die ersten BATCH
-// Kacheln kommen als HTML (schnelle Mobil-FCP), der Rest steckt als kompakte JSON-Daten in der
-// Seite und wird von /js/gallery.js beim Scrollen nachgebaut. Der Filter arbeitet über ALLE Werke.
+// Eigene Werk-Galerie. ALLE Werke stehen server-seitig im HTML — so ist die Galerie OHNE JS
+// vollständig sichtbar (einfaches CSS-Raster, s. u.) und komplett crawlbar (SEO). /js/gallery.js
+// ist reine Veredelung: es legt die vorhandenen Kacheln ins Justified-Layout und blendet beim
+// Kategorie-Filter Kacheln ein/aus. KEIN JSON, KEIN Infinite-Scroll — Bilder laden nativ per
+// loading="lazy". Beim Build werden für alle Werke die AVIF/WebP-URLs (feste Höhe 480) vorberechnet.
 import { getImage } from 'astro:assets';
 import type { GalleryItem, FilterCat } from '../lib/artworks';
 interface Props {
@@ -15,9 +13,7 @@ interface Props {
 }
 const { items, cats, allLabel = 'Alle' } = Astro.props;
 
-const BATCH = 36;
-// Kompakte Kacheldaten mit vorberechneten Bild-URLs (kurze Keys sparen Bytes):
-// u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer · a=avif · p=webp
+// Kacheldaten mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
 const data = await Promise.all(
   items.map(async (it) => {
     const [a, p] = await Promise.all([
@@ -27,20 +23,21 @@ const data = await Promise.all(
     return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), w: it.w, h: it.h, n: it.number, a: a.src, p: p.src };
   }),
 );
-const initial = data.slice(0, BATCH);
-const dataJson = JSON.stringify(data).replace(/</g, '\\u003c');
 ---
 
-<div class="gallery" data-gallery data-gap="15" data-row-height="200" data-batch={BATCH} data-pagefind-ignore>
+<div class="gallery" data-gallery data-gap="15" data-row-height="200" data-batch="36" data-pagefind-ignore>
   <div class="gallery__filter">
-    <a href="#" class="gallery__filter-btn is-active" data-cat="*">{allLabel}</a>
+    <button type="button" class="gallery__filter-btn is-active" data-cat="*">{allLabel}</button>
     {cats.map((c) => (
-      <a href="#" class="gallery__filter-btn" data-cat={c.slug}>{c.name} <span class="gallery__filter-count">{c.count}</span></a>
+      <button type="button" class="gallery__filter-btn" data-cat={c.slug}>{c.name} <span class="gallery__filter-count">{c.count}</span></button>
     ))}
   </div>
 
+  {/* ALLE Werke server-seitig — ohne JS ein CSS-Raster (voll sichtbar + crawlbar). Mit JS
+      versteckt gallery.js zunächst alles jenseits der ersten Charge und blendet beim Scrollen
+      weiter ein (Infinite Scroll ohne Nachbau). */}
   <div class="gallery__grid">
-    {initial.map((d, i) => (
+    {data.map((d, i) => (
       <article class="gallery__item" data-cats={d.c} data-w={d.w} data-h={d.h}>
         <a href={d.u} class="gallery__link" aria-label={d.t}>
           <picture class="gallery__thumb">
@@ -58,10 +55,11 @@ const dataJson = JSON.stringify(data).replace(/</g, '\\u003c');
   </div>
 
   <div class="gallery__sentinel" aria-hidden="true"></div>
-  <script type="application/json" class="gallery__data" set:html={dataJson}></script>
 </div>
 
-<script is:inline src="/js/gallery.js" data-cfasync="false"></script>
+{/* gallery.js wird global im BaseLayout geladen (nicht hier), damit sein astro:page-load-
+    Listener schon beim ersten Vollladen registriert ist und nach JEDER View-Transition feuert —
+    ein seiten-eigenes <script src> wird beim Einswappen nicht zuverlässig ausgeführt. */}
 
 <style is:global>
   /* ── Werk-Galerie (eigenes Stylesheet) ───────────────────────────────────── */
@@ -81,9 +79,12 @@ const dataJson = JSON.stringify(data).replace(/</g, '\\u003c');
   }
   .gallery__filter-btn {
     display: block;
+    border: 0;
+    cursor: pointer;
     background: #f7f7f7;
     color: #6c7781;
     padding: 0.7em 1.3em;
+    font-family: inherit;
     font-size: 0.9em;
     font-weight: 600;
     line-height: 1.4;

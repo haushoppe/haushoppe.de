@@ -100,6 +100,10 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     </main>
     <Footer lang={lang} />
     <script is:inline src="/js/yt-facade.js" data-cfasync="false"></script>
+    {/* Global geladen (nicht in Gallery.astro): so ist der astro:page-load-Listener schon beim
+        ersten Vollladen registriert und baut die Werk-Galerie nach JEDEM Wechsel neu auf. Auf
+        Nicht-Galerie-Seiten ist der Aufruf ein No-op. */}
+    <script is:inline src="/js/gallery.js" data-cfasync="false"></script>
     <Search lang={lang} />
     <Lightbox lang={lang} />
     <script>
