@@ -1,0 +1,70 @@
+---
+// Verschleierte E-Mail (Muster von haushoppe-its.de übernommen): Die Adresse wird erst im
+// Browser beim Klick zusammengesetzt — im HTML-Quelltext steht KEINE Klartext-Adresse. Das
+// schützt vor Harvestern UND verhindert, dass Cloudflares eigene „Email Address Obfuscation"
+// greift (die sonst ein /cdn-cgi/…/email-decode.min.js injiziert und den ClientRouter-Swap stört).
+// Adresse ganz (address="user@domain") oder geteilt (user/domain). Kein Fallback: löst nichts
+// auf, wird ein nicht-klickbarer Span gezeigt (statt still auf eine falsche Adresse zu linken).
+interface Props {
+  address?: string;
+  user?: string;
+  domain?: string;
+  label?: string;
+}
+let { address, user, domain, label } = Astro.props;
+
+if (address && (!user || !domain)) {
+  const at = address.indexOf('@');
+  if (at > 0) {
+    user = user ?? address.slice(0, at);
+    domain = domain ?? address.slice(at + 1);
+  }
+}
+
+const resolved = Boolean(user && domain);
+const text = label ?? (resolved ? `${user} [at] ${domain}` : (address ?? ''));
+---
+
+{
+  resolved ? (
+    <span class="mailto" data-user={user} data-domain={domain} role="link" tabindex="0">
+      {text}
+    </span>
+  ) : (
+    <span>{text}</span>
+  )
+}
+
+<style>
+  .mailto {
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>
+
+<script>
+  // Enthüllung dokument-weit + einmalig registriert (window-Guard), damit sie auch nach
+  // View-Transitions (ClientRouter) auf frisch eingesetzten .mailto-Elementen greift.
+  if (!window.__mailtoReveal) {
+    window.__mailtoReveal = true;
+    const reveal = (el) => {
+      const user = el.dataset.user;
+      const domain = el.dataset.domain;
+      if (!user || !domain) return;
+      window.location.href = `mailto:${user}@${domain}`;
+    };
+    document.addEventListener('click', (e) => {
+      const el = e.target && e.target.closest ? e.target.closest('.mailto') : null;
+      if (el) reveal(el);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const el = e.target && e.target.closest ? e.target.closest('.mailto') : null;
+      if (el) {
+        e.preventDefault();
+        reveal(el);
+      }
+    });
+  }
+</script>

@@ -2,6 +2,7 @@
 // Sauberer Footer (ersetzt das portierte Theme-Markup inkl. ugb-spacer): dunkler Balken,
 // „Folge uns bei" + Social-Icons (Discord/Instagram/YouTube), darunter Kontakt 2-spaltig.
 import { socials, contact } from '../data/site';
+import MailObfuscate from './MailObfuscate.astro';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -52,7 +53,7 @@ const icons: Record<string, string> = {
         {contact.city}
       </address>
       <div class="site-footer__meta">
-        <a href={`mailto:${contact.email}`}>{contact.email}</a><br />
+        <MailObfuscate address={contact.email} /><br />
         {contact.phones.map((ph) => <span>{ph}<br /></span>)}
       </div>
     </div>
