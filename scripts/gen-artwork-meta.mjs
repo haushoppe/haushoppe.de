@@ -316,15 +316,12 @@ for (const a of arr.filter((x) => x.lang === 'de')) {
     dimensions,
     edition: de.edition || p.edition || '',
     number,
-    // freier Zusatztext (Quelle etc.); die Nummer NICHT doppelt zeigen → aus extra strippen
-    extra: number ? (de.extra || p.extra || '').split(number).join('').replace(/\s{2,}/g, ' ').replace(/^[\s·,]+|[\s·,]+$/g, '').trim() : de.extra || p.extra || '',
     en: en
       ? {
           title: en.title,
           technique: en.technique,
           dimensions: (cleanDim(en.dimensions) || cleanDim(p.en?.dimensions) || '').replace(/(\d+)\s*×\s*(\d+)\s*cm/g, '$1 cm × $2 cm'),
           edition: en.edition || p.en?.edition || '',
-          extra: en.extra || p.en?.extra || '',
         }
       : undefined,
   };

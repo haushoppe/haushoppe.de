@@ -2,10 +2,12 @@
 // Auszeichnung/Preis eines Werks — für die artworkExtra-Collection (in MDX nutzbar). Rendert eine
 // dezente Notiz mit Akzentkante; Preis-Text + Link kommen als Slot (Markdown in MDX).
 // Nutzung: <Award>1. Platz … [Link-Text](url)</Award>  ·  EN: <Award label="Award">…</Award>
+import { LANG } from '../lib/lang';
 interface Props {
   label?: string;
 }
-const { label = 'Auszeichnung' } = Astro.props;
+// Label folgt der Build-Sprache (LANG); per Prop überschreibbar.
+const { label = LANG === 'en' ? 'Award' : 'Auszeichnung' } = Astro.props;
 ---
 
 <div class="art-award">

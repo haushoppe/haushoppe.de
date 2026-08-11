@@ -1,7 +1,8 @@
 ---
 // Konsistente Werk-Beschriftung aus strukturierten Feldern (src/data/artwork-meta.json) —
 // ersetzt das Raten aus dem uneinheitlichen WP-Content. Pflicht: Titel · Jahr · Technik ·
-// Maße · interne Nummer; optional: Auflage (nur Drucke) + freier Extra-Text (HTML) am Ende.
+// Maße · interne Nummer; optional: Auflage (nur Drucke). Freier Text (Beschreibung, Quelle,
+// Auszeichnung) lebt jetzt in der Content-Collection artwork-extra, nicht mehr hier.
 export interface ArtworkMetaData {
   artist: string;
   title: string;
@@ -10,8 +11,7 @@ export interface ArtworkMetaData {
   dimensions: string; // „Maße" — Gemälde „90 × 170 cm", Druck „Motivgröße … Blattformat …"
   number: string;
   edition?: string; // Auflage (nur Drucke)
-  extra?: string; // freier Text/HTML
-  en?: { title?: string; technique?: string; dimensions?: string; edition?: string; extra?: string };
+  en?: { title?: string; technique?: string; dimensions?: string; edition?: string };
 }
 
 interface Props {
@@ -30,7 +30,6 @@ const rawDim = (en?.dimensions || meta.dimensions || '').trim().replace(/(\d+)\s
 const dimensions = rawDim === '?' ? '' : rawDim;
 // leeres EN fällt auf DE zurück (wie Titel/Technik/Maße) — nicht ??, sonst bleibt EN leer statt DE.
 const edition = (en?.edition || meta.edition || '').trim();
-const extra = en?.extra || meta.extra;
 // Technik + Maße als eine saubere Zeile (kein JSX-Whitespace).
 const techLine = [technique, dimensions].filter(Boolean).join(', ');
 ---
@@ -40,7 +39,6 @@ const techLine = [technique, dimensions].filter(Boolean).join(', ');
   {techLine && <span class="art-meta__tech">{techLine}</span>}
   {edition && <span class="art-meta__edition">{edition}</span>}
   {meta.number && <span class="art-meta__num">{meta.number}</span>}
-  {extra && <div class="art-meta__extra" set:html={extra} />}
 </figcaption>
 
 <style>
@@ -58,12 +56,5 @@ const techLine = [technique, dimensions].filter(Boolean).join(', ');
   }
   .art-meta__edition {
     font-size: 0.85rem;
-  }
-  .art-meta__extra {
-    margin-top: 0.5rem;
-    color: #4b4f58;
-  }
-  .art-meta__extra :global(p) {
-    margin: 0 0 0.6rem;
   }
 </style>
