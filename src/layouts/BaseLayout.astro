@@ -10,6 +10,9 @@ import Lightbox from '../components/Lightbox.astro';
 import { LANG, DE_ORIGIN, EN_ORIGIN, SELF_ORIGIN } from '../lib/lang';
 import { normPath, altOf } from '../lib/paths';
 import { galleryJsonLd } from '../lib/seo';
+// Display-Schrift als Datei importieren -> gehashte URL, exakt die, die auch das @font-face nutzt
+// (gleicher Content-Hash), damit der Preload keinen Doppel-Download auslöst.
+import merriweather400 from '@fontsource/merriweather/files/merriweather-latin-400-normal.woff2';
 import '../styles/wp-design.css';
 import '../styles/global.css';
 import '@fontsource/merriweather/400.css';
@@ -46,10 +49,14 @@ const {
 
 // canonical + hreflang über die zwei Domains (Sprache = Domain, kein /en/-Pfad).
 const path = normPath(Astro.url.pathname);
-const otherPath = altOf(path) || path;
-const dePath = lang === 'de' ? path : otherPath;
-const enPath = lang === 'en' ? path : otherPath;
+// Nur ECHTE Pendants als hreflang ausgeben: fehlt der Alt-Pfad (kein lang-alt-Eintrag), zeigt der
+// Alternate sonst auf einen Cross-Domain-404. Dann lassen wir ihn weg (fail safe) — so kann eine
+// neue Kategorie-/Standalone-Seite ohne Paar nie mehr still auf eine 404 verlinken.
+const alt = altOf(path);
+const dePath = lang === 'de' ? path : alt;
+const enPath = lang === 'en' ? path : alt;
 const canonical = SELF_ORIGIN + path;
+const xDefaultHref = dePath ? DE_ORIGIN + dePath : canonical;
 
 // SEO/Social: Beschreibung nie leer, OG-Bild absolut, Locale je Sprache, Default-JSON-LD = Galerie.
 const defaultDesc =
@@ -69,12 +76,13 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={merriweather400} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={metaDesc} />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="de" href={DE_ORIGIN + dePath} />
-    <link rel="alternate" hreflang="en" href={EN_ORIGIN + enPath} />
-    <link rel="alternate" hreflang="x-default" href={DE_ORIGIN + dePath} />
+    {dePath && <link rel="alternate" hreflang="de" href={DE_ORIGIN + dePath} />}
+    {enPath && <link rel="alternate" hreflang="en" href={EN_ORIGIN + enPath} />}
+    <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
 
     <meta property="og:site_name" content={siteName} />
     <meta property="og:type" content={type} />
@@ -94,8 +102,9 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     {jsonLdItems.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
   </head>
   <body class:list={[inverted && 'theme-invert']}>
+    <a href="#main" class="skip-link">{lang === 'en' ? 'Skip to content' : 'Zum Inhalt springen'}</a>
     <Header lang={lang} />
-    <main class:list={['site-main', layout && `site-main--${layout}`]} data-pagefind-body>
+    <main id="main" class:list={['site-main', layout && `site-main--${layout}`]} data-pagefind-body>
       <slot />
     </main>
     <Footer lang={lang} />
@@ -147,6 +156,21 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
 </html>
 
 <style is:global>
+  /* Skip-Link: unsichtbar geparkt, erscheint nur bei Tastatur-Fokus (WCAG 2.4.1). */
+  .skip-link {
+    position: absolute;
+    left: 8px;
+    top: -48px;
+    z-index: 200;
+    background: #fff;
+    color: #000;
+    padding: 0.5rem 0.9rem;
+    font-weight: 600;
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus {
+    top: 8px;
+  }
   /* Ordinal-Seiten „geflippt": dunkler Header + schwarzer Body, damit die On-Chain-Bühne
      vollflächig schwarz steht (kein weißer Streifen, auch nicht über dem Footer). Sauber
      ausgestaltet statt des alten filter:invert()-Hacks. Die Sprach-Flagge bleibt bewusst

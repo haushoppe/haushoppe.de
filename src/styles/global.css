@@ -88,6 +88,20 @@ a:hover {
   /* Oben derselbe responsive Abstand wie der Header (clamp), unten bündig. */
   padding-block: clamp(1.25rem, 3vw, 2rem) 0;
 }
+/* Nur für Screenreader — z. B. ein Seiten-h1 auf der Galerie, ohne das minimalistische
+   Design zu verändern (Heading-Hierarchie/SEO trotzdem korrekt). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
 /* Full-bleed ohne vertikales Padding (Ordinals: schwarze Bühne bündig an Nav/Footer). */
 .site-main--bleed {
   padding-block: 0;

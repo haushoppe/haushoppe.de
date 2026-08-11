@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects. Format: <from>  <to>  <status>
+#
+# Domain-Split (DE = haushoppe.de, EN = haushoppe.art): alte, bei WPML uebliche Englisch-Pfade
+# unter /en/... auf die englische Domain umleiten. Risikolos, weil KEINE der neuen Seiten einen
+# /en/-Pfad hat -> die Regel kann nie eine echte Seite kapern; sie faengt nur alte, indexierte
+# /en/-Links ab (Link-Equity). Greift die alte Site kein /en/ genutzt hat, ist die Regel inert.
+/en/*  https://haushoppe.art/:splat  301

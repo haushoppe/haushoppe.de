@@ -81,8 +81,14 @@ const embed = (id: string) =>
 </section>
 
 <script>
-  const root = document.querySelector<HTMLElement>('.vg');
-  if (root) {
+  // Init in einer Funktion + astro:page-load: Astro führt Modul-<script> nur EINMAL pro Session aus;
+  // ohne das bekäme das nach dem 2. Client-Besuch frisch eingeswappte /videos-DOM keine Handler
+  // (Karussell tot bis F5). Per-Root-Guard verhindert Doppelbindung, ein einziger globaler
+  // resize-Listener baut die Dots des aktuellen Karussells neu (kein Listener-Leak pro Besuch).
+  function initVideos() {
+    const root = document.querySelector<HTMLElement>('.vg');
+    if (!root || (root as any).__vgBound) return;
+    (root as any).__vgBound = true;
     const player = root.querySelector<HTMLElement>('.vg__player')!;
     const title = root.querySelector<HTMLElement>('.vg__player-title')!;
     const track = root.querySelector<HTMLElement>('.vg__track')!;
@@ -141,12 +147,22 @@ const embed = (id: string) =>
       syncNav();
     }
     track.addEventListener('scroll', syncNav, { passive: true });
+    (root as any).__vgRebuild = buildDots;
+    buildDots();
+  }
+
+  if (!(window as any).__vgInit) {
+    (window as any).__vgInit = true;
     let rt: number | undefined;
     window.addEventListener('resize', () => {
       clearTimeout(rt);
-      rt = window.setTimeout(buildDots, 150);
+      rt = window.setTimeout(() => {
+        const cur = document.querySelector('.vg') as any;
+        if (cur && cur.__vgRebuild) cur.__vgRebuild();
+      }, 150);
     });
-    buildDots();
+    document.addEventListener('astro:page-load', initVideos);
+    initVideos();
   }
 </script>
 

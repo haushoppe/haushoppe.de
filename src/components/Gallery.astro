@@ -14,8 +14,9 @@ interface Props {
   allLabel?: string;
   base: string; // Galerie-Wurzel der Sprache: '/werke' oder '/artwork'
   activeCat?: string; // '*' = Alle, sonst Kategorie-Slug
+  heading?: string; // Seiten-h1 (SR-only) — Heading-Hierarchie/SEO ohne visuelle Änderung
 }
-const { items, cats, allLabel = 'Alle', base, activeCat = '*' } = Astro.props;
+const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading } = Astro.props;
 
 // Kacheldaten mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
 const data = await Promise.all(
@@ -30,6 +31,7 @@ const data = await Promise.all(
 ---
 
 <div class="gallery" data-gallery data-gap="15" data-row-height="200" data-batch="36" data-pagefind-ignore>
+  {heading && <h1 class="visually-hidden">{heading}</h1>}
   <nav class="gallery__filter" aria-label={allLabel}>
     <a href={`${base}/`} class:list={['gallery__filter-btn', activeCat === '*' && 'is-active']} aria-current={activeCat === '*' ? 'page' : undefined}>{allLabel}</a>
     {cats.map((c) => (
