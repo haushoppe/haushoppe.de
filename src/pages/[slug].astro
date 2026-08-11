@@ -10,6 +10,8 @@ import { galleryItems, galleryCategories } from '../lib/artworks';
 import { loadPage } from '../lib/pages';
 import Page from '../components/Page.astro';
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import { bannerImage } from '../lib/banner-images';
 import { LANG } from '../lib/lang';
 
 export async function getStaticPaths() {
@@ -81,9 +83,13 @@ if (type === 'contact' || type === 'acquire') {
   MdxContent = Content;
   if (type === 'acquire') acquireFm = data;
 }
+// Social-Preview: Kunst-Erwerben -> Hero-Bild, Kontakt -> Galerie-Foto. Sonst Marken-Karte (Default).
+const ogName = type === 'acquire' ? acquireFm?.hero?.name : type === 'contact' ? 'haushoppe-stage' : undefined;
+const ogSrc = ogName ? bannerImage(ogName) : undefined;
+const ogImage = ogSrc ? (await getImage({ src: ogSrc, format: 'jpeg', width: 1200 })).src : undefined;
 ---
 
-<BaseLayout title={meta.title} description={meta.description}>
+<BaseLayout title={meta.title} description={meta.description} image={ogImage}>
   {type === 'gallery' && <Gallery items={items} cats={cats} allLabel={allLabel} />}
   {type === 'contact' && MdxContent && (
     <Kontakt>

@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
 import { loadPage } from '../lib/pages';
+import { getImage } from 'astro:assets';
+import { contentImage } from '../lib/content-images';
 
 // Startseite: Struktur (Video, Werk, Signatur) aus dem MDX-Frontmatter, Intro-Prosa aus dem
 // MDX-Body (content/pages/home-<lang>.mdx). Sprache = Domain (LANG).
@@ -11,9 +13,12 @@ const { entry, Content, data: fm } = await loadPage('home');
 for (const req of ['video', 'h1', 'welcome', 'signature', 'featured']) {
   if (!fm[req]) throw new Error(`${entry.id}.mdx: Frontmatter-Feld „${req}“ fehlt (Pflicht auf der Startseite).`);
 }
+// Das Featured-Werk als Social-Preview (statt der generischen Marken-Karte).
+const featImg = fm.featured?.image ? contentImage(fm.featured.image) : undefined;
+const ogImage = featImg ? (await getImage({ src: featImg, format: 'jpeg', width: 1200 })).src : undefined;
 ---
 
-<BaseLayout title={fm.title} description={fm.description}>
+<BaseLayout title={fm.title} description={fm.description} image={ogImage}>
   <Home content={fm as any}>
     <Content />
   </Home>

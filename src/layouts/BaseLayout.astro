@@ -59,7 +59,8 @@ const defaultDesc =
 const metaDesc = description || defaultDesc;
 const siteName = lang === 'en' ? 'HAUS HOPPE – Fine Art Gallery' : 'HAUS HOPPE – Galerie für Bildende Kunst';
 const ogLocale = lang === 'en' ? 'en_US' : 'de_DE';
-const ogImage = image ? new URL(image, SELF_ORIGIN).href : SELF_ORIGIN + '/og-default.jpg';
+const ogImageIsDefault = !image;
+const ogImage = image ? new URL(image, SELF_ORIGIN).href : SELF_ORIGIN + '/og-default.png';
 const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [galleryJsonLd(SELF_ORIGIN, ogImage)];
 ---
 
@@ -82,11 +83,9 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     <meta property="og:description" content={metaDesc} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    {ogImageIsDefault && <meta property="og:image:width" content="1200" />}
+    {ogImageIsDefault && <meta property="og:image:height" content="630" />}
     <meta property="og:image:alt" content={title} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={metaDesc} />
-    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
