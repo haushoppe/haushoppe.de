@@ -4,7 +4,7 @@
 // (.gallery__data) in der Seite. Filter arbeitet über ALLE Werke; beim Scrollen werden weitere
 // Kacheln aus den Daten gebaut (IntersectionObserver).
 (function () {
-  function layout(g) {
+  function layout(g, tries) {
     const grid = g.querySelector('.gallery__grid');
     if (!grid) return;
     const gap = parseInt(g.dataset.gap || '15', 10);
@@ -14,7 +14,12 @@
     // minimal auf und sie ragt Bruchteile über den Rand → dünner horizontaler Scrollbalken.
     // W-1 verhindert das deterministisch (der 15px-Außenabstand fängt den Rest ab).
     const W = grid.clientWidth - 1;
-    if (W < 1) return;
+    if (W < 1) {
+      // Grid hat (noch) keine gemessene Breite -> es würde nichts positioniert und is-ready
+      // nie gesetzt (Kacheln blieben unsichtbar). Im nächsten Frame erneut versuchen.
+      if ((tries || 0) < 30) requestAnimationFrame(() => layout(g, (tries || 0) + 1));
+      return;
+    }
     const items = [...grid.querySelectorAll('.gallery__item')].filter((el) => el.style.display !== 'none');
     let y = 0, row = [], aspectSum = 0;
 
@@ -77,6 +82,10 @@
   }
 
   function init(g) {
+    // Filter + IntersectionObserver nur EINMAL pro Galerie binden; Layout darf beliebig oft
+    // laufen (idempotent). Nach einem Client-Wechsel ist g ein frisches Element -> neu binden.
+    if (g.__galleryBound) { layout(g); return; }
+    g.__galleryBound = true;
     const grid = g.querySelector('.gallery__grid');
     const filter = g.querySelector('.gallery__filter');
     const sentinel = g.querySelector('.gallery__sentinel');
@@ -134,6 +143,10 @@
     clearTimeout(t);
     t = setTimeout(() => document.querySelectorAll('.gallery[data-gallery]').forEach(layout), 120);
   });
-  // astro:page-load feuert beim Erststart UND nach jedem View-Transition-Wechsel.
+  // Mehrfach getriggert, damit die Galerie zuverlässig auslegt, unabhängig davon, wann der
+  // Init drankommt: astro:page-load (Erststart + jeder Client-Wechsel), sofort selbst, und
+  // window.load als Sicherheitsnetz. layout() versucht bei Breite 0 selbst erneut (rAF).
   document.addEventListener('astro:page-load', run);
+  run();
+  window.addEventListener('load', () => document.querySelectorAll('.gallery[data-gallery]').forEach((g) => layout(g)));
 })();

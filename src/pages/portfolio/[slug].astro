@@ -6,29 +6,33 @@ import ArtworkBody from '../../components/ArtworkBody.astro';
 import artworksData from '../../data/artworks.json';
 import type { ImageMetadata } from 'astro';
 import { artworkImage, hasArtworkImage } from '../../lib/artwork-images';
+import { galleryItems } from '../../lib/artworks';
 import { ordinalData } from '../../lib/ordinals';
 import { LANG } from '../../lib/lang';
 
 export function getStaticPaths() {
   const arts = artworksData as any[];
-  const list = arts.filter((a) => a.type === 'portfolio' && a.lang === LANG && hasArtworkImage(a.id));
-  // Prev/Next-Kette nur über die „normalen" Werke — Ordinals sind ein eigener dunkler
-  // Sonderfall und werden übersprungen. Zyklisch, damit man endlos durchblättern kann.
-  const chain = list.filter((a) => ordinalData(a) == null);
-  const ref = (x: any, a: any) => (x && x.id !== a.id ? { slug: x.slug, title: x.title } : null);
+  const detailArts = arts.filter((a) => a.type === 'portfolio' && a.lang === LANG && hasArtworkImage(a.id));
+  // Prev/Next in EXAKT der Galerie-Reihenfolge (chronologisch), inklusive Ordinals — zyklisch,
+  // damit man endlos durchblättern kann. Nur Einträge, die auch eine Detailseite haben.
+  const detailIds = new Set(detailArts.map((a) => a.id));
+  const order = galleryItems(LANG).filter((it) => detailIds.has(it.id));
+  const idx = new Map(order.map((it, i) => [it.id, i]));
   const around = (a: any) => {
-    if (ordinalData(a) != null) return { prev: null, next: null };
-    const i = chain.findIndex((x) => x.id === a.id);
-    return { prev: ref(chain[(i - 1 + chain.length) % chain.length], a), next: ref(chain[(i + 1) % chain.length], a) };
+    const i = idx.get(a.id);
+    if (i == null || order.length < 2) return { prev: null, next: null };
+    const p = order[(i - 1 + order.length) % order.length];
+    const n = order[(i + 1) % order.length];
+    return { prev: { href: p.detailUrl, title: p.title }, next: { href: n.detailUrl, title: n.title } };
   };
-  return list.map((a) => ({ params: { slug: a.slug }, props: { art: a, image: artworkImage(a.id), ...around(a) } }));
+  return detailArts.map((a) => ({ params: { slug: a.slug }, props: { art: a, image: artworkImage(a.id), ...around(a) } }));
 }
 
 const { art, image, prev, next } = Astro.props as {
   art: any;
   image: ImageMetadata;
-  prev: { slug: string; title: string } | null;
-  next: { slug: string; title: string } | null;
+  prev: { href: string; title: string } | null;
+  next: { href: string; title: string } | null;
 };
 const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.title} — artwork by Olaf Hoppe.`;
 // Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
@@ -49,10 +53,10 @@ const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf
     }
     <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} />
     {
-      !isOrdinal && (prev || next) && (
+      (prev || next) && (
         <nav class="art-nav" aria-label={LANG === 'de' ? 'Weitere Werke' : 'More artworks'}>
           {prev ? (
-            <a class="art-nav__link art-nav__prev" href={`/portfolio/${prev.slug}/`}>
+            <a rel="prev" class="art-nav__link art-nav__prev" href={prev.href}>
               <span class="art-nav__arrow" aria-hidden="true">‹</span>
               <span class="art-nav__txt">
                 <span class="art-nav__cap">{LANG === 'de' ? 'Vorheriges Werk' : 'Previous'}</span>
@@ -63,7 +67,7 @@ const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf
             <span />
           )}
           {next ? (
-            <a class="art-nav__link art-nav__next" href={`/portfolio/${next.slug}/`}>
+            <a rel="next" class="art-nav__link art-nav__next" href={next.href}>
               <span class="art-nav__txt">
                 <span class="art-nav__cap">{LANG === 'de' ? 'Nächstes Werk' : 'Next'}</span>
                 <span class="art-nav__title">{next.title}</span>
@@ -86,7 +90,7 @@ const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf
     gap: 1rem;
     max-width: 900px;
     margin: clamp(1.5rem, 4vw, 2.5rem) auto 0;
-    padding-top: 1.25rem;
+    padding: 1.25rem var(--pad) 0;
     border-top: 1px solid var(--rule);
   }
   .art-nav__link {
@@ -128,5 +132,14 @@ const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf
   }
   .art-nav__link:hover .art-nav__title {
     text-decoration: underline;
+  }
+  /* Ordinal-Detailseiten sind dunkel (body.theme-invert): Nav hell + Abstand nach unten,
+     da die schwarze Bühne bis zum Footer durchläuft. */
+  :global(body.theme-invert) .art-nav {
+    border-top-color: rgba(255, 255, 255, 0.22);
+    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+  :global(body.theme-invert) .art-nav__link {
+    color: #f4f4f4;
   }
 </style>

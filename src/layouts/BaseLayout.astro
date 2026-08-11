@@ -62,6 +62,26 @@ const canonical = SELF_ORIGIN + path;
     <script is:inline src="/js/yt-facade.js"></script>
     <Search lang={lang} />
     <Lightbox lang={lang} />
+    <script>
+      // Pfeiltasten-Navigation (wie die Schwester-Site): ArrowLeft/Right folgen dem
+      // rel="prev"/rel="next"-Link der Seite. Einmalig registriert (document bleibt über
+      // View-Transitions bestehen); Eingabefelder werden ignoriert. Klick auf den Link (statt
+      // location.href), damit der sanfte Client-Übergang greift.
+      if (!window.__arrowNav) {
+        window.__arrowNav = true;
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+          if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+          var act = document.activeElement;
+          if (act && (/^(INPUT|TEXTAREA|SELECT)$/.test(act.tagName) || act.isContentEditable)) return;
+          var rel = document.querySelector(e.key === 'ArrowRight' ? 'a[rel~="next"]' : 'a[rel~="prev"]');
+          if (rel) {
+            e.preventDefault();
+            rel.click();
+          }
+        });
+      }
+    </script>
   </body>
 </html>
 
