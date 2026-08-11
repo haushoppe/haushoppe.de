@@ -18,21 +18,37 @@ export function getStaticPaths() {
   const detailIds = new Set(detailArts.map((a) => a.id));
   const order = galleryItems(LANG).filter((it) => detailIds.has(it.id));
   const idx = new Map(order.map((it, i) => [it.id, i]));
+  // Zweite Kette OHNE Ordinals — fürs Lightbox-Blättern (Ordinals haben kein Zoom-Bild).
+  const ordinalIds = new Set(detailArts.filter((a) => ordinalData(a) != null).map((a) => a.id));
+  const imgOrder = order.filter((it) => !ordinalIds.has(it.id));
+  const imgIdx = new Map(imgOrder.map((it, i) => [it.id, i]));
   const around = (a: any) => {
     const i = idx.get(a.id);
-    if (i == null || order.length < 2) return { prev: null, next: null };
-    const p = order[(i - 1 + order.length) % order.length];
-    const n = order[(i + 1) % order.length];
-    return { prev: { href: p.detailUrl, title: p.title }, next: { href: n.detailUrl, title: n.title } };
+    const full =
+      i == null || order.length < 2
+        ? { prev: null, next: null }
+        : {
+            prev: { href: order[(i - 1 + order.length) % order.length].detailUrl, title: order[(i - 1 + order.length) % order.length].title },
+            next: { href: order[(i + 1) % order.length].detailUrl, title: order[(i + 1) % order.length].title },
+          };
+    const j = imgIdx.get(a.id);
+    const hasImgChain = j != null && imgOrder.length > 1;
+    return {
+      ...full,
+      lbPrev: hasImgChain ? imgOrder[(j - 1 + imgOrder.length) % imgOrder.length].detailUrl : null,
+      lbNext: hasImgChain ? imgOrder[(j + 1) % imgOrder.length].detailUrl : null,
+    };
   };
   return detailArts.map((a) => ({ params: { slug: a.slug }, props: { art: a, image: artworkImage(a.id), ...around(a) } }));
 }
 
-const { art, image, prev, next } = Astro.props as {
+const { art, image, prev, next, lbPrev, lbNext } = Astro.props as {
   art: any;
   image: ImageMetadata;
   prev: { href: string; title: string } | null;
   next: { href: string; title: string } | null;
+  lbPrev: string | null;
+  lbNext: string | null;
 };
 const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.title} — artwork by Olaf Hoppe.`;
 // Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
@@ -43,7 +59,13 @@ const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf
 ---
 
 <BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal}>
-  <article class:list={['art-single', isOrdinal && 'art-single--ordinal']} itemtype="https://schema.org/CreativeWork" itemscope>
+  <article
+    class:list={['art-single', isOrdinal && 'art-single--ordinal']}
+    data-lb-prev={lbPrev}
+    data-lb-next={lbNext}
+    itemtype="https://schema.org/CreativeWork"
+    itemscope
+  >
     {
       !isOrdinal && (
         <header class="entry-header">

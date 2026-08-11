@@ -63,10 +63,12 @@ const canonical = SELF_ORIGIN + path;
     <Search lang={lang} />
     <Lightbox lang={lang} />
     <script>
-      // Pfeiltasten-Navigation (wie die Schwester-Site): ArrowLeft/Right folgen dem
-      // rel="prev"/rel="next"-Link der Seite. Einmalig registriert (document bleibt über
-      // View-Transitions bestehen); Eingabefelder werden ignoriert. Klick auf den Link (statt
-      // location.href), damit der sanfte Client-Übergang greift.
+      import { navigate } from 'astro:transitions/client';
+      // Pfeiltasten-Navigation (Muster wie die Schwester-Site). Geschlossene Lightbox: durch ALLE
+      // Werke (rel=prev/next, chronologisch inkl. Ordinals). Offene Lightbox: nur zwischen Werken
+      // MIT Bild (data-lb-prev/next auf .art-single, Ordinals übersprungen) — die Lightbox blättert
+      // dann mit. Einmalig registriert (document bleibt über View-Transitions bestehen); Eingabe-
+      // felder werden ignoriert. navigate() statt location.href, damit der sanfte Übergang greift.
       if (!window.__arrowNav) {
         window.__arrowNav = true;
         document.addEventListener('keydown', function (e) {
@@ -74,10 +76,19 @@ const canonical = SELF_ORIGIN + path;
           if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
           var act = document.activeElement;
           if (act && (/^(INPUT|TEXTAREA|SELECT)$/.test(act.tagName) || act.isContentEditable)) return;
-          var rel = document.querySelector(e.key === 'ArrowRight' ? 'a[rel~="next"]' : 'a[rel~="prev"]');
-          if (rel) {
+          var right = e.key === 'ArrowRight';
+          var lb = document.getElementById('lightbox');
+          var url;
+          if (lb && !lb.hidden) {
+            var host = document.querySelector('[data-lb-' + (right ? 'next' : 'prev') + ']');
+            url = host && host.getAttribute('data-lb-' + (right ? 'next' : 'prev'));
+          } else {
+            var rel = document.querySelector(right ? 'a[rel~="next"]' : 'a[rel~="prev"]');
+            url = rel && rel.getAttribute('href');
+          }
+          if (url) {
             e.preventDefault();
-            rel.click();
+            navigate(url);
           }
         });
       }
