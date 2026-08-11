@@ -37,7 +37,7 @@ const translations =
 </div>
 
 <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-<script is:inline define:vars={{ translations }}>
+<script is:inline data-cfasync="false" define:vars={{ translations }}>
   (function () {
     var overlay = document.getElementById('search-overlay');
     if (!overlay) return;

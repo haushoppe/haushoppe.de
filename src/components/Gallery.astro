@@ -61,7 +61,7 @@ const dataJson = JSON.stringify(data).replace(/</g, '\\u003c');
   <script type="application/json" class="gallery__data" set:html={dataJson}></script>
 </div>
 
-<script is:inline src="/js/gallery.js"></script>
+<script is:inline src="/js/gallery.js" data-cfasync="false"></script>
 
 <style is:global>
   /* ── Werk-Galerie (eigenes Stylesheet) ───────────────────────────────────── */
