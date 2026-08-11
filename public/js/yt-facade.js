@@ -34,6 +34,6 @@ document.addEventListener('click', function (e) {
       else img.addEventListener('load', function () { fixPoster(this); });
     }
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
-  else run();
+  // astro:page-load feuert beim Erststart UND nach jedem View-Transition-Wechsel.
+  document.addEventListener('astro:page-load', run);
 })();

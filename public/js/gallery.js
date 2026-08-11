@@ -134,7 +134,6 @@
     clearTimeout(t);
     t = setTimeout(() => document.querySelectorAll('.gallery[data-gallery]').forEach(layout), 120);
   });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
-  else run();
-  window.addEventListener('load', () => document.querySelectorAll('.gallery[data-gallery]').forEach(layout));
+  // astro:page-load feuert beim Erststart UND nach jedem View-Transition-Wechsel.
+  document.addEventListener('astro:page-load', run);
 })();

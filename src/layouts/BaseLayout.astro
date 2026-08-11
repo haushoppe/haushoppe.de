@@ -2,6 +2,7 @@
 // Basis-Layout mit sauberen Header/Footer-Komponenten (statt portiertem Theme-Chrome).
 // wp-design.css bleibt vorerst geladen (Galerie/Detailseiten), global.css gewinnt bei
 // Konflikten; wird schrittweise durch schlankes CSS ersetzt.
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Search from '../components/Search.astro';
@@ -50,6 +51,7 @@ const canonical = SELF_ORIGIN + path;
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <ClientRouter />
   </head>
   <body class:list={[inverted && 'theme-invert']}>
     <Header lang={lang} />

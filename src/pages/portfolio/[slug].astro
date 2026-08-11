@@ -11,12 +11,25 @@ import { LANG } from '../../lib/lang';
 
 export function getStaticPaths() {
   const arts = artworksData as any[];
-  return arts
-    .filter((a) => a.type === 'portfolio' && a.lang === LANG && hasArtworkImage(a.id))
-    .map((a) => ({ params: { slug: a.slug }, props: { art: a, image: artworkImage(a.id) } }));
+  const list = arts.filter((a) => a.type === 'portfolio' && a.lang === LANG && hasArtworkImage(a.id));
+  // Prev/Next-Kette nur über die „normalen" Werke — Ordinals sind ein eigener dunkler
+  // Sonderfall und werden übersprungen. Zyklisch, damit man endlos durchblättern kann.
+  const chain = list.filter((a) => ordinalData(a) == null);
+  const ref = (x: any, a: any) => (x && x.id !== a.id ? { slug: x.slug, title: x.title } : null);
+  const around = (a: any) => {
+    if (ordinalData(a) != null) return { prev: null, next: null };
+    const i = chain.findIndex((x) => x.id === a.id);
+    return { prev: ref(chain[(i - 1 + chain.length) % chain.length], a), next: ref(chain[(i + 1) % chain.length], a) };
+  };
+  return list.map((a) => ({ params: { slug: a.slug }, props: { art: a, image: artworkImage(a.id), ...around(a) } }));
 }
 
-const { art, image } = Astro.props as { art: any; image: ImageMetadata };
+const { art, image, prev, next } = Astro.props as {
+  art: any;
+  image: ImageMetadata;
+  prev: { slug: string; title: string } | null;
+  next: { slug: string; title: string } | null;
+};
 const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.title} — artwork by Olaf Hoppe.`;
 // Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
 const isOrdinal = ordinalData(art) != null;
@@ -35,5 +48,85 @@ const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf
       )
     }
     <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} />
+    {
+      !isOrdinal && (prev || next) && (
+        <nav class="art-nav" aria-label={LANG === 'de' ? 'Weitere Werke' : 'More artworks'}>
+          {prev ? (
+            <a class="art-nav__link art-nav__prev" href={`/portfolio/${prev.slug}/`}>
+              <span class="art-nav__arrow" aria-hidden="true">‹</span>
+              <span class="art-nav__txt">
+                <span class="art-nav__cap">{LANG === 'de' ? 'Vorheriges Werk' : 'Previous'}</span>
+                <span class="art-nav__title">{prev.title}</span>
+              </span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <a class="art-nav__link art-nav__next" href={`/portfolio/${next.slug}/`}>
+              <span class="art-nav__txt">
+                <span class="art-nav__cap">{LANG === 'de' ? 'Nächstes Werk' : 'Next'}</span>
+                <span class="art-nav__title">{next.title}</span>
+              </span>
+              <span class="art-nav__arrow" aria-hidden="true">›</span>
+            </a>
+          ) : (
+            <span />
+          )}
+        </nav>
+      )
+    }
   </article>
 </BaseLayout>
+
+<style>
+  .art-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 900px;
+    margin: clamp(1.5rem, 4vw, 2.5rem) auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+  }
+  .art-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    max-width: 48%;
+    color: #000;
+    text-decoration: none;
+  }
+  .art-nav__next {
+    margin-left: auto;
+    text-align: right;
+  }
+  .art-nav__arrow {
+    flex: none;
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--muted);
+  }
+  .art-nav__txt {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .art-nav__cap {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .art-nav__title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .art-nav__link:hover .art-nav__title {
+    text-decoration: underline;
+  }
+</style>
