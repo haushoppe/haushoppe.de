@@ -1,0 +1,46 @@
+---
+// Auszeichnung/Preis eines Werks — für die artworkExtra-Collection (in MDX nutzbar). Rendert eine
+// dezente Notiz mit Akzentkante; Preis-Text + Link kommen als Slot (Markdown in MDX).
+// Nutzung: <Award>1. Platz … [Link-Text](url)</Award>  ·  EN: <Award label="Award">…</Award>
+interface Props {
+  label?: string;
+}
+const { label = 'Auszeichnung' } = Astro.props;
+---
+
+<div class="art-award">
+  <span class="art-award__label">{label}</span>
+  <slot />
+</div>
+
+<style>
+  .art-award {
+    max-width: 900px;
+    margin: 1.25rem auto 0;
+    padding: 0.85rem 1.1rem;
+    border-left: 3px solid var(--rule, #000);
+    background: #f7f7f7;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #333;
+  }
+  .art-award__label {
+    display: inline-block;
+    margin-right: 0.5em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    color: #000;
+  }
+  /* Slot-Inhalt (MDX rendert die Zeile evtl. als <p>) bündig ohne Extra-Abstand. */
+  .art-award :global(p) {
+    display: inline;
+    margin: 0;
+  }
+  .art-award :global(a) {
+    color: #000;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

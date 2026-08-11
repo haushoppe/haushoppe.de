@@ -74,12 +74,6 @@ const t =
         />
         {meta && <ArtworkMeta meta={meta} lang={lang} />}
       </figure>
-      {art.award && (
-        <p class="art-award">
-          <span class="art-award__label">{lang === 'en' ? 'Award' : 'Auszeichnung'}</span>
-          <Fragment set:html={art.award} />
-        </p>
-      )}
       {Extra && (
         <div class="art-extra">
           <Extra />
@@ -90,33 +84,7 @@ const t =
 }
 
 <style is:global>
-  /* Auszeichnung/Preis eines Werks (z. B. „Die geschlossene Tür" 2015): dezente Notiz unter dem
-     Bild, linksbündig zur Bildbreite, mit Akzentkante. Nur Werke mit award-Feld zeigen sie. */
-  .art-award {
-    max-width: 900px;
-    margin: 1.25rem auto 0;
-    padding: 0.85rem 1.1rem;
-    border-left: 3px solid var(--rule, #000);
-    background: #f7f7f7;
-    font-size: 0.95rem;
-    line-height: 1.55;
-    color: #333;
-  }
-  .art-award__label {
-    display: inline-block;
-    margin-right: 0.5em;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.72rem;
-    color: #000;
-  }
-  .art-award a {
-    color: #000;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-  /* Zusatz-Content (Werkbeschreibung / Video) unter dem Bild — lesbare Prosa-Spalte. */
+  /* Zusatz-Content (Werkbeschreibung / Video / Auszeichnung) unter dem Bild — lesbare Prosa-Spalte. */
   .art-extra {
     max-width: 900px;
     margin: 1.5rem auto 0;
