@@ -53,7 +53,22 @@ const closeLabel = lang === 'en' ? 'Close' : 'Schließen';
         im.setAttribute('role', 'button');
       }
     }
-    document.addEventListener('astro:page-load', mark);
+    // Nach jedem (Client-)Seitenwechsel Bilder neu markieren. War die Lightbox dabei offen
+    // (Pfeiltasten-Blättern durch die Werke), auf das Bild der neuen Seite umstellen — die
+    // persistente Lightbox zeigte sonst das alte Bild. Zielseite ohne Bild -> schließen.
+    document.addEventListener('astro:page-load', function () {
+      mark();
+      if (lb.hidden) return;
+      var main = document.querySelector('.art-figure img');
+      if (main) {
+        lbImg.src = main.dataset.full || main.currentSrc || main.src;
+        lbImg.alt = main.alt || '';
+        lbCap.textContent = main.alt || '';
+        lbCap.style.display = main.alt ? '' : 'none';
+      } else {
+        close();
+      }
+    });
 
     document.addEventListener('click', function (e) {
       var t = e.target;
