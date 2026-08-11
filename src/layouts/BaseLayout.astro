@@ -64,19 +64,14 @@ const canonical = SELF_ORIGIN + path;
     <Lightbox lang={lang} />
     <script>
       import { navigate } from 'astro:transitions/client';
-      // Pfeiltasten-Navigation (Muster wie die Schwester-Site). Geschlossene Lightbox: durch ALLE
-      // Werke (rel=prev/next, chronologisch inkl. Ordinals). Offene Lightbox: nur zwischen Werken
-      // MIT Bild (data-lb-prev/next auf .art-single, Ordinals übersprungen) — die Lightbox blättert
-      // dann mit. Einmalig registriert (document bleibt über View-Transitions bestehen); Eingabe-
-      // felder werden ignoriert. navigate() statt location.href, damit der sanfte Übergang greift.
+      // Werk-zu-Werk-Navigation per Pfeiltasten UND Lightbox-Knöpfen (data-lb-nav). Geschlossene
+      // Lightbox: durch ALLE Werke (rel=prev/next, chronologisch inkl. Ordinals). Offene Lightbox:
+      // nur zwischen Werken MIT Bild (data-lb-prev/next auf .art-single, Ordinals übersprungen) —
+      // die Lightbox blättert dann mit. Einmalig registriert (document bleibt über View-Transitions
+      // bestehen). navigate() statt location.href, damit der sanfte Übergang greift.
       if (!window.__arrowNav) {
         window.__arrowNav = true;
-        document.addEventListener('keydown', function (e) {
-          if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-          if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
-          var act = document.activeElement;
-          if (act && (/^(INPUT|TEXTAREA|SELECT)$/.test(act.tagName) || act.isContentEditable)) return;
-          var right = e.key === 'ArrowRight';
+        function go(right) {
           var lb = document.getElementById('lightbox');
           var url;
           if (lb && !lb.hidden) {
@@ -86,10 +81,19 @@ const canonical = SELF_ORIGIN + path;
             var rel = document.querySelector(right ? 'a[rel~="next"]' : 'a[rel~="prev"]');
             url = rel && rel.getAttribute('href');
           }
-          if (url) {
-            e.preventDefault();
-            navigate(url);
-          }
+          if (url) navigate(url);
+        }
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+          if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+          var act = document.activeElement;
+          if (act && (/^(INPUT|TEXTAREA|SELECT)$/.test(act.tagName) || act.isContentEditable)) return;
+          e.preventDefault();
+          go(e.key === 'ArrowRight');
+        });
+        document.addEventListener('click', function (e) {
+          var btn = e.target && e.target.closest ? e.target.closest('[data-lb-nav]') : null;
+          if (btn) go(btn.getAttribute('data-lb-nav') === 'next');
         });
       }
     </script>

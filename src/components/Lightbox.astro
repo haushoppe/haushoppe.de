@@ -1,17 +1,27 @@
 ---
 // Schlanke Vanilla-Lightbox zum Vergrößern von Inhalts-Bildern — ersetzt das alte Fancybox,
-// ohne Plugin/jQuery. Bindet an Bilder in .acq (kunst-erwerben: Hero, Porträt, Auftrags-
-// Beispiele) und an den Vita-Hero (.cp-hero). BEWUSST NICHT auf der Werk-Detailseite —
-// dort sind die Bilder ohnehin groß genug. Verlinkte Bilder werden ausgelassen (navigieren).
+// ohne Plugin/jQuery. Bindet an Bilder in .acq (kunst-erwerben) und die Werk-Detailseite
+// (.art-figure). Verlinkte Bilder werden ausgelassen (navigieren). Auf Werk-Detailseiten
+// blättern Vor/Zurück-Knöpfe + Pfeiltasten durch die Werke (Ordinals übersprungen).
 interface Props {
   lang?: 'de' | 'en';
 }
 const { lang = 'de' } = Astro.props;
 const closeLabel = lang === 'en' ? 'Close' : 'Schließen';
+const prevLabel = lang === 'en' ? 'Previous artwork' : 'Vorheriges Werk';
+const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
 ---
 
 <div id="lightbox" class="lightbox" hidden transition:persist>
   <button type="button" class="lightbox__close" data-lb-close aria-label={closeLabel}>&times;</button>
+  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb-nav="prev" aria-label={prevLabel} hidden>
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"
+      ><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+  </button>
+  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb-nav="next" aria-label={nextLabel} hidden>
+    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"
+      ><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+  </button>
   <figure class="lightbox__figure">
     <img class="lightbox__img" alt="" />
     <figcaption class="lightbox__caption"></figcaption>
@@ -25,6 +35,14 @@ const closeLabel = lang === 'en' ? 'Close' : 'Schließen';
     if (!lb) return;
     var lbImg = lb.querySelector('.lightbox__img');
     var lbCap = lb.querySelector('.lightbox__caption');
+    var navBtns = lb.querySelectorAll('.lightbox__nav');
+
+    // Vor/Zurück-Knöpfe nur zeigen, wenn die aktuelle Seite eine Bild-Kette hat (Werk-Detail
+    // trägt data-lb-prev/next; auf Kunst-Erwerben o. Ä. gibt es keine -> Knöpfe aus).
+    function updateNav() {
+      var has = !!document.querySelector('[data-lb-prev]');
+      for (var i = 0; i < navBtns.length; i++) navBtns[i].hidden = !has;
+    }
 
     function open(img) {
       // data-full = große Version (von <Img>); sonst das aktuell geladene Bild.
@@ -34,6 +52,7 @@ const closeLabel = lang === 'en' ? 'Close' : 'Schließen';
       lbCap.style.display = img.alt ? '' : 'none';
       lb.hidden = false;
       document.documentElement.style.overflow = 'hidden';
+      updateNav();
     }
     function close() {
       lb.hidden = true;
@@ -59,6 +78,7 @@ const closeLabel = lang === 'en' ? 'Close' : 'Schließen';
     document.addEventListener('astro:page-load', function () {
       mark();
       if (lb.hidden) return;
+      updateNav();
       var main = document.querySelector('.art-figure img');
       if (main) {
         lbImg.src = main.dataset.full || main.currentSrc || main.src;
@@ -76,8 +96,8 @@ const closeLabel = lang === 'en' ? 'Close' : 'Schließen';
         open(t);
         return;
       }
-      // Klick irgendwo im offenen Overlay (Bild, Backdrop, Schließen, Caption) schließt.
-      if (!lb.hidden && (t === lb || lb.contains(t))) close();
+      // Klick irgendwo im offenen Overlay schließt — außer auf die Vor/Zurück-Knöpfe.
+      if (!lb.hidden && (t === lb || lb.contains(t)) && !(t.closest && t.closest('[data-lb-nav]'))) close();
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !lb.hidden) {
@@ -149,5 +169,38 @@ const closeLabel = lang === 'en' ? 'Close' : 'Schließen';
     line-height: 1;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
+  }
+  /* Vor/Zurück — gleiche Optik wie die Video-Scroller (.vg__nav): runder dunkler Kreis mit
+     weißem Chevron, an den Rändern, vertikal zentriert. Nur auf Werk-Detailseiten sichtbar. */
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .lightbox__nav:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.8);
+  }
+  .lightbox__nav[hidden] {
+    display: none;
+  }
+  .lightbox__nav--prev {
+    left: clamp(0.5rem, 2.5vw, 1.75rem);
+  }
+  .lightbox__nav--next {
+    right: clamp(0.5rem, 2.5vw, 1.75rem);
   }
 </style>
