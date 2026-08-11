@@ -5150,5 +5150,21 @@
     "hoehe": 3370,
     "bytes_original": 10705621,
     "bytes_archiv": 2720176
+  },
+  {
+    "datei": "2021/04/die-geschlossene-tuer-2015.jpg",
+    "quelle": "2021/04/die-geschlossene-tuer-2015.jpg",
+    "werk_ids": [
+      "1088",
+      "2965"
+    ],
+    "titel_de": "„Die geschlossene Tür“ 2015",
+    "titel_en": "\"The Closed Door\" 2015",
+    "datum": "2015-04-22 12:54:00",
+    "format": "jpg (Original)",
+    "breite": 3632,
+    "hoehe": 2712,
+    "bytes_original": 463032,
+    "bytes_archiv": 463032
   }
 ]
