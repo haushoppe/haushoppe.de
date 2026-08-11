@@ -35,6 +35,9 @@ interface Props {
   type?: string;
   // Strukturierte Daten (JSON-LD). Ohne Angabe: die Galerie als ArtGallery/LocalBusiness.
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  // "versteckt": Seite bleibt per Direkt-URL erreichbar, wird aber nicht indexiert (robots noindex)
+  // und nicht in die Volltextsuche (pagefind) aufgenommen.
+  noindex?: boolean;
 }
 const {
   title = 'HAUS HOPPE - Galerie für Bildende Kunst',
@@ -45,6 +48,7 @@ const {
   image,
   type = 'website',
   jsonLd,
+  noindex = false,
 } = Astro.props;
 
 // canonical + hreflang über die zwei Domains (Sprache = Domain, kein /en/-Pfad).
@@ -83,6 +87,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     {dePath && <link rel="alternate" hreflang="de" href={DE_ORIGIN + dePath} />}
     {enPath && <link rel="alternate" hreflang="en" href={EN_ORIGIN + enPath} />}
     <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
 
     <meta property="og:site_name" content={siteName} />
     <meta property="og:type" content={type} />
@@ -104,7 +109,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
   <body class:list={[inverted && 'theme-invert']}>
     <a href="#main" class="skip-link">{lang === 'en' ? 'Skip to content' : 'Zum Inhalt springen'}</a>
     <Header lang={lang} />
-    <main id="main" class:list={['site-main', layout && `site-main--${layout}`]} data-pagefind-body>
+    <main id="main" class:list={['site-main', layout && `site-main--${layout}`]} data-pagefind-body={noindex ? undefined : true}>
       <slot />
     </main>
     <Footer lang={lang} />

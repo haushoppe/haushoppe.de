@@ -50,7 +50,7 @@ const homeHref = '/';
                 aria-current={it.href === activePath ? 'page' : undefined}
                 data-text={it.label}
               >
-                {it.label}
+                <span class="mainnav__label">{it.label}</span>
               </a>
             </li>
           ))
@@ -146,6 +146,19 @@ const homeHref = '/';
     font-weight: 700;
     pointer-events: none;
     user-select: none;
+  }
+  /* Ästhetischer Hover (Muster von haushoppe-its.de): ein 1px-Unterstrich wächst beim Hovern von
+     links auf volle Textbreite — nur unter dem Text (background-size-Animation, kein Layout-Ruck). */
+  .mainnav__label {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.3s ease;
+  }
+  .mainnav__link:hover .mainnav__label,
+  .mainnav__link:focus-visible .mainnav__label {
+    background-size: 100% 1px;
   }
   .mainnav__link:hover,
   .mainnav__link.is-active {

@@ -2720,6 +2720,22 @@
     "bytes_archiv": 1173266
   },
   {
+    "datei": "2021/09/genesis-1-rote-rose-2001.jpg",
+    "quelle": "2021/09/genesis-1-rote-rose-2001.jpg",
+    "werk_ids": [
+      "981",
+      "3093"
+    ],
+    "titel_de": "„Genesis I“ (Rote Rose) 2001",
+    "titel_en": "\"Genesis I\" (Red Rose) 2001",
+    "datum": "2001-01-16 11:49:00",
+    "format": "jpg (Original)",
+    "breite": 2528,
+    "hoehe": 2521,
+    "bytes_original": 598505,
+    "bytes_archiv": 598505
+  },
+  {
     "datei": "2021/04/2001-01-A©-Olaf-HoppeHistorische-Ansicht-Haus-SchwaanAcryl-auf-Leinwand-200-x-250-cm.avif",
     "quelle": "2021/04/2001-01-A©-Olaf-HoppeHistorische-Ansicht-Haus-SchwaanAcryl-auf-Leinwand-200-x-250-cm.jpg",
     "werk_ids": [
@@ -2734,6 +2750,22 @@
     "hoehe": 435,
     "bytes_original": 46912,
     "bytes_archiv": 42621
+  },
+  {
+    "datei": "2021/09/genesis-2-blaue-sonnenblume-2001.jpg",
+    "quelle": "2021/09/genesis-2-blaue-sonnenblume-2001.jpg",
+    "werk_ids": [
+      "984",
+      "3085"
+    ],
+    "titel_de": "„Genesis II“ (Blaue Sonnenblume) 2001",
+    "titel_en": "\"Genesis II\" (Blue Sunflower) 2001",
+    "datum": "2001-02-16 11:57:00",
+    "format": "jpg (Original)",
+    "breite": 2484,
+    "hoehe": 2459,
+    "bytes_original": 963640,
+    "bytes_archiv": 963640
   },
   {
     "datei": "2021/04/2001-02-A©-Olaf-HoppeWedaAcryl-auf-Leinwand-90-x-125-cm.jpg",
@@ -2752,6 +2784,22 @@
     "bytes_archiv": 76465
   },
   {
+    "datei": "2021/09/genesis-3-graue-muschel-2001.jpg",
+    "quelle": "2021/09/genesis-3-graue-muschel-2001.jpg",
+    "werk_ids": [
+      "371",
+      "3083"
+    ],
+    "titel_de": "„Genesis III“ (Graue Muschel) 2001",
+    "titel_en": "\"Genesis III\" (Gray Shell) 2001",
+    "datum": "2001-03-01 10:02:00",
+    "format": "jpg (Original)",
+    "breite": 2642,
+    "hoehe": 2653,
+    "bytes_original": 949061,
+    "bytes_archiv": 949061
+  },
+  {
     "datei": "2021/04/2001-03-A©-Olaf-HoppeSalzwieseAcryl-auf-Leinwand-70-x-200-cm.avif",
     "quelle": "2021/04/2001-03-A©-Olaf-HoppeSalzwieseAcryl-auf-Leinwand-70-x-200-cm.jpg",
     "werk_ids": [
@@ -2766,6 +2814,22 @@
     "hoehe": 266,
     "bytes_original": 43994,
     "bytes_archiv": 38640
+  },
+  {
+    "datei": "2021/09/genesis-4-gelber-loewenzahn-2001.jpg",
+    "quelle": "2021/09/genesis-4-gelber-loewenzahn-2001.jpg",
+    "werk_ids": [
+      "988",
+      "3087"
+    ],
+    "titel_de": "„Genesis IV“ (Gelber Löwenzahn) 2001",
+    "titel_en": "\"Genesis IV\" (Yellow Dandelion) 2001",
+    "datum": "2001-04-16 12:02:00",
+    "format": "jpg (Original)",
+    "breite": 2662,
+    "hoehe": 2604,
+    "bytes_original": 1015708,
+    "bytes_archiv": 1015708
   },
   {
     "datei": "2021/04/2001-04-A©-Olaf-HoppeGenesis-V-RoseAcryl-auf-Leinwand-115-x-115cm.avif",
@@ -4336,6 +4400,22 @@
     "bytes_archiv": 1173504
   },
   {
+    "datei": "2021/04/die-geschlossene-tuer-2015.jpg",
+    "quelle": "2021/04/die-geschlossene-tuer-2015.jpg",
+    "werk_ids": [
+      "1088",
+      "2965"
+    ],
+    "titel_de": "„Die geschlossene Tür“ 2015",
+    "titel_en": "\"The Closed Door\" 2015",
+    "datum": "2015-04-22 12:54:00",
+    "format": "jpg (Original)",
+    "breite": 3632,
+    "hoehe": 2712,
+    "bytes_original": 463032,
+    "bytes_archiv": 463032
+  },
+  {
     "datei": "2021/04/2015-07-A-Olaf-Hoppe-„Die-Geburt-der-Venus-2015©-Quelle-Temp-Magazin-3-–-Teenager-122012-Acryl-auf-Leinwand-80-x-110-cm.avif",
     "quelle": "2021/04/2015-07-A-Olaf-Hoppe-„Die-Geburt-der-Venus-2015©-Quelle-Temp-Magazin-3-–-Teenager-122012-Acryl-auf-Leinwand-80-x-110-cm.jpg",
     "werk_ids": [
@@ -5150,21 +5230,5 @@
     "hoehe": 3370,
     "bytes_original": 10705621,
     "bytes_archiv": 2720176
-  },
-  {
-    "datei": "2021/04/die-geschlossene-tuer-2015.jpg",
-    "quelle": "2021/04/die-geschlossene-tuer-2015.jpg",
-    "werk_ids": [
-      "1088",
-      "2965"
-    ],
-    "titel_de": "„Die geschlossene Tür“ 2015",
-    "titel_en": "\"The Closed Door\" 2015",
-    "datum": "2015-04-22 12:54:00",
-    "format": "jpg (Original)",
-    "breite": 3632,
-    "hoehe": 2712,
-    "bytes_original": 463032,
-    "bytes_archiv": 463032
   }
 ]

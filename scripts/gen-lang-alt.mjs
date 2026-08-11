@@ -59,5 +59,5 @@ for (const t of Object.values(byBase)) {
   if (t.de && t.en) { map[`/${t.de}/`] = `/${t.en}/`; map[`/${t.en}/`] = `/${t.de}/`; }
 }
 
-fs.writeFileSync(path.join(__dir, '..', 'src/data/lang-alt.json'), JSON.stringify(map, null, 0));
+fs.writeFileSync(path.join(__dir, '..', 'src/data/lang-alt.json'), JSON.stringify(map, null, 2));
 console.log('lang-alt.json:', Object.keys(map).length, 'Einträge');

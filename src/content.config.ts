@@ -38,4 +38,13 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { pages };
+// Optionale Zusatz-Inhalte pro Werk: Beschreibung als Markdown, Video-Embeds via <YouTube>. Die
+// Struktur bleibt im JSON (Galerie/Sortierung/Bilder); nur die PROSA lebt hier als Content — der
+// idiomatische Astro-Weg. id = Werk-Slug (sprachspezifisch, wie die Detail-URL). Die Detailseite
+// rendert den Body unter Bild/Meta, wenn ein Eintrag mit passendem Slug existiert.
+const artworkExtra = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/artwork-extra' }),
+  schema: z.object({ title: z.string().optional() }),
+});
+
+export const collections = { pages, artworkExtra };

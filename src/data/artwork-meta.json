@@ -1,4 +1,22 @@
 {
+  "371": {
+    "slug": "genesis-3-graue-muschel-2001",
+    "artist": "Olaf Hoppe",
+    "title": "Genesis III (Graue Muschel)",
+    "year": "2001",
+    "technique": "Original-Farbholzschnitt von 6 Holzstöcken",
+    "dimensions": "Motivgröße 37 cm × 37 cm, Blattformat 52 cm × 52 cm",
+    "edition": "Auflage 200 Exemplare auf Bütten, nummeriert und handsigniert.",
+    "number": "2001-03-HZ",
+    "extra": "",
+    "en": {
+      "title": "Genesis III (Gray Shell)",
+      "technique": "Original color woodcut from 6 woodblocks",
+      "dimensions": "Motif size 37 cm × 37 cm, Sheet size 52 cm × 52 cm",
+      "edition": "Edition of 200 copies on handmade paper, numbered and signed by hand.",
+      "extra": ""
+    }
+  },
   "487": {
     "slug": "90-02-h-winter-im-dorf",
     "artist": "Olaf Hoppe",
@@ -87,6 +105,60 @@
       "dimensions": "Motif size 37 cm × 37 cm. Sheet size 52 cm × 52 cm",
       "edition": "Edition of 200 copies on laid paper, numbered and signed by hand.",
       "extra": "Olaf Hoppe \" Genesis VII \" (Ivy, green) 2011©"
+    }
+  },
+  "981": {
+    "slug": "genesis-1-rote-rose-2001",
+    "artist": "Olaf Hoppe",
+    "title": "Genesis I (Rote Rose)",
+    "year": "2001",
+    "technique": "Original-Farbholzschnitt von 7 Holzstöcken",
+    "dimensions": "Motivgröße 37 cm × 37 cm, Blattformat 52 cm × 52 cm",
+    "edition": "Auflage 200 Exemplare auf Bütten, nummeriert und handsigniert.",
+    "number": "2001-01-HZ",
+    "extra": "",
+    "en": {
+      "title": "Genesis I (Red Rose)",
+      "technique": "Original color woodcut from 7 woodblocks",
+      "dimensions": "Motif size 37 cm × 37 cm, Sheet size 52 cm × 52 cm",
+      "edition": "Edition of 200 copies numbered and signed on handmade paper.",
+      "extra": ""
+    }
+  },
+  "984": {
+    "slug": "genesis-2-blaue-sonnenblume-2001",
+    "artist": "Olaf Hoppe",
+    "title": "Genesis II (Blaue Sonnenblume)",
+    "year": "2001",
+    "technique": "Original-Farbholzschnitt von 5 Holzstöcken",
+    "dimensions": "Motivgröße 37 cm × 37 cm, Blattformat 52 cm × 52 cm",
+    "edition": "Auflage 200 Exemplare auf Bütten, nummeriert und handsigniert.",
+    "number": "2001-02-HZ",
+    "extra": "",
+    "en": {
+      "title": "Genesis II (Blue Sunflower)",
+      "technique": "Original color woodcut from 5 woodblocks",
+      "dimensions": "Motif size 37 cm × 37 cm, Sheet size 52 cm × 52 cm",
+      "edition": "Edition of 200 copies on handmade paper, numbered and signed by hand.",
+      "extra": ""
+    }
+  },
+  "988": {
+    "slug": "genesis-4-gelber-loewenzahn-2001",
+    "artist": "Olaf Hoppe",
+    "title": "Genesis IV (Gelber Löwenzahn)",
+    "year": "2001",
+    "technique": "Original-Farbholzschnitt von 6 Holzstöcken",
+    "dimensions": "Motivgröße 37 cm × 37 cm, Blattformat 52 cm × 52 cm",
+    "edition": "Auflage 200 Exemplare auf Bütten, nummeriert und handsigniert.",
+    "number": "2001-04-HZ",
+    "extra": "",
+    "en": {
+      "title": "Genesis IV (Yellow Dandelion)",
+      "technique": "Original color woodcut from 6 woodblocks",
+      "dimensions": "Motif size 37 cm × 37 cm, Sheet size 52 cm × 52 cm",
+      "edition": "Edition of 200 copies on handmade paper, numbered and signed by hand.",
+      "extra": ""
     }
   },
   "991": {

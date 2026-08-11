@@ -12,6 +12,7 @@ import { ordinalData } from '../../lib/ordinals';
 import { artworkJsonLd } from '../../lib/seo';
 import { smartQuotes } from '../../lib/text';
 import { LANG, SELF_ORIGIN } from '../../lib/lang';
+import { getCollection, render } from 'astro:content';
 
 export function getStaticPaths() {
   const arts = artworksData as any[];
@@ -64,6 +65,11 @@ const isOrdinal = ordinalData(art) != null;
 // das „(Johannes x Olaf)" aus dem angezeigten Titel entfernen. In der Galerie bleibt es.
 const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf\)/i, '') : art.title;
 
+// Optionaler Zusatz-Content (Beschreibung/Video) aus der Collection „artworkExtra" — nur wenn zu
+// diesem Werk-Slug ein Eintrag existiert. Struktur bleibt im JSON; nur die Prosa kommt als Content.
+const extraEntry = (await getCollection('artworkExtra')).find((e) => e.id === art.slug);
+const ExtraContent = extraEntry ? (await render(extraEntry)).Content : undefined;
+
 // Social-Preview (das Gemälde) + VisualArtwork-JSON-LD. Ordinals haben kein Bild -> Default-OG.
 let ogImage: string | undefined;
 let artJsonLd: Record<string, unknown> | undefined;
@@ -74,7 +80,7 @@ if (!isOrdinal) {
 }
 ---
 
-<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={artJsonLd}>
+<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={artJsonLd} noindex={art.hidden}>
   <article
     class:list={['art-single', isOrdinal && 'art-single--ordinal']}
     data-lb-prev={lbPrev}
@@ -89,7 +95,7 @@ if (!isOrdinal) {
         </header>
       )
     }
-    <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} />
+    <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} Extra={ExtraContent} />
     {
       (prev || next) && (
         <nav class="art-nav" aria-label={LANG === 'de' ? 'Weitere Werke' : 'More artworks'}>

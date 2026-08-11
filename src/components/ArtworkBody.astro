@@ -12,8 +12,9 @@ interface Props {
   image: ImageMetadata;
   lang?: 'de' | 'en';
   title?: string;
+  Extra?: any; // gerenderter Zusatz-Content (Beschreibung/Video) aus der artworkExtra-Collection
 }
-const { art, image, lang = 'de', title } = Astro.props;
+const { art, image, lang = 'de', title, Extra } = Astro.props;
 const ord = ordinalData(art);
 // Strukturierte Werk-Beschriftung (Ordinals bekommen keine — eigener Sonderfall).
 // Key = trid (für DE + EN identisch).
@@ -73,11 +74,78 @@ const t =
         />
         {meta && <ArtworkMeta meta={meta} lang={lang} />}
       </figure>
+      {art.award && (
+        <p class="art-award">
+          <span class="art-award__label">{lang === 'en' ? 'Award' : 'Auszeichnung'}</span>
+          <Fragment set:html={art.award} />
+        </p>
+      )}
+      {Extra && (
+        <div class="art-extra">
+          <Extra />
+        </div>
+      )}
     </div>
   )
 }
 
 <style is:global>
+  /* Auszeichnung/Preis eines Werks (z. B. „Die geschlossene Tür" 2015): dezente Notiz unter dem
+     Bild, linksbündig zur Bildbreite, mit Akzentkante. Nur Werke mit award-Feld zeigen sie. */
+  .art-award {
+    max-width: 900px;
+    margin: 1.25rem auto 0;
+    padding: 0.85rem 1.1rem;
+    border-left: 3px solid var(--rule, #000);
+    background: #f7f7f7;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #333;
+  }
+  .art-award__label {
+    display: inline-block;
+    margin-right: 0.5em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    color: #000;
+  }
+  .art-award a {
+    color: #000;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  /* Zusatz-Content (Werkbeschreibung / Video) unter dem Bild — lesbare Prosa-Spalte. */
+  .art-extra {
+    max-width: 900px;
+    margin: 1.5rem auto 0;
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: #2a2a2a;
+  }
+  .art-extra > :first-child {
+    margin-top: 0;
+  }
+  .art-extra p {
+    margin: 0 0 1rem;
+  }
+  .art-extra p:last-child {
+    margin-bottom: 0;
+  }
+  .art-extra h2,
+  .art-extra h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .art-extra a {
+    color: #000;
+    text-decoration: underline;
+  }
+  .art-extra .yt-facade {
+    margin: 1.25rem 0 0;
+  }
   /* Ordinals: durchgehend schwarze Bühne für die On-Chain-Inschrift (full-bleed, wie eine
      dunkle Galeriewand). Titel + Inschrift + CTA gestapelt und zentriert. */
   .ordinal-content {

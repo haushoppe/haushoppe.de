@@ -9,6 +9,7 @@ type Cat = { name: string; slug: string; taxonomy: string };
 type RawArtwork = {
   id: string; title: string; slug: string; date: string; menuOrder: number;
   lang: string | null; trid: string | null; categories: Cat[]; tags: { name: string; slug: string }[];
+  hidden?: boolean; // "versteckt": erreichbar per Direkt-URL, aber nicht in Galerie/Kategorien/Suche gelistet
 };
 
 const arts = artworksData as unknown as RawArtwork[];
@@ -36,7 +37,7 @@ export interface FilterCat { slug: string; name: string; count: number; }
 // Kunstwerke einer Sprache, die ein web-Bild haben — nach Werk-Nummer absteigend (neueste zuerst).
 export function galleryItems(lang: Lang): GalleryItem[] {
   return arts
-    .filter((a) => a.lang === lang && hasArtworkImage(a.id))
+    .filter((a) => a.lang === lang && !a.hidden && hasArtworkImage(a.id))
     .sort((a, b) => sortKey(b).localeCompare(sortKey(a)) || b.menuOrder - a.menuOrder)
     .map((a) => {
       const pcats = a.categories.filter((c) => c.taxonomy === 'portfolio_category');
@@ -57,7 +58,7 @@ export function galleryItems(lang: Lang): GalleryItem[] {
 export function galleryCategories(lang: Lang): FilterCat[] {
   const map = new Map<string, { name: string; count: number }>();
   for (const a of arts) {
-    if (a.lang !== lang || !hasArtworkImage(a.id)) continue;
+    if (a.lang !== lang || a.hidden || !hasArtworkImage(a.id)) continue;
     for (const c of a.categories.filter((x) => x.taxonomy === 'portfolio_category')) {
       const e = map.get(c.slug) ?? { name: c.name, count: 0 };
       e.count++;
