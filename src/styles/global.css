@@ -85,7 +85,8 @@ a:hover {
   padding-inline: var(--pad);
 }
 .site-main {
-  padding-block: clamp(1.5rem, 4vw, 2.75rem);
+  /* Oben derselbe responsive Abstand wie der Header (clamp), unten bündig. */
+  padding-block: clamp(1.25rem, 3vw, 2rem) 0;
 }
 /* Full-bleed ohne vertikales Padding (Ordinals: schwarze Bühne bündig an Nav/Footer). */
 .site-main--bleed {

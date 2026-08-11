@@ -1,7 +1,7 @@
 ---
-// Saubere Startseite (ersetzt die portierten Stackable-Blöcke): Hero-Video als
-// Datenschutz-Klick-Facade, darunter 2 Spalten (Willkommenstext + Signatur | Werk + Links).
-// Inhalt kommt als `content`-Objekt aus index.astro / en/index.astro (editierbar).
+// Startseiten-Inhalt UNTER dem HomeHero: 2 Spalten (Willkommenstext + Signatur | Werk).
+// Das frühere Klick-Video entfällt — die Startseite eröffnet mit dem autoplayenden HomeHero.
+// Inhalt kommt als `content`-Objekt aus index.astro (editierbar).
 import Img from './Img.astro';
 interface Content {
   video: { id: string; title: string; ratio: number };
@@ -15,21 +15,10 @@ interface Props {
   content: Content;
 }
 const { content } = Astro.props;
-const v = content.video;
-const facadeSrc = `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
-const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
 ---
 
 <div class="home">
-  <div class="yt-facade home-hero" data-src={facadeSrc} style={`aspect-ratio:${100 / v.ratio}`}>
-    <button type="button" class="yt-facade__btn" aria-label={`Video abspielen: ${v.title}`}>
-      <img class="yt-facade__poster" src={poster} alt={v.title} width="1280" height="720" loading="eager" decoding="async" />
-      <span class="yt-facade__play" aria-hidden="true"></span>
-    </button>
-  </div>
-
   <div class="home-cols">
-    <h1 class="home-h1">{content.h1}</h1>
     <figure class="home-featured">
       {
         content.featured.href ? (
@@ -61,22 +50,16 @@ const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
     max-width: 1200px;
     margin: 0 auto;
     padding-inline: var(--pad);
+    /* Luft zum Hero darüber (der full-bleed Hero stößt sonst direkt an den Content). */
+    padding-block: clamp(2.5rem, 5vw, 4rem);
   }
-  .home-hero {
-    margin-bottom: clamp(2rem, 5vw, 3.5rem);
-  }
-  /* Desktop: H1 oben-links, Text darunter-links, Werk rechts (über beide Zeilen).
-     Mobil: H1, dann Werk, dann Text (wie live). */
+  /* Desktop: Werk rechts, Willkommenstext links. Mobil: Werk, dann Text. */
   .home-cols {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-areas: 'h1 img' 'text img';
+    grid-template-areas: 'text img';
     column-gap: clamp(1.5rem, 4vw, 3rem);
     align-items: start;
-  }
-  .home-h1 {
-    grid-area: h1;
-    margin: 0 0 1.2rem;
   }
   .home-text {
     grid-area: text;
@@ -115,10 +98,7 @@ const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
   @media (max-width: 720px) {
     .home-cols {
       grid-template-columns: 1fr;
-      grid-template-areas: 'h1' 'img' 'text';
-    }
-    .home-h1 {
-      margin-bottom: 1rem;
+      grid-template-areas: 'img' 'text';
     }
     .home-text {
       margin-top: 1.25rem;

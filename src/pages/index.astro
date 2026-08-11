@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
+import HomeHero from '../components/HomeHero.astro';
 import { loadPage } from '../lib/pages';
 import { getImage } from 'astro:assets';
 import { contentImage } from '../lib/content-images';
+import { LANG } from '../lib/lang';
 
 // Startseite: Struktur (Video, Werk, Signatur) aus dem MDX-Frontmatter, Intro-Prosa aus dem
 // MDX-Body (content/pages/home-<lang>.mdx). Sprache = Domain (LANG).
@@ -19,6 +21,7 @@ const ogImage = featImg ? (await getImage({ src: featImg, format: 'jpeg', width:
 ---
 
 <BaseLayout title={fm.title} description={fm.description} image={ogImage}>
+  <HomeHero lang={LANG} h1={fm.h1} lead={fm.description} />
   <Home content={fm as any}>
     <Content />
   </Home>
