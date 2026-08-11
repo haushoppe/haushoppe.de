@@ -2,11 +2,13 @@
 // Saubere Startseite (ersetzt die portierten Stackable-Blöcke): Hero-Video als
 // Datenschutz-Klick-Facade, darunter 2 Spalten (Willkommenstext + Signatur | Werk + Links).
 // Inhalt kommt als `content`-Objekt aus index.astro / en/index.astro (editierbar).
+import Img from './Img.astro';
 interface Content {
   video: { id: string; title: string; ratio: number };
   h1: string;
-  welcome: string;
-  featured: { img: string; alt: string; href: string; caption: string; award: string };
+  welcome: { greeting: string; name: string };
+  signature: { image: string; alt: string };
+  featured: { image: string; alt: string; href: string; caption: string; award: string };
 }
 // Der Intro-Fließtext kommt als <slot/> (aus der MDX-Seite), Struktur aus `content`.
 interface Props {
@@ -32,10 +34,10 @@ const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
       {
         content.featured.href ? (
           <a href={content.featured.href}>
-            <img src={content.featured.img} alt={content.featured.alt} loading="lazy" decoding="async" />
+            <Img name={content.featured.image} alt={content.featured.alt} widths={[400, 700, 1000]} sizes="(max-width: 720px) 90vw, 560px" />
           </a>
         ) : (
-          <img src={content.featured.img} alt={content.featured.alt} loading="lazy" decoding="async" />
+          <Img name={content.featured.image} alt={content.featured.alt} widths={[400, 700, 1000]} sizes="(max-width: 720px) 90vw, 560px" />
         )
       }
       <figcaption>
@@ -45,7 +47,11 @@ const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
     </figure>
     <div class="home-text">
       <slot />
-      <p class="home-signature" set:html={content.welcome} />
+      <p class="home-signature">
+        {content.welcome.greeting}<br />
+        <Img name={content.signature.image} alt={content.signature.alt} widths={[300]} sizes="300px" /><br />
+        {content.welcome.name}
+      </p>
     </div>
   </div>
 </div>
@@ -85,13 +91,19 @@ const poster = `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
     height: auto;
     margin: 0.5rem 0;
   }
+  .home-signature :global(picture) {
+    display: block;
+  }
   .home-featured {
     grid-area: img;
     margin: 0;
   }
-  .home-featured img {
+  .home-featured :global(img) {
     width: 100%;
     height: auto;
+    display: block;
+  }
+  .home-featured :global(picture) {
     display: block;
   }
   .home-featured figcaption {

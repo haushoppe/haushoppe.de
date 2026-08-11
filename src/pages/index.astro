@@ -8,7 +8,7 @@ import { loadPage } from '../lib/pages';
 const { entry, Content, data: fm } = await loadPage('home');
 // Klare Meldung statt kryptischem „Cannot read properties of undefined“, falls ein Pflicht-
 // Frontmatter-Block der Startseite fehlt (Home.astro braucht diese Felder).
-for (const req of ['video', 'h1', 'welcome', 'featured']) {
+for (const req of ['video', 'h1', 'welcome', 'signature', 'featured']) {
   if (!fm[req]) throw new Error(`${entry.id}.mdx: Frontmatter-Feld „${req}“ fehlt (Pflicht auf der Startseite).`);
 }
 ---

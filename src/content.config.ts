@@ -13,10 +13,11 @@ const pages = defineCollection({
     // Startseite
     video: z.object({ id: z.string(), title: z.string(), ratio: z.number() }).optional(),
     h1: z.string().optional(),
-    welcome: z.string().optional(),
+    welcome: z.object({ greeting: z.string(), name: z.string() }).optional(),
+    signature: z.object({ image: z.string(), alt: z.string() }).optional(),
     featured: z
       .object({
-        img: z.string(),
+        image: z.string(),
         alt: z.string(),
         href: z.string().default(''),
         caption: z.string(),
