@@ -5,10 +5,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArtworkBody from '../../components/ArtworkBody.astro';
 import artworksData from '../../data/artworks.json';
 import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import { artworkImage, hasArtworkImage } from '../../lib/artwork-images';
 import { galleryItems } from '../../lib/artworks';
 import { ordinalData } from '../../lib/ordinals';
-import { LANG } from '../../lib/lang';
+import { artworkJsonLd } from '../../lib/seo';
+import { LANG, SELF_ORIGIN } from '../../lib/lang';
 
 export function getStaticPaths() {
   const arts = artworksData as any[];
@@ -56,9 +58,18 @@ const isOrdinal = ordinalData(art) != null;
 // Auf der Ordinal-Detailseite steht die Kollab schon im Eyebrow (Johannes × Olaf) — daher
 // das „(Johannes x Olaf)" aus dem angezeigten Titel entfernen. In der Galerie bleibt es.
 const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf\)/i, '') : art.title;
+
+// Social-Preview (das Gemälde) + VisualArtwork-JSON-LD. Ordinals haben kein Bild -> Default-OG.
+let ogImage: string | undefined;
+let artJsonLd: Record<string, unknown> | undefined;
+if (!isOrdinal) {
+  const og = await getImage({ src: image, format: 'jpeg', width: 1200 });
+  ogImage = og.src;
+  artJsonLd = artworkJsonLd(art.title, new URL(og.src, SELF_ORIGIN).href, `${SELF_ORIGIN}/portfolio/${art.slug}/`);
+}
 ---
 
-<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal}>
+<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={artJsonLd}>
   <article
     class:list={['art-single', isOrdinal && 'art-single--ordinal']}
     data-lb-prev={lbPrev}
