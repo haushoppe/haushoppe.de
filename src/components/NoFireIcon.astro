@@ -1,19 +1,19 @@
 ---
-// Stilisiertes „offenes Feuer verboten"-Zeichen: eine Flamme im Verbotskreis, monochrom
-// (eine Farbe, keine Füllung). Rein dekorativ; aria-label trägt die Bedeutung.
+// Stilisiertes „offenes Feuer verboten"-Zeichen: eine Flamme (mit typischer innerer Locke,
+// klar als Feuer lesbar) im Verbotskreis. Monochrom (eine Farbe, Linien-Icon).
 interface Props { label?: string; }
 const { label = 'Offenes Feuer verboten' } = Astro.props;
 ---
 
 <svg class="nofire" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={label}>
-  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-    <!-- Flamme -->
-    <path d="M50 27 C 56 37 62 43 62 52 C 62 61 56 67 49 67 C 42 67 37 61 38 52 C 38.5 47 42 44 45 46 C 42.5 40 46 34 50 27 Z" stroke-width="5.5" />
-    <!-- innere Flamme -->
-    <path d="M49 49 C 52.5 53 51 60 48 61 C 45 61 43.5 56.5 46 53.5" stroke-width="4" />
-    <!-- Verbotszeichen: Kreis + Querstrich -->
-    <circle cx="50" cy="50" r="43.5" stroke-width="7" />
-    <line x1="19.2" y1="19.2" x2="80.8" y2="80.8" stroke-width="7" />
+  <!-- Flamme, skaliert/zentriert (Basis-Icon im 24er-Raster) -->
+  <g transform="translate(25.85 22.4) scale(2.3)" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+  </g>
+  <!-- Verbotszeichen: Kreis + Querstrich -->
+  <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round">
+    <circle cx="50" cy="50" r="43.5" />
+    <line x1="19.2" y1="19.2" x2="80.8" y2="80.8" />
   </g>
 </svg>
 
