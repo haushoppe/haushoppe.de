@@ -8,6 +8,7 @@ import ArtworkMeta from './ArtworkMeta.astro';
 import metaData from '../data/artwork-meta.json';
 import { contact } from '../data/site';
 import { SELF_ORIGIN } from '../lib/lang';
+import { isWoodcut, woodcutPrice } from '../lib/pricing';
 
 interface Props {
   art: any;
@@ -54,14 +55,24 @@ const named = rawTitle
       ? 'this artwork'
       : 'dieses Werk';
 const workUrl = new URL(Astro.url.pathname, SELF_ORIGIN).href;
+// Holzschnitte haben einen festen Preis: in die Mail aufnehmen und statt „Preis erfahren" nach der
+// Verfügbarkeit fragen. Andere Werke (Gemälde) bleiben ohne Preis (Anfrage zu Verfügbarkeit UND Preis).
+const woodcut = isWoodcut(meta);
+const price = woodcut ? woodcutPrice(lang) : null;
+const bodyLead = woodcut
+  ? lang === 'en'
+    ? `I'm interested in ${named} and would be glad to hear about availability.`
+    : `Ich interessiere mich für ${named} und bitte um Rückmeldung zur Verfügbarkeit.`
+  : lang === 'en'
+    ? `I'm interested in ${named} and would like to know more about availability and price.`
+    : `Ich interessiere mich für ${named} und würde gern mehr zu Verfügbarkeit und Preis erfahren.`;
 const inquire = {
   label: lang === 'en' ? 'Enquire' : 'Interesse anfragen',
   aria: lang === 'en' ? `Enquire about ${named}` : `Interesse an ${named} anfragen`,
   subject: lang === 'en' ? `Interest in ${named}` : `Interesse an ${named}`,
   body: [
-    lang === 'en'
-      ? `I'm interested in ${named} and would like to know more about availability and price.`
-      : `Ich interessiere mich für ${named} und würde gern mehr zu Verfügbarkeit und Preis erfahren.`,
+    bodyLead,
+    ...(price ? ['', lang === 'en' ? `Price: ${price.amount} (${price.note})` : `Preis: ${price.amount} (${price.note})`] : []),
     '',
     workUrl,
   ].join('\r\n'),

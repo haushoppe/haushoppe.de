@@ -3,6 +3,7 @@
 // ersetzt das Raten aus dem uneinheitlichen WP-Content. Pflicht: Titel · Jahr · Technik ·
 // Maße · interne Nummer; optional: Auflage (nur Drucke). Freier Text (Beschreibung, Quelle,
 // Auszeichnung) lebt jetzt in der Content-Collection artwork-extra, nicht mehr hier.
+import { isWoodcut, woodcutPrice } from '../lib/pricing';
 export interface ArtworkMetaData {
   artist: string;
   title: string;
@@ -32,6 +33,8 @@ const dimensions = rawDim === '?' ? '' : rawDim;
 const edition = (en?.edition || meta.edition || '').trim();
 // Technik + Maße als eine saubere Zeile (kein JSX-Whitespace).
 const techLine = [technique, dimensions].filter(Boolean).join(', ');
+// Fester Preis für Holzschnitte (785 EUR, inkl. 7 % MwSt, versandkostenfrei) — nur bei Drucken.
+const price = isWoodcut(meta) ? woodcutPrice(lang) : null;
 ---
 
 <figcaption class="art-meta">
@@ -39,6 +42,9 @@ const techLine = [technique, dimensions].filter(Boolean).join(', ');
   {techLine && <span class="art-meta__tech">{techLine}</span>}
   {edition && <span class="art-meta__edition">{edition}</span>}
   {meta.number && <span class="art-meta__num">{meta.number}</span>}
+  {price && (
+    <span class="art-meta__price">{price.amount} <span class="art-meta__pricenote">{price.note}</span></span>
+  )}
 </figcaption>
 
 <style>
@@ -56,5 +62,15 @@ const techLine = [technique, dimensions].filter(Boolean).join(', ');
   }
   .art-meta__edition {
     font-size: 0.85rem;
+  }
+  /* Fester Holzschnitt-Preis — etwas kräftiger als die graue Beschriftung, mit kleiner MwSt/Versand-Notiz. */
+  .art-meta__price {
+    margin-top: 0.4rem;
+    color: #3a3a3a;
+    font-size: 1.02rem;
+  }
+  .art-meta__pricenote {
+    color: #6b6b6b;
+    font-size: 0.82rem;
   }
 </style>
