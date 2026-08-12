@@ -1,36 +1,20 @@
 ---
-// Stilisiertes „Grillen / offenes Feuer verboten"-Zeichen (Kugelgrill im roten Verbotskreis).
-// Bewusst einfach gehalten. Rein dekorativ zur Warnung; aria-label trägt die Bedeutung.
+// Stilisiertes „offenes Feuer verboten"-Zeichen: eine Flamme im Verbotskreis, monochrom
+// (eine Farbe, keine Füllung). Rein dekorativ; aria-label trägt die Bedeutung.
 interface Props { label?: string; }
-const { label = 'Grillen und offenes Feuer verboten' } = Astro.props;
+const { label = 'Offenes Feuer verboten' } = Astro.props;
 ---
 
 <svg class="nofire" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={label}>
-  <!-- Rauch -->
-  <g fill="none" stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round">
-    <path d="M42 37 c-3.5 -3 -3.5 -6 0 -9 c3.5 -3 3.5 -6 0 -9" />
-    <path d="M50 37 c-3.5 -3 -3.5 -6 0 -9 c3.5 -3 3.5 -6 0 -9" />
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Flamme -->
+    <path d="M50 27 C 56 37 62 43 62 52 C 62 61 56 67 49 67 C 42 67 37 61 38 52 C 38.5 47 42 44 45 46 C 42.5 40 46 34 50 27 Z" stroke-width="5.5" />
+    <!-- innere Flamme -->
+    <path d="M49 49 C 52.5 53 51 60 48 61 C 45 61 43.5 56.5 46 53.5" stroke-width="4" />
+    <!-- Verbotszeichen: Kreis + Querstrich -->
+    <circle cx="50" cy="50" r="43.5" stroke-width="7" />
+    <line x1="19.2" y1="19.2" x2="80.8" y2="80.8" stroke-width="7" />
   </g>
-  <!-- Grill (schwarz) -->
-  <g fill="#1a1a1a">
-    <!-- Deckel, leicht gekippt -->
-    <path d="M45 43 A17 15 0 0 1 78 38 Z" />
-    <!-- Deckelknauf -->
-    <rect x="60" y="25" width="3" height="6" rx="1.2" />
-    <circle cx="61.5" cy="24" r="2.8" />
-    <!-- Schüssel -->
-    <path d="M30 46 A20 16 0 0 0 70 46 Z" />
-  </g>
-  <!-- Beine + Bein-Ring -->
-  <g fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round">
-    <path d="M38 58 L32 75" />
-    <path d="M50 61 L50 77" />
-    <path d="M62 58 L68 75" />
-    <path d="M36 68 H64" />
-  </g>
-  <!-- Verbotszeichen: roter Ring + Querstrich (top-left → bottom-right) -->
-  <circle cx="50" cy="50" r="45" fill="none" stroke="#e0201b" stroke-width="8" />
-  <line x1="18.2" y1="18.2" x2="81.8" y2="81.8" stroke="#e0201b" stroke-width="8" stroke-linecap="round" />
 </svg>
 
 <style>
@@ -38,5 +22,6 @@ const { label = 'Grillen und offenes Feuer verboten' } = Astro.props;
     display: block;
     width: 100%;
     height: 100%;
+    color: #1a1a1a;
   }
 </style>
