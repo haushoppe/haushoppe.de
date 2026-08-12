@@ -123,25 +123,40 @@ const embed = (id: string) =>
       });
     });
 
-    const pageBy = (dir: number) => track.scrollBy({ left: dir * track.clientWidth * 0.85, behavior: 'smooth' });
+    // Ausrichtung folgt dem CSS: mobil horizontal (x), Desktop vertikal (y, flex-direction:column).
+    const isVertical = () => getComputedStyle(track).flexDirection === 'column';
+    const pageBy = (dir: number) =>
+      isVertical()
+        ? track.scrollBy({ top: dir * track.clientHeight * 0.85, behavior: 'smooth' })
+        : track.scrollBy({ left: dir * track.clientWidth * 0.85, behavior: 'smooth' });
     prev.addEventListener('click', () => pageBy(-1));
     next.addEventListener('click', () => pageBy(1));
 
     function syncNav() {
-      const max = track.scrollWidth - track.clientWidth - 2;
-      prev.toggleAttribute('disabled', track.scrollLeft <= 2);
-      next.toggleAttribute('disabled', track.scrollLeft >= max);
-      const idx = Math.round(track.scrollLeft / track.clientWidth);
+      const vert = isVertical();
+      const size = (vert ? track.clientHeight : track.clientWidth) || 1;
+      const pos = vert ? track.scrollTop : track.scrollLeft;
+      const max = (vert ? track.scrollHeight : track.scrollWidth) - size - 2;
+      prev.toggleAttribute('disabled', pos <= 2);
+      next.toggleAttribute('disabled', pos >= max);
+      const idx = Math.round(pos / size);
       dots.querySelectorAll('.vg__dot').forEach((d, i) => d.setAttribute('aria-current', String(i === idx)));
     }
     function buildDots() {
-      const pages = Math.max(1, Math.ceil(track.scrollWidth / track.clientWidth - 0.05));
+      const vert = isVertical();
+      const size = (vert ? track.clientHeight : track.clientWidth) || 1;
+      const total = vert ? track.scrollHeight : track.scrollWidth;
+      const pages = Math.max(1, Math.ceil(total / size - 0.05));
       dots.replaceChildren();
       for (let i = 0; i < pages; i++) {
         const d = document.createElement('button');
         d.type = 'button';
         d.className = 'vg__dot';
-        d.addEventListener('click', () => track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' }));
+        d.addEventListener('click', () =>
+          vert
+            ? track.scrollTo({ top: i * size, behavior: 'smooth' })
+            : track.scrollTo({ left: i * size, behavior: 'smooth' }),
+        );
         dots.appendChild(d);
       }
       syncNav();
@@ -344,5 +359,79 @@ const embed = (id: string) =>
   }
   .vg__dot[aria-current='true'] {
     opacity: 0.75;
+  }
+
+  /* Desktop / hohe Auflösung: Player links, Playlist RECHTS daneben (wie die YouTube-
+     Playlist im Bearbeiten-Modus). Alles passt auf einen Screen; die Liste scrollt
+     vertikal (hoch/runter) statt horizontal. Mobil bleibt alles gestapelt. */
+  @media (min-width: 1000px) {
+    .vg {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 1.5rem 1.75rem;
+      align-items: stretch;
+    }
+    .vg__player-wrap {
+      grid-column: 1;
+      align-self: start;
+    }
+    /* Rechte Spalte wird auf Player-Höhe gestreckt; der absolut gefüllte Track scrollt darin. */
+    .vg__carousel {
+      grid-column: 2;
+      min-height: 0;
+    }
+    .vg__track {
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      gap: 0.75rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: y proximity;
+      padding: 0 0.35rem 0 0;
+      scrollbar-width: thin;
+    }
+    .vg__track::-webkit-scrollbar {
+      display: block;
+      width: 8px;
+    }
+    .vg__track::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 4px;
+    }
+    /* Kompakte Listenzeile: kleines Thumbnail links, Titel rechts (YouTube-Playlist-Stil). */
+    .vg__slide {
+      flex: none;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 0.7rem;
+      align-items: center;
+      scroll-snap-align: start;
+    }
+    .vg__slide-title {
+      margin: 0;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+    }
+    /* Pfeile werden hoch/runter (oben + unten mittig), Icons um 90° gedreht. */
+    .vg__nav {
+      top: 6px;
+      bottom: auto;
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+    }
+    .vg__nav--next {
+      top: auto;
+      bottom: 6px;
+    }
+    .vg__nav svg {
+      transform: rotate(90deg);
+    }
+    /* Im Desktop-Layout keine Punkte — freies vertikales Scrollen. */
+    .vg__dots {
+      display: none;
+    }
   }
 </style>
