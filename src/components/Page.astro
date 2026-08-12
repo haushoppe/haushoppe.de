@@ -37,4 +37,14 @@ const { title, hideTitle = false } = Astro.props;
   .page__body :global(a) {
     text-decoration: underline;
   }
+  /* Hervorgehobene Notiz (z. B. Sicherheitshinweis) am Seitenende. */
+  .page__body :global(.cp-note) {
+    margin-top: 2rem;
+    padding: 0.9rem 1.1rem;
+    border-left: 3px solid var(--ink);
+    background: rgba(0, 0, 0, 0.05);
+  }
+  .page__body :global(.cp-note p) {
+    margin: 0;
+  }
 </style>
