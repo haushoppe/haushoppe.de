@@ -43,9 +43,6 @@ const { image, alt, title, lead, ctaText, ctaHref } = Astro.props;
   .page-hero {
     position: relative;
     width: 100%;
-    min-height: clamp(360px, 60vh, 620px);
-    display: flex;
-    align-items: flex-end;
     overflow: hidden;
     background: #1a1a1a;
   }
@@ -68,6 +65,8 @@ const { image, alt, title, lead, ctaText, ctaHref } = Astro.props;
       linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 20%, rgba(0, 0, 0, 0) 50%),
       linear-gradient(to right, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.15) 40%, rgba(0, 0, 0, 0) 68%);
   }
+  /* Höhe exakt wie der Startseiten-Hero (feste rem-Höhe statt vh) — kein „Springen",
+     beide Heros gleich hoch. Text sitzt unten. */
   .page-hero__inner {
     position: relative;
     width: 100%;
@@ -75,6 +74,15 @@ const { image, alt, title, lead, ctaText, ctaHref } = Astro.props;
     margin: 0 auto;
     padding: clamp(1.75rem, 4vw, 3.25rem) var(--pad);
     color: #fff;
+    min-height: 26rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  @media (min-width: 768px) {
+    .page-hero__inner {
+      min-height: 32rem;
+    }
   }
   .page-hero__title {
     margin: 0 0 0.5rem;
