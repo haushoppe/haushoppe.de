@@ -161,3 +161,20 @@ a:hover {
   background: transparent;
   padding: 0;
 }
+/* Gemeinsame Karussell-Punkte (Videos-Playlist + In-Content-Slideshow): runde Punkte, aktiver
+   Punkt dunkler. Einmal definiert, damit die Optik nicht je Karussell neu erfunden wird. Die
+   Positionierung/den Container (Flex-Reihe) trägt jeweils der Kontext. */
+.carousel-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0.25;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.carousel-dot[aria-current='true'] {
+  opacity: 0.75;
+}

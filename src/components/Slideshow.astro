@@ -4,13 +4,17 @@
 // Punkte funktionieren weiter). Bilder als astro:assets (AVIF/WebP, responsiv).
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import CarouselArrow from './CarouselArrow.astro';
 
 interface Slide { src: ImageMetadata; alt: string; caption?: string; }
-interface Props { slides: Slide[]; interval?: number; }
-const { slides, interval = 4500 } = Astro.props;
+interface Props { slides: Slide[]; interval?: number; lang?: 'de' | 'en'; }
+const { slides, interval = 4500, lang = 'de' } = Astro.props;
+const t = lang === 'en'
+  ? { role: 'Image gallery', prev: 'Previous', next: 'Next', pick: (i: number, n: number) => `Image ${i} of ${n}` }
+  : { role: 'Bildergalerie', prev: 'Zurück', next: 'Weiter', pick: (i: number, n: number) => `Bild ${i} von ${n}` };
 ---
 
-<div class="slideshow" data-slideshow data-interval={interval} aria-roledescription="Bildergalerie">
+<div class="slideshow" data-slideshow data-interval={interval} aria-roledescription={t.role}>
   <div class="slideshow__frame">
     {slides.map((s, i) => (
       <figure class="slideshow__slide" data-slide style={`opacity:${i === 0 ? 1 : 0}`} aria-hidden={i === 0 ? 'false' : 'true'}>
@@ -18,10 +22,12 @@ const { slides, interval = 4500 } = Astro.props;
         {s.caption && <figcaption class="slideshow__caption">{s.caption}</figcaption>}
       </figure>
     ))}
+    {slides.length > 1 && <CarouselArrow dir="prev" class="slideshow__arrow slideshow__arrow--prev" label={t.prev} data-ss-prev />}
+    {slides.length > 1 && <CarouselArrow dir="next" class="slideshow__arrow slideshow__arrow--next" label={t.next} data-ss-next />}
   </div>
   <div class="slideshow__dots">
     {slides.map((_, i) => (
-      <button type="button" class="slideshow__dot" data-dot aria-label={`Bild ${i + 1} von ${slides.length}`} aria-current={i === 0 ? 'true' : 'false'} />
+      <button type="button" class="carousel-dot" data-dot aria-label={t.pick(i + 1, slides.length)} aria-current={i === 0 ? 'true' : 'false'} />
     ))}
   </div>
 </div>
@@ -49,6 +55,8 @@ const { slides, interval = 4500 } = Astro.props;
       function stop() { if (timer) { clearInterval(timer); timer = undefined; } }
       function start() { if (reduced) return; stop(); timer = window.setInterval(() => show(idx + 1), interval); }
       dots.forEach((d, i) => d.addEventListener('click', () => { show(i); start(); }));
+      root.querySelector<HTMLElement>('[data-ss-prev]')?.addEventListener('click', () => { show(idx - 1); start(); });
+      root.querySelector<HTMLElement>('[data-ss-next]')?.addEventListener('click', () => { show(idx + 1); start(); });
       root.addEventListener('mouseenter', stop);
       root.addEventListener('mouseleave', start);
       show(0);
@@ -102,18 +110,18 @@ const { slides, interval = 4500 } = Astro.props;
     gap: 0.5rem;
     margin-top: 0.6rem;
   }
-  .slideshow__dot {
-    width: 9px;
-    height: 9px;
-    padding: 0;
-    border: 0;
-    background: var(--ink);
-    opacity: 0.25;
-    cursor: pointer;
-    transition: opacity 0.15s;
+  /* Pfeile über dem Bild, vertikal zentriert; runde Optik kommt aus <CarouselArrow>. */
+  .slideshow__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
   }
-  .slideshow__dot[aria-current='true'] {
-    opacity: 0.8;
+  .slideshow__arrow--prev {
+    left: 10px;
+  }
+  .slideshow__arrow--next {
+    right: 10px;
   }
   @media (prefers-reduced-motion: reduce) {
     .slideshow__slide {

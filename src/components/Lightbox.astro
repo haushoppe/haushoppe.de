@@ -3,6 +3,7 @@
 // ohne Plugin/jQuery. Bindet an Bilder in .acq (kunst-erwerben) und die Werk-Detailseite
 // (.art-figure). Verlinkte Bilder werden ausgelassen (navigieren). Auf Werk-Detailseiten
 // blättern Vor/Zurück-Knöpfe + Pfeiltasten durch die Werke (Ordinals übersprungen).
+import CarouselArrow from './CarouselArrow.astro';
 interface Props {
   lang?: 'de' | 'en';
 }
@@ -14,14 +15,8 @@ const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
 
 <div id="lightbox" class="lightbox" hidden transition:persist>
   <button type="button" class="lightbox__close" data-lb-close aria-label={closeLabel}>&times;</button>
-  <button type="button" class="lightbox__nav lightbox__nav--prev" data-lb-nav="prev" aria-label={prevLabel} hidden>
-    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"
-      ><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-  </button>
-  <button type="button" class="lightbox__nav lightbox__nav--next" data-lb-nav="next" aria-label={nextLabel} hidden>
-    <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"
-      ><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-  </button>
+  <CarouselArrow dir="prev" class="lightbox__nav lightbox__nav--prev" label={prevLabel} size={48} data-lb-nav="prev" hidden />
+  <CarouselArrow dir="next" class="lightbox__nav lightbox__nav--next" label={nextLabel} size={48} data-lb-nav="next" hidden />
   <figure class="lightbox__figure">
     <img class="lightbox__img" alt="" />
     <figcaption class="lightbox__caption"></figcaption>
@@ -170,32 +165,12 @@ const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
     cursor: pointer;
     padding: 0.25rem 0.5rem;
   }
-  /* Vor/Zurück — gleiche Optik wie die Video-Scroller (.vg__nav): runder dunkler Kreis mit
-     weißem Chevron, an den Rändern, vertikal zentriert. Nur auf Werk-Detailseiten sichtbar. */
+  /* Vor/Zurück — Optik/Hover/Hidden kommen aus <CarouselArrow> (Größe via size=48); hier nur die
+     Position an den Rändern, vertikal zentriert. Nur auf Werk-Detailseiten sichtbar. */
   .lightbox__nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.55);
-    color: #fff;
-    cursor: pointer;
-    opacity: 0.85;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.15s, background 0.15s;
-  }
-  .lightbox__nav:hover {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.8);
-  }
-  .lightbox__nav[hidden] {
-    display: none;
   }
   .lightbox__nav--prev {
     left: clamp(0.5rem, 2.5vw, 1.75rem);
