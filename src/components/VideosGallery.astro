@@ -8,6 +8,7 @@
 // Daten: src/data/videos.json. Styles is:global (.vg__*), damit sie auch für die per
 // JS erzeugten Punkte greifen.
 import videos from '../data/videos.json';
+import CarouselArrow from './CarouselArrow.astro';
 
 interface Props {
   lang?: 'de' | 'en';
@@ -70,12 +71,8 @@ const embed = (id: string) =>
         ))
       }
     </ul>
-    <button type="button" class="vg__nav vg__nav--prev" aria-label={t.prev}>
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button type="button" class="vg__nav vg__nav--next" aria-label={t.next}>
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
+    <CarouselArrow dir="prev" class="vg__nav vg__nav--prev" label={t.prev} />
+    <CarouselArrow dir="next" class="vg__nav vg__nav--next" label={t.next} />
   </div>
   <div class="vg__dots" aria-hidden="true"></div>
 </section>
@@ -151,7 +148,7 @@ const embed = (id: string) =>
       for (let i = 0; i < pages; i++) {
         const d = document.createElement('button');
         d.type = 'button';
-        d.className = 'vg__dot';
+        d.className = 'vg__dot carousel-dot';
         d.addEventListener('click', () =>
           vert
             ? track.scrollTo({ top: i * size, behavior: 'smooth' })
@@ -308,33 +305,12 @@ const embed = (id: string) =>
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  /* Pfeile — absolut an den Rändern, halbtransparent (wie .ayg-slick-prev/next) */
+  /* Pfeile — nur Positionierung an den Rändern; Optik/Hover/Disabled kommen aus <CarouselArrow>. */
   .vg__nav {
     position: absolute;
     top: 33%;
     transform: translateY(-50%);
     z-index: 9;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.55);
-    color: #fff;
-    cursor: pointer;
-    opacity: 0.85;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.15s, background 0.15s;
-  }
-  .vg__nav:hover {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.8);
-  }
-  .vg__nav[disabled] {
-    opacity: 0;
-    pointer-events: none;
   }
   .vg__nav--prev {
     left: 4px;
@@ -342,27 +318,13 @@ const embed = (id: string) =>
   .vg__nav--next {
     right: 4px;
   }
-  /* Punkte (wie .ayg-slick-dots: zentriert, opacity-Zustände) */
+  /* Punkte-Reihe (zentriert); die einzelnen Punkte tragen die globale .carousel-dot-Optik. */
   .vg__dots {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 0.55rem;
     margin-top: 0.25rem;
-  }
-  .vg__dot {
-    width: 9px;
-    height: 9px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: var(--ink);
-    opacity: 0.25;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .vg__dot[aria-current='true'] {
-    opacity: 0.75;
   }
 
   /* Desktop / hohe Auflösung: Player links, Playlist RECHTS daneben (wie die YouTube-

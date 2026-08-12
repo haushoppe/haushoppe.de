@@ -50,7 +50,7 @@ const homeHref = '/';
                 aria-current={it.href === activePath ? 'page' : undefined}
                 data-text={it.label}
               >
-                <span class="mainnav__label">{it.label}</span>
+                <span class="mainnav__label">{it.label}{(it as any).badge && <span class="mainnav__badge">{(it as any).badge}</span>}</span>
               </a>
             </li>
           ))
@@ -107,7 +107,7 @@ const homeHref = '/';
     border-bottom: 1px solid var(--rule);
     margin-bottom: 20px;
     width: 100%;
-    max-width: 700px;
+    max-width: 780px;
   }
   .mainnav__list {
     display: flex;
@@ -130,7 +130,9 @@ const homeHref = '/';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0 16px;
+    /* 12px (statt 16) horizontal: mit dem 7. Menüpunkt („Camping") passt die Zeile sonst
+       nicht in die 700px-Nav-Leiste (bräche in eine zweite Zeile um). */
+    padding: 0 12px;
     font-weight: 400;
     color: #000;
     line-height: 1.2;
@@ -140,6 +142,21 @@ const homeHref = '/';
   .mainnav__lang,
   .mainnav__search {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+  /* Dezentes „NEU"-Tag direkt am Menüpunkt: eckig, helles Grau, leicht hochgestellt. */
+  .mainnav__badge {
+    display: inline-block;
+    margin-left: 0.4em;
+    padding: 0.12em 0.45em;
+    font-size: 0.58rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #9aa0a6;
+    border-radius: 2px;
+    vertical-align: 0.55em;
   }
   /* Kein Verrutschen der Nav beim Fettschalten des aktiven Punkts: eine unsichtbare, fett
      gesetzte Kopie des Labels reserviert immer die Bold-Breite (height:0 → belegt keinen Platz,

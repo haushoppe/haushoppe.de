@@ -600,5 +600,7 @@
   "/kontakt/": "/contact/",
   "/contact/": "/kontakt/",
   "/kunst-erwerben/": "/buy-fine-art/",
-  "/buy-fine-art/": "/kunst-erwerben/"
+  "/buy-fine-art/": "/kunst-erwerben/",
+  "/kunst-und-camping/": "/art-and-camping/",
+  "/art-and-camping/": "/kunst-und-camping/"
 }

@@ -1,0 +1,57 @@
+---
+// Gemeinsamer Vor/Zurück-Knopf für alle Karussells (Videos-Playlist, Werk-Lightbox,
+// In-Content-Slideshow): runder dunkler Kreis mit weißem Chevron. Optik, Hover, Disabled- und
+// Hidden-Zustand sind hier EINMAL definiert; jeder Kontext positioniert den Knopf nur noch selbst
+// (position/top/left…) und wählt bei Bedarf die Größe über `size`. Ersetzt drei handkopierte
+// Varianten (früher doppelt in VideosGallery + doppelt in Lightbox).
+interface Props {
+  dir: 'prev' | 'next';
+  label: string;
+  class?: string;
+  size?: number;
+  [key: string]: unknown;
+}
+const { dir, label, class: className, size = 40, ...rest } = Astro.props;
+const path = dir === 'prev' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7';
+---
+
+<button
+  type="button"
+  class:list={['carousel-arrow', `carousel-arrow--${dir}`, className]}
+  aria-label={label}
+  style={`--carousel-arrow-size:${size}px`}
+  {...rest}
+>
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"
+    ><path d={path} fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+
+<style>
+  .carousel-arrow {
+    width: var(--carousel-arrow-size, 40px);
+    height: var(--carousel-arrow-size, 40px);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.85;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .carousel-arrow:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.8);
+  }
+  /* Blätter-Ende (Videos: JS setzt disabled) bzw. kontextabhängig ausgeblendet (Lightbox: hidden). */
+  .carousel-arrow[disabled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .carousel-arrow[hidden] {
+    display: none;
+  }
+</style>

@@ -88,11 +88,20 @@ a:hover {
   /* Oben derselbe responsive Abstand wie der Header (clamp), unten bündig. */
   padding-block: clamp(1.25rem, 3vw, 2rem) 0;
 }
+/* Sanftes Scrollen für Anker-Links (z. B. Hero-CTA „Anrufen" → Kontakt-Sektion). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
 /* Startseite mobil (Burger-Breite): der Hero schließt bündig an die schwarze
    Header-Linie an — kein Abstand. Nur hier (einzige Seite mit .ohero); alle
    anderen Seiten behalten ihren Abstand. Breakpoint = Burger-Menü (720px). */
 @media (max-width: 720px) {
-  .site-main:has(.ohero) {
+  /* Hero (Startseite .ohero ODER Standalone .page-hero) schließt mobil bündig an die
+     Header-Linie an; auf dem Desktop bleibt der Abstand. Beide Heros verhalten sich gleich. */
+  .site-main:has(.ohero),
+  .site-main:has(.page-hero) {
     padding-top: 0;
   }
 }
@@ -151,4 +160,21 @@ a:hover {
 .art-single--ordinal {
   background: transparent;
   padding: 0;
+}
+/* Gemeinsame Karussell-Punkte (Videos-Playlist + In-Content-Slideshow): runde Punkte, aktiver
+   Punkt dunkler. Einmal definiert, damit die Optik nicht je Karussell neu erfunden wird. Die
+   Positionierung/den Container (Flex-Reihe) trägt jeweils der Kontext. */
+.carousel-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0.25;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.carousel-dot[aria-current='true'] {
+  opacity: 0.75;
 }
