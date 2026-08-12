@@ -37,13 +37,26 @@ const t =
 // „Interesse anfragen" pro Werk: mailto mit vorausgefülltem Betreff + Text (Titel, Werk-Nummer und
 // Link zur Werk-Seite), damit die Anfrage bei team@haushoppe.de eindeutig zuzuordnen ist. Empfänger
 // kommt aus site.ts (eine Quelle). Ordinals bekommen keinen (eigener Kauf-Flow).
-const cleanTitle = (lang === 'en' ? meta?.en?.title || meta?.title : meta?.title) || title || art.title;
-const numSuffix = meta?.number ? ` (${meta.number})` : '';
-const named = lang === 'en' ? `"${cleanTitle}"${numSuffix}` : `„${cleanTitle}“${numSuffix}`;
+const rawTitle = ((lang === 'en' ? meta?.en?.title || meta?.title : meta?.title) || title || art.title || '').trim();
+const num = (meta?.number || '').trim();
+const numSuffix = num ? ` (${num})` : '';
+// Werk-Referenz für Betreff/Text: „Titel“ (Nummer). Fehlt der Titel (unbetitelte Werke), nur die
+// Nummer statt eines leeren „“; fehlt auch die, generisch „dieses Werk“.
+const named = rawTitle
+  ? lang === 'en'
+    ? `"${rawTitle}"${numSuffix}`
+    : `„${rawTitle}“${numSuffix}`
+  : num
+    ? lang === 'en'
+      ? `artwork ${num}`
+      : `Werk ${num}`
+    : lang === 'en'
+      ? 'this artwork'
+      : 'dieses Werk';
 const workUrl = new URL(Astro.url.pathname, SELF_ORIGIN).href;
 const inquire = {
   label: lang === 'en' ? 'Enquire' : 'Interesse anfragen',
-  aria: lang === 'en' ? `Enquire about ${cleanTitle}` : `Interesse an ${cleanTitle} anfragen`,
+  aria: lang === 'en' ? `Enquire about ${named}` : `Interesse an ${named} anfragen`,
   subject: lang === 'en' ? `Interest in ${named}` : `Interesse an ${named}`,
   body: [
     lang === 'en'
