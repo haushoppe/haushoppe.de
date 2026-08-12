@@ -1,0 +1,123 @@
+---
+// Kleine In-Content-Slideshow: überblendet automatisch, mit Bildunterschrift + Punkten.
+// Startet von allein; Pause bei Hover; respektiert prefers-reduced-motion (dann kein Autoplay,
+// Punkte funktionieren weiter). Bilder als astro:assets (AVIF/WebP, responsiv).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Slide { src: ImageMetadata; alt: string; caption?: string; }
+interface Props { slides: Slide[]; interval?: number; }
+const { slides, interval = 4500 } = Astro.props;
+---
+
+<div class="slideshow" data-slideshow data-interval={interval} aria-roledescription="Bildergalerie">
+  <div class="slideshow__frame">
+    {slides.map((s, i) => (
+      <figure class="slideshow__slide" data-slide style={`opacity:${i === 0 ? 1 : 0}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+        <Image src={s.src} alt={s.alt} widths={[480, 820, 1200]} sizes="(max-width: 860px) 92vw, 800px" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+        {s.caption && <figcaption class="slideshow__caption">{s.caption}</figcaption>}
+      </figure>
+    ))}
+  </div>
+  <div class="slideshow__dots">
+    {slides.map((_, i) => (
+      <button type="button" class="slideshow__dot" data-dot aria-label={`Bild ${i + 1} von ${slides.length}`} aria-current={i === 0 ? 'true' : 'false'} />
+    ))}
+  </div>
+</div>
+
+<script>
+  function initSlideshows() {
+    document.querySelectorAll<HTMLElement>('[data-slideshow]').forEach((root) => {
+      if ((root as any).__ss) return;
+      (root as any).__ss = true;
+      const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
+      const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
+      if (slides.length < 2) return;
+      const interval = Number(root.dataset.interval) || 4500;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let idx = 0;
+      let timer: number | undefined;
+      function show(n: number) {
+        idx = (n + slides.length) % slides.length;
+        slides.forEach((s, i) => {
+          s.style.opacity = i === idx ? '1' : '0';
+          s.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+        });
+        dots.forEach((d, i) => d.setAttribute('aria-current', i === idx ? 'true' : 'false'));
+      }
+      function stop() { if (timer) { clearInterval(timer); timer = undefined; } }
+      function start() { if (reduced) return; stop(); timer = window.setInterval(() => show(idx + 1), interval); }
+      dots.forEach((d, i) => d.addEventListener('click', () => { show(i); start(); }));
+      root.addEventListener('mouseenter', stop);
+      root.addEventListener('mouseleave', start);
+      show(0);
+      start();
+    });
+  }
+  if (!(window as any).__ssInit) {
+    (window as any).__ssInit = true;
+    document.addEventListener('astro:page-load', initSlideshows);
+    initSlideshows();
+  }
+</script>
+
+<style>
+  .slideshow {
+    margin: 1.5rem 0;
+  }
+  .slideshow__frame {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: #ececec;
+  }
+  .slideshow__slide {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    transition: opacity 0.7s ease;
+  }
+  .slideshow__slide :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .slideshow__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 1.6rem 1rem 0.7rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0));
+    color: #fff;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  .slideshow__dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+  }
+  .slideshow__dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 0;
+    background: var(--ink);
+    opacity: 0.25;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .slideshow__dot[aria-current='true'] {
+    opacity: 0.8;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slideshow__slide {
+      transition: none;
+    }
+  }
+</style>

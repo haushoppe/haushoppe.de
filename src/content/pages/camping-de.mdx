@@ -7,17 +7,25 @@ placement: none
 hero:
   name: camper-hero
   alt: Wohnmobil auf dem leicht befestigten Stellplatz direkt an der Galerie HAUS HOPPE, dahinter ein großer Baum und offene Landschaft
-  lead: Eine Nacht kostenfrei, direkt neben der Galerie. Strom und Wasser sind vorhanden, die Ostsee liegt gleich um die Ecke.
+  lead: Eine Nacht kostenfrei, direkt neben der Galerie. Strom und Wasser sind vorhanden, die Ostsee liegt zehn Radminuten entfernt.
   ctaText: Anrufen
   ctaHref: "#anrufen"
 ---
 import NoFireIcon from '../../components/NoFireIcon.astro';
+import Slideshow from '../../components/Slideshow.astro';
+import gartenSommer from '../../assets/impressionen/garten-sommer.webp';
+import galerieDachboden from '../../assets/impressionen/galerie-dachboden.webp';
+import ausstellungsraum from '../../assets/impressionen/ausstellungsraum.jpg';
+import rosenAtelier from '../../assets/impressionen/rosen-atelier.jpg';
 
-Stellen Sie Ihr Wohnmobil einfach direkt neben den Eingang der Galerie. Der Platz ist leicht befestigt, gleich daneben liegt eine Wiese, und ringsum breiten sich offene Felder und viel Ruhe aus. Bleiben Sie eine Nacht und lassen Sie es ruhig angehen. Und wenn Sie mögen, zeige ich Ihnen die Ausstellung: 400 m² in der zur Galerie umgebauten Scheune des historischen Bauernhauses, dazu ein Blick in die Holzschnitt-Werkstatt. Umparken müssen Sie dafür nicht.
+Stellen Sie Ihr Wohnmobil einfach direkt neben den Eingang der Galerie. Der Platz ist leicht befestigt, gleich daneben liegt eine kleine Wiese, und ringsum breiten sich offene Felder und viel Ruhe aus. Bleiben Sie eine Nacht und lassen Sie es ruhig angehen. Und wenn Sie mögen, zeige ich Ihnen die Ausstellung: 400 m² in der zur Galerie umgebauten Scheune des historischen Bauernhauses, dazu ein Blick in die Holzschnitt-Werkstatt. Umparken müssen Sie dafür nicht.
 
-<figure>
-  <img src="/media/2026/08/stellplatz-wohnmobil-haus-hoppe-3.jpg" width="1600" height="1200" alt="Blick über den Stellplatz auf die offene Landschaft nahe der Ostsee" loading="lazy" decoding="async" />
-</figure>
+<Slideshow slides={[
+  { src: gartenSommer, alt: 'Bauerngarten mit blühenden Beeten vor dem reetgedeckten Haus', caption: 'Der Bauerngarten am reetgedeckten Haus' },
+  { src: galerieDachboden, alt: 'Gemälde unter dem historischen Dachstuhl im Dachboden der Scheune', caption: 'Die Galerie im Dachboden der umgebauten Scheune' },
+  { src: ausstellungsraum, alt: 'Ausstellungsraum im Erdgeschoss mit Malerei und einer Bronze-Skulptur', caption: 'Ausstellungsraum mit Malerei und Skulptur' },
+  { src: rosenAtelier, alt: 'Großformatige Rosen-Bilder von Olaf Hoppe im Atelier', caption: 'Rosen-Motive von Olaf Hoppe' },
+]} />
 
 ## Gut zu wissen
 
