@@ -109,6 +109,8 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
   <body class:list={[inverted && 'theme-invert']}>
     <a href="#main" class="skip-link">{lang === 'en' ? 'Skip to content' : 'Zum Inhalt springen'}</a>
     <Header lang={lang} />
+    {/* Backdrop hinter dem offenen Burger-Menü — dimmt den Rest der Seite; Klick schließt (steuert #navtoggle). */}
+    <label for="navtoggle" class="nav-scrim" aria-hidden="true"></label>
     <main id="main" class:list={['site-main', layout && `site-main--${layout}`]} data-pagefind-body={noindex ? undefined : true}>
       <slot />
     </main>

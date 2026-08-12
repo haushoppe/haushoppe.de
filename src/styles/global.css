@@ -88,6 +88,28 @@ a:hover {
   /* Oben derselbe responsive Abstand wie der Header (clamp), unten bündig. */
   padding-block: clamp(1.25rem, 3vw, 2rem) 0;
 }
+/* Startseite mobil (Burger-Breite): der Hero schließt bündig an die schwarze
+   Header-Linie an — kein Abstand. Nur hier (einzige Seite mit .ohero); alle
+   anderen Seiten behalten ihren Abstand. Breakpoint = Burger-Menü (720px). */
+@media (max-width: 720px) {
+  .site-main:has(.ohero) {
+    padding-top: 0;
+  }
+}
+/* Backdrop hinter dem offenen Burger-Menü: dimmt den Rest der Seite (wie die Suche).
+   Nur mobil; der Header (z-index 50) + das offene Menü bleiben darüber klar. */
+.nav-scrim {
+  display: none;
+}
+@media (max-width: 720px) {
+  body:has(#navtoggle:checked) .nav-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
 /* Nur für Screenreader — z. B. ein Seiten-h1 auf der Galerie, ohne das minimalistische
    Design zu verändern (Heading-Hierarchie/SEO trotzdem korrekt). */
 .visually-hidden {

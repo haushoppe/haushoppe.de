@@ -91,7 +91,7 @@ const ogImage = ogSrc ? (await getImage({ src: ogSrc, format: 'jpeg', width: 120
 ---
 
 <BaseLayout title={meta.title} description={meta.description} image={ogImage}>
-  {type === 'gallery' && <Gallery items={items} cats={cats} allLabel={allLabel} base={galleryBase} activeCat="*" heading={LANG === 'de' ? 'Werke' : 'Artwork'} />}
+  {type === 'gallery' && <Gallery items={items} cats={cats} allLabel={allLabel} base={galleryBase} activeCat="*" heading={LANG === 'de' ? 'Werke' : 'Artwork'} total={items.length} />}
   {type === 'contact' && MdxContent && (
     <Kontakt>
       <MdxContent />

@@ -134,13 +134,21 @@ const translations =
     width: min(680px, 92vw);
     max-height: 84vh;
     overflow: auto;
-    padding: 2.5rem 2rem 2rem;
+    /* Kopf-Padding lässt Platz für den Schließen-Button, damit er das Suchfeld nicht überlappt. */
+    padding: 3.5rem 2rem 2rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   }
   .search-overlay__close {
     position: absolute;
-    top: 0.4rem;
-    right: 0.75rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    /* Sauberes, daumengroßes Tap-Target (statt breit über das Feld ragend). */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     border: 0;
     background: none;
     font-size: 2rem;

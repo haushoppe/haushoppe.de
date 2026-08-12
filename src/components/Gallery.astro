@@ -15,8 +15,9 @@ interface Props {
   base: string; // Galerie-Wurzel der Sprache: '/werke' oder '/artwork'
   activeCat?: string; // '*' = Alle, sonst Kategorie-Slug
   heading?: string; // Seiten-h1 (SR-only) — Heading-Hierarchie/SEO ohne visuelle Änderung
+  total?: number; // Gesamtzahl aller Werke — als Zahl am „Alle"-Button
 }
-const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading } = Astro.props;
+const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading, total } = Astro.props;
 
 // Kacheldaten mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
 const data = await Promise.all(
@@ -33,7 +34,7 @@ const data = await Promise.all(
 <div class="gallery" data-gallery data-gap="15" data-row-height="200" data-batch="36" data-pagefind-ignore>
   {heading && <h1 class="visually-hidden">{heading}</h1>}
   <nav class="gallery__filter" aria-label={allLabel}>
-    <a href={`${base}/`} class:list={['gallery__filter-btn', activeCat === '*' && 'is-active']} aria-current={activeCat === '*' ? 'page' : undefined}>{allLabel}</a>
+    <a href={`${base}/`} class:list={['gallery__filter-btn', activeCat === '*' && 'is-active']} aria-current={activeCat === '*' ? 'page' : undefined}>{allLabel} {typeof total === 'number' && <span class="gallery__filter-count">{total}</span>}</a>
     {cats.map((c) => (
       <a href={`${base}/${c.slug}/`} class:list={['gallery__filter-btn', activeCat === c.slug && 'is-active']} aria-current={activeCat === c.slug ? 'page' : undefined}>{c.name} <span class="gallery__filter-count">{c.count}</span></a>
     ))}

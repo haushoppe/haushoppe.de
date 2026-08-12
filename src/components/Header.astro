@@ -205,6 +205,8 @@ const homeHref = '/';
     .site-header {
       padding-top: 0;
       position: relative;
+      z-index: 50; /* über dem Menü-Scrim (40) — Header + offenes Menü bleiben klar, Rest dimmt */
+      background: #fff;
     }
     .site-header__inner {
       flex-direction: row;
@@ -263,22 +265,48 @@ const homeHref = '/';
       left: 0;
       right: 0;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       gap: 0;
       background: #fff;
       border-bottom: 1px solid var(--rule);
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
-      padding: 0.5rem 0 1rem;
+      padding: 0;
       z-index: 60;
     }
     .mainnav__toggle:checked ~ .mainnav__list {
       display: flex;
     }
+    /* Jeder Punkt: klar abgegrenzter, daumengroßer Tipp-Bereich, durch eine leichte Linie getrennt. */
+    .mainnav__list > li + li {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
     .mainnav__link {
-      padding: 0.7rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 3.25rem;
+      padding: 0 1.25rem;
+      font-size: 1.05rem;
+    }
+    .mainnav__link.is-active {
+      font-weight: 600;
     }
     .mainnav__extra {
-      padding: 0.5rem 0 0.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.75rem;
+      min-height: 3.25rem;
+      padding: 0;
+    }
+    .mainnav__lang,
+    .mainnav__search {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
     }
   }
 </style>
