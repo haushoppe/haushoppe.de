@@ -274,7 +274,7 @@ Generieren/Prüfen (aus der **Site-Quelle** `src/data/`, nicht aus dem Migration
   `npm run build:art` → `dist-art/` → **haushoppe.art**. `npm run build` macht beide (mit i18n-Check).
   Kein `/en/`-Pfad — jede Sprache liegt am Root ihrer Domain.
 - **CSP** (falls gesetzt) muss erlauben: `img-src i.ytimg.com`, `frame-src
-  youtube-nocookie.com explorer.ordinalsbot.com www.google.com` (Video-Facade, Ordinals, Karte).
+  youtube-nocookie.com ordinals.com www.google.com` (Video-Facade, Ordinals, Karte).
 - Braucht die Cloudflare-Secrets des Betreibers.
 
 ## 11. Gotchas / Entscheidungen
