@@ -69,7 +69,7 @@ if (type === 'standalone' && base) {
 
 const meta =
   type === 'standalone'
-    ? { title: `${standaloneFm.title} – HAUS HOPPE`, description: standaloneFm.description }
+    ? { title: `${standaloneFm.title} - HAUS HOPPE`, description: standaloneFm.description }
     : META[type as 'gallery' | 'acquire' | 'contact'][LANG];
 
 const items = type === 'gallery' ? galleryItems(LANG) : [];
