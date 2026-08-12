@@ -4,26 +4,186 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArtworkBody from '../../components/ArtworkBody.astro';
 import artworksData from '../../data/artworks.json';
-import mediaData from '../../data/artworks-media.json';
-import { LANG } from '../../lib/lang';
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import { artworkImage, hasArtworkImage } from '../../lib/artwork-images';
+import { galleryItems } from '../../lib/artworks';
+import { ordinalData } from '../../lib/ordinals';
+import { artworkJsonLd } from '../../lib/seo';
+import { smartQuotes } from '../../lib/text';
+import { LANG, SELF_ORIGIN } from '../../lib/lang';
+import { getCollection, render } from 'astro:content';
 
 export function getStaticPaths() {
   const arts = artworksData as any[];
-  const media = mediaData as Record<string, { src: string; w: number; h: number }>;
-  return arts
-    .filter((a) => a.type === 'portfolio' && a.lang === LANG && media[a.id])
-    .map((a) => ({ params: { slug: a.slug }, props: { art: a, img: media[a.id] } }));
+  const detailArts = arts.filter((a) => a.type === 'portfolio' && a.lang === LANG && hasArtworkImage(a.id));
+  // Prev/Next in EXAKT der Galerie-Reihenfolge (chronologisch), inklusive Ordinals — zyklisch,
+  // damit man endlos durchblättern kann. Nur Einträge, die auch eine Detailseite haben.
+  const detailIds = new Set(detailArts.map((a) => a.id));
+  const order = galleryItems(LANG).filter((it) => detailIds.has(it.id));
+  const idx = new Map(order.map((it, i) => [it.id, i]));
+  // Zweite Kette OHNE Ordinals — fürs Lightbox-Blättern (Ordinals haben kein Zoom-Bild).
+  const ordinalIds = new Set(detailArts.filter((a) => ordinalData(a) != null).map((a) => a.id));
+  const imgOrder = order.filter((it) => !ordinalIds.has(it.id));
+  const imgIdx = new Map(imgOrder.map((it, i) => [it.id, i]));
+  const around = (a: any) => {
+    const i = idx.get(a.id);
+    const full =
+      i == null || order.length < 2
+        ? { prev: null, next: null }
+        : {
+            prev: { href: order[(i - 1 + order.length) % order.length].detailUrl, title: order[(i - 1 + order.length) % order.length].title },
+            next: { href: order[(i + 1) % order.length].detailUrl, title: order[(i + 1) % order.length].title },
+          };
+    const j = imgIdx.get(a.id);
+    const hasImgChain = j != null && imgOrder.length > 1;
+    return {
+      ...full,
+      lbPrev: hasImgChain ? imgOrder[(j - 1 + imgOrder.length) % imgOrder.length].detailUrl : null,
+      lbNext: hasImgChain ? imgOrder[(j + 1) % imgOrder.length].detailUrl : null,
+    };
+  };
+  // Titel typografisch säubern (DE „…“, EN “…”) — an dieser Wurzel, damit art.title überall stimmt.
+  return detailArts.map((a) => ({
+    params: { slug: a.slug },
+    props: { art: { ...a, title: smartQuotes(a.title, LANG) }, image: artworkImage(a.id), ...around(a) },
+  }));
 }
 
-const { art, img } = Astro.props as { art: any; img: { src: string; w: number; h: number } };
+const { art, image, prev, next, lbPrev, lbNext } = Astro.props as {
+  art: any;
+  image: ImageMetadata;
+  prev: { href: string; title: string } | null;
+  next: { href: string; title: string } | null;
+  lbPrev: string | null;
+  lbNext: string | null;
+};
 const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.title} — artwork by Olaf Hoppe.`;
+// Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
+const isOrdinal = ordinalData(art) != null;
+// Auf der Ordinal-Detailseite steht die Kollab schon im Eyebrow (Johannes × Olaf) — daher
+// das „(Johannes x Olaf)" aus dem angezeigten Titel entfernen. In der Galerie bleibt es.
+const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf\)/i, '') : art.title;
+
+// Optionaler Zusatz-Content (Beschreibung/Video) aus der Collection „artworkExtra" — nur wenn zu
+// diesem Werk-Slug ein Eintrag existiert. Struktur bleibt im JSON; nur die Prosa kommt als Content.
+const extraEntry = (await getCollection('artworkExtra')).find((e) => e.id === art.slug);
+const ExtraContent = extraEntry ? (await render(extraEntry)).Content : undefined;
+
+// Social-Preview (das Gemälde) + VisualArtwork-JSON-LD. Ordinals haben kein Bild -> Default-OG.
+let ogImage: string | undefined;
+let artJsonLd: Record<string, unknown> | undefined;
+if (!isOrdinal) {
+  const og = await getImage({ src: image, format: 'jpeg', width: 1200 });
+  ogImage = og.src;
+  artJsonLd = artworkJsonLd(art.title, new URL(og.src, SELF_ORIGIN).href, `${SELF_ORIGIN}/portfolio/${art.slug}/`);
+}
 ---
 
-<BaseLayout title={`${art.title} - HAUS HOPPE`} description={desc} layout="article">
-  <article class="art-single" itemtype="https://schema.org/CreativeWork" itemscope>
-    <header class="entry-header">
-      <h1 class="entry-title" itemprop="headline">{art.title}</h1>
-    </header>
-    <ArtworkBody art={art} img={img} lang={LANG} />
+<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={artJsonLd} noindex={art.hidden}>
+  <article
+    class:list={['art-single', isOrdinal && 'art-single--ordinal']}
+    data-lb-prev={lbPrev}
+    data-lb-next={lbNext}
+    itemtype="https://schema.org/CreativeWork"
+    itemscope
+  >
+    {
+      !isOrdinal && (
+        <header class="entry-header">
+          <h1 class="entry-title" itemprop="headline">{art.title}</h1>
+        </header>
+      )
+    }
+    <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} Extra={ExtraContent} />
+    {
+      (prev || next) && (
+        <nav class="art-nav" aria-label={LANG === 'de' ? 'Weitere Werke' : 'More artworks'}>
+          {prev ? (
+            <a rel="prev" class="art-nav__link art-nav__prev" href={prev.href}>
+              <span class="art-nav__arrow" aria-hidden="true">‹</span>
+              <span class="art-nav__txt">
+                <span class="art-nav__cap">{LANG === 'de' ? 'Vorheriges Werk' : 'Previous'}</span>
+                <span class="art-nav__title">{prev.title}</span>
+              </span>
+            </a>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <a rel="next" class="art-nav__link art-nav__next" href={next.href}>
+              <span class="art-nav__txt">
+                <span class="art-nav__cap">{LANG === 'de' ? 'Nächstes Werk' : 'Next'}</span>
+                <span class="art-nav__title">{next.title}</span>
+              </span>
+              <span class="art-nav__arrow" aria-hidden="true">›</span>
+            </a>
+          ) : (
+            <span />
+          )}
+        </nav>
+      )
+    }
   </article>
 </BaseLayout>
+
+<style>
+  .art-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 900px;
+    margin: clamp(1.5rem, 4vw, 2.5rem) auto 0;
+    padding: 1.25rem var(--pad) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .art-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    max-width: 48%;
+    color: #000;
+    text-decoration: none;
+  }
+  .art-nav__next {
+    margin-left: auto;
+    text-align: right;
+  }
+  .art-nav__arrow {
+    flex: none;
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--muted);
+  }
+  .art-nav__txt {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .art-nav__cap {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .art-nav__title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .art-nav__link:hover .art-nav__title {
+    text-decoration: underline;
+  }
+  /* Ordinal-Detailseiten sind dunkel (body.theme-invert): Nav hell + Abstand nach unten,
+     da die schwarze Bühne bis zum Footer durchläuft. */
+  :global(body.theme-invert) .art-nav {
+    border-top-color: rgba(255, 255, 255, 0.22);
+    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+  :global(body.theme-invert) .art-nav__link {
+    color: #f4f4f4;
+  }
+</style>

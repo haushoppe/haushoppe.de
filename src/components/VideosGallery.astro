@@ -1,45 +1,453 @@
 ---
-// Videos-Seite — EXAKT wie im Original: der Automatic-YouTube-Gallery „Classic Slider"
-// (großer Player oben + Slick-Karussell der 25 Playlist-Videos mit Pfeilen & Dots).
-// Wir rendern den unveränderten, server-gerenderten ayg-Block von der Live-Seite und
-// binden die echten Plugin-Assets ein (jQuery → Slick → ayg-Core → Theme-Slider). Die
-// Plugin-Asset-Struktur ist unter /ayg-plugin/ gespiegelt, damit alle relativen url()
-// (Spinner etc.) auflösen; `ayg_config` (sonst von WP inline gesetzt) wird lokalisiert
-// bereitgestellt. Die Custom Elements <ayg-player>/<ayg-theme-slider> hydrieren 1:1.
-import liveVideosDe from '../data/live-videos.json';
-import liveVideosEn from '../data/live-videos-en.json';
+// Videos-Seite — originalnah zum alten „Automatic YouTube Gallery"-Classic-Slider,
+// aber OHNE das Plugin/jQuery/Slick (kein Lizenzrecht am Code). Schlank in Vanilla-JS.
+// Design 1:1 aus der Original-CSS übernommen: großer Player + Titel, darunter ein
+// Thumbnail-Karussell mit halbtransparenten Pfeilen (an den Rändern) und Punkten;
+// Klick auf ein Thumbnail spielt oben ab, markiert die Kachel („Wird abgespielt") und
+// scrollt sanft zum Anfang. YouTube-Klick-Facade: iframe erst beim Klick.
+// Daten: src/data/videos.json. Styles is:global (.vg__*), damit sie auch für die per
+// JS erzeugten Punkte greifen.
+import videos from '../data/videos.json';
 
 interface Props {
   lang?: 'de' | 'en';
 }
 const { lang = 'de' } = Astro.props;
-const gallery = (lang === 'en' ? liveVideosEn : liveVideosDe).html as string;
-
-const aygConfig = {
-  plugin_url: '/ayg-plugin/',
-  plugin_version: '2.8.1',
-  ajax_url: '',
-  ajax_nonce: '',
-  current_page_url: '',
-  current_gallery_id: '',
-  player_type: 'youtube',
-  player_color: '#00b3ff',
-  privacy_enhanced_mode: '0',
-  origin: '',
-  cookieconsent: '0',
-  top_offset: '10',
-  i18n: { show_more: 'Show More', show_less: 'Show Less' },
-};
+const t =
+  lang === 'en'
+    ? { play: 'Play video', prev: 'Previous', next: 'Next', nowPlaying: 'Now playing' }
+    : { play: 'Video abspielen', prev: 'Zurück', next: 'Weiter', nowPlaying: 'Wird abgespielt' };
+const first = videos[0];
+const embed = (id: string) =>
+  `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
 ---
 
-<link rel="stylesheet" href="/ayg-plugin/vendor/slick/slick.min.css" />
-<link rel="stylesheet" href="/ayg-plugin/public/assets/css/public.min.css" />
-<link rel="stylesheet" href="/ayg-plugin/premium/public/assets/css/public.min.css" />
+<section class="vg" data-now-playing={t.nowPlaying}>
+  <div class="vg__player-wrap">
+    <div class="yt-facade vg__player" data-src={embed(first.id)} data-title={first.title} style="aspect-ratio: 16 / 9">
+      <button type="button" class="yt-facade__btn" aria-label={`${t.play}: ${first.title}`}>
+        <img
+          class="yt-facade__poster"
+          src={`https://i.ytimg.com/vi/${first.id}/maxresdefault.jpg`}
+          alt={first.title}
+          width="1280"
+          height="720"
+          loading="eager"
+          decoding="async"
+        />
+        <span class="yt-facade__play" aria-hidden="true"></span>
+      </button>
+    </div>
+    <h2 class="vg__player-title">{first.title}</h2>
+  </div>
 
-<Fragment set:html={gallery} />
+  <div class="vg__carousel">
+    <ul class="vg__track">
+      {
+        videos.map((v, i) => (
+          <li class="vg__slide">
+            <button
+              type="button"
+              class="vg__thumb"
+              data-id={v.id}
+              data-title={v.title}
+              aria-label={`${t.play}: ${v.title}`}
+              aria-current={i === 0 ? 'true' : undefined}
+            >
+              <img
+                src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
+                alt={v.title}
+                width="480"
+                height="360"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="vg__play" aria-hidden="true" />
+              <span class="vg__badge">{t.nowPlaying}</span>
+            </button>
+            <p class="vg__slide-title">{v.title}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <button type="button" class="vg__nav vg__nav--prev" aria-label={t.prev}>
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button type="button" class="vg__nav vg__nav--next" aria-label={t.next}>
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <div class="vg__dots" aria-hidden="true"></div>
+</section>
 
-<script is:inline set:html={`var ayg_config = ${JSON.stringify(aygConfig)};`}></script>
-<script is:inline src="/vendor/jquery.min.js"></script>
-<script is:inline src="/ayg-plugin/vendor/slick/slick.min.js"></script>
-<script is:inline src="/ayg-plugin/public/assets/js/public.min.js"></script>
-<script is:inline src="/ayg-plugin/premium/public/assets/js/theme-slider.min.js"></script>
+<script>
+  // Init in einer Funktion + astro:page-load: Astro führt Modul-<script> nur EINMAL pro Session aus;
+  // ohne das bekäme das nach dem 2. Client-Besuch frisch eingeswappte /videos-DOM keine Handler
+  // (Karussell tot bis F5). Per-Root-Guard verhindert Doppelbindung, ein einziger globaler
+  // resize-Listener baut die Dots des aktuellen Karussells neu (kein Listener-Leak pro Besuch).
+  function initVideos() {
+    const root = document.querySelector<HTMLElement>('.vg');
+    if (!root || (root as any).__vgBound) return;
+    (root as any).__vgBound = true;
+    const player = root.querySelector<HTMLElement>('.vg__player')!;
+    const title = root.querySelector<HTMLElement>('.vg__player-title')!;
+    const track = root.querySelector<HTMLElement>('.vg__track')!;
+    const dots = root.querySelector<HTMLElement>('.vg__dots')!;
+    const prev = root.querySelector<HTMLButtonElement>('.vg__nav--prev')!;
+    const next = root.querySelector<HTMLButtonElement>('.vg__nav--next')!;
+
+    // Klick auf ein Thumbnail spielt oben SOFORT ab (wie im Original): iframe mit autoplay.
+    function feature(id: string, ttl: string) {
+      const src =
+        'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+      player.dataset.src = src;
+      player.dataset.title = ttl;
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = ttl;
+      iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen; picture-in-picture');
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('loading', 'lazy');
+      iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0';
+      player.replaceChildren(iframe);
+      title.textContent = ttl;
+    }
+
+    track.querySelectorAll<HTMLButtonElement>('.vg__thumb').forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        track.querySelectorAll('.vg__thumb').forEach((b) => b.removeAttribute('aria-current'));
+        thumb.setAttribute('aria-current', 'true');
+        feature(thumb.dataset.id!, thumb.dataset.title!);
+        // wie das Original: sanft zum Galerie-Anfang scrollen
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Ausrichtung folgt dem CSS: mobil horizontal (x), Desktop vertikal (y, flex-direction:column).
+    const isVertical = () => getComputedStyle(track).flexDirection === 'column';
+    const pageBy = (dir: number) =>
+      isVertical()
+        ? track.scrollBy({ top: dir * track.clientHeight * 0.85, behavior: 'smooth' })
+        : track.scrollBy({ left: dir * track.clientWidth * 0.85, behavior: 'smooth' });
+    prev.addEventListener('click', () => pageBy(-1));
+    next.addEventListener('click', () => pageBy(1));
+
+    function syncNav() {
+      const vert = isVertical();
+      const size = (vert ? track.clientHeight : track.clientWidth) || 1;
+      const pos = vert ? track.scrollTop : track.scrollLeft;
+      const max = (vert ? track.scrollHeight : track.scrollWidth) - size - 2;
+      prev.toggleAttribute('disabled', pos <= 2);
+      next.toggleAttribute('disabled', pos >= max);
+      const idx = Math.round(pos / size);
+      dots.querySelectorAll('.vg__dot').forEach((d, i) => d.setAttribute('aria-current', String(i === idx)));
+    }
+    function buildDots() {
+      const vert = isVertical();
+      const size = (vert ? track.clientHeight : track.clientWidth) || 1;
+      const total = vert ? track.scrollHeight : track.scrollWidth;
+      const pages = Math.max(1, Math.ceil(total / size - 0.05));
+      dots.replaceChildren();
+      for (let i = 0; i < pages; i++) {
+        const d = document.createElement('button');
+        d.type = 'button';
+        d.className = 'vg__dot';
+        d.addEventListener('click', () =>
+          vert
+            ? track.scrollTo({ top: i * size, behavior: 'smooth' })
+            : track.scrollTo({ left: i * size, behavior: 'smooth' }),
+        );
+        dots.appendChild(d);
+      }
+      syncNav();
+    }
+    track.addEventListener('scroll', syncNav, { passive: true });
+    (root as any).__vgRebuild = buildDots;
+    buildDots();
+  }
+
+  if (!(window as any).__vgInit) {
+    (window as any).__vgInit = true;
+    let rt: number | undefined;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(() => {
+        const cur = document.querySelector('.vg') as any;
+        if (cur && cur.__vgRebuild) cur.__vgRebuild();
+      }, 150);
+    });
+    document.addEventListener('astro:page-load', initVideos);
+    initVideos();
+  }
+</script>
+
+<style is:global>
+  .vg {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  /* Großer Player + Titel (wie .ayg-player: gestapelt, Radius 3px) */
+  .vg__player-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .vg__player {
+  }
+  .vg__player-title {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  /* Karussell */
+  .vg__carousel {
+    position: relative;
+  }
+  .vg__track {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.25rem;
+  }
+  .vg__track::-webkit-scrollbar {
+    display: none;
+  }
+  .vg__slide {
+    flex: 0 0 clamp(150px, 31%, 220px);
+    scroll-snap-align: start;
+    margin: 0;
+    list-style: none;
+  }
+  .vg__thumb {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: #000;
+  }
+  .vg__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Play-Icon (zentriert), wird bei aktiver Kachel ausgeblendet */
+  .vg__play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.65);
+    transition: background 0.2s;
+  }
+  .vg__play::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-40%, -50%);
+    border-style: solid;
+    border-width: 7px 0 7px 12px;
+    border-color: transparent transparent transparent #fff;
+  }
+  .vg__thumb:hover .vg__play {
+    background: #f00;
+  }
+  /* „Wird abgespielt" — als volle Leiste am unteren Thumbnail-Rand (klarer als ein Eck-Pill),
+     nur bei aktiver Kachel. Kein dünner Outline-Rahmen mehr. */
+  .vg__badge {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    background: rgba(0, 0, 0, 0.82);
+    padding: 0.42em 0.5em;
+    line-height: 1;
+    color: #fff;
+    font-size: 0.66rem;
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+  .vg__thumb[aria-current='true'] .vg__play {
+    display: none;
+  }
+  .vg__thumb[aria-current='true'] .vg__badge {
+    display: block;
+  }
+  /* Aktiver Titel fett — in beiden Layouts. */
+  .vg__slide:has(.vg__thumb[aria-current='true']) .vg__slide-title {
+    font-weight: 700;
+  }
+  .vg__slide-title {
+    margin: 0.55rem 0 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--ink);
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* Pfeile — absolut an den Rändern, halbtransparent (wie .ayg-slick-prev/next) */
+  .vg__nav {
+    position: absolute;
+    top: 33%;
+    transform: translateY(-50%);
+    z-index: 9;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .vg__nav:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.8);
+  }
+  .vg__nav[disabled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .vg__nav--prev {
+    left: 4px;
+  }
+  .vg__nav--next {
+    right: 4px;
+  }
+  /* Punkte (wie .ayg-slick-dots: zentriert, opacity-Zustände) */
+  .vg__dots {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.25rem;
+  }
+  .vg__dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ink);
+    opacity: 0.25;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .vg__dot[aria-current='true'] {
+    opacity: 0.75;
+  }
+
+  /* Desktop / hohe Auflösung: Player links, Playlist RECHTS daneben (wie die YouTube-
+     Playlist im Bearbeiten-Modus). Alles passt auf einen Screen; die Liste scrollt
+     vertikal (hoch/runter) statt horizontal. Mobil bleibt alles gestapelt. */
+  @media (min-width: 1000px) {
+    .vg {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 1.5rem 1.75rem;
+      align-items: stretch;
+    }
+    .vg__player-wrap {
+      grid-column: 1;
+      align-self: start;
+    }
+    /* Rechte Spalte wird auf Player-Höhe gestreckt; der absolut gefüllte Track scrollt darin. */
+    .vg__carousel {
+      grid-column: 2;
+      min-height: 0;
+    }
+    .vg__track {
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      gap: 0.4rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: none;
+      padding: 0.5rem;
+      background: #f4f3f1;
+      scrollbar-width: thin;
+    }
+    .vg__track::-webkit-scrollbar {
+      display: block;
+      width: 8px;
+    }
+    .vg__track::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 4px;
+    }
+    /* Kompakte Listenzeile: kleines Thumbnail links, Titel rechts (YouTube-Playlist-Stil). */
+    .vg__slide {
+      flex: none;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      gap: 0.7rem;
+      align-items: center;
+      scroll-snap-align: start;
+      padding: 0.35rem;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .vg__slide:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    /* Aktive Zeile: weiße Karte mit schwarzem Akzentbalken links — klar „jetzt aktiv". */
+    .vg__slide:has(.vg__thumb[aria-current='true']) {
+      background: #fff;
+      box-shadow: inset 3px 0 0 var(--ink);
+    }
+    .vg__slide-title {
+      margin: 0;
+      font-size: 0.95rem;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+    }
+    /* Pfeile werden hoch/runter (oben + unten mittig), Icons um 90° gedreht. */
+    .vg__nav {
+      top: 6px;
+      bottom: auto;
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+    }
+    .vg__nav--next {
+      top: auto;
+      bottom: 6px;
+    }
+    .vg__nav svg {
+      transform: rotate(90deg);
+    }
+    /* Im Desktop-Layout keine Punkte — freies vertikales Scrollen. */
+    .vg__dots {
+      display: none;
+    }
+  }
+</style>

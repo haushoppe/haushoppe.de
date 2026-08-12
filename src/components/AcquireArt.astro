@@ -1,16 +1,15 @@
 ---
 // „Kunst Erwerben" / „Acquire Art" — Rahmen (Hero + Titel) + Layout-CSS. Der Inhalt (Portrait,
 // Intro-Prosa, Akkordeon) kommt als <slot/> aus der MDX-Seite (content/pages/acquire-<lang>.mdx).
+import Banner from './Banner.astro';
 interface Props {
-  content: { title: string; hero: { src: string; alt: string } };
+  content: { title: string; hero: { name: string; alt: string } };
 }
 const { content } = Astro.props;
 ---
 
 <article class="acq">
-  <div class="acq-hero">
-    <img src={content.hero.src} alt={content.hero.alt} loading="eager" decoding="async" />
-  </div>
+  <Banner name={content.hero.name} alt={content.hero.alt} hero />
   <div class="acq-body">
     <h1 class="entry-title">{content.title}</h1>
     <slot />
@@ -21,18 +20,10 @@ const { content } = Astro.props;
   .acq {
     max-width: 1100px;
     margin: 0 auto;
-  }
-  .acq-hero img {
-    width: 100%;
-    height: auto;
-    max-height: 460px;
-    object-fit: cover;
-    object-position: center 35%;
-    display: block;
-    border-radius: 2px;
+    padding-inline: var(--pad);
   }
   .acq-body {
-    margin-top: clamp(1.5rem, 4vw, 2.5rem);
+    margin-top: clamp(1rem, 2.5vw, 1.5rem);
   }
   .acq-body :global(p) {
     margin: 0 0 1rem;
@@ -48,7 +39,6 @@ const { content } = Astro.props;
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 2px;
   }
   .acq-body :global(.acq-portrait figcaption) {
     font-size: 0.85rem;
@@ -67,7 +57,6 @@ const { content } = Astro.props;
     gap: 0.6rem;
   }
   .acq-body :global(.acq-item) {
-    border-radius: 2px;
     overflow: hidden;
   }
   .acq-body :global(.acq-item summary) {
@@ -127,7 +116,14 @@ const { content } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 2px;
+    display: block;
+  }
+  /* <Img> rendert <picture><img></picture> — der Wrapper muss Grid-/Float-Kind sein. */
+  .acq-body :global(.acq-gallery picture) {
+    display: block;
+    height: 100%;
+  }
+  .acq-body :global(.acq-portrait picture) {
     display: block;
   }
   @media (max-width: 720px) {

@@ -1,0 +1,65 @@
+---
+// Verschleierte E-Mail (Muster von haushoppe-its.de übernommen): Im HTML-Quelltext steht KEINE
+// Klartext-Adresse (Harvester-Schutz). Beim Laden (und nach jeder View-Transition) löst JS jeden
+// Platzhalter zu einem echten, klickbaren mailto-Link mit korrekt angezeigter Adresse auf. Ohne JS
+// bleibt der lesbare, aber nicht harvestbare „user [at] domain"-Text stehen (nicht klickbar).
+// Adresse ganz (address="user@domain") oder geteilt (user/domain).
+interface Props {
+  address?: string;
+  user?: string;
+  domain?: string;
+  label?: string;
+}
+let { address, user, domain, label } = Astro.props;
+
+if (address && (!user || !domain)) {
+  const at = address.indexOf('@');
+  if (at > 0) {
+    user = user ?? address.slice(0, at);
+    domain = domain ?? address.slice(at + 1);
+  }
+}
+
+const resolved = Boolean(user && domain);
+const text = label ?? (resolved ? `${user} [at] ${domain}` : (address ?? ''));
+---
+
+{
+  resolved ? (
+    <span class="mailto" data-user={user} data-domain={domain} role="link" tabindex="0">
+      {text}
+    </span>
+  ) : (
+    <span>{text}</span>
+  )
+}
+
+<style>
+  .mailto {
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>
+
+<script>
+  // Einmalig registriert (window-Guard) + auf astro:page-load, damit die Auflösung beim Erststart
+  // UND nach jeder View-Transition auf frisch eingesetzten Platzhaltern greift. Jeder .mailto-Span
+  // wird durch einen echten <a href="mailto:…"> mit korrekt sichtbarer Adresse ersetzt.
+  if (!window.__mailtoReveal) {
+    window.__mailtoReveal = true;
+    const build = (el) => {
+      const user = el.dataset.user;
+      const domain = el.dataset.domain;
+      if (!user || !domain) return;
+      const a = document.createElement('a');
+      a.href = `mailto:${user}@${domain}`;
+      a.textContent = `${user}@${domain}`;
+      a.className = el.className;
+      el.replaceWith(a);
+    };
+    const run = () => document.querySelectorAll('span.mailto[data-user][data-domain]').forEach(build);
+    document.addEventListener('astro:page-load', run);
+    run();
+  }
+</script>

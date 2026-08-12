@@ -3,6 +3,11 @@ title: Contact - HAUS HOPPE
 description: HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Opening hours, contact and directions.
 ---
 
+import Banner from '../../components/Banner.astro';
+import MailObfuscate from '../../components/MailObfuscate.astro';
+
+<Banner name="haushoppe-stage" alt="HAUS HOPPE – Galerie für Bildende Kunst, exhibition space" hero />
+
 <div class="cp-center">
 
 ## Opening hours
@@ -16,10 +21,11 @@ Monday to Saturday<br />
 HAUS HOPPE – Galerie für Bildende Kunst<br />
 Olaf Hoppe<br />
 Zum Breitling 12<br />
-23974 Boiensdorf OT Stove<br />
+23974 Boiensdorf OT Stove
+
 Landline: +49 (0) 384 27 64 31 5<br />
 Mobile: +49 (0) 151 54 64 50 12<br />
-**[team@haushoppe.de](mailto:team@haushoppe.de)**
+<strong><MailObfuscate address="team@haushoppe.de" /></strong>
 
 </div>
 

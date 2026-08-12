@@ -1,5 +1,5 @@
 ---
-// Sauberer Header (ersetzt das portierte Astra-Markup): Logo zentriert, darunter die
+// Sauberer Header (ersetzt das portierte Theme-Markup): Logo zentriert, darunter die
 // Navigation als 700-px-Leiste mit schwarzen Linien oben/unten (wie live), Sprach-Flagge
 // + Such-Icon rechts, mobil als Hamburger. Aktiver Menüpunkt + Sprach-Pendant server-seitig.
 import { nav as navData, logo } from '../data/site';
@@ -19,7 +19,10 @@ const items = [...navData[lang], ...navPages];
 
 const path = normPath(Astro.url.pathname);
 let activePath = path;
-if (/^\/portfolio\//.test(path)) activePath = lang === 'en' ? '/artwork/' : '/werke/';
+// Werk-Detail (/portfolio/…) UND Galerie-Kategorien (/werke/<kat>/, /artwork/<cat>/) zählen als „Werke".
+if (/^\/portfolio\//.test(path) || /^\/(werke|artwork)\//.test(path)) {
+  activePath = lang === 'en' ? '/artwork/' : '/werke/';
+}
 
 // Sprachwechsel: gleiches Werk/gleiche Seite auf der ANDEREN Domain (haushoppe.de ↔ haushoppe.art).
 const altUrl = OTHER_ORIGIN + (altOf(path) || '/');
@@ -45,8 +48,9 @@ const homeHref = '/';
                 href={it.href}
                 class:list={['mainnav__link', it.href === activePath && 'is-active']}
                 aria-current={it.href === activePath ? 'page' : undefined}
+                data-text={it.label}
               >
-                {it.label}
+                <span class="mainnav__label">{it.label}</span>
               </a>
             </li>
           ))
@@ -75,6 +79,7 @@ const homeHref = '/';
 
 <style>
   .site-header {
+    /* Luft oben wie im Original (vor der Logo-Vergrößerung). */
     padding-top: clamp(1.25rem, 3vw, 2rem);
   }
   .site-header__inner {
@@ -87,10 +92,12 @@ const homeHref = '/';
   }
   .site-logo {
     display: block;
-    padding-bottom: 16px;
+    /* Luft Logo → erster schwarzer Streifen. */
+    padding-bottom: 26px;
   }
   .site-logo img {
-    width: 350px;
+    /* Vektor-Nachbau des Original-Logos (viewBox 490×66 ~7.42:1): 360px → ~48px Höhe. */
+    width: 360px;
     height: auto;
     max-width: 100%;
   }
@@ -98,32 +105,74 @@ const homeHref = '/';
   .mainnav {
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    margin-top: -10px;
     margin-bottom: 20px;
     width: 100%;
-    max-width: 760px;
+    max-width: 700px;
   }
   .mainnav__list {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     flex-wrap: wrap;
     gap: 0;
     list-style: none;
     margin: 0;
     padding: 0;
-    min-height: 64px;
+    /* Zeilenhöhe wie live (~45px), Text mittig → ~12px Luft zu den Streifen. */
+    min-height: 46px;
+  }
+  .mainnav__list > li:not(.mainnav__extra) {
+    display: flex;
+    align-items: stretch;
   }
   .mainnav__link {
-    display: block;
-    padding: 0.5rem 12px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
     font-weight: 400;
     color: #000;
     line-height: 1.2;
   }
+  /* Tap-/Fokus-Feedback grau statt Browser-Blau (Android Chrome). */
+  .mainnav__link,
+  .mainnav__lang,
+  .mainnav__search {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+  /* Kein Verrutschen der Nav beim Fettschalten des aktiven Punkts: eine unsichtbare, fett
+     gesetzte Kopie des Labels reserviert immer die Bold-Breite (height:0 → belegt keinen Platz,
+     ändert nur die Mindestbreite). */
+  .mainnav__link::after {
+    content: attr(data-text);
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* Ästhetischer Hover (Muster von haushoppe-its.de): ein 1px-Unterstrich wächst beim Hovern von
+     links auf volle Textbreite — nur unter dem Text (background-size-Animation, kein Layout-Ruck). */
+  .mainnav__label {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.3s ease;
+  }
+  .mainnav__link:hover .mainnav__label,
+  .mainnav__link:focus-visible .mainnav__label {
+    background-size: 100% 1px;
+  }
   .mainnav__link:hover,
   .mainnav__link.is-active {
     color: #000;
+  }
+  /* Aktive Seite markiert — fett, wie im alten System (.current_page_item > a). */
+  .mainnav__link.is-active {
+    font-weight: 700;
   }
   .mainnav__extra {
     display: flex;
@@ -162,6 +211,8 @@ const homeHref = '/';
     .site-header {
       padding-top: 0;
       position: relative;
+      z-index: 50; /* über dem Menü-Scrim (40) — Header + offenes Menü bleiben klar, Rest dimmt */
+      background: #fff;
     }
     .site-header__inner {
       flex-direction: row;
@@ -174,7 +225,7 @@ const homeHref = '/';
       padding-bottom: 0;
     }
     .site-logo img {
-      width: 280px;
+      width: 330px;
       max-width: calc(100vw - 90px);
     }
     .mainnav {
@@ -220,22 +271,52 @@ const homeHref = '/';
       left: 0;
       right: 0;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       gap: 0;
       background: #fff;
       border-bottom: 1px solid var(--rule);
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
-      padding: 0.5rem 0 1rem;
+      padding: 0;
       z-index: 60;
     }
     .mainnav__toggle:checked ~ .mainnav__list {
       display: flex;
     }
+    /* Jeder Punkt: klar abgegrenzter, daumengroßer Tipp-Bereich, durch eine leichte Linie getrennt. */
+    .mainnav__list > li + li {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
     .mainnav__link {
-      padding: 0.7rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 3.25rem;
+      padding: 0 1.25rem;
+      font-size: 1.05rem;
+    }
+    .mainnav__link.is-active {
+      font-weight: 600;
+    }
+    /* Grauer Press-Zustand für die Menüreihen (statt blauem Tap-Highlight). */
+    .mainnav__link:active {
+      background: rgba(0, 0, 0, 0.06);
     }
     .mainnav__extra {
-      padding: 0.5rem 0 0.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.75rem;
+      min-height: 3.25rem;
+      padding: 0;
+    }
+    .mainnav__lang,
+    .mainnav__search {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 44px;
     }
   }
 </style>

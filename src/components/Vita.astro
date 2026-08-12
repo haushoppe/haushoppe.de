@@ -1,21 +1,16 @@
 ---
 // Rahmen für die Vita: Hero + Titel (aus MDX-Frontmatter) + Layout-CSS. Inhalt (Lebenslauf,
 // Ausstellungen … als Markdown-Listen) kommt als <slot/> aus content/pages/vita-<lang>.mdx.
+import Banner from './Banner.astro';
 interface Props {
-  hero?: { src: string; alt: string };
+  hero?: { name: string; alt: string };
   h1?: string;
 }
 const { hero, h1 } = Astro.props;
 ---
 
 <div class="vita">
-  {
-    hero && (
-      <div class="cp-hero">
-        <img src={hero.src} alt={hero.alt} loading="eager" decoding="async" />
-      </div>
-    )
-  }
+  {hero && <Banner name={hero.name} alt={hero.alt} hero />}
   {h1 && <h1 class="entry-title">{h1}</h1>}
   <slot />
 </div>
@@ -24,15 +19,7 @@ const { hero, h1 } = Astro.props;
   .vita {
     max-width: 1100px;
     margin: 0 auto;
-  }
-  .cp-hero img {
-    width: 100%;
-    height: auto;
-    max-height: 420px;
-    object-fit: cover;
-    display: block;
-    border-radius: 2px;
-    margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+    padding-inline: var(--pad);
   }
   .entry-title {
     margin: 0 0 1.5rem;
@@ -46,7 +33,7 @@ const { hero, h1 } = Astro.props;
   }
   /* Legende / Fließtext-Blöcke */
   .vita :global(p) {
-    margin: 0 0 0.9rem;
+    margin: 0 0 1.25rem;
   }
   /* Listen (Vertretende Galerie, Museen) — echte Bullets */
   .vita :global(ul) {
@@ -62,7 +49,10 @@ const { hero, h1 } = Astro.props;
     width: 100%;
     border-collapse: collapse;
     margin: 0 0 1.5rem;
-    font-size: 0.95rem;
+    /* KEIN rem: das alte Theme-wp-design.css verkleinert auf Mobil die html-Root-Größe,
+       wodurch rem-Werte in der Tabelle stärker schrumpfen als der Fließtext (Bullets = 16px).
+       Mit em/Erben bleibt die Tabelle exakt so groß wie der restliche Text. */
+    font-size: 1em;
   }
   .vita :global(th) {
     text-align: left;
@@ -82,9 +72,6 @@ const { hero, h1 } = Astro.props;
     color: var(--ink);
   }
   @media (max-width: 640px) {
-    .vita :global(table) {
-      font-size: 0.88rem;
-    }
     .vita :global(th),
     .vita :global(td) {
       padding: 0.4rem 0.5rem;

@@ -1,0 +1,194 @@
+---
+// Epischer schwarzer Startseiten-Hero, gespiegelt vom haushoppe-its.de-Muster: Bewegtbild LINKS
+// full-bleed, Text RECHTS. Das Video (stumm, autoplay, loop) startet SOFORT — kein Klick nötig,
+// die Seite eröffnet mit Bewegung. Poster = erster Video-Frame (nahtlos) und dient zugleich als
+// Fallback ohne JS / bei prefers-reduced-motion / auf Mobil (dort kein Video -> Bandbreite).
+import { getImage } from 'astro:assets';
+import heroVideo from '../assets/hero/olaf-hero.mp4';
+import heroPosterImg from '../assets/hero/olaf-hero-poster.jpg';
+
+interface Props {
+  lang: 'de' | 'en';
+  h1: string;
+  lead?: string;
+}
+const { lang, h1, lead } = Astro.props;
+const poster = await getImage({ src: heroPosterImg, format: 'jpeg', width: 1280 });
+
+const t =
+  lang === 'en'
+    ? { works: 'View works', worksHref: '/artwork/', videos: 'Watch videos', videosHref: '/videos/', alt: 'Olaf Hoppe at work in his studio' }
+    : { works: 'Werke ansehen', worksHref: '/werke/', videos: 'Videos ansehen', videosHref: '/videos/', alt: 'Olaf Hoppe bei der Arbeit im Atelier' };
+---
+
+<section class="ohero">
+  <div class="ohero__media">
+    <video class="ohero__video" autoplay muted loop playsinline preload="metadata" poster={poster.src} aria-hidden="true">
+      <source src={heroVideo} type="video/mp4" />
+    </video>
+    <img class="ohero__still" src={poster.src} alt={t.alt} width="1280" height="720" loading="eager" decoding="async" />
+  </div>
+  <div class="ohero__inner">
+    <div class="ohero__content">
+      <h1 class="ohero__title rise">{h1}</h1>
+      {lead && <p class="ohero__lead rise" style="animation-delay:.1s">{lead}</p>}
+      <div class="ohero__cta rise" style="animation-delay:.18s">
+        <a class="obtn obtn--ghost" href={t.videosHref}>{t.videos}</a>
+        <a class="obtn obtn--solid" href={t.worksHref}>{t.works}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Quasi-absolutes Schwarz wie beim Sister-Hero -> Bewegtbild verschmilzt nahtlos mit dem Grund. */
+  .ohero {
+    position: relative;
+    background: #030303;
+    color: #fff;
+    overflow: hidden;
+  }
+  /* Bewegtbild LINKS full-bleed (gespiegelt: Sister hat es rechts). */
+  .ohero__media {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: min(clamp(52vw, calc(95vw - 560px), 62vw), 1180px);
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .ohero__video,
+  .ohero__still {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Ausschnitt: Olaf sitzt links im Bild -> etwas nach links/oben ziehen, Kopf behält Luft. */
+    object-position: 32% 32%;
+    display: block;
+  }
+  /* Standbild nur als Fallback (reduced-motion / Mobil); normal zeigt das Video. */
+  .ohero__still {
+    display: none;
+  }
+  /* Rechte Kante des Bewegtbilds weich nach Schwarz ausblenden -> nahtloser Übergang in den
+     schwarzen Grund UND sichere Lesbarkeit des Textes (der teils über die Bildkante läuft). */
+  .ohero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, transparent 42%, rgba(3, 3, 3, 0.72) 74%, #030303 100%);
+  }
+  /* Text folgt der Seitenbreite (72rem), rechtsbündig -> Text RECHTS neben dem Bild. */
+  .ohero__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding: clamp(2rem, 4.5vw, 3.25rem) 1.25rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .ohero__content {
+    max-width: 34rem;
+  }
+  .ohero__title {
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+    font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+    margin: 0;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .ohero__lead {
+    margin: 1.5rem 0 0;
+    font-size: clamp(1.02rem, 2vw, 1.2rem);
+    line-height: 1.6;
+    color: #cfc9c2;
+  }
+  .ohero__cta {
+    margin-top: 2.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+  .obtn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  }
+  .obtn--solid {
+    background: #fff;
+    color: #111;
+  }
+  .obtn--solid:hover {
+    transform: translateY(-2px);
+  }
+  .obtn--ghost {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+  }
+  .obtn--ghost:hover {
+    background: #fff;
+    color: #111;
+  }
+  @media (min-width: 768px) {
+    .ohero__inner {
+      min-height: 32rem;
+    }
+    .ohero__content {
+      max-width: min(34rem, 46%);
+    }
+  }
+  /* Mobil: Video bleibt an (in JEDER Auflösung), full-bleed als Hintergrund; Scrim von oben nach
+     unten für Textlesbarkeit, Text linksbündig darüber. */
+  @media (max-width: 767px) {
+    .ohero__media {
+      width: 100%;
+    }
+    .ohero__video,
+    .ohero__still {
+      object-position: 40% 30%;
+    }
+    .ohero__media::after {
+      background: linear-gradient(180deg, rgba(3, 3, 3, 0.35) 0%, rgba(3, 3, 3, 0.78) 100%);
+    }
+    .ohero__inner {
+      justify-content: flex-start;
+      min-height: 26rem;
+    }
+    .ohero__content {
+      max-width: 40rem;
+    }
+  }
+  /* Bewegung aus: Video verstecken, Standbild zeigen, Einblend-Animation neutralisieren. */
+  @media (prefers-reduced-motion: reduce) {
+    .ohero__video {
+      display: none;
+    }
+    .ohero__still {
+      display: block;
+    }
+    .rise {
+      animation: none;
+    }
+  }
+  /* Gestaffelte Einblendung (wie Sister). */
+  .rise {
+    animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

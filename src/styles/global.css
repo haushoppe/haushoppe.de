@@ -1,5 +1,5 @@
 /* Schlanke Design-Basis — Tokens exakt aus der Live-Seite gemessen. Ersetzt schrittweise
-   das 557-KB-Astra-Bundle. Wird NACH wp-design.css geladen und gewinnt bei Konflikten. */
+   das 557-KB-Theme-Bundle. Wird NACH wp-design.css geladen und gewinnt bei Konflikten. */
 :root {
   --serif: 'Merriweather', Georgia, 'Times New Roman', serif;
   --sans: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
@@ -63,12 +63,19 @@ a {
 a:hover {
   color: var(--ink);
 }
-/* Fließtext-Links unterstrichen (wie im Original), Navi/Footer/Buttons nicht. */
-.entry-content a,
-.cp a,
-.acq-text a,
-.acq-panel a {
+/* Alle Fließtext-Links im Inhalt unterstrichen (wie im Original: `article a`), damit sie
+   als Link erkennbar sind. Navi/Footer liegen außerhalb von .site-main und bleiben ohne
+   Linie. */
+.site-main a {
   text-decoration: underline;
+  /* Linie etwas vom Text absetzen (Standard klebt am Text). */
+  text-underline-offset: 0.2em;
+}
+/* Ausnahmen: Karten-, Filter- und Button-Links (kein Fließtext) — höhere Spezifität nötig. */
+.site-main .gallery__link,
+.site-main .gallery__filter-btn,
+.site-main .ordinal-buy {
+  text-decoration: none;
 }
 
 /* Layout-Container + Hauptbereich */
@@ -78,9 +85,50 @@ a:hover {
   padding-inline: var(--pad);
 }
 .site-main {
-  padding-block: clamp(1.5rem, 4vw, 2.75rem);
+  /* Oben derselbe responsive Abstand wie der Header (clamp), unten bündig. */
+  padding-block: clamp(1.25rem, 3vw, 2rem) 0;
 }
-/* Inhaltsbreiten — ersetzen die Astra-Body-Klassen (ast-page-builder/plain/separate).
+/* Startseite mobil (Burger-Breite): der Hero schließt bündig an die schwarze
+   Header-Linie an — kein Abstand. Nur hier (einzige Seite mit .ohero); alle
+   anderen Seiten behalten ihren Abstand. Breakpoint = Burger-Menü (720px). */
+@media (max-width: 720px) {
+  .site-main:has(.ohero) {
+    padding-top: 0;
+  }
+}
+/* Backdrop hinter dem offenen Burger-Menü: dimmt den Rest der Seite (wie die Suche).
+   Nur mobil; der Header (z-index 50) + das offene Menü bleiben darüber klar. */
+.nav-scrim {
+  display: none;
+}
+@media (max-width: 720px) {
+  body:has(#navtoggle:checked) .nav-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+/* Nur für Screenreader — z. B. ein Seiten-h1 auf der Galerie, ohne das minimalistische
+   Design zu verändern (Heading-Hierarchie/SEO trotzdem korrekt). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+/* Full-bleed ohne vertikales Padding (Ordinals: schwarze Bühne bündig an Nav/Footer). */
+.site-main--bleed {
+  padding-block: 0;
+}
+/* Inhaltsbreiten — ersetzen die Theme-Body-Klassen (ast-page-builder/plain/separate).
    Ohne Modifier: volle Breite (Content-Komponenten zentrieren selbst, Galerie full-bleed). */
 .site-main--boxed,
 .site-main--article {
@@ -88,8 +136,19 @@ a:hover {
   margin-inline: auto;
   padding-inline: var(--pad);
 }
-/* Werk-Detailseite: weißer Artikel-Kasten mit Innenabstand (wie Astra separate-container). */
+/* Detailseite: oberes Doppel-Padding auflösen — der Titel soll ~48px unter der Navi
+   sitzen (nicht ~92px). Oben trägt nur noch der Kasten seinen Innenabstand. */
+.site-main--article {
+  padding-top: 0;
+}
+/* Werk-Detailseite: weißer Artikel-Kasten mit Innenabstand (wie Theme separate-container).
+   Oben bewusst schlanker als seitlich/unten, damit der Titel nah an die Navi rückt. */
 .art-single {
   background: #fff;
-  padding: clamp(1.5rem, 5vw, 3rem);
+  padding: 1.75rem clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+}
+/* Ordinals: kein weißer Kasten — die schwarze Bühne (.ordinal-content) trägt Fläche + Padding. */
+.art-single--ordinal {
+  background: transparent;
+  padding: 0;
 }

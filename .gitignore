@@ -17,5 +17,6 @@ npm-debug.log*
 .vscode/
 .idea/
 
-# generierte Kunstwerk-webp (vor Deploy committen)
-public/artworks/
+# HINWEIS: Werk-Bilder werden NICHT mehr fertig versioniert. Versioniert ist nur die Quelle
+# (src/artwork-originals/ = Nachlass-Master); die Auslieferung (AVIF+WebP responsive) erzeugt
+# Astro beim Build via <Picture> nach dist/_astro/. Kein public/artworks/ mehr.

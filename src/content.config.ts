@@ -13,10 +13,11 @@ const pages = defineCollection({
     // Startseite
     video: z.object({ id: z.string(), title: z.string(), ratio: z.number() }).optional(),
     h1: z.string().optional(),
-    welcome: z.string().optional(),
+    welcome: z.object({ greeting: z.string(), name: z.string() }).optional(),
+    signature: z.object({ image: z.string(), alt: z.string() }).optional(),
     featured: z
       .object({
-        img: z.string(),
+        image: z.string(),
         alt: z.string(),
         href: z.string().default(''),
         caption: z.string(),
@@ -24,7 +25,7 @@ const pages = defineCollection({
       })
       .optional(),
     // Kunst Erwerben
-    hero: z.object({ src: z.string(), alt: z.string() }).optional(),
+    hero: z.object({ name: z.string(), alt: z.string() }).optional(),
     // Kontakt
     map: z.string().optional(),
     // Standalone-Seiten (Impressum, Datenschutz, Presse …): eigener Slug + optionale Verlinkung.
@@ -37,4 +38,13 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { pages };
+// Optionale Zusatz-Inhalte pro Werk: Beschreibung als Markdown, Video-Embeds via <YouTube>. Die
+// Struktur bleibt im JSON (Galerie/Sortierung/Bilder); nur die PROSA lebt hier als Content — der
+// idiomatische Astro-Weg. id = Werk-Slug (sprachspezifisch, wie die Detail-URL). Die Detailseite
+// rendert den Body unter Bild/Meta, wenn ein Eintrag mit passendem Slug existiert.
+const artworkExtra = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/artwork-extra' }),
+  schema: z.object({ title: z.string().optional() }),
+});
+
+export const collections = { pages, artworkExtra };

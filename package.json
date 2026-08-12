@@ -5,19 +5,20 @@
   "scripts": {
     "dev": "astro dev",
     "build": "npm run data && npm run check && npm run build:de && npm run build:art",
-    "data": "npm run meta && npm run lang-alt",
+    "data": "npm run meta && npm run lang-alt && npm run videos",
     "check": "node scripts/check-i18n.mjs",
-    "build:de": "SITE_LANG=de astro build && pagefind --site dist-de",
-    "build:art": "SITE_LANG=en astro build && pagefind --site dist-art",
-    "deploy": "npm run deploy:de && npm run deploy:art",
+    "build:de": "SITE_LANG=de astro build && node scripts/prune-unreferenced-images.mjs dist-de && pagefind --site dist-de",
+    "build:art": "SITE_LANG=en astro build && node scripts/gen-en-redirects.mjs dist-art && node scripts/prune-unreferenced-images.mjs dist-art && pagefind --site dist-art",
+    "deploy": "npm run build && npm run deploy:de && npm run deploy:art",
     "deploy:de": "wrangler pages deploy dist-de --project-name=haushoppe-de --branch=main --commit-dirty=true",
     "deploy:art": "wrangler pages deploy dist-art --project-name=haushoppe-art --branch=main --commit-dirty=true",
     "preview": "astro preview",
     "preview:art": "SITE_LANG=en astro preview",
-    "images": "node scripts/gen-images.mjs",
+    "archive": "node scripts/gen-artwork-archive.mjs",
     "astro": "astro",
     "meta": "node scripts/gen-artwork-meta.mjs",
-    "lang-alt": "node scripts/gen-lang-alt.mjs"
+    "lang-alt": "node scripts/gen-lang-alt.mjs",
+    "videos": "node scripts/gen-videos.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

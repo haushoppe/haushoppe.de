@@ -2,13 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Vita from '../components/Vita.astro';
 import { loadPage } from '../lib/pages';
+import { getImage } from 'astro:assets';
+import { bannerImage } from '../lib/banner-images';
 
 // Vita: Struktur (Hero, Titel) aus dem MDX-Frontmatter, Inhalt (Lebenslauf/Ausstellungen als
 // Markdown-Listen) aus dem Body (content/pages/vita-<lang>.mdx).
 const { Content, data: fm } = await loadPage('vita');
+// Hero-Bild als Social-Preview (statt der generischen Marken-Karte).
+const heroImg = fm.hero?.name ? bannerImage(fm.hero.name) : undefined;
+const ogImage = heroImg ? (await getImage({ src: heroImg, format: 'jpeg', width: 1200 })).src : undefined;
 ---
 
-<BaseLayout title={fm.title} description={fm.description}>
+<BaseLayout title={fm.title} description={fm.description} image={ogImage}>
   <Vita hero={fm.hero} h1={fm.h1}>
     <Content />
   </Vita>

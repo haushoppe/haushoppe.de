@@ -2,14 +2,16 @@
 title: Acquire Art
 description: Acquire art by Olaf Hoppe – instalments, leasing, commissioned works and individual wishes.
 hero:
-  src: /media/2020/11/olaf-hoppe-druck.jpg
+  name: olaf-hoppe-druck
   alt: Olaf Hoppe at the printing press
 ---
 
 import AccItem from '../../components/AccordionItem.astro';
+import Img from '../../components/Img.astro';
+import MailObfuscate from '../../components/MailObfuscate.astro';
 
 <figure class="acq-portrait">
-  <img src="/media/2020/12/Foto-Thomas-Haentzschel-nordlicht-Olaf-Hoppe-Garten-2010.jpg" alt="Olaf Hoppe in his garden" loading="lazy" decoding="async" />
+  <Img name="Foto-Thomas-Haentzschel-nordlicht-Olaf-Hoppe-Garten-2010" alt="Olaf Hoppe in his garden" sizes="(max-width: 700px) 90vw, 440px" />
   <figcaption>Olaf Hoppe, Photo: Thomas Haentzschel</figcaption>
 </figure>
 
@@ -30,7 +32,7 @@ Leasing instalments are immediately tax-deductible as business expenses. This is
 
 With HW Leasing GmbH I have had a reliable partner for years who realises your ideas quickly and flexibly. If you have any further questions, please do not hesitate to contact me.
 
-<p class="acq-contact">HW Leasing GmbH<br />Spiegelberg 57<br />23966 Wismar<br />Phone: +49 3841 711111<br />Fax: +49 3841 711148<br /><a href="mailto:info@hw-leasing.de">info@hw-leasing.de</a></p>
+<p class="acq-contact">HW Leasing GmbH<br />Spiegelberg 57<br />23966 Wismar<br />Phone: +49 3841 711111<br />Fax: +49 3841 711148<br /><MailObfuscate address="info@hw-leasing.de" /></p>
 </AccItem>
 
 <AccItem title="Art on Commission">
@@ -39,8 +41,8 @@ Many of my art friends have been with me for years. Of course, in the first half
 That is why it is a special pleasure for me to fulfil my friends’ wishes nevertheless: I create a second original of the favourite motif as a commission. Gladly for you, too! See for yourself:
 
 <div class="acq-gallery">
-  <img src="/media/2020/12/Brot-und-Wasser.jpg" alt="Brot und Wasser" loading="lazy" />
-  <img src="/media/2020/12/Sawila.jpg" alt="Sawila" loading="lazy" />
+  <Img name="Brot-und-Wasser" alt="Brot und Wasser" sizes="(max-width: 700px) 45vw, 300px" />
+  <Img name="Sawila" alt="Sawila" sizes="(max-width: 700px) 45vw, 300px" />
 </div>
 </AccItem>
 
@@ -52,9 +54,11 @@ Would you like to have your grandchild portrayed, design a façade or commission
 - Design of a swimming pool
 
 <div class="acq-gallery">
-  <img src="/media/2021/05/burg-schwaan.jpg" alt="View of Schwaan Castle" loading="lazy" />
-  <img src="/media/2021/05/20180112_163221_1.jpg" alt="Individual commission" loading="lazy" />
-  <img src="/media/2021/05/20180112_163149.jpg" alt="Individual commission" loading="lazy" />
+  <Img name="burg-schwaan" alt="View of Schwaan Castle" sizes="(max-width: 700px) 45vw, 300px" />
+  <Img name="20180112_163221_1" alt="Individual commission" sizes="(max-width: 700px) 45vw, 300px" />
+  <Img name="20180112_163149" alt="Individual commission" sizes="(max-width: 700px) 45vw, 300px" />
+  <Img name="wandbild-original-neu" alt="Individual wall design" sizes="(max-width: 700px) 45vw, 300px" />
+  <Img name="wandbild2-umschlag-gedreht-neu" alt="Individual wall design" sizes="(max-width: 700px) 45vw, 300px" />
 </div>
 </AccItem>
 

@@ -1,0 +1,40 @@
+---
+// Datenschutzkonforme YouTube-Klick-Facade für MDX-Zusatzinhalte: erst beim Klick wird das
+// (youtube-nocookie-)iframe geladen — kein Fremdkontakt beim Seitenaufruf. Das Klick-Handling +
+// die maxres→hq-Poster-Korrektur macht das global gebündelte src/scripts/yt-facade.js.
+// Nutzung in MDX: <YouTube id="ABC123" title="…" />  oder  <YouTube playlist="PL…" title="…" />
+interface Props {
+  id?: string;
+  playlist?: string;
+  title?: string;
+}
+const { id, playlist, title = 'Video' } = Astro.props;
+const params = 'autoplay=1&rel=0&playsinline=1&modestbranding=1';
+const src = playlist
+  ? `https://www.youtube-nocookie.com/embed/videoseries?list=${playlist}&${params}`
+  : `https://www.youtube-nocookie.com/embed/${id}?${params}`;
+// Einzelvideo: YouTube-Vorschaubild als Poster (yt-facade.js ersetzt fehlendes maxres durch hq).
+const poster = id ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : undefined;
+const label = playlist ? `Playlist abspielen: ${title}` : `Video abspielen: ${title}`;
+---
+
+<div class="yt-facade" data-src={src} data-title={title} style="aspect-ratio:16/9">
+  <button type="button" class="yt-facade__btn" aria-label={label}>
+    {poster ? (
+      <img class="yt-facade__poster" src={poster} alt={title} width="1280" height="720" loading="lazy" decoding="async" />
+    ) : (
+      <span class="yt-facade__poster yt-facade__poster--empty" aria-hidden="true" />
+    )}
+    <span class="yt-facade__play" aria-hidden="true"></span>
+  </button>
+</div>
+
+<style>
+  /* Leeres Poster (Playlist ohne Einzel-Thumbnail): dunkle Fläche, der Play-Button steht darauf. */
+  .yt-facade__poster--empty {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+  }
+</style>

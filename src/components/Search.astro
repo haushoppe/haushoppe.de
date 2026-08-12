@@ -26,7 +26,7 @@ const translations =
     : {};
 ---
 
-<div id="search-overlay" class="search-overlay" hidden>
+<div id="search-overlay" class="search-overlay" hidden transition:persist>
   <div class="search-overlay__backdrop" data-search-close></div>
   <div class="search-overlay__box" role="dialog" aria-modal="true" aria-label={lang === 'de' ? 'Suche' : 'Search'}>
     <button type="button" class="search-overlay__close" data-search-close aria-label={lang === 'de' ? 'Schließen' : 'Close'}>
@@ -37,7 +37,7 @@ const translations =
 </div>
 
 <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-<script is:inline define:vars={{ translations }}>
+<script is:inline data-cfasync="false" define:vars={{ translations }}>
   (function () {
     var overlay = document.getElementById('search-overlay');
     if (!overlay) return;
@@ -99,6 +99,14 @@ const translations =
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !overlay.hidden) close();
     });
+    // Klick aufs Ergebnis-Bild führt zum Werk (wie der Titel-Link).
+    overlay.addEventListener('click', function (e) {
+      var thumb = e.target.closest('.pagefind-ui__result-thumb');
+      if (!thumb) return;
+      var result = thumb.closest('.pagefind-ui__result');
+      var link = result && result.querySelector('.pagefind-ui__result-link');
+      if (link) window.location.href = link.href;
+    });
   })();
 </script>
 
@@ -126,14 +134,21 @@ const translations =
     width: min(680px, 92vw);
     max-height: 84vh;
     overflow: auto;
-    padding: 2.5rem 2rem 2rem;
-    border-radius: 4px;
+    /* Kopf-Padding lässt Platz für den Schließen-Button, damit er das Suchfeld nicht überlappt. */
+    padding: 3.5rem 2rem 2rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   }
   .search-overlay__close {
     position: absolute;
-    top: 0.4rem;
-    right: 0.75rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    /* Sauberes, daumengroßes Tap-Target (statt breit über das Feld ragend). */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     border: 0;
     background: none;
     font-size: 2rem;
@@ -148,6 +163,28 @@ const translations =
     --pagefind-ui-background: #fff;
     --pagefind-ui-border: #dcdcdc;
     --pagefind-ui-font: inherit;
-    --pagefind-ui-border-radius: 3px;
+  }
+  /* Eckig: die Variable muss auf .pagefind-ui selbst — dort setzt Pagefind seinen 8px-Default. */
+  #pagefind-search .pagefind-ui {
+    --pagefind-ui-border-radius: 0;
+  }
+  /* Ergebnis-Bild klickbar (führt wie der Titel zum Werk) + eckig (Pagefind setzt sonst 8px). */
+  #pagefind-search .pagefind-ui__result-thumb,
+  #pagefind-search .pagefind-ui__result-image {
+    border-radius: 0;
+  }
+  #pagefind-search .pagefind-ui__result-thumb {
+    cursor: pointer;
+  }
+  /* Dezentes statt grelles Highlight. */
+  #pagefind-search mark {
+    background: rgba(0, 0, 0, 0.08);
+    color: inherit;
+  }
+  /* Fokusring markenkonform (statt UA-Blau), eckig + barrierefrei. */
+  #pagefind-search .pagefind-ui__search-input:focus,
+  #pagefind-search .pagefind-ui__search-input:focus-visible {
+    outline: 2px solid #212121;
+    outline-offset: 2px;
   }
 </style>

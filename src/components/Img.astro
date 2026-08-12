@@ -1,0 +1,32 @@
+---
+// Optimiertes Inhaltsbild über astro:assets (AVIF/WebP + responsive) statt rohem JPG — für
+// bessere Lighthouse-Werte. Bild per `name` aus src/assets/content/. Für die Lightbox liefert
+// es zusätzlich `data-full` (große WebP-Version), damit dort scharf vergrößert wird.
+import { Picture, getImage } from 'astro:assets';
+import { contentImage } from '../lib/content-images';
+
+interface Props {
+  name: string;
+  alt: string;
+  widths?: number[];
+  sizes?: string;
+}
+const { name, alt, widths = [400, 700, 1000], sizes = '(max-width: 700px) 90vw, 460px' } = Astro.props;
+const img = contentImage(name);
+if (!img) throw new Error(`Img: Bild nicht gefunden (name="${name}")`);
+
+const w = widths.filter((x) => x <= img.width);
+if (!w.length) w.push(img.width);
+const full = await getImage({ src: img, format: 'webp', width: Math.min(img.width, 1600) });
+---
+
+<Picture
+  src={img}
+  formats={['avif', 'webp']}
+  widths={w}
+  sizes={sizes}
+  alt={alt}
+  loading="lazy"
+  decoding="async"
+  data-full={full.src}
+/>

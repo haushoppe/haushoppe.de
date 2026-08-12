@@ -14,7 +14,10 @@ const add = (m) => problems.push(m);
 //        Beschriftung (artwork-meta.json) — außer Ordinals (eigener Zweig, keine Beschriftung). ──
 const ORDINAL = /Bitcoin blockchain|ordinalsbot|Buy it on Gamma/i;
 const arts = R('src/data/artworks.json').filter((a) => a.type === 'portfolio');
-const media = R('src/data/artworks-media.json');
+// Bild-Vorhandensein kommt aus dem Archiv-Manifest: eine Werk-ID hat ein Bild, wenn sie
+// in einem Manifest-Eintrag steht (die Auslieferung erzeugt Astro daraus beim Build).
+const imgIds = new Set(R('src/artwork-originals/manifest.json').flatMap((e) => e.werk_ids));
+const hasImg = (id) => imgIds.has(id);
 const meta = R('src/data/artwork-meta.json');
 const byTrid = {};
 for (const a of arts) {
@@ -35,12 +38,16 @@ for (const [key, g] of Object.entries(byTrid)) {
   for (const lang of ['de', 'en']) {
     const e = g[lang];
     if (!e) add(`Werk „${other.title}" (${other.slug}, trid ${key}): fehlt ${lang.toUpperCase()}-Übersetzung`);
-    else if (!media[e.id]) add(`Werk „${e.title}" (${e.slug}, ${lang.toUpperCase()}): kein Bild (media[${e.id}] fehlt → unsichtbar in der Galerie)`);
+    else if (!hasImg(e.id)) add(`Werk „${e.title}" (${e.slug}, ${lang.toUpperCase()}): kein Bild im Archiv (src/artwork-originals/) → unsichtbar in der Galerie`);
   }
   // Beschriftung: vollständige Werke (DE+EN+Bild), die keine Ordinals sind, brauchen eine Meta.
-  const complete = g.de && g.en && media[g.de.id] && media[g.en.id];
+  const complete = g.de && g.en && hasImg(g.de.id) && hasImg(g.en.id);
   if (complete && !ORDINAL.test(g.de.content || '') && !meta[key]) {
     add(`Werk „${other.title}" (${other.slug}, trid ${key}): keine Beschriftung in artwork-meta.json → Detailseite bleibt blank (npm run meta)`);
+  }
+  // Nummer = PFLICHTFELD (Sortier- und Anzeigeschlüssel der Galerie) — gilt auch für Ordinals.
+  if (complete && !meta[key]?.number) {
+    add(`Werk „${other.title}" (${other.slug}, trid ${key}): keine Nummer (Pflichtfeld „YYYY-…") → in gen-artwork-meta.mjs (NUMBER_OVERRIDES) ergänzen`);
   }
 }
 
