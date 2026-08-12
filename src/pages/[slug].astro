@@ -9,6 +9,7 @@ import AcquireArt from '../components/AcquireArt.astro';
 import { galleryItems, galleryCategories } from '../lib/artworks';
 import { loadPage } from '../lib/pages';
 import Page from '../components/Page.astro';
+import PageHero from '../components/PageHero.astro';
 import { getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
 import { bannerImage } from '../lib/banner-images';
@@ -103,8 +104,20 @@ const ogImage = ogSrc ? (await getImage({ src: ogSrc, format: 'jpeg', width: 120
     </AcquireArt>
   )}
   {type === 'standalone' && StandaloneContent && (
-    <Page title={standaloneFm.title}>
-      <StandaloneContent />
-    </Page>
+    <Fragment>
+      {standaloneFm.hero && (
+        <PageHero
+          image={bannerImage(standaloneFm.hero.name)!}
+          alt={standaloneFm.hero.alt}
+          title={standaloneFm.title}
+          lead={standaloneFm.hero.lead}
+          ctaText={standaloneFm.hero.ctaText}
+          ctaHref={standaloneFm.hero.ctaHref}
+        />
+      )}
+      <Page title={standaloneFm.title} hideTitle={!!standaloneFm.hero}>
+        <StandaloneContent />
+      </Page>
+    </Fragment>
   )}
 </BaseLayout>

@@ -25,7 +25,15 @@ const pages = defineCollection({
       })
       .optional(),
     // Kunst Erwerben
-    hero: z.object({ name: z.string(), alt: z.string() }).optional(),
+    hero: z
+      .object({
+        name: z.string(),
+        alt: z.string(),
+        lead: z.string().optional(),
+        ctaText: z.string().optional(),
+        ctaHref: z.string().optional(),
+      })
+      .optional(),
     // Kontakt
     map: z.string().optional(),
     // Standalone-Seiten (Impressum, Datenschutz, Presse …): eigener Slug + optionale Verlinkung.

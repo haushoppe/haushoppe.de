@@ -130,7 +130,9 @@ const homeHref = '/';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0 16px;
+    /* 12px (statt 16) horizontal: mit dem 7. Menüpunkt („Camping") passt die Zeile sonst
+       nicht in die 700px-Nav-Leiste (bräche in eine zweite Zeile um). */
+    padding: 0 12px;
     font-weight: 400;
     color: #000;
     line-height: 1.2;

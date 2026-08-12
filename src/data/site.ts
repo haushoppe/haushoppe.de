@@ -11,7 +11,7 @@ export const nav: Record<'de' | 'en', NavItem[]> = {
     { href: '/werke/', label: 'Werke' },
     { href: '/kunst-erwerben/', label: 'Kunst Erwerben' },
     { href: '/vita/', label: 'Vita' },
-    { href: '/kunst-und-camping/', label: 'Kunst & Camping' },
+    { href: '/kunst-und-camping/', label: 'Camping' },
     { href: '/kontakt/', label: 'Kontakt' },
   ],
   en: [
@@ -20,7 +20,7 @@ export const nav: Record<'de' | 'en', NavItem[]> = {
     { href: '/artwork/', label: 'Artwork' },
     { href: '/buy-fine-art/', label: 'Buy Fine Art' },
     { href: '/vita/', label: 'Vita' },
-    { href: '/art-and-camping/', label: 'Art & Camping' },
+    { href: '/art-and-camping/', label: 'Camping' },
     { href: '/contact/', label: 'Contact' },
   ],
 };

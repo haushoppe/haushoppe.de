@@ -88,6 +88,10 @@ a:hover {
   /* Oben derselbe responsive Abstand wie der Header (clamp), unten bündig. */
   padding-block: clamp(1.25rem, 3vw, 2rem) 0;
 }
+/* Seiten mit vollbreitem Hero (PageHero) schließen bündig an die Header-Linie an. */
+.site-main:has(.page-hero) {
+  padding-top: 0;
+}
 /* Startseite mobil (Burger-Breite): der Hero schließt bündig an die schwarze
    Header-Linie an — kein Abstand. Nur hier (einzige Seite mit .ohero); alle
    anderen Seiten behalten ihren Abstand. Breakpoint = Burger-Menü (720px). */

@@ -3,12 +3,13 @@
 // Titel als H1 + MDX-Body. Inhalt: src/content/pages/<name>-<lang>.mdx (standalone: true).
 interface Props {
   title: string;
+  hideTitle?: boolean; // wenn ein PageHero die Überschrift trägt: kein zweites H1
 }
-const { title } = Astro.props;
+const { title, hideTitle = false } = Astro.props;
 ---
 
 <article class="page">
-  <h1 class="page__title">{title}</h1>
+  {!hideTitle && <h1 class="page__title">{title}</h1>}
   <div class="page__body"><slot /></div>
 </article>
 
