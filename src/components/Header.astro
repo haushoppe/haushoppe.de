@@ -135,6 +135,12 @@ const homeHref = '/';
     color: #000;
     line-height: 1.2;
   }
+  /* Tap-/Fokus-Feedback grau statt Browser-Blau (Android Chrome). */
+  .mainnav__link,
+  .mainnav__lang,
+  .mainnav__search {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
   /* Kein Verrutschen der Nav beim Fettschalten des aktiven Punkts: eine unsichtbare, fett
      gesetzte Kopie des Labels reserviert immer die Bold-Breite (height:0 → belegt keinen Platz,
      ändert nur die Mindestbreite). */
@@ -291,6 +297,10 @@ const homeHref = '/';
     }
     .mainnav__link.is-active {
       font-weight: 600;
+    }
+    /* Grauer Press-Zustand für die Menüreihen (statt blauem Tap-Highlight). */
+    .mainnav__link:active {
+      background: rgba(0, 0, 0, 0.06);
     }
     .mainnav__extra {
       display: flex;
