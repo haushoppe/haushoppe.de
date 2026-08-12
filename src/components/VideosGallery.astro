@@ -115,8 +115,8 @@ const embed = (id: string) =>
         track.querySelectorAll('.vg__thumb').forEach((b) => b.removeAttribute('aria-current'));
         thumb.setAttribute('aria-current', 'true');
         feature(thumb.dataset.id!, thumb.dataset.title!);
-        // wie das Original: sanft zum Galerie-Anfang scrollen
-        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Bewusst KEIN Seiten-Scroll beim Wechsel: das Video oben wird getauscht, die
+        // Scroll-Position bleibt, wo der Nutzer ist (das automatische Hochspringen nervte).
       });
     });
 
