@@ -35,12 +35,12 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
-      # Astros Bild-Cache wiederverwenden (siehe deploy.yml): rollender Key pro Commit.
-      - name: Astro-Bild-Cache wiederherstellen
+      # Astros Bild-Cache wiederverwenden (siehe deploy.yml): Key am Inhalt der Bildquellen.
+      - name: Astro-Bild-Cache
         uses: actions/cache@v4
         with:
           path: node_modules/.astro
-          key: astro-assets-${{ github.sha }}
+          key: astro-assets-${{ hashFiles('src/artwork-originals/**', 'src/assets/**') }}
           restore-keys: |
             astro-assets-
 

@@ -22,6 +22,17 @@ jobs:
       - name: Abhängigkeiten installieren
         run: npm ci
 
+      # Astros Bild-Cache wiederverwenden (wie deploy.yml) — ohne diesen Schritt codierte JEDER
+      # CI-Lauf alle ~7000 Bild-Varianten kalt neu (~1 h) und die Läufe stauten sich. Key am Inhalt
+      # der Bildquellen, damit sich der Cache bei reinen Code-/Text-Änderungen exakt wiederverwenden lässt.
+      - name: Astro-Bild-Cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ hashFiles('src/artwork-originals/**', 'src/assets/**') }}
+          restore-keys: |
+            astro-assets-
+
       - name: Abgeleitete Daten neu generieren (Beschriftungen + Sprach-Pendants)
         run: npm run data
 

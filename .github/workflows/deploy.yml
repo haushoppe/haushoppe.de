@@ -39,13 +39,15 @@ jobs:
         run: npm ci
 
       # Astros Bild-Cache (node_modules/.astro) wiederverwenden -> nur geänderte Werke neu codieren.
-      # Key rollt pro Commit (github.sha), sonst speichert actions/cache nach dem ersten Treffer nie
-      # wieder und der Cache friert ein. restore-keys holt den zuletzt gespeicherten Stand.
-      - name: Astro-Bild-Cache wiederherstellen
+      # Key hängt am INHALT der Bildquellen (hashFiles), nicht am Commit: solange sich kein Bild
+      # ändert, greift genau derselbe Cache (kein neuer ~1,5-GB-Cache pro Commit, kein Verdrängen
+      # am 10-GB-Repo-Limit). Ändert sich ein Bild, holt restore-keys den letzten Stand, sodass nur
+      # die wirklich neuen Bilder codiert werden.
+      - name: Astro-Bild-Cache
         uses: actions/cache@v4
         with:
           path: node_modules/.astro
-          key: astro-assets-${{ github.sha }}
+          key: astro-assets-${{ hashFiles('src/artwork-originals/**', 'src/assets/**') }}
           restore-keys: |
             astro-assets-
 
