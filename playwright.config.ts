@@ -27,6 +27,8 @@ export default defineConfig({
   projects: [
     { name: 'de', use: { ...devices['Desktop Chrome'], baseURL: DE, locale: 'de-DE' }, testIgnore: /mobile\.spec\.ts/ },
     { name: 'en', use: { ...devices['Desktop Chrome'], baseURL: EN, locale: 'en-US' }, testIgnore: /mobile\.spec\.ts/ },
-    { name: 'de-mobile', use: { ...devices['iPhone 13'], baseURL: DE, locale: 'de-DE' }, testMatch: /mobile\.spec\.ts/ },
+    // Mobiles Projekt bewusst auf chromium-basiertem Pixel 5 (kein WebKit nötig; die mobilen
+    // Sonderlocken sind CSS-Media-Queries, browser-agnostisch). Viewport 393px -> Burger + flush.
+    { name: 'de-mobile', use: { ...devices['Pixel 5'], baseURL: DE, locale: 'de-DE' }, testMatch: /mobile\.spec\.ts/ },
   ],
 });

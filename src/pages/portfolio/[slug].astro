@@ -100,7 +100,7 @@ if (!isOrdinal) {
       (prev || next) && (
         <nav class="art-nav" aria-label={LANG === 'de' ? 'Weitere Werke' : 'More artworks'}>
           {prev ? (
-            <a rel="prev" class="art-nav__link art-nav__prev" href={prev.href}>
+            <a rel="prev" class="art-nav__link art-nav__prev" href={prev.href} data-testid="artwork-nav">
               <span class="art-nav__arrow" aria-hidden="true">‹</span>
               <span class="art-nav__txt">
                 <span class="art-nav__cap">{LANG === 'de' ? 'Vorheriges Werk' : 'Previous'}</span>
@@ -111,7 +111,7 @@ if (!isOrdinal) {
             <span />
           )}
           {next ? (
-            <a rel="next" class="art-nav__link art-nav__next" href={next.href}>
+            <a rel="next" class="art-nav__link art-nav__next" href={next.href} data-testid="artwork-nav">
               <span class="art-nav__txt">
                 <span class="art-nav__cap">{LANG === 'de' ? 'Nächstes Werk' : 'Next'}</span>
                 <span class="art-nav__title">{next.title}</span>

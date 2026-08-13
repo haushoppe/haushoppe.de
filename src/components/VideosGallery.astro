@@ -25,7 +25,7 @@ const embed = (id: string) =>
 
 <section class="vg" data-now-playing={t.nowPlaying}>
   <div class="vg__player-wrap">
-    <div class="yt-facade vg__player" data-src={embed(first.id)} data-title={first.title} style="aspect-ratio: 16 / 9">
+    <div class="yt-facade vg__player" data-testid="video-player" data-src={embed(first.id)} data-title={first.title} style="aspect-ratio: 16 / 9">
       <button type="button" class="yt-facade__btn" aria-label={`${t.play}: ${first.title}`}>
         <img
           class="yt-facade__poster"
@@ -41,7 +41,7 @@ const embed = (id: string) =>
     </div>
   </div>
 
-  <div class="vg__carousel">
+  <div class="vg__carousel" data-testid="video-carousel">
     <ul class="vg__track">
       {
         videos.map((v, i) => (
@@ -49,6 +49,7 @@ const embed = (id: string) =>
             <button
               type="button"
               class="vg__thumb"
+              data-testid="video-thumb"
               data-id={v.id}
               data-title={v.title}
               aria-label={`${t.play}: ${v.title}`}
@@ -146,6 +147,7 @@ const embed = (id: string) =>
         const d = document.createElement('button');
         d.type = 'button';
         d.className = 'vg__dot carousel-dot';
+        d.dataset.testid = 'video-dot';
         d.addEventListener('click', () =>
           vert
             ? track.scrollTo({ top: i * size, behavior: 'smooth' })

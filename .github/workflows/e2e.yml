@@ -1,0 +1,52 @@
+name: e2e
+
+# End-to-End-Tests (Playwright) gegen die gebauten Sites. Läuft NICHT bei jedem Commit,
+# sondern nächtlich (02:30 UTC) und auf manuellen Zuruf ("Run workflow").
+on:
+  schedule:
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # YouTube-Key nur, damit der data-Step die committete Playlist behalten kann (Build bricht ohne nicht ab).
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      # Gleicher Astro-Bild-Cache wie deploy.yml (Content-Hash-Key), damit der Build schnell ist.
+      - name: Astro-Bild-Cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ hashFiles('src/artwork-originals/**', 'src/assets/**') }}
+          restore-keys: |
+            astro-assets-
+
+      - name: Playwright-Browser installieren (nur chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: Bauen (beide Sprachen)
+        run: npm run build
+
+      - name: E2E-Tests
+        run: npm run e2e
+
+      - name: Playwright-Report als Artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

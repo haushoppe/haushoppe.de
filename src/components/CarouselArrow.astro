@@ -19,6 +19,7 @@ const path = dir === 'prev' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7';
   type="button"
   class:list={['carousel-arrow', `carousel-arrow--${dir}`, className]}
   aria-label={label}
+  data-testid="carousel-arrow"
   style={`--carousel-arrow-size:${size}px`}
   {...rest}
 >

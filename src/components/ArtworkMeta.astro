@@ -41,9 +41,9 @@ const price = isWoodcut(meta) ? woodcutPrice(lang) : null;
   <span class="art-meta__title">{meta.artist} · „{title}“ · {meta.year}</span>
   {techLine && <span class="art-meta__tech">{techLine}</span>}
   {edition && <span class="art-meta__edition">{edition}</span>}
-  {meta.number && <span class="art-meta__num">{meta.number}</span>}
+  {meta.number && <span class="art-meta__num" data-testid="artwork-number">{meta.number}</span>}
   {price && (
-    <span class="art-meta__price">{price.amount} <span class="art-meta__pricenote">{price.note}</span></span>
+    <span class="art-meta__price" data-testid="artwork-price">{price.amount} <span class="art-meta__pricenote">{price.note}</span></span>
   )}
 </figcaption>
 

@@ -34,9 +34,9 @@ const data = await Promise.all(
 <div class="gallery" data-gallery data-gap="15" data-row-height="200" data-batch="36" data-pagefind-ignore>
   {heading && <h1 class="visually-hidden">{heading}</h1>}
   <nav class="gallery__filter" aria-label={allLabel}>
-    <a href={`${base}/`} class:list={['gallery__filter-btn', activeCat === '*' && 'is-active']} aria-current={activeCat === '*' ? 'page' : undefined}>{allLabel} {typeof total === 'number' && <span class="gallery__filter-count">{total}</span>}</a>
+    <a href={`${base}/`} class:list={['gallery__filter-btn', activeCat === '*' && 'is-active']} aria-current={activeCat === '*' ? 'page' : undefined} data-testid="gallery-filter">{allLabel} {typeof total === 'number' && <span class="gallery__filter-count">{total}</span>}</a>
     {cats.map((c) => (
-      <a href={`${base}/${c.slug}/`} class:list={['gallery__filter-btn', activeCat === c.slug && 'is-active']} aria-current={activeCat === c.slug ? 'page' : undefined}>{c.name} <span class="gallery__filter-count">{c.count}</span></a>
+      <a href={`${base}/${c.slug}/`} class:list={['gallery__filter-btn', activeCat === c.slug && 'is-active']} aria-current={activeCat === c.slug ? 'page' : undefined} data-testid="gallery-filter">{c.name} <span class="gallery__filter-count">{c.count}</span></a>
     ))}
   </nav>
 
@@ -45,7 +45,7 @@ const data = await Promise.all(
       weiter ein (Infinite Scroll ohne Nachbau). */}
   <div class="gallery__grid">
     {data.map((d, i) => (
-      <article class="gallery__item" data-cats={d.c} data-w={d.w} data-h={d.h}>
+      <article class="gallery__item" data-testid="gallery-item" data-cats={d.c} data-w={d.w} data-h={d.h}>
         <a href={d.u} class="gallery__link" aria-label={d.t}>
           <picture class="gallery__thumb">
             <source srcset={d.a} type="image/avif" />

@@ -13,7 +13,7 @@ const prevLabel = lang === 'en' ? 'Previous artwork' : 'Vorheriges Werk';
 const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
 ---
 
-<div id="lightbox" class="lightbox" hidden transition:persist>
+<div id="lightbox" class="lightbox" hidden transition:persist data-testid="lightbox">
   <button type="button" class="lightbox__close" data-lb-close aria-label={closeLabel}>&times;</button>
   <CarouselArrow dir="prev" class="lightbox__nav lightbox__nav--prev" label={prevLabel} size={48} data-lb-nav="prev" hidden />
   <CarouselArrow dir="next" class="lightbox__nav lightbox__nav--next" label={nextLabel} size={48} data-lb-nav="next" hidden />

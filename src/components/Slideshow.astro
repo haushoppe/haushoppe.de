@@ -14,12 +14,12 @@ const t = lang === 'en'
   : { role: 'Bildergalerie', prev: 'Zurück', next: 'Weiter', pick: (i: number, n: number) => `Bild ${i} von ${n}` };
 ---
 
-<div class="slideshow" data-slideshow data-interval={interval} aria-roledescription={t.role}>
+<div class="slideshow" data-slideshow data-testid="slideshow" data-interval={interval} aria-roledescription={t.role}>
   <div class="slideshow__frame">
     {slides.map((s, i) => (
       <figure class="slideshow__slide" data-slide style={`opacity:${i === 0 ? 1 : 0}`} aria-hidden={i === 0 ? 'false' : 'true'}>
         <Image src={s.src} alt={s.alt} widths={[480, 820, 1200]} sizes="(max-width: 860px) 92vw, 800px" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
-        {s.caption && <figcaption class="slideshow__caption">{s.caption}</figcaption>}
+        {s.caption && <figcaption class="slideshow__caption" data-testid="slideshow-caption">{s.caption}</figcaption>}
       </figure>
     ))}
     {slides.length > 1 && <CarouselArrow dir="prev" class="slideshow__arrow slideshow__arrow--prev" label={t.prev} data-ss-prev />}
@@ -27,7 +27,7 @@ const t = lang === 'en'
   </div>
   <div class="slideshow__dots">
     {slides.map((_, i) => (
-      <button type="button" class="carousel-dot" data-dot aria-label={t.pick(i + 1, slides.length)} aria-current={i === 0 ? 'true' : 'false'} />
+      <button type="button" class="carousel-dot" data-dot data-testid="slideshow-dot" aria-label={t.pick(i + 1, slides.length)} aria-current={i === 0 ? 'true' : 'false'} />
     ))}
   </div>
 </div>

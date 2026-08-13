@@ -29,10 +29,10 @@ const { image, alt, title, lead, ctaText, ctaHref } = Astro.props;
   />
   <div class="page-hero__scrim"></div>
   <div class="page-hero__inner">
-    <h1 class="page-hero__title">{title}</h1>
+    <h1 class="page-hero__title" data-testid="page-hero-title">{title}</h1>
     {lead && <p class="page-hero__lead">{lead}</p>}
     {ctaText && ctaHref && (
-      <a class="page-hero__cta" href={ctaHref}>
+      <a class="page-hero__cta" href={ctaHref} data-testid="page-hero-cta">
         {ctaText}
       </a>
     )}
