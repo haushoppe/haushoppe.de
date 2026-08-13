@@ -224,18 +224,21 @@ const cleanDim = (s) => (s && /\d/.test(s) ? s : '');
 // (nur Titel + Nummer), damit die Galerie ihre Nummer zum Sortieren/Anzeigen hat.
 const ORDINAL = /Bitcoin blockchain|ordinalsbot|Buy it on Gamma/i;
 
-// Nummern, die NICHT (sauber) aus der Caption parsebar sind — recherchiert/belegt, nicht erfunden:
+// Nummern, die NICHT (sauber) aus der Caption parsebar sind — recherchiert/belegt bzw. bewusst
+// vergeben, nicht erfunden. Die interne Nummer ist JJJJ-NN-X, wobei NN eine im Jahr FORTLAUFENDE
+// Werk-Nummer ist (KEIN Monat! belegt: bis zu -24 pro Jahr), X das Technik-Kürzel:
 //  • 654 „Landschaft Wismar": Nummer „1976-03" stand OHNE Buchstaben-Kürzel in der Caption
 //    (der Parser verlangt eins) → hier fest hinterlegt.
-//  • 4 Zeichnungen/Porträts: nur das JAHR ist per Signatur belegt (der Dateiname wäre das
-//    Foto-Datum) → ehrlicher Platzhalter „YYYY-??" für den unbekannten Monat.
+//  • 4 Zeichnungen/Porträts: nur das JAHR ist per Signatur belegt; die laufende Nummer war nicht
+//    mehr rekonstruierbar (Olaf) → freie Nummer im jeweiligen Jahr vergeben (2015/2016 waren bis 9
+//    belegt), ohne Technik-Kürzel wie „1976-03". Reihenfolge daher nicht katalogtreu.
 //  • 5 Ordinals: Datum aus den On-Chain-Inscriptions (mempool.space) — alle 2024-02, das
 //    Suffix O1–O5 folgt der Block-Höhe (Inscription-Reihenfolge).
 const NUMBER_OVERRIDES = {
   '9001': '1975-01', '9002': '1976-01', '9003': '1976-02', // nachkatalogisierte Papierarbeiten (Nr. ohne Buchstaben-Suffix, von parse() nicht erkannt)
   '654': '1976-03',
-  '1324': '2016-??', '1333': '2016-??', //  porträt 1 / porträt 2  (Signatur „Hoppe 2016")
-  '1327': '2015-??', '1330': '2015-??', //  Plovdiv / wintermärchen (Signatur „Hoppe 2015")
+  '1324': '2016-10', '1333': '2016-11', //  porträt 1 / porträt 2  (Jahr per Signatur „Hoppe 2016"; lfd. Nr. vergeben)
+  '1327': '2015-10', '1330': '2015-11', //  Plovdiv / wintermärchen (Jahr per Signatur „Hoppe 2015"; lfd. Nr. vergeben)
   '5036': '2024-02-O1', '5051': '2024-02-O2', '5054': '2024-02-O3', // GRINDING / EXIT LIQUIDITY / BROKE
   '5057': '2024-02-O4', '5059': '2024-02-O5', //                       THE CABAL / LEGENDS
 };

@@ -15,15 +15,15 @@ type RawArtwork = {
 const arts = artworksData as unknown as RawArtwork[];
 
 const meta = metaData as Record<string, { number?: string } | undefined>;
-// Werk-Nummer (Format „YYYY-MM-…", z. B. „1990-02-H") = chronologischer Sortier- UND Anzeige-
-// Schlüssel (das frühere Datum war nur Behelf). Fehlt sie (10 Werke), Fallback aufs Datum
-// (nur für die Sortierung) und kein Nummer-Badge.
+// Werk-Nummer (Format „JJJJ-NN-X", z. B. „1990-02-H") = Sortier- UND Anzeige-Schlüssel. NN ist die
+// im Jahr FORTLAUFENDE Werk-Nummer (KEIN Monat!), X das Technik-Kürzel. Fehlt die Nummer
+// ausnahmsweise, Fallback aufs WP-Datum (nur für die Sortierung) und kein Nummer-Badge.
 function artworkNumber(trid: string | null): string {
   const n = trid ? meta[trid]?.number : undefined;
-  return n && /^\d{4}-/.test(n) ? n.trim() : ''; // „1976-03", „2016-??", „2024-02-O1" …
+  return n && /^\d{4}-/.test(n) ? n.trim() : ''; // „1976-03", „2016-10", „2024-02-O1" …
 }
 function sortKey(a: RawArtwork): string {
-  return artworkNumber(a.trid) || (a.date || '').slice(0, 7); // „YYYY-MM"
+  return artworkNumber(a.trid) || (a.date || '').slice(0, 7); // Fallback: WP-Datum „JJJJ-MM" (nur Sortierung)
 }
 // Sprache = Domain: Werk-Detail liegt in beiden Sprachen unter /portfolio/<slug>/ am Root.
 
