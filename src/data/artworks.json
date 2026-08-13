@@ -6800,8 +6800,8 @@
     "thumbFile": "2021/04/2000-01-A©-Olaf-Hoppethalassogen-Acryl-auf-Leinwand-110-x-155-cm.jpg",
     "categories": [
       {
-        "name": "Holzschnitte",
-        "slug": "holzschnitte",
+        "name": "Gemälde",
+        "slug": "gemaelde",
         "taxonomy": "portfolio_category"
       }
     ],
@@ -19148,8 +19148,8 @@
     "thumbFile": "2021/04/2000-01-A©-Olaf-Hoppethalassogen-Acryl-auf-Leinwand-110-x-155-cm.jpg",
     "categories": [
       {
-        "name": "Woodcuts",
-        "slug": "woodcuts",
+        "name": "Paintings",
+        "slug": "paintings",
         "taxonomy": "portfolio_category"
       }
     ],
