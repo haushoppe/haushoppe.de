@@ -71,7 +71,7 @@ export const SITE: Record<Lang, SiteData> = {
     galleryBase: '/artwork',
     cats: [
       { slug: 'woodcuts', label: 'Woodcuts', count: 30 },
-      { slug: 'paintings', label: 'Paintings', count: 287 },
+      { slug: 'paintings', label: 'Paintings', count: 293 },
       { slug: 'drawings', label: 'Drawings', count: 5 },
       { slug: 'digital-art', label: 'Digital Art', count: 5 },
     ],
