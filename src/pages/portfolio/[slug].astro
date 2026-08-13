@@ -58,7 +58,7 @@ const { art, image, prev, next, lbPrev, lbNext } = Astro.props as {
   lbPrev: string | null;
   lbNext: string | null;
 };
-const desc = LANG === 'de' ? `${art.title} — Werk von Olaf Hoppe.` : `${art.title} — artwork by Olaf Hoppe.`;
+const desc = LANG === 'de' ? `${art.title}, Werk von Olaf Hoppe.` : `${art.title}, artwork by Olaf Hoppe.`;
 // Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
 const isOrdinal = ordinalData(art) != null;
 // Auf der Ordinal-Detailseite steht die Kollab schon im Eyebrow (Johannes × Olaf) — daher

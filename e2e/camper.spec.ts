@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { site, langOf } from './helpers/site';
 
-// Camper-Seite (DE + EN) — Selektoren über data-testid, Copy über Text.
 const TXT = {
   de: { firstCaption: 'Der Hof aus der Luft', rastplatz: 'Rastplatz', landstrom: 'Landstrom und Trinkwasser', grauwasser: 'Grauwasser', fire: 'sehr leicht entzündlich' },
   en: { firstCaption: 'The farmstead from above', rastplatz: 'Rest stop', landstrom: 'Mains electricity and drinking water', grauwasser: 'grey water', fire: 'highly flammable' },
@@ -38,11 +37,27 @@ test('CTA scrollt zum Anrufen-Abschnitt', async ({ page }, info) => {
   await expect(page.locator('#anrufen')).toBeInViewport({ timeout: 5000 });
 });
 
-test('Slideshow startet von allein (Dot 0 → 1)', async ({ page }, info) => {
+test('Beide Telefonnummern als tel:-Links (Click-to-Call)', async ({ page }, info) => {
+  await page.goto(site(info).camper.path);
+  await expect(page.locator('a[href="tel:+493842764315"]')).toHaveCount(1);
+  await expect(page.locator('a[href="tel:+4915154645012"]')).toHaveCount(1);
+});
+
+test('Slideshow: „weiter"-Pfeil schaltet deterministisch zum nächsten Motiv', async ({ page }, info) => {
   await page.goto(site(info).camper.path);
   const dots = page.getByTestId('slideshow-dot');
   await expect(dots.nth(0)).toHaveAttribute('aria-current', 'true');
-  await expect(dots.nth(1)).toHaveAttribute('aria-current', 'true', { timeout: 9000 });
+  await page.getByTestId('slideshow').getByTestId('carousel-arrow').last().click(); // next
+  await expect(dots.nth(1)).toHaveAttribute('aria-current', 'true');
+  await expect(dots.nth(0)).toHaveAttribute('aria-current', 'false');
+});
+
+test('Slideshow startet von allein (interval-basiert)', async ({ page }, info) => {
+  await page.goto(site(info).camper.path);
+  const interval = Number(await page.getByTestId('slideshow').getAttribute('data-interval')) || 4500;
+  const dots = page.getByTestId('slideshow-dot');
+  await expect(dots.nth(0)).toHaveAttribute('aria-current', 'true');
+  await expect(dots.nth(1)).toHaveAttribute('aria-current', 'true', { timeout: interval + 3000 });
 });
 
 test('Keine Gedankenstriche im Camper-Inhalt', async ({ page }, info) => {

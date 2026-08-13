@@ -29,6 +29,8 @@ interface SiteData {
   work: { untitled: string; woodcut: string; ordinal: string };
 }
 
+export type SiteDataLike = SiteData;
+
 export const SITE: Record<Lang, SiteData> = {
   de: {
     origin: 'https://haushoppe.de',
@@ -84,12 +86,21 @@ export function site(info: TestInfo): SiteData {
   return SITE[langOf(info)];
 }
 
+// Die jeweils ANDERE Sprache (für Sprachwechsel-Ziele mit abweichenden Slugs).
+export function otherSite(info: TestInfo): SiteData {
+  return SITE[langOf(info) === 'de' ? 'en' : 'de'];
+}
+
 // Konsolen-Fehler + same-origin-4xx/5xx sammeln (externe Ressourcen wie YouTube-Thumbnails ignorieren).
 export function watchProblems(page: Page, baseURL?: string) {
   const consoleErrors: string[] = [];
   const badResponses: string[] = [];
   page.on('console', (m) => {
-    if (m.type() === 'error') consoleErrors.push(m.text());
+    if (m.type() !== 'error') return;
+    const src = m.location()?.url || '';
+    // Fremd-Frames (z. B. ordinals.com- oder YouTube-iframe) ignorieren; nur eigene JS-Fehler zählen.
+    if (baseURL && src && !src.startsWith(baseURL)) return;
+    consoleErrors.push(m.text());
   });
   page.on('pageerror', (e) => consoleErrors.push(`pageerror: ${e.message}`));
   page.on('response', (r) => {

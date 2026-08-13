@@ -17,6 +17,14 @@ test('Logo, Menü, aktiver Punkt, NEU-Pill, Flagge, Suche', async ({ page }, inf
   await expect(page.getByTestId('search-trigger')).toBeVisible();
 });
 
+test('Aktiver Menüpunkt „Werke" auch auf Werk-Detail und Kategorie-Seite', async ({ page }, info) => {
+  const s = site(info);
+  for (const path of [`/portfolio/${s.work.woodcut}/`, `${s.galleryBase}/${s.cats[0].slug}/`]) {
+    await page.goto(path);
+    await expect(page.locator('[data-testid="nav-link"][aria-current="page"]'), `aktiver Punkt auf ${path}`).toContainText(s.nav[2]);
+  }
+});
+
 test('Navigation bleibt einzeilig', async ({ page }, info) => {
   await page.goto(site(info).routes.home);
   const rows = await page

@@ -1,25 +1,47 @@
 import { test, expect } from '@playwright/test';
-import { site } from './helpers/site';
+import { site, langOf } from './helpers/site';
 
-test('h1, Bild (avif+webp), Nummer, Prev/Next', async ({ page }, info) => {
+test('h1, Bild (avif+webp), Nummer, Prev/Next vorhanden', async ({ page }, info) => {
   const s = site(info);
   await page.goto(`/portfolio/${s.work.woodcut}/`);
   await expect(page.locator('h1.entry-title')).toHaveCount(1);
-
   const img = page.getByTestId('artwork-image');
   await expect(img.locator('source[type="image/avif"]')).toHaveCount(1);
   await expect(img.locator('source[type="image/webp"]')).toHaveCount(1);
-
   await expect(page.getByTestId('artwork-number')).toHaveText(/^\d{4}-\d{2}/);
   await expect(page.getByTestId('artwork-nav')).toHaveCount(2);
 });
 
-test('Vergebene laufende Nummer als Badge (Plovdiv 2015-10)', async ({ page }) => {
-  await page.goto('/portfolio/plovdiv/');
-  await expect(page.getByTestId('artwork-number')).toHaveText('2015-10');
+// Alle vier vergebenen laufenden Nummern (nicht nur Plovdiv).
+const NUMBERS: Record<string, string> = {
+  plovdiv: '2015-10',
+  wintermaerchen: '2015-11',
+  'portraet-1': '2016-10',
+  'portraet-2': '2016-11',
+};
+for (const [slug, num] of Object.entries(NUMBERS)) {
+  test(`Vergebene Nummer als Badge: ${slug} → ${num}`, async ({ page }, info) => {
+    test.skip(langOf(info) !== 'de', 'Nummer ist sprachneutral; DE-Slugs geprüft (EN-Slugs weichen ab)');
+    await page.goto(`/portfolio/${slug}/`);
+    await expect(page.getByTestId('artwork-number')).toHaveText(num);
+  });
+}
+
+test('Prev/Next navigieren wirklich weiter und wieder zurück', async ({ page }, info) => {
+  const s = site(info);
+  await page.goto(`/portfolio/${s.work.woodcut}/`);
+  const start = new URL(page.url()).pathname;
+  const nextHref = (await page.getByTestId('artwork-nav').last().getAttribute('href'))!;
+  expect(nextHref).not.toBe(start);
+  const esc = (p: string) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  await page.getByTestId('artwork-nav').last().click();
+  await expect(page).toHaveURL(new RegExp(`${esc(nextHref)}$`));
+  // Gegenrichtung führt zurück zum Ausgangswerk (zyklische Kette).
+  await page.getByTestId('artwork-nav').first().click();
+  await expect(page).toHaveURL(new RegExp(`${esc(start)}$`));
 });
 
-test('Lightbox: öffnet per Klick, Blätter-Pfeile, schließt per Esc', async ({ page }, info) => {
+test('Lightbox: öffnet per Klick, hat Blätter-Pfeile, schließt per Esc', async ({ page }, info) => {
   const s = site(info);
   await page.goto(`/portfolio/${s.work.woodcut}/`);
   const lb = page.getByTestId('lightbox');
