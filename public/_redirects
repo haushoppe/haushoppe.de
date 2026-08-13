@@ -5,3 +5,16 @@
 # /en/-Pfad hat -> die Regel kann nie eine echte Seite kapern; sie faengt nur alte, indexierte
 # /en/-Links ab (Link-Equity). Greift die alte Site kein /en/ genutzt hat, ist die Regel inert.
 /en/*  https://haushoppe.art/:splat  301
+
+# NFT-Artikel (2021/2022) -> The Angels' Wing Archiv. Die Texte gehoerten zur virtuellen
+# NFT-Galerie, nicht mehr zu dieser Seite; sie liegen jetzt unter theangelswing.art unter
+# denselben Pfaden wie frueher. Dieselbe Logik wie oben: /nft-buy/ gibt es auf .de nicht und
+# /nft-kaufen/ nicht auf .art, die Regeln sind auf der jeweils anderen Domain also inert.
+/nft-buy/*  https://theangelswing.art/nft-buy/:splat  301
+
+# DE-Fassungen: nur die englischen Artikel sind uebernommen, deshalb Slug fuer Slug auf das
+# englische Gegenstueck. Zum On-Cyber-Artikel gab es nie eine deutsche Fassung.
+/nft-kaufen/hintergrundwissen-zu-blockchain-token/  https://theangelswing.art/nft-buy/background-knowledge-to-blockchain-token/  301
+/nft-kaufen/nft-analysieren-und-bewerten/  https://theangelswing.art/nft-buy/nft-analyze-and-evaluate/  301
+/nft-kaufen/nft-derivate/  https://theangelswing.art/nft-buy/nft-derivatives/  301
+/nft-kaufen/*  https://theangelswing.art/nft-buy/  301
