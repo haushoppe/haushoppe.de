@@ -1,0 +1,12 @@
+# PayPal-Zugangsdaten für lokales `wrangler pages dev`.
+# Kopiere diese Datei nach .dev.vars (wird NICHT committet) und trage Sandbox-Werte ein.
+#
+# In PRODUKTION werden die Werte pro Cloudflare-Projekt gesetzt (NICHT hier), für BEIDE Domains:
+#   wrangler pages secret put PAYPAL_CLIENT_SECRET --project-name=haushoppe-de
+#   wrangler pages secret put PAYPAL_CLIENT_SECRET --project-name=haushoppe-art
+# PAYPAL_CLIENT_ID und PAYPAL_ENV können im Cloudflare-Dashboard als normale Variablen gesetzt
+# werden (Client-ID ist per Design öffentlich); das Secret bleibt verschlüsselt.
+
+PAYPAL_ENV=sandbox
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=

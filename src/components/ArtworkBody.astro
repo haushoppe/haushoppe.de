@@ -9,6 +9,7 @@ import metaData from '../data/artwork-meta.json';
 import { contact } from '../data/site';
 import { SELF_ORIGIN } from '../lib/lang';
 import { isWoodcut, woodcutPrice } from '../lib/pricing';
+import WoodcutBuy from './WoodcutBuy.astro';
 
 interface Props {
   art: any;
@@ -55,6 +56,8 @@ const named = rawTitle
       ? 'this artwork'
       : 'dieses Werk';
 const workUrl = new URL(Astro.url.pathname, SELF_ORIGIN).href;
+// Slug für die PayPal-Kaufbox (Kennzeichnung der Bestellung) — aus dem Werk oder dem Pfad.
+const slug = (art.slug || Astro.url.pathname.split('/').filter(Boolean).pop() || '').trim();
 // Holzschnitte haben einen festen Preis: in die Mail aufnehmen und statt „Preis erfahren" nach der
 // Verfügbarkeit fragen. Andere Werke (Gemälde) bleiben ohne Preis (Anfrage zu Verfügbarkeit UND Preis).
 const woodcut = isWoodcut(meta);
@@ -121,6 +124,7 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
         />
         {meta && <ArtworkMeta meta={meta} lang={lang} />}
       </figure>
+      {woodcut && <WoodcutBuy slug={slug} lang={lang} title={rawTitle} />}
       <p class="art-inquire-wrap">
         <a class="art-inquire" href={inquireHref} aria-label={inquire.aria} data-testid="inquire-link">
           <svg class="art-inquire__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -170,38 +174,37 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
   .art-extra .yt-facade {
     margin: 1.25rem 0 0;
   }
-  /* „Interesse anfragen" pro Werk — dezenter mailto-Link unter der Beschriftung. */
+  /* „Interesse anfragen" pro Werk — dominanter mailto-CTA unter der Beschriftung (bei
+     Holzschnitten zusätzlich zur PayPal-Kaufbox). */
   .art-inquire-wrap {
     text-align: center;
-    margin: 1.1rem 0 0;
+    margin: 1.5rem 0 0;
   }
+  /* Dominanter CTA-Button (bei Gemälden der Haupt-CTA, bei Holzschnitten neben dem Kauf-Button):
+     eckige Volltonfläche, invertiert beim Hover. */
   .art-inquire {
     display: inline-flex;
     align-items: center;
-    gap: 0.5em;
-    padding: 0.4em 0.2em;
-    color: var(--muted);
-    font-size: 0.92rem;
+    gap: 0.55em;
+    padding: 0.85em 1.7em;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid var(--ink);
     text-decoration: none;
-    transition: color 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease;
   }
   .art-inquire__icon {
-    width: 1.1em;
-    height: 1.1em;
+    width: 1.15em;
+    height: 1.15em;
     flex: none;
-    opacity: 0.85;
-  }
-  .art-inquire span {
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.15s ease;
   }
   .art-inquire:hover,
   .art-inquire:focus-visible {
+    background: #fff;
     color: var(--ink);
-  }
-  .art-inquire:hover span,
-  .art-inquire:focus-visible span {
-    border-bottom-color: currentColor;
   }
   /* Ordinals: durchgehend schwarze Bühne für die On-Chain-Inschrift (full-bleed, wie eine
      dunkle Galeriewand). Titel + Inschrift + CTA gestapelt und zentriert. */

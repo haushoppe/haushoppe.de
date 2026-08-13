@@ -12,6 +12,8 @@ npm-debug.log*
 .env
 .env.*
 !.env.example
+# Cloudflare Pages Functions: lokale Secrets für `wrangler pages dev` (Vorlage: .dev.vars.example)
+.dev.vars
 # system / editor
 .DS_Store
 .vscode/

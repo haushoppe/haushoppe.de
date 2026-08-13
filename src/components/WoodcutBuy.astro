@@ -1,0 +1,177 @@
+---
+// Direktkauf-Box für Holzschnitte (fester Preis 785 EUR, versandkostenfrei). Rendert PayPal Smart
+// Buttons, die die Bestellung server-seitig über die Cloudflare-Functions anlegen und abbuchen —
+// der API-Key bleibt geschützt. „Möglichst wenig Klicks": PayPal erhebt die Lieferadresse selbst
+// (GET_FROM_FILE), Zahlung + Adresse landen im PayPal-Konto (keine Bestätigungsmail).
+//
+// Graceful Degradation: Ohne konfigurierte Functions/Keys (z. B. lokaler `astro preview`, e2e-
+// Server) liefert /api/paypal/config kein enabled -> die Buttons erscheinen nicht, der darunter
+// liegende E-Mail-CTA bleibt der Kaufweg. Die Box selbst wird immer server-seitig gerendert.
+import { WOODCUT_PRICE_EUR } from '../lib/pricing';
+
+interface Props {
+  slug: string;
+  lang?: 'de' | 'en';
+  title?: string;
+}
+const { slug, lang = 'de', title = '' } = Astro.props;
+const price = `${WOODCUT_PRICE_EUR} EUR`;
+const t =
+  lang === 'en'
+    ? {
+        heading: 'Buy this woodcut',
+        note: 'incl. 7% VAT · free shipping',
+        secure: 'Secure payment via PayPal or card. PayPal collects your shipping address.',
+        thanks: 'Thank you! Your order has been received. We ship free of charge.',
+        failed: 'Payment could not be completed. Please try again or enquire by email.',
+      }
+    : {
+        heading: 'Diesen Holzschnitt kaufen',
+        note: 'inkl. 7 % MwSt · versandkostenfrei',
+        secure: 'Sichere Zahlung mit PayPal oder Karte. PayPal übermittelt Ihre Lieferadresse.',
+        thanks: 'Vielen Dank! Ihre Bestellung ist eingegangen. Wir versenden versandkostenfrei.',
+        failed: 'Die Zahlung konnte nicht abgeschlossen werden. Bitte erneut versuchen oder per E-Mail anfragen.',
+      };
+---
+
+<section class="wc-buy" data-testid="paypal-buy" data-slug={slug} data-lang={lang} data-title={title}>
+  <h2 class="wc-buy__heading">{t.heading}</h2>
+  <p class="wc-buy__price">
+    {price}
+    <span class="wc-buy__note">{t.note}</span>
+  </p>
+  <div class="wc-buy__buttons" data-testid="paypal-buttons"></div>
+  <p class="wc-buy__secure">{t.secure}</p>
+  <p class="wc-buy__status" data-testid="paypal-status" role="status" hidden></p>
+</section>
+
+<script define:vars={{ slug, lang, title, thanksMsg: t.thanks, failedMsg: t.failed }}>
+  (function () {
+    let section = null;
+    try {
+      section = document.querySelector('.wc-buy[data-slug="' + CSS.escape(slug) + '"]');
+    } catch (e) {
+      // sehr alter Browser ohne CSS.escape -> Fallback auf die (einzige) Box der Seite
+    }
+    if (!section) section = document.querySelector('.wc-buy');
+    if (!section) return;
+    const mount = section.querySelector('.wc-buy__buttons');
+    const statusEl = section.querySelector('.wc-buy__status');
+    const showStatus = function (msg, ok) {
+      statusEl.textContent = msg;
+      statusEl.hidden = false;
+      statusEl.classList.toggle('is-ok', !!ok);
+      statusEl.classList.toggle('is-err', !ok);
+    };
+
+    // Server-Config holen (Client-ID + sandbox/live). Fehlt sie (keine Functions/kein Key),
+    // bleibt die Box ohne Buttons — der E-Mail-CTA darunter übernimmt.
+    fetch('/api/paypal/config')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (cfg) {
+        if (!cfg || !cfg.enabled || !cfg.clientId) return;
+        const params = new URLSearchParams({
+          'client-id': cfg.clientId,
+          currency: cfg.currency || 'EUR',
+          intent: 'capture',
+          components: 'buttons',
+        });
+        const sdk = document.createElement('script');
+        sdk.src = 'https://www.paypal.com/sdk/js?' + params.toString();
+        sdk.onload = renderButtons;
+        document.head.appendChild(sdk);
+      })
+      .catch(function () {});
+
+    function renderButtons() {
+      if (!window.paypal || !window.paypal.Buttons) return;
+      window.paypal
+        .Buttons({
+          style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+          createOrder: function () {
+            return fetch('/api/paypal/create-order', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ slug: slug, title: title, lang: lang }),
+            })
+              .then(function (r) { return r.json(); })
+              .then(function (d) {
+                if (!d || !d.id) throw new Error('create failed');
+                return d.id;
+              });
+          },
+          onApprove: function (data) {
+            return fetch('/api/paypal/capture-order', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ orderID: data.orderID }),
+            })
+              .then(function (r) { return r.json(); })
+              .then(function (d) {
+                if (d && d.status === 'COMPLETED') {
+                  mount.hidden = true;
+                  showStatus(thanksMsg, true);
+                } else {
+                  showStatus(failedMsg, false);
+                }
+              })
+              .catch(function () { showStatus(failedMsg, false); });
+          },
+          onError: function () { showStatus(failedMsg, false); },
+        })
+        .render(mount);
+    }
+  })();
+</script>
+
+<style>
+  /* Kauf-Box: ruhige, eckige Karte mit Hairline, damit die (goldenen) PayPal-Buttons wirken. */
+  .wc-buy {
+    max-width: 420px;
+    margin: 1.75rem auto 0;
+    padding: 1.4rem 1.5rem 1.5rem;
+    border: 1px solid var(--ink, #111);
+    text-align: center;
+  }
+  .wc-buy__heading {
+    margin: 0 0 0.35rem;
+    font-family: var(--serif, serif);
+    font-weight: 400;
+    font-size: 1.15rem;
+  }
+  .wc-buy__price {
+    margin: 0 0 1.1rem;
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .wc-buy__note {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #6a6a6a;
+  }
+  /* Reserviert etwas Höhe, damit beim Nachladen der Buttons nichts springt. */
+  .wc-buy__buttons {
+    min-height: 3rem;
+  }
+  .wc-buy__secure {
+    margin: 0.9rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #6a6a6a;
+  }
+  .wc-buy__status {
+    margin: 0.9rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+  .wc-buy__status.is-ok {
+    color: #1a7f37;
+  }
+  .wc-buy__status.is-err {
+    color: #b42318;
+  }
+</style>
