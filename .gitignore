@@ -16,6 +16,11 @@ npm-debug.log*
 .DS_Store
 .vscode/
 .idea/
+# playwright e2e artefakte
+test-results/
+playwright-report/
+blob-report/
+.playwright/
 
 # HINWEIS: Werk-Bilder werden NICHT mehr fertig versioniert. Versioniert ist nur die Quelle
 # (src/artwork-originals/ = Nachlass-Master); die Auslieferung (AVIF+WebP responsive) erzeugt
