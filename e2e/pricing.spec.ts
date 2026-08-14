@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { site, langOf } from './helpers/site';
 
-test('Holzschnitt zeigt Preis 785 EUR (inkl. 7 % MwSt, versandkostenfrei)', async ({ page }, info) => {
+test('Holzschnitt zeigt Preis 785 € (inkl. 7 % MwSt, versandkostenfrei)', async ({ page }, info) => {
   const s = site(info);
   await page.goto(`/portfolio/${s.work.woodcut}/`);
   const price = page.getByTestId('artwork-price');
   await expect(price).toBeVisible();
-  await expect(price).toContainText('785 EUR');
+  await expect(price).toContainText('785 €');
   await expect(price).toContainText(
     langOf(info) === 'en' ? 'incl. 7% VAT, free shipping' : 'inkl. 7 % MwSt, versandkostenfrei',
   );

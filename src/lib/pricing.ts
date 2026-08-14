@@ -13,6 +13,6 @@ export function isWoodcut(meta?: { technique?: string; number?: string } | null)
 
 export function woodcutPrice(lang: 'de' | 'en'): { amount: string; note: string } {
   return lang === 'en'
-    ? { amount: `${WOODCUT_PRICE_EUR} EUR`, note: 'incl. 7% VAT, free shipping' }
-    : { amount: `${WOODCUT_PRICE_EUR} EUR`, note: 'inkl. 7 % MwSt, versandkostenfrei' };
+    ? { amount: `${WOODCUT_PRICE_EUR} €`, note: 'incl. 7% VAT, free shipping' }
+    : { amount: `${WOODCUT_PRICE_EUR} €`, note: 'inkl. 7 % MwSt, versandkostenfrei' };
 }

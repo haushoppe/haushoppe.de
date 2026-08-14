@@ -1,8 +1,11 @@
 import { paypalBase, accessToken, json } from './_paypal.js';
+import { sendOrderEmails } from './_email.js';
 
 // Bucht eine zuvor angelegte Bestellung final ab. Danach liegen Zahlung UND Lieferadresse im
 // PayPal-Konto von Olaf. Rückgabe: Status + Bestell-ID für die Danke-Meldung im Client.
-export async function onRequestPost({ request, env }) {
+// Nach erfolgreicher Buchung: Bestätigungs-Mails (Kunde + Olaf) via Resend — über waitUntil,
+// damit die Antwort an den Client nicht wartet und ein Mail-Fehler die Zahlung nie berührt.
+export async function onRequestPost({ request, env, waitUntil }) {
   let body = {};
   try {
     body = await request.json();
@@ -10,6 +13,7 @@ export async function onRequestPost({ request, env }) {
     // leerer/kaputter Body -> unten als bad_order_id abgewiesen
   }
   const orderID = typeof body.orderID === 'string' ? body.orderID : '';
+  const lang = body.lang === 'en' ? 'en' : 'de';
   if (!/^[A-Z0-9]{5,32}$/i.test(orderID)) return json({ error: 'bad_order_id' }, 400);
 
   try {
@@ -20,6 +24,11 @@ export async function onRequestPost({ request, env }) {
     });
     const data = await res.json();
     if (!res.ok) return json({ error: 'capture_failed', detail: data }, 502);
+    // Bestätigungs-Mails nur bei abgeschlossener Zahlung, im Hintergrund (blockiert die Antwort nicht).
+    if (data.status === 'COMPLETED') {
+      const mail = sendOrderEmails(env, data, lang).catch(() => {});
+      if (typeof waitUntil === 'function') waitUntil(mail);
+    }
     return json({ id: data.id, status: data.status });
   } catch (e) {
     return json({ error: 'server_error', message: String((e && e.message) || e) }, 500);

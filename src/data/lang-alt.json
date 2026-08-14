@@ -601,6 +601,14 @@
   "/contact/": "/kontakt/",
   "/kunst-erwerben/": "/buy-fine-art/",
   "/buy-fine-art/": "/kunst-erwerben/",
+  "/agb/": "/terms/",
+  "/terms/": "/agb/",
   "/kunst-und-camping/": "/art-and-camping/",
-  "/art-and-camping/": "/kunst-und-camping/"
+  "/art-and-camping/": "/kunst-und-camping/",
+  "/datenschutz/": "/privacy/",
+  "/privacy/": "/datenschutz/",
+  "/impressum/": "/imprint/",
+  "/imprint/": "/impressum/",
+  "/widerruf/": "/right-of-withdrawal/",
+  "/right-of-withdrawal/": "/widerruf/"
 }

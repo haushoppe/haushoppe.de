@@ -76,8 +76,39 @@ npm run build:de
 wrangler pages dev dist-de       # bedient /api/paypal/* lokal
 ```
 
-## Rechtlicher Hinweis (offen, bitte mit Olaf klären)
+## Bestätigungs-E-Mails (Resend)
 
-Ein direkter „Jetzt kaufen"-Verkauf an Verbraucher in DE zieht Pflichten nach sich:
-**Widerrufsbelehrung, AGB, Datenschutz-Passus zu PayPal, korrekter MwSt-Ausweis**. Das ist hier
-**noch nicht** umgesetzt. Vor dem Live-Schalten juristisch prüfen lassen.
+Nach erfolgreicher Zahlung verschickt `capture-order.js` über `_email.js` zwei Mails via
+[Resend](https://resend.com):
+
+- **an den Kunden** (Sprache der Werk-Seite): Eingangsbestätigung mit allen Bestelldaten +
+  Widerrufsbelehrung + Hinweis „Vertrag kommt erst mit Versand zustande".
+- **an Olaf** (`team@haushoppe.de`): dieselbe Bestellung mit Käufer, Adresse und Zahlungsreferenz.
+
+Der Versand läuft über `waitUntil` im Hintergrund und kann die Zahlung nie scheitern lassen. Ohne
+`RESEND_API_KEY` wird nichts verschickt (die Zahlung funktioniert trotzdem).
+
+**Einzurichten:**
+
+1. Bei Resend registrieren, die Domain **haushoppe.de** verifizieren (DKIM/SPF-DNS-Einträge, die
+   Resend vorgibt, in Cloudflare-DNS eintragen), damit `team@haushoppe.de` als Absender zulässig ist.
+2. API-Key erzeugen und in **beiden** Cloudflare-Projekten als Secret setzen:
+   ```bash
+   wrangler pages secret put RESEND_API_KEY --project-name=haushoppe-de
+   wrangler pages secret put RESEND_API_KEY --project-name=haushoppe-art
+   ```
+   Optional: `MAIL_FROM` (Default `HAUS HOPPE - ITS <team@haushoppe.de>`) und `MAIL_TO` (Default
+   `team@haushoppe.de`) überschreiben.
+
+## Rechtstexte
+
+Footer-Seiten (DE + EN) unter `src/content/pages/`: `impressum`, `datenschutz`, `agb`, `widerruf`
+(EN: `imprint`, `privacy`, `terms`, `right-of-withdrawal`). Aus haushoppe-its übernommen und auf
+Olaf/haushoppe.de angepasst; Datenschutz um **PayPal** und **Resend** erweitert. Der Vertrag kommt
+laut Seite + AGB + E-Mail **erst mit Versand** zustande (Eingangsbestätigung ist keine Annahme).
+
+**Noch zu ergänzen / prüfen (vor Live):**
+
+- **USt-IdNr.** im Impressum (Platzhalter `[bitte ergänzen]`) und der exakte **Firmenname**.
+- Zuständige **Datenschutz-Aufsichtsbehörde** (aktuell Mecklenburg-Vorpommern angenommen).
+- Alle Rechtstexte vor dem echten Verkauf **juristisch prüfen** lassen.

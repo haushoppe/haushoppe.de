@@ -18,7 +18,7 @@ test('Holzschnitt-Anfrage: Empfänger, Betreff, Werk-Link + Preis in der Mail', 
   expect(m.to).toBe('team@haushoppe.de');
   expect(m.subject).toContain(lang === 'en' ? 'Interest in' : 'Interesse an');
   expect(m.body).toContain(`${s.origin}/portfolio/${s.work.woodcut}/`);
-  expect(m.body, 'Preis in Holzschnitt-Mail').toContain('785 EUR');
+  expect(m.body, 'Preis in Holzschnitt-Mail').toContain('785 €');
 });
 
 test('Titelloses Werk: Fallback „Werk <Nr>" statt leerer Anführungszeichen', async ({ page }, info) => {

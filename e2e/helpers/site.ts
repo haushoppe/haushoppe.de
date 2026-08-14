@@ -105,7 +105,11 @@ export function watchProblems(page: Page, baseURL?: string) {
   page.on('pageerror', (e) => consoleErrors.push(`pageerror: ${e.message}`));
   page.on('response', (r) => {
     const s = r.status();
-    if (s >= 400 && baseURL && r.url().startsWith(baseURL)) badResponses.push(`${s} ${r.url()}`);
+    if (s < 400 || !baseURL || !r.url().startsWith(baseURL)) return;
+    // Cloudflare-Functions-Endpunkte (/api/*) existieren nur produktiv, nicht im statischen
+    // Test-Server. Ihr 404 hier ist erwartet (PayPal-Buttons greifen dann auf den E-Mail-CTA zurück).
+    if (new URL(r.url()).pathname.startsWith('/api/')) return;
+    badResponses.push(`${s} ${r.url()}`);
   });
   return { consoleErrors, badResponses };
 }

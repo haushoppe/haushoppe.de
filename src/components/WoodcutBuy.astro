@@ -15,22 +15,37 @@ interface Props {
   title?: string;
 }
 const { slug, lang = 'de', title = '' } = Astro.props;
-const price = `${WOODCUT_PRICE_EUR} EUR`;
+const price = `${WOODCUT_PRICE_EUR} €`;
 const t =
   lang === 'en'
     ? {
         heading: 'Buy this woodcut',
         note: 'incl. 7% VAT · free shipping',
-        secure: 'Secure payment via PayPal or card. PayPal collects your shipping address.',
-        thanks: 'Thank you! Your order has been received. We ship free of charge.',
+        secure: 'Secure payment via PayPal or card. PayPal shares your shipping address with us.',
+        // Rechtlich zentral: Vertragsschluss erst mit Versand (die Bestätigung ist keine Annahme).
+        contract: 'The contract of sale is concluded only upon shipment of the goods.',
+        thanks: 'Thank you! We have received your order. You will get a confirmation by email.',
         failed: 'Payment could not be completed. Please try again or enquire by email.',
+        withdrawal: 'Right of withdrawal',
+        terms: 'Terms',
+        privacy: 'Privacy',
+        hrefWithdrawal: '/right-of-withdrawal/',
+        hrefTerms: '/terms/',
+        hrefPrivacy: '/privacy/',
       }
     : {
         heading: 'Diesen Holzschnitt kaufen',
         note: 'inkl. 7 % MwSt · versandkostenfrei',
-        secure: 'Sichere Zahlung mit PayPal oder Karte. PayPal übermittelt Ihre Lieferadresse.',
-        thanks: 'Vielen Dank! Ihre Bestellung ist eingegangen. Wir versenden versandkostenfrei.',
+        secure: 'Sichere Zahlung mit PayPal oder Karte. PayPal übermittelt uns Ihre Lieferadresse.',
+        contract: 'Der Kaufvertrag kommt erst mit dem Versand der Ware zustande.',
+        thanks: 'Vielen Dank! Ihre Bestellung ist bei uns eingegangen. Sie erhalten eine Bestätigung per E-Mail.',
         failed: 'Die Zahlung konnte nicht abgeschlossen werden. Bitte erneut versuchen oder per E-Mail anfragen.',
+        withdrawal: 'Widerrufsrecht',
+        terms: 'AGB',
+        privacy: 'Datenschutz',
+        hrefWithdrawal: '/widerruf/',
+        hrefTerms: '/agb/',
+        hrefPrivacy: '/datenschutz/',
       };
 ---
 
@@ -42,6 +57,10 @@ const t =
   </p>
   <div class="wc-buy__buttons" data-testid="paypal-buttons"></div>
   <p class="wc-buy__secure">{t.secure}</p>
+  <p class="wc-buy__contract">{t.contract}</p>
+  <p class="wc-buy__links">
+    <a href={t.hrefWithdrawal}>{t.withdrawal}</a> · <a href={t.hrefTerms}>{t.terms}</a> · <a href={t.hrefPrivacy}>{t.privacy}</a>
+  </p>
   <p class="wc-buy__status" data-testid="paypal-status" role="status" hidden></p>
 </section>
 
@@ -104,7 +123,7 @@ const t =
             return fetch('/api/paypal/capture-order', {
               method: 'POST',
               headers: { 'content-type': 'application/json' },
-              body: JSON.stringify({ orderID: data.orderID }),
+              body: JSON.stringify({ orderID: data.orderID, lang: lang }),
             })
               .then(function (r) { return r.json(); })
               .then(function (d) {
@@ -162,6 +181,21 @@ const t =
     font-size: 0.78rem;
     line-height: 1.45;
     color: #6a6a6a;
+  }
+  /* Rechtlicher Hinweis: Vertragsschluss erst mit Versand. */
+  .wc-buy__contract {
+    margin: 0.5rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #6a6a6a;
+  }
+  .wc-buy__links {
+    margin: 0.5rem 0 0;
+    font-size: 0.76rem;
+  }
+  .wc-buy__links a {
+    color: #4a4a4a;
+    text-decoration: underline;
   }
   .wc-buy__status {
     margin: 0.9rem 0 0;

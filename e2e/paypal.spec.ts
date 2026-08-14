@@ -11,7 +11,7 @@ test('Holzschnitt: Kaufbox (785 EUR) + Buttons-Mount + E-Mail-CTA', async ({ pag
   await page.goto(`/portfolio/${s.work.woodcut}/`);
   const buy = page.getByTestId('paypal-buy');
   await expect(buy).toBeVisible();
-  await expect(buy).toContainText('785 EUR');
+  await expect(buy).toContainText('785 €');
   await expect(page.getByTestId('paypal-buttons')).toHaveCount(1);
   await expect(page.getByTestId('inquire-link')).toHaveCount(1);
 });

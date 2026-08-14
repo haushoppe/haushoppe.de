@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { site } from './helpers/site';
+import { site, langOf } from './helpers/site';
 
 // Harte User-Regel: keine Gedankenstriche (– / —) in der Copy. Ausnahme: der seitenweite
 // Marken-Name. Werk-Titel (Olafs Nummerierung „1990/02 – H"), CV-Datumsspannen und Währung
@@ -23,5 +23,21 @@ for (const key of COPY_PAGES) {
     await page.goto(site(info).routes[key]);
     const text = (await page.locator('main').innerText()).replace(BRAND, '');
     expect(text, `Gedankenstrich im sichtbaren Text von ${key}`).not.toMatch(DASH);
+  });
+}
+
+// Legal-Seiten (Impressum/Datenschutz/AGB/Widerruf) ebenfalls dash-frei (nur der Marken-Name darf –).
+const LEGAL_PAGES = [
+  { de: '/impressum/', en: '/imprint/' },
+  { de: '/datenschutz/', en: '/privacy/' },
+  { de: '/agb/', en: '/terms/' },
+  { de: '/widerruf/', en: '/right-of-withdrawal/' },
+];
+for (const pair of LEGAL_PAGES) {
+  test(`Legal-Seite ohne Gedankenstrich: ${pair.de}`, async ({ page }, info) => {
+    const path = pair[langOf(info)];
+    await page.goto(path);
+    const text = (await page.locator('main').innerText()).replace(BRAND, '');
+    expect(text, `Gedankenstrich auf ${path}`).not.toMatch(DASH);
   });
 }
