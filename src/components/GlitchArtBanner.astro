@@ -18,7 +18,7 @@ const t =
         soundOff: 'Sound off',
         capA: 'Hong Kong: our glitch art, shown by the ',
         credit: 'Bitcoin Art Society',
-        capB: ' during Bitcoin Conf Asia, Bitcoin Summit and Runes Asia 2025. After all, digital art looks best on a real wall.',
+        capB: ' during Bitcoin Conf Asia, Bitcoin Summit and Runes Asia 2025. Digital art, too, looks best on a real wall.',
       }
     : {
         label: 'Unsere Glitch-Art, ausgestellt in Hongkong',
@@ -26,7 +26,7 @@ const t =
         soundOff: 'Ton aus',
         capA: 'Hongkong: Unsere Glitch-Art, gezeigt von der ',
         credit: 'Bitcoin Art Society',
-        capB: ' während der Bitcoin Conf Asia, dem Bitcoin Summit und Runes Asia 2025. Digitale Kunst wirkt eben doch am schönsten auf einer echten Wand.',
+        capB: ' während der Bitcoin Conf Asia, dem Bitcoin Summit und Runes Asia 2025. Auch Digitale Kunst wirkt am besten auf einer echten Wand.',
       };
 ---
 
@@ -67,7 +67,8 @@ const t =
 <style>
   .gav {
     max-width: 900px;
-    margin: 0 auto clamp(1.75rem, 4vw, 2.5rem);
+    /* Abstand nach oben, damit das Video nicht am letzten Thumbnail klebt. */
+    margin: clamp(2rem, 5vw, 3rem) auto clamp(1.75rem, 4vw, 2.5rem);
     padding-inline: 15px;
   }
   .gav__frame {
