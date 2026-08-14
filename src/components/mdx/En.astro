@@ -1,0 +1,6 @@
+---
+// Sprach-Block für zweisprachige Werk-Bodies: rendert seinen Inhalt nur im EN-Build.
+// Gegenstück zu De.astro (siehe dort).
+const show = (import.meta.env.SITE_LANG ?? 'de') === 'en';
+---
+{show && <slot />}

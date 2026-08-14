@@ -46,13 +46,43 @@ const pages = defineCollection({
   }),
 });
 
-// Optionale Zusatz-Inhalte pro Werk: Beschreibung als Markdown, Video-Embeds via <YouTube>. Die
-// Struktur bleibt im JSON (Galerie/Sortierung/Bilder); nur die PROSA lebt hier als Content — der
-// idiomatische Astro-Weg. id = Werk-Slug (sprachspezifisch, wie die Detail-URL). Die Detailseite
-// rendert den Body unter Bild/Meta, wenn ein Eintrag mit passendem Slug existiert.
+// Werke: EINE Datei pro Werk (beide Sprachen im Frontmatter), ersetzt den WordPress-Dump
+// artworks.json + artwork-meta.json + lang-alt.json. Geteilte Daten (Bild, Nummer, Jahr,
+// Kategorie) stehen einmal; nur Titel/Technik/Maße/Auflage haben einen de-/en-Block. Prosa
+// (nur ~13 Werke) lebt im Body zwischen <De>/<En>-Blöcken, die je Build weggeprunt werden.
+const side = z.object({
+  title: z.string(), // WP-Record-Titel: h1, Galerie, Seitentitel (mit Anführungszeichen)
+  slug: z.string(), // sprachspezifischer Detail-Slug (/portfolio/<slug>/)
+  captionTitle: z.string().default(''), // bereinigter Beschriftungs-Titel (ArtworkMeta-figcaption)
+  technique: z.string().default(''),
+  dimensions: z.string().default(''),
+  edition: z.string().default(''),
+});
+const artworks = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/artworks' }),
+  schema: ({ image }) =>
+    z.object({
+      artist: z.string().default('Olaf Hoppe'),
+      year: z.string().default(''),
+      number: z.string().default(''), // „1990-02-H" — Sortier- + Anzeige-Schlüssel
+      date: z.string().optional(), // WP-Datum, nur Sortier-Fallback wenn keine Nummer
+      category: z.enum(['paintings', 'woodcuts', 'drawings', 'digital-art']),
+      image: image().optional(), // Ordinals haben kein Bild
+      de: side,
+      en: side,
+      // Ordinals (5 Werke): On-Chain-Inschrift + Kauf-Link statt Bild.
+      ordinal: z.object({ inscription: z.string(), buy: z.string().optional() }).optional(),
+      // Welche Sprache eine Prosa-Beschreibung im Body hat (für den .art-extra-Wrapper).
+      prose: z.object({ de: z.boolean().default(false), en: z.boolean().default(false) }).default({ de: false, en: false }),
+      hidden: z.boolean().default(false),
+    }),
+});
+
+// Übergangsweise noch aktiv (bis die Detailseite auf die neuen Werk-Bodies umgestellt ist).
+// Wird in Stufe 3 gelöscht — die Prosa wandert in die artworks-Bodies.
 const artworkExtra = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/artwork-extra' }),
   schema: z.object({ title: z.string().optional() }),
 });
 
-export const collections = { pages, artworkExtra };
+export const collections = { pages, artworks, artworkExtra };

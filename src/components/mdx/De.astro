@@ -1,0 +1,7 @@
+---
+// Sprach-Block für zweisprachige Werk-Bodies: rendert seinen Inhalt nur im DE-Build.
+// SITE_LANG wird zur Build-Zeit literal injiziert (astro.config vite.define), der andere
+// Sprachblock wird komplett weggeprunt (der <slot/> rendert dann gar nicht).
+const show = (import.meta.env.SITE_LANG ?? 'de') === 'de';
+---
+{show && <slot />}
