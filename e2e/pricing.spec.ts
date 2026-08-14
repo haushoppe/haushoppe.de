@@ -28,7 +28,7 @@ test('Galerie: „online kaufbar"-Pill auf Holzschnitten und Ordinals, nicht bei
   const s = site(info);
   await page.goto(`${s.galleryBase}/${s.cats[0].slug}/`); // Holzschnitte/Woodcuts
   await expect(page.getByTestId('gallery-buy')).toHaveCount(30);
-  await expect(page.getByTestId('gallery-buy').first()).toHaveText(langOf(info) === 'en' ? 'buy online' : 'online kaufbar');
+  await expect(page.getByTestId('gallery-buy').first()).toHaveText(langOf(info) === 'en' ? 'buy online' : 'online kaufen');
   await page.goto(`${s.galleryBase}/${s.cats[3].slug}/`); // Digitale Kunst / Digital Art (Ordinals)
   await expect(page.getByTestId('gallery-buy')).toHaveCount(5);
   await page.goto(`${s.galleryBase}/${s.cats[1].slug}/`); // Gemälde/Paintings
