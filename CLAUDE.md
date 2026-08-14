@@ -86,11 +86,13 @@ Taucht später eine **bessere Datei** auf — ein neues, hochauflösendes Foto d
 **Regeln:**
 
 - **Niemals Font-Stacks hartkodieren.** Kein `font-family: 'Merriweather', Georgia, serif`, kein `-apple-system, …` in Komponenten — immer `var(--serif)` bzw. `var(--sans)`.
-- **Schriftgrößen in `rem` (oder `em`), nie in `px`.** Keine neuen, willkürlichen Werte erfinden — wenige, wiederkehrende Stufen nutzen und dabei bleiben.
+- **Schriftgrößen über die Skala-Tokens aus `global.css`, keine neuen rohen Werte erfinden.** Es gibt eine feste Stufenleiter:
+  - Fließtext/Überschriften: `--fs-body`, `--fs-lead`, `--fs-h1`, `--fs-h2`, `--fs-h3` (fluide `clamp()`).
+  - Kleinere Texte: `--fs-md` (0.95), `--fs-sm` (0.9), `--fs-xs` (0.8), `--fs-2xs` (0.7), `--fs-3xs` (0.6) — Bildunterschriften, Meta, Kleingedrucktes, Labels, Badges. Immer `var(--fs-…)`, nie eine nackte `0.83rem`-Zahl.
 - **Innerhalb eines Bausteins (Box, Karte, Absatzgruppe) konsistente Größen.** Nicht mehrere leicht unterschiedliche Größen stapeln (z. B. 0.72 / 0.76 / 0.78 / 0.8 nebeneinander). Ein Kleingedrucktes = eine Größe, ein Absatz. Zusammengehörige Hinweise als EINEN Absatz, nicht als drei mit je eigener Größe.
 - **⛔ Jedes Textelement bekommt eine explizite `font-size`.** Fehlt sie, erbt das Element eine abweichende Standardgröße und fällt aus der Reihe (genau dieser Bug ist schon passiert).
 
-> Portierte WordPress-Theme-Reste (px-Größen, fremde Font-Stacks, z. B. in `wp-design.css`) sind Altlast, kein Vorbild. Neue und geänderte Bereiche folgen dieser Regel.
+> Styling kommt aus Tailwind v4 (`@import "tailwindcss"` inkl. Preflight in `global.css`) plus dem schlanken Basis-CSS darunter. Das alte WordPress-Bundle `wp-design.css` ist entfernt — es gibt keine px-Größen oder fremden Font-Stacks mehr zu erben.
 
 ---
 

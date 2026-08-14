@@ -49,9 +49,8 @@ const { hero, h1 } = Astro.props;
     width: 100%;
     border-collapse: collapse;
     margin: 0 0 1.5rem;
-    /* KEIN rem: das alte Theme-wp-design.css verkleinert auf Mobil die html-Root-Größe,
-       wodurch rem-Werte in der Tabelle stärker schrumpfen als der Fließtext (Bullets = 16px).
-       Mit em/Erben bleibt die Tabelle exakt so groß wie der restliche Text. */
+    /* Tabelle erbt die Fließtext-Größe (kein eigener Wert), bleibt so exakt so groß
+       wie der umgebende Text. */
     font-size: 1em;
   }
   .vita :global(th) {

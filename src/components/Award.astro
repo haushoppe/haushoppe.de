@@ -22,7 +22,7 @@ const { label = LANG === 'en' ? 'Award' : 'Auszeichnung' } = Astro.props;
     padding: 0.85rem 1.1rem;
     border-left: 3px solid var(--rule, #000);
     background: #f7f7f7;
-    font-size: 0.95rem;
+    font-size: var(--fs-md);
     line-height: 1.55;
     color: #333;
   }
@@ -32,7 +32,7 @@ const { label = LANG === 'en' ? 'Award' : 'Auszeichnung' } = Astro.props;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-size: 0.72rem;
+    font-size: var(--fs-2xs);
     color: #000;
   }
   /* Slot-Inhalt (MDX rendert die Zeile evtl. als <p>) bündig ohne Extra-Abstand. */

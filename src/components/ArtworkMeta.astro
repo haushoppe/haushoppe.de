@@ -54,14 +54,14 @@ const price = isWoodcut(meta) ? woodcutPrice(lang) : null;
     gap: 0.15rem;
     margin-top: 0.9rem;
     color: #6b6b6b;
-    font-size: 0.9rem;
+    font-size: var(--fs-sm);
     line-height: 1.5;
   }
   .art-meta__title {
     color: #3a3a3a;
   }
   .art-meta__edition {
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
   }
   /* Fester Holzschnitt-Preis — etwas kräftiger als die graue Beschriftung, mit kleiner MwSt/Versand-Notiz. */
   .art-meta__price {
@@ -71,6 +71,6 @@ const price = isWoodcut(meta) ? woodcutPrice(lang) : null;
   }
   .art-meta__pricenote {
     color: #6b6b6b;
-    font-size: 0.82rem;
+    font-size: var(--fs-xs);
   }
 </style>

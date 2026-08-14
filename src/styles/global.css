@@ -33,6 +33,14 @@
   --fs-h1: clamp(2rem, 1.35rem + 2.7vw, 3rem); /* ~32 → ~48px */
   --fs-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
   --fs-h3: clamp(1.25rem, 1.12rem + 0.6vw, 1.6rem);
+  /* Sub-Body-Skala: EINE Quelle für alle kleinen Textgrößen (Bildunterschriften, Meta,
+     Fußzeile, Kleingedrucktes, Labels, Badges). Ersetzt ~14 verstreute Einzelwerte, damit
+     kleine Schrift überall einheitlich ist (CLAUDE.md: einheitliche Fonts). */
+  --fs-md: 0.95rem; /* nah am Fließtext: sekundäre CTAs */
+  --fs-sm: 0.9rem; /* Bildunterschriften, Meta, Fußzeile */
+  --fs-xs: 0.8rem; /* Kleingedrucktes, Formularhinweise */
+  --fs-2xs: 0.7rem; /* Labels, Quellenangaben, Eyebrows */
+  --fs-3xs: 0.6rem; /* Mikro-Pills, Badges */
 }
 
 *,
