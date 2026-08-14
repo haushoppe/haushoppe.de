@@ -4,6 +4,7 @@ import type { ImageMetadata } from 'astro';
 import { artworkImage, hasArtworkImage } from './artwork-images';
 import { smartQuotes } from './text';
 import { isWoodcut } from './pricing';
+import { ordinalData } from './ordinals';
 
 type Lang = 'de' | 'en';
 type Cat = { name: string; slug: string; taxonomy: string };
@@ -11,6 +12,7 @@ type RawArtwork = {
   id: string; title: string; slug: string; date: string; menuOrder: number;
   lang: string | null; trid: string | null; categories: Cat[]; tags: { name: string; slug: string }[];
   hidden?: boolean; // "versteckt": erreichbar per Direkt-URL, aber nicht in Galerie/Kategorien/Suche gelistet
+  content?: string; // WP-Content (u. a. für die Ordinal-Erkennung)
 };
 
 const arts = artworksData as unknown as RawArtwork[];
@@ -52,7 +54,8 @@ export function galleryItems(lang: Lang): GalleryItem[] {
         primaryCategory: pcats[0]?.slug ?? '',
         image, w: image.width, h: image.height,
         number: artworkNumber(a.trid),
-        buyable: a.trid ? isWoodcut((metaData as Record<string, any>)[a.trid]) : false,
+        // online kaufbar = Holzschnitte (PayPal) ODER Ordinals (Kauf über Gamma).
+        buyable: (a.trid ? isWoodcut((metaData as Record<string, any>)[a.trid]) : false) || ordinalData(a) !== null,
       };
     });
 }

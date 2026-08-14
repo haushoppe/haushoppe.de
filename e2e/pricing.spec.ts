@@ -22,12 +22,15 @@ test('Ordinal zeigt KEINEN Preis', async ({ page }, info) => {
   await expect(page.getByTestId('artwork-price')).toHaveCount(0);
 });
 
-// Galerie-Marker „online kaufbar": genau auf den 30 Holzschnitten, nicht bei Gemälden.
-test('Galerie: „online kaufbar"-Pill genau auf den Holzschnitten', async ({ page }, info) => {
+// Galerie-Marker „online kaufbar": Holzschnitte (30, PayPal) + Ordinals/digitale Kunst (5, Gamma),
+// nicht bei Gemälden.
+test('Galerie: „online kaufbar"-Pill auf Holzschnitten und Ordinals, nicht bei Gemälden', async ({ page }, info) => {
   const s = site(info);
   await page.goto(`${s.galleryBase}/${s.cats[0].slug}/`); // Holzschnitte/Woodcuts
   await expect(page.getByTestId('gallery-buy')).toHaveCount(30);
   await expect(page.getByTestId('gallery-buy').first()).toHaveText(langOf(info) === 'en' ? 'buy online' : 'online kaufbar');
+  await page.goto(`${s.galleryBase}/${s.cats[3].slug}/`); // Digitale Kunst / Digital Art (Ordinals)
+  await expect(page.getByTestId('gallery-buy')).toHaveCount(5);
   await page.goto(`${s.galleryBase}/${s.cats[1].slug}/`); // Gemälde/Paintings
   await expect(page.getByTestId('gallery-buy')).toHaveCount(0);
 });
