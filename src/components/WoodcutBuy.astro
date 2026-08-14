@@ -60,9 +60,7 @@ const t =
     <span class="wc-buy__note">{t.note}</span>
   </p>
   <div class="wc-buy__buttons" data-testid="paypal-buttons"></div>
-  <p class="wc-buy__secure">{t.secure}</p>
-  <p class="wc-buy__dach">{t.dachNote}</p>
-  <p class="wc-buy__contract">{t.contract}</p>
+  <p class="wc-buy__fineprint">{t.secure} {t.dachNote} {t.contract}</p>
   <p class="wc-buy__links">
     <a href={t.hrefWithdrawal}>{t.withdrawal}</a> · <a href={t.hrefTerms}>{t.terms}</a> · <a href={t.hrefPrivacy}>{t.privacy}</a>
   </p>
@@ -161,7 +159,7 @@ const t =
   }
   .wc-buy__heading {
     margin: 0 0 0.35rem;
-    font-family: var(--serif, serif);
+    font-family: var(--serif);
     font-weight: 400;
     font-size: 1.15rem;
   }
@@ -183,22 +181,16 @@ const t =
   .wc-buy__buttons {
     min-height: 3rem;
   }
-  .wc-buy__secure {
+  /* Kleingedrucktes (Zahlung, Versandraum, Vertragsschluss) als EIN Absatz, eine Größe. */
+  .wc-buy__fineprint {
     margin: 0.9rem 0 0;
     font-size: 0.78rem;
-    line-height: 1.45;
-    color: #6a6a6a;
-  }
-  /* Rechtlicher Hinweis: Vertragsschluss erst mit Versand. */
-  .wc-buy__contract {
-    margin: 0.5rem 0 0;
-    font-size: 0.78rem;
-    line-height: 1.45;
+    line-height: 1.5;
     color: #6a6a6a;
   }
   .wc-buy__links {
     margin: 0.5rem 0 0;
-    font-size: 0.76rem;
+    font-size: 0.78rem;
   }
   .wc-buy__links a {
     color: #4a4a4a;

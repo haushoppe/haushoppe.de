@@ -76,6 +76,24 @@ Taucht später eine **bessere Datei** auf — ein neues, hochauflösendes Foto d
 
 ---
 
+## 🔤 Design-Regel: einheitliche Schriften (VERBINDLICH)
+
+**Es gibt genau zwei Schriften, beide ausschließlich über die Tokens aus `src/styles/global.css`:**
+
+- **`var(--serif)`** (Merriweather) für Überschriften/Titel.
+- **`var(--sans)`** für Fließtext und UI.
+
+**Regeln:**
+
+- **Niemals Font-Stacks hartkodieren.** Kein `font-family: 'Merriweather', Georgia, serif`, kein `-apple-system, …` in Komponenten — immer `var(--serif)` bzw. `var(--sans)`.
+- **Schriftgrößen in `rem` (oder `em`), nie in `px`.** Keine neuen, willkürlichen Werte erfinden — wenige, wiederkehrende Stufen nutzen und dabei bleiben.
+- **Innerhalb eines Bausteins (Box, Karte, Absatzgruppe) konsistente Größen.** Nicht mehrere leicht unterschiedliche Größen stapeln (z. B. 0.72 / 0.76 / 0.78 / 0.8 nebeneinander). Ein Kleingedrucktes = eine Größe, ein Absatz. Zusammengehörige Hinweise als EINEN Absatz, nicht als drei mit je eigener Größe.
+- **⛔ Jedes Textelement bekommt eine explizite `font-size`.** Fehlt sie, erbt das Element eine abweichende Standardgröße und fällt aus der Reihe (genau dieser Bug ist schon passiert).
+
+> Portierte WordPress-Theme-Reste (px-Größen, fremde Font-Stacks, z. B. in `wp-design.css`) sind Altlast, kein Vorbild. Neue und geänderte Bereiche folgen dieser Regel.
+
+---
+
 ## 📎 Bilder & Dateien einfügen — über Google Drive
 
 **Ein in den Chat eingefügtes/„gepastetes" Bild kannst du NICHT committen** — es kommt nur als Bildinhalt an (du siehst es), nicht als Datei mit Bytes. **Bild- und Dateiaustausch läuft deshalb über den geteilten Google-Drive-Ordner:**

@@ -61,15 +61,13 @@ const icons: Record<string, string> = {
       </div>
     </div>
   </div>
-  <div class="site-footer__withdraw">
-    <a href={withdrawHref} class="site-footer__withdraw-btn" data-testid="withdraw-button">{withdrawLabel}</a>
-  </div>
   {
     footerPages.length > 0 && (
       <nav class="site-footer__legal" aria-label={lang === 'en' ? 'Legal' : 'Rechtliches'}>
         {footerPages.map((p) => (
           <a href={p.href}>{p.label}</a>
         ))}
+        <a href={withdrawHref} class="site-footer__withdraw-link" data-testid="withdraw-button">{withdrawLabel}</a>
       </nav>
     )
   }
@@ -146,25 +144,15 @@ const icons: Record<string, string> = {
       text-align: left;
     }
   }
-  /* Widerrufs-Button (§ 356a BGB): hervorgehoben, klar abgesetzt (kein reiner Textlink). */
-  .site-footer__withdraw {
-    text-align: center;
-    padding: 0 1rem 1.25rem;
+  /* Widerrufsfunktion (§ 356a BGB): direkt nach den Rechts-Links, nur dezent abgesetzt (dünner
+     Rahmen), nicht dominant. Leicht hervorgehoben, damit die Funktion auffindbar bleibt. */
+  .site-footer__withdraw-link {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 0.2em 0.7em;
   }
-  .site-footer__withdraw-btn {
-    display: inline-block;
-    padding: 0.6em 1.4em;
-    border: 1.5px solid #fff;
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-decoration: none;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  .site-footer__withdraw-btn:hover,
-  .site-footer__withdraw-btn:focus-visible {
-    background: #fff;
-    color: var(--footer-bg);
+  .site-footer__withdraw-link:hover,
+  .site-footer__withdraw-link:focus-visible {
+    border-color: #fff;
   }
   /* Rechtliches/Standalone-Links: zentrierte Zeile unter dem Kontaktblock */
   .site-footer__legal {
