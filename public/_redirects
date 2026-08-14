@@ -12,9 +12,6 @@
 # /nft-kaufen/ nicht auf .art, die Regeln sind auf der jeweils anderen Domain also inert.
 /nft-buy/*  https://theangelswing.art/nft-buy/:splat  301
 
-# DE-Fassungen: nur die englischen Artikel sind uebernommen, deshalb Slug fuer Slug auf das
-# englische Gegenstueck. Zum On-Cyber-Artikel gab es nie eine deutsche Fassung.
-/nft-kaufen/hintergrundwissen-zu-blockchain-token/  https://theangelswing.art/nft-buy/background-knowledge-to-blockchain-token/  301
-/nft-kaufen/nft-analysieren-und-bewerten/  https://theangelswing.art/nft-buy/nft-analyze-and-evaluate/  301
-/nft-kaufen/nft-derivate/  https://theangelswing.art/nft-buy/nft-derivatives/  301
-/nft-kaufen/*  https://theangelswing.art/nft-buy/  301
+# DE-Fassungen liegen dort unter denselben Pfaden, also ebenfalls 1:1. Zum On-Cyber-Artikel
+# gab es nie eine deutsche Fassung; der ist nur auf Englisch erreichbar.
+/nft-kaufen/*  https://theangelswing.art/nft-kaufen/:splat  301
