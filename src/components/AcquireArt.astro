@@ -28,6 +28,18 @@ const { content } = Astro.props;
   .acq-body :global(p) {
     margin: 0 0 1rem;
   }
+  /* Aufzählungen im Fließtext (z. B. Auftragsarbeiten): Einzug + Marker zurück,
+     nachdem Preflight list-style:none setzt. Trifft nicht das <details>-Akkordeon. */
+  .acq-body :global(ul) {
+    margin: 0 0 1rem;
+    padding-left: 1.5rem;
+    list-style: disc;
+  }
+  .acq-body :global(ol) {
+    margin: 0 0 1rem;
+    padding-left: 1.5rem;
+    list-style: decimal;
+  }
   /* Portrait: rechts neben der Intro-Prosa (float), räumt vor dem Akkordeon auf. */
   .acq-body :global(.acq-portrait) {
     float: right;

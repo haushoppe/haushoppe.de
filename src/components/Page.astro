@@ -34,10 +34,16 @@ const { title, hideTitle = false } = Astro.props;
     margin: 0 0 1rem;
     line-height: 1.8;
   }
-  /* Listen brauchen ihren Einzug zurück (sonst kleben die Bullets am linken Rand). */
+  /* Listen brauchen ihren Einzug + Marker zurück (Preflight setzt list-style:none). */
   .page__body :global(ul),
   .page__body :global(ol) {
     padding-left: 1.5rem;
+  }
+  .page__body :global(ul) {
+    list-style: disc;
+  }
+  .page__body :global(ol) {
+    list-style: decimal;
   }
   .page__body :global(a) {
     text-decoration: underline;

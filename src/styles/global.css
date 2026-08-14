@@ -1,8 +1,8 @@
-/* Tailwind v4 — Migrations-Stufe 0: Theme + Utilities OHNE Preflight (der bestehende Reset unten
-   bleibt vorerst, Preflight kommt in einer späteren Stufe). Kein sichtbarer Diff in dieser Stufe. */
-@layer theme, base, components, utilities;
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
+/* Tailwind v4 — vollständige Migration: kompletter Import inkl. Preflight (Reset). Ersetzt das
+   19-KB-WordPress-Bundle wp-design.css (gelöscht). Die eigenen Basisregeln unten stehen bewusst
+   OHNE @layer und schlagen damit Preflight (base-Layer) — sie bleiben die maßgebliche Typo-/Farb-
+   Quelle. Utilities/Theme kommen aus Tailwind, Layout-CSS aus den Komponenten. */
+@import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
 @theme {
@@ -14,8 +14,8 @@
   --color-paper: #ffffff;
 }
 
-/* Schlanke Design-Basis — Tokens exakt aus der Live-Seite gemessen. Ersetzt schrittweise
-   das 557-KB-Theme-Bundle. Wird NACH wp-design.css geladen und gewinnt bei Konflikten. */
+/* Schlanke Design-Basis — Tokens exakt aus der Live-Seite gemessen. Steht ohne @layer und
+   schlägt damit Preflight; ersetzt das frühere WordPress-Theme-Bundle vollständig. */
 :root {
   --serif: 'Merriweather', Georgia, 'Times New Roman', serif;
   --sans: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
@@ -47,6 +47,13 @@ body {
   line-height: 1.65;
   color: var(--text);
   background: var(--bg);
+  /* Wie zuvor (Theme-Bundle): kein horizontales Scrollen durch Randüberläufe. */
+  overflow-x: hidden;
+}
+/* Textauswahl wie im alten Theme: neutrales Grau, schwarze Schrift. */
+::selection {
+  background-color: #a6a6a6;
+  color: #000;
 }
 img {
   max-width: 100%;

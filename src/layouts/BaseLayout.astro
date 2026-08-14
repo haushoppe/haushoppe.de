@@ -1,7 +1,7 @@
 ---
 // Basis-Layout mit sauberen Header/Footer-Komponenten (statt portiertem Theme-Chrome).
-// wp-design.css bleibt vorerst geladen (Galerie/Detailseiten), global.css gewinnt bei
-// Konflikten; wird schrittweise durch schlankes CSS ersetzt.
+// Styling komplett aus global.css (Tailwind v4 inkl. Preflight) + Komponenten-CSS; das alte
+// WordPress-Bundle wp-design.css ist entfernt.
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -13,7 +13,6 @@ import { galleryJsonLd } from '../lib/seo';
 // Display-Schrift als Datei importieren -> gehashte URL, exakt die, die auch das @font-face nutzt
 // (gleicher Content-Hash), damit der Preload keinen Doppel-Download auslöst.
 import merriweather400 from '@fontsource/merriweather/files/merriweather-latin-400-normal.woff2';
-import '../styles/wp-design.css';
 import '../styles/global.css';
 import '@fontsource/merriweather/400.css';
 import '@fontsource/merriweather/700.css';
