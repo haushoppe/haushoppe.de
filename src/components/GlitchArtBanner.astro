@@ -1,0 +1,117 @@
+---
+// „Angeber"-Banner oben auf der Kategorie „Digitale Kunst": kurzer Loop-Clip von der Ausstellung
+// der Glitch-Art durch die Bitcoin Art Society in Hongkong (Bitcoin Conf Asia / Bitcoin Summit /
+// Runes Asia 2025). Autoplay stumm + Loop (browserkonform), Button zum Entstummen; bei
+// prefers-reduced-motion kein Autoplay, sondern native Steuerung.
+interface Props {
+  lang?: 'de' | 'en';
+}
+const { lang = 'de' } = Astro.props;
+const src = '/media/glitch-hong-kong-2025.mp4';
+const poster = '/media/glitch-hong-kong-2025.jpg';
+const creditHref = 'https://x.com/BtcArtSociety';
+const t =
+  lang === 'en'
+    ? {
+        label: 'Our glitch art exhibited in Hong Kong',
+        soundOn: 'Sound on',
+        soundOff: 'Sound off',
+        capA: 'Hong Kong: our glitch art, shown by the ',
+        credit: 'Bitcoin Art Society',
+        capB: ' during Bitcoin Conf Asia, Bitcoin Summit and Runes Asia 2025. After all, digital art looks best on a real wall.',
+      }
+    : {
+        label: 'Unsere Glitch-Art, ausgestellt in Hongkong',
+        soundOn: 'Ton an',
+        soundOff: 'Ton aus',
+        capA: 'Hongkong: Unsere Glitch-Art, gezeigt von der ',
+        credit: 'Bitcoin Art Society',
+        capB: ' während der Bitcoin Conf Asia, dem Bitcoin Summit und Runes Asia 2025. Digitale Kunst wirkt eben doch am schönsten auf einer echten Wand.',
+      };
+---
+
+<figure class="gav" data-testid="glitch-video">
+  <div class="gav__frame">
+    <video class="gav__video" src={src} poster={poster} autoplay muted loop playsinline preload="metadata" aria-label={t.label}></video>
+    <button type="button" class="gav__sound" data-gav-sound aria-pressed="false">{t.soundOn}</button>
+  </div>
+  <figcaption class="gav__caption">
+    {t.capA}<a href={creditHref} target="_blank" rel="noopener nofollow">{t.credit}</a>{t.capB}
+  </figcaption>
+</figure>
+
+<script define:vars={{ soundOn: t.soundOn, soundOff: t.soundOff }}>
+  (function () {
+    const fig = document.querySelector('.gav[data-testid="glitch-video"]');
+    if (!fig) return;
+    const v = fig.querySelector('.gav__video');
+    const btn = fig.querySelector('[data-gav-sound]');
+    // Reduce-Motion: nicht automatisch abspielen, stattdessen native Steuerung.
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.removeAttribute('autoplay');
+      v.controls = true;
+      try { v.pause(); } catch (e) {}
+      if (btn) btn.hidden = true;
+      return;
+    }
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      v.muted = !v.muted;
+      if (!v.muted) v.play().catch(function () {});
+      btn.textContent = v.muted ? soundOn : soundOff;
+      btn.setAttribute('aria-pressed', v.muted ? 'false' : 'true');
+    });
+  })();
+</script>
+
+<style>
+  .gav {
+    max-width: 1000px;
+    margin: 0 auto clamp(1.5rem, 4vw, 2.5rem);
+    padding-inline: 15px;
+  }
+  .gav__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+  }
+  .gav__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Entstummen-Button unten rechts, dezent über dem Clip. */
+  .gav__sound {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.42em 0.85em;
+    cursor: pointer;
+  }
+  .gav__sound:hover,
+  .gav__sound:focus-visible {
+    background: rgba(0, 0, 0, 0.82);
+  }
+  .gav__caption {
+    margin-top: 0.7rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #4a4a4a;
+    text-align: center;
+  }
+  .gav__caption a {
+    color: #000;
+    text-decoration: underline;
+  }
+</style>

@@ -35,6 +35,16 @@ test('Galerie: „online kaufbar"-Pill auf Holzschnitten und Ordinals, nicht bei
   await expect(page.getByTestId('gallery-buy')).toHaveCount(0);
 });
 
+// „Angeber"-Video nur auf der Kategorie Digitale Kunst.
+test('Kategorie Digitale Kunst: Glitch-Video oben, sonst nicht', async ({ page }, info) => {
+  const s = site(info);
+  await page.goto(`${s.galleryBase}/${s.cats[3].slug}/`); // Digitale Kunst / Digital Art
+  await expect(page.getByTestId('glitch-video')).toBeVisible();
+  await expect(page.getByTestId('glitch-video').locator('video')).toHaveCount(1);
+  await page.goto(`${s.galleryBase}/${s.cats[0].slug}/`); // Holzschnitte
+  await expect(page.getByTestId('glitch-video')).toHaveCount(0);
+});
+
 // Regressions-Anker: GENAU die 30 Holzschnitte tragen den Preis (keine Drift der isWoodcut-Logik).
 test('Genau 30 Holzschnitt-Seiten zeigen den Preis', async ({ page }, info) => {
   const s = site(info);

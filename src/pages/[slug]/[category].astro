@@ -4,6 +4,7 @@
 // Emittiert nur die Kategorien der aktuellen Build-Sprache (LANG bestimmt Wurzel + Slugs).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Gallery from '../../components/Gallery.astro';
+import GlitchArtBanner from '../../components/GlitchArtBanner.astro';
 import { galleryItems, galleryCategories } from '../../lib/artworks';
 import { LANG } from '../../lib/lang';
 
@@ -20,6 +21,8 @@ const base = LANG === 'de' ? '/werke' : '/artwork';
 const allLabel = LANG === 'de' ? 'Alle' : 'All';
 const cats = galleryCategories(LANG);
 const items = galleryItems(LANG).filter((it) => it.categorySlugs.includes(cat.slug));
+// „Angeber"-Video nur auf der Kategorie Digitale Kunst (DE) / Digital Art (EN).
+const showGlitchVideo = cat.slug === 'digitale-kunst' || cat.slug === 'digital-art';
 const title = `${cat.name} - HAUS HOPPE`;
 const description =
   LANG === 'de'
@@ -28,5 +31,6 @@ const description =
 ---
 
 <BaseLayout title={title} description={description}>
+  {showGlitchVideo && <GlitchArtBanner lang={LANG} />}
   <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={galleryItems(LANG).length} />
 </BaseLayout>
