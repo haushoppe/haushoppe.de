@@ -53,7 +53,7 @@ export const SITE: Record<Lang, SiteData> = {
       { slug: 'zeichnungen', label: 'Zeichnungen', count: 5 },
       { slug: 'digitale-kunst', label: 'Digitale Kunst', count: 5 },
     ],
-    camper: { path: '/kunst-und-camping/', title: 'Camper willkommen', cta: 'Anrufen' },
+    camper: { path: '/kunst-und-camping/', title: 'Kunst und Camping', cta: 'Anrufen' },
     work: { untitled: '1167', woodcut: '90-02-h-winter-im-dorf', ordinal: 'broke-johannes-x-olaf-2024' },
   },
   en: {
@@ -77,7 +77,7 @@ export const SITE: Record<Lang, SiteData> = {
       { slug: 'drawings', label: 'Drawings', count: 5 },
       { slug: 'digital-art', label: 'Digital Art', count: 5 },
     ],
-    camper: { path: '/art-and-camping/', title: 'Campers Welcome', cta: 'Call' },
+    camper: { path: '/art-and-camping/', title: 'Art and Camping', cta: 'Call' },
     work: { untitled: '1167', woodcut: '1990-02-h-winter-in-the-village', ordinal: 'broke-johannes-x-olaf-2024' },
   },
 };
