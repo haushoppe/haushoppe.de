@@ -13,8 +13,6 @@ const { lang = 'de' } = Astro.props;
 const t =
   lang === 'en'
     ? {
-        intro:
-          'With this form you can withdraw from a contract you concluded in our online shop. You do not need to give any reason. After submitting, you will receive a confirmation of receipt by email.',
         name: 'Your name',
         nameHelp: 'Please enter the name you used to order.',
         order: 'Order number',
@@ -45,8 +43,6 @@ const t =
         heading: 'Withdraw from contract',
       }
     : {
-        intro:
-          'Mit diesem Formular können Sie Ihren bei uns im Onlineshop geschlossenen Vertrag widerrufen. Sie müssen keinen Grund angeben. Nach dem Absenden erhalten Sie von uns eine Eingangsbestätigung per E-Mail.',
         name: 'Ihr Name',
         nameHelp: 'Bitte geben Sie den Namen an, mit dem Sie bestellt haben.',
         order: 'Bestellnummer',
@@ -82,8 +78,6 @@ const t =
 <section class="wf" data-testid="widerruf-form" data-lang={lang}>
   <!-- Stufe 1: Eingabemaske -->
   <form class="wf__step1" data-testid="widerruf-step1" novalidate>
-    <p class="wf__intro">{t.intro}</p>
-
     <label class="wf__field">
       <span class="wf__label">{t.name} *</span>
       <input name="name" type="text" autocomplete="name" required />
@@ -228,10 +222,6 @@ const t =
 <style>
   .wf {
     max-width: 640px;
-  }
-  .wf__intro {
-    margin: 0 0 1.5rem;
-    color: #333;
   }
   .wf__field {
     display: block;
