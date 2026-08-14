@@ -25,7 +25,7 @@ if (/^\/portfolio\//.test(path) || /^\/(werke|artwork)\//.test(path)) {
 }
 
 // Sprachwechsel: gleiches Werk/gleiche Seite auf der ANDEREN Domain (haushoppe.de ↔ haushoppe.art).
-const altUrl = OTHER_ORIGIN + (altOf(path) || '/');
+const altUrl = OTHER_ORIGIN + ((await altOf(path)) || '/');
 const flag = lang === 'en' ? 'de' : 'en';
 const flagLabel = lang === 'en' ? 'Zur deutschen Seite wechseln' : 'Switch to the English site';
 const searchLabel = lang === 'en' ? 'Search' : 'Suchen';

@@ -55,7 +55,7 @@ const path = normPath(Astro.url.pathname);
 // Nur ECHTE Pendants als hreflang ausgeben: fehlt der Alt-Pfad (kein lang-alt-Eintrag), zeigt der
 // Alternate sonst auf einen Cross-Domain-404. Dann lassen wir ihn weg (fail safe) — so kann eine
 // neue Kategorie-/Standalone-Seite ohne Paar nie mehr still auf eine 404 verlinken.
-const alt = altOf(path);
+const alt = await altOf(path);
 const dePath = lang === 'de' ? path : alt;
 const enPath = lang === 'en' ? path : alt;
 const canonical = SELF_ORIGIN + path;

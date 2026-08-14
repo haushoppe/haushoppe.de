@@ -4,7 +4,7 @@ import { glob } from 'astro/loaders';
 // Prosa-Seiten als MDX: <name>-<lang>.mdx (z. B. home-de.mdx, kontakt-en.mdx).
 // WICHTIG: Bindestrich, KEIN Punkt — die Glob-`id` entfernt Punkte (home.de → homede).
 // Body = editierbarer Fließtext; Frontmatter = strukturierte Assets (Bilder, Video-ID, Karte).
-// Strukturierte Listen (Vita, Werke) bleiben JSON; Config (Nav) bleibt site.ts.
+// Werke leben jetzt in der artworks-Collection (unten); Config (Nav) bleibt site.ts.
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
   schema: z.object({
@@ -82,11 +82,4 @@ const artworks = defineCollection({
     }),
 });
 
-// Übergangsweise noch aktiv (bis die Detailseite auf die neuen Werk-Bodies umgestellt ist).
-// Wird in Stufe 3 gelöscht — die Prosa wandert in die artworks-Bodies.
-const artworkExtra = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/artwork-extra' }),
-  schema: z.object({ title: z.string().optional() }),
-});
-
-export const collections = { pages, artworks, artworkExtra };
+export const collections = { pages, artworks };
