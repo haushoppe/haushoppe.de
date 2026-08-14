@@ -13,7 +13,7 @@ test('Holzschnitt: Kaufbox (785 EUR) + Buttons-Mount + E-Mail-CTA', async ({ pag
   await expect(buy).toBeVisible();
   await expect(buy).toContainText('785 €');
   await expect(buy).toContainText(
-    langOf(info) === 'en' ? 'Germany, Austria and Switzerland' : 'Deutschlands, Österreichs und der Schweiz',
+    langOf(info) === 'en' ? 'Germany, Austria and Switzerland' : 'Deutschland, Österreich und der Schweiz',
   );
   await expect(page.getByTestId('paypal-buttons')).toHaveCount(1);
   await expect(page.getByTestId('inquire-link')).toHaveCount(1);
