@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2013"
 number: "2013-09-A"
 date: "2013-09-24 19:14:00"
+order: 70
 category: paintings
 image: "../../artwork-originals/2021/04/2013-09-A-©-Olaf-Hoppe-„Sinfonia-Concertante-2013©-Acryl-auf-Leinwand-85-x-145-cm.jpg"
 de:

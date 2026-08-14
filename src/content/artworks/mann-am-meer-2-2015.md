@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2015"
 number: "2015-03-A"
 date: "2015-03-24 18:52:00"
+order: 61
 category: paintings
 image: "../../artwork-originals/2021/04/2015-03-A-©-Olaf-Hoppe-„Mann-am-Meer-2-2015©-Acryl-auf-Leinwand-90-x-122-cm.avif"
 de:

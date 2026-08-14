@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-16-A"
 date: "1996-11-10 11:20:00"
+order: 192
 category: paintings
 image: "../../artwork-originals/2021/04/1996-16-A©-Olaf-HoppeDanae-IIAcryl-auf-Leinwand-110-x-80-cm.jpg"
 de:

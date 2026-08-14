@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-12-A"
 date: "1992-12-29 12:20:00"
+order: 263
 category: paintings
 image: "../../artwork-originals/2021/04/1992-12-A©-Olaf-HoppeDas-GleichnisAcryl-auf-Leinwand-70-x-60-cm.jpg"
 de:

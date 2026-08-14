@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-02-A"
 date: "1993-02-28 10:33:00"
+order: 251
 category: paintings
 image: "../../artwork-originals/2021/04/1993-02-A©-Olaf-HoppeDie-GrundsatzdiskusionAcryl-auf-Leinwand-120-x-90-cm.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-04-A"
 date: "1992-04-29 12:34:00"
+order: 271
 category: paintings
 image: "../../artwork-originals/2021/04/1992-04-A©-Olaf-HoppeHeimkehrAcryl-auf-Leinwand-90-x-70-cm.jpg"
 de:

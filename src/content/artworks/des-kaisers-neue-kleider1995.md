@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-18-A"
 date: "1995-12-29 08:16:00"
+order: 204
 category: paintings
 image: "../../artwork-originals/2021/04/1995-03-A©-Olaf-HoppeDes-Kaisers-neue-KleiderAcryl-auf-Leinwand-95-x-130-cm.avif"
 de:

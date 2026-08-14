@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1990"
 number: "1989-07-A"
 date: "1990-07-03 18:55:00"
+order: 303
 category: paintings
 image: "../../artwork-originals/2021/05/1989-6-A-Olaf-Hoppe-„Stilleben-2-1990©-Acryl-auf-Leinwand-klein-cm.jpg"
 de:

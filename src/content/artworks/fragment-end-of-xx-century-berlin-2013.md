@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2013"
 number: "2014-05-A"
 date: "2014-05-24 19:00:00"
+order: 64
 category: paintings
 image: "../../artwork-originals/2021/04/2014-05-A-©-Olaf-Hoppe-„Fragment-end-of-xx-century-Berlin-2013©-Acryl-auf-Leinwand-125-x-95-cm.avif"
 de:

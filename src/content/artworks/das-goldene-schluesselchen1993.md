@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-18-A"
 date: "1993-12-18 10:02:00"
+order: 235
 category: paintings
 image: "../../artwork-originals/2021/04/1993-18-.-A©-Olaf-HoppeDas-goldene-SchluesselchenAcryl-auf-Leinwand-75-x-95-cmklein.avif"
 de:

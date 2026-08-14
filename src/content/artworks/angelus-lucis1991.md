@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1991-06-A"
 date: "1991-06-03 16:21:00"
+order: 284
 category: paintings
 image: "../../artwork-originals/2021/05/1991-06-A-Olaf-HoppeAngelus-LucisAcryl-auf-Leinwand-80-x-60-cm.avif"
 de:

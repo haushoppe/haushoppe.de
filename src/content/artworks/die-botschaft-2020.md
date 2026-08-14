@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2020"
 number: "2020-09-A"
 date: "2020-09-24 16:57:00"
+order: 27
 category: paintings
 image: "../../artwork-originals/2021/04/2020-09-A-Olaf-Hoppe-„Die-Botschaft-2020-©-Acryl-auf-Leinwand-75-x-200-cm-2020-09.avif"
 de:

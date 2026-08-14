@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1997"
 number: "1997-01-A"
 date: "1997-01-28 10:43:00"
+order: 186
 category: paintings
 image: "../../artwork-originals/2021/04/1997-01-A©-Olaf-HoppeSimeon-der-das-Kreuz-getragen-hatAcryl-auf-Leinwand-80-x-105-cm.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2014"
 number: "2014-02-A"
 date: "2014-02-24 19:07:00"
+order: 67
 category: paintings
 image: "../../artwork-originals/2021/04/2014-02-A-©-Olaf-Hoppe-Atlantis-2-Element-Erde-2014©-Acryl-auf-Leinwand-115-x-115-cm.avif"
 de:

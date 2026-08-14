@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-14-A"
 date: "1995-12-29 08:46:00"
+order: 208
 category: paintings
 image: "../../artwork-originals/2021/04/1995-14-A©-Olaf-HoppeDer-Erfolg-kommt-nicht-von-selbst-aber-auf-BestellungAcryl-auf-Leinwand-140-x-65-cm.avif"
 de:

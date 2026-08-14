@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-15-A"
 date: "1998-12-27 16:58:00"
+order: 168
 category: paintings
 image: "../../artwork-originals/2021/04/1998-15-A©-Olaf-HoppeGenesis-I-SonnenblumeAcryl-auf-Leinwand-115-x-115-cm.jpg"
 de:

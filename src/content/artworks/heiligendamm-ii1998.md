@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-10-A"
 date: "1998-10-28 09:22:00"
+order: 172
 category: paintings
 image: "../../artwork-originals/2021/04/1998-10-A©-Olaf-HoppeHeiligendamm-IIAcryl-auf-Leinwand-60-x-115cmbearbeitet.avif"
 de:

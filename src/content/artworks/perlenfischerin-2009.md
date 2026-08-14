@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2009"
 number: "2009-06-A"
 date: "2009-06-26 11:50:00"
+order: 111
 category: paintings
 image: "../../artwork-originals/2021/04/2009-06-A-Olaf-Hoppe-„Perlenfischerin-2009©-Acryl-auf-Leinwand-140-cm-x-75-cm.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-03-HZ"
 date: "1994-04-22 12:13:00"
+order: 19
 category: woodcuts
 image: "../../artwork-originals/2021/04/OL474F1.avif"
 de:

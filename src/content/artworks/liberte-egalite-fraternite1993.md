@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-05-A"
 date: "1993-05-29 10:28:00"
+order: 248
 category: paintings
 image: "../../artwork-originals/2021/04/1993-05-A©-Olaf-HoppeLiberte-Egalite-FraterniteAcryl-auf-Leinwand-105-x-85-cm.jpg"
 de:

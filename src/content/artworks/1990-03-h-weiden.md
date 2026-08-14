@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1990"
 number: "1990-03-H"
 date: "1990-03-05 14:40:00"
+order: 1
 category: woodcuts
 image: "../../artwork-originals/2020/12/90-03-H.jpg"
 de:

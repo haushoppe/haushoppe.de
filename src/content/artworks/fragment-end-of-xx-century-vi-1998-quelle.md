@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-04-A"
 date: "1998-04-28 09:38:00"
+order: 176
 category: paintings
 image: "../../artwork-originals/2021/04/1998-04-–-A-Olaf-Hoppe-„Fragment-end-of-XX.-century-VI-1998©-QuelleAcryl-auf-Leinwand-52-x-45-cm.avif"
 de:

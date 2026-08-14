@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2019"
 number: "2019-01-A"
 date: "2020-01-24 17:32:00"
+order: 39
 category: paintings
 image: "../../artwork-originals/2021/04/2019-01-A-©-Olaf-Hoppe-„Kompostion-12019-Acryl-auf-Leinwand-110-x-165-cm.avif"
 de:

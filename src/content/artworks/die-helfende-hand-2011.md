@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2011"
 number: "2011-05-A"
 date: "2011-05-25 10:04:00"
+order: 88
 category: paintings
 image: "../../artwork-originals/2021/04/2011-05-©-Olaf-Hoppe-Die-helfende-Hand-2011-Acryl-auf-Leinwand-75-x-62-cm-.avif"
 de:

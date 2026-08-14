@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2011"
 number: "2011-08-A"
 date: "2011-08-25 09:56:00"
+order: 85
 category: paintings
 image: "../../artwork-originals/2021/04/2011-08-©-Olaf-Hoppe-Dia-Ana-2011-Acryl-auf-Leinwand-155-x-55-cm.avif"
 de:

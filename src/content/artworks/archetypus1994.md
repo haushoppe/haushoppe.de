@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-12-A"
 date: "1994-12-29 09:17:00"
+order: 220
 category: paintings
 image: "../../artwork-originals/2021/04/1994-12-A©-Olaf-HoppeArchetypusAcryl-auf-Leinwand-110-x-75-cm.avif"
 de:

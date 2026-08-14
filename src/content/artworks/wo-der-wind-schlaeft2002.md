@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2002"
 number: "2002-03-A"
 date: "2002-03-27 15:47:00"
+order: 143
 category: paintings
 image: "../../artwork-originals/2021/04/2002-03-A©-Olaf-HoppeWo-der-Wind-schlaeftAcryl-auf-Leinwand-115-x-200-cm.jpg"
 de:

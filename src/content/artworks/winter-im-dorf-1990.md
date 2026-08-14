@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1990"
 number: "1989-02-A"
 date: "1989-02-03 18:14:00"
+order: 298
 category: paintings
 image: "../../artwork-originals/2021/05/1989-2-A-Olaf-Hoppe-„Winter-im-Dorf-1990©-Acryl-auf-Leinwandkleinnn-33-cm.avif"
 de:

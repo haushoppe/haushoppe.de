@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2005"
 number: "2005-01-HZ"
 date: "2005-01-16 12:43:00"
+order: 10
 category: woodcuts
 image: "../../artwork-originals/2021/04/2005-01.avif"
 de:

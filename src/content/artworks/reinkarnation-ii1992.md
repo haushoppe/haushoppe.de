@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-15-A"
 date: "1992-12-29 12:11:00"
+order: 260
 category: paintings
 image: "../../artwork-originals/2021/04/1992-15-A©-Olaf-HoppeReinkarnation-IIAcryl-auf-Leinwand-120-x-100-cmklein.avif"
 de:

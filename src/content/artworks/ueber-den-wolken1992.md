@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-06-A"
 date: "1992-06-29 12:31:00"
+order: 269
 category: paintings
 image: "../../artwork-originals/2021/04/1992-06-A©-Olaf-HoppeUeber-den-WolkenAcryl-auf-Leinwand-90-x-70-cm.avif"
 de:

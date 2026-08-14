@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2014"
 number: "2014-01-HZ"
 date: "2014-01-22 12:32:00"
+order: 22
 category: woodcuts
 image: "../../artwork-originals/2021/04/OL7D791.avif"
 de:

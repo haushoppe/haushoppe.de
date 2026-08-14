@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1991-01-HZ"
 date: "1991-01-22 12:19:00"
+order: 20
 category: woodcuts
 image: "../../artwork-originals/2021/04/P1040657-scaled.jpg"
 de:

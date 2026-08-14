@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2004"
 number: "2004-01-A"
 date: "2004-01-26 13:44:00"
+order: 132
 category: paintings
 image: "../../artwork-originals/2021/04/2004-01-A-Olaf-Hoppe-„Rose-Gebrueder-Grimm-2004©-Acryl-auf-Leinwand-115-x-115-cm.avif"
 de:

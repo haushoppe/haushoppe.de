@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2009"
 number: "2009-08-A"
 date: "2009-08-26 11:48:00"
+order: 110
 category: paintings
 image: "../../artwork-originals/2021/04/2009-08-A-Olaf-Hoppe-„Das-geschenkte-Universum-2009©-Acryl-auf-Leinwand-85-x-140-cm.avif"
 de:

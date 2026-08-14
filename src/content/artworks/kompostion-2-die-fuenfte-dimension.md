@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2019"
 number: "2019-03-A"
 date: "2020-03-24 17:27:00"
+order: 37
 category: paintings
 image: "../../artwork-originals/2021/04/2019-03-A-©-Olaf-Hoppe-„Kompostion-2-die-Fuenfte-Dimension-2019©-Acryl-auf-Leinwand-110-x-165-cm.avif"
 de:

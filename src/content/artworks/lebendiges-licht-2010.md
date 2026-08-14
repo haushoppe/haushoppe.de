@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2010"
 number: "2010-08-A"
 date: "2010-08-25 10:16:00"
+order: 93
 category: paintings
 image: "../../artwork-originals/2021/04/2010-13-©-Olaf-Hoppe-Lebendiges-Licht-2010-Acryl-auf-Leinwand-90-x-195-cm.jpg"
 de:

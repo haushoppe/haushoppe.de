@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2010"
 number: "2009-11-A"
 date: "2010-11-26 11:38:00"
+order: 107
 category: paintings
 image: "../../artwork-originals/2021/04/2009-11-A-Olaf-Hoppe-Salzwiese-Nordlicht2010©-Acryl-auf-Leinwand-65-x-185-cm.avif"
 de:

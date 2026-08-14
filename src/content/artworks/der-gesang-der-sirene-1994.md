@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-01-HZ"
 date: "1994-04-22 11:59:00"
+order: 16
 category: woodcuts
 image: "../../artwork-originals/2021/04/P1040643-der-gesang-der-Sirene-.avif"
 de:

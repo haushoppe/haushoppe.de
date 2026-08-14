@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1990-03-MT"
 date: "1991-03-03 16:55:00"
+order: 294
 category: paintings
 image: "../../artwork-originals/2021/05/1990-03-MT-Olaf-Hoppe-„Christus-nimmt-das-Kreuz-auf1991©Mischtechnik-auf-Papier-54-x-80-cm.jpg"
 de:

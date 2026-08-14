@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1997"
 number: "1997-02-A"
 date: "1997-04-28 10:24:00"
+order: 185
 category: paintings
 image: "../../artwork-originals/2021/04/1997-02-A-Olaf-Hoppe-„Veronika-die-das-Licht-bringt1997©Acryl-auf-Leinwand-80-x-105-cm.jpg"
 de:

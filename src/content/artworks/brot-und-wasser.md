@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2018"
 number: "2018-04-A"
 date: "2018-04-24 17:41:00"
+order: 43
 category: paintings
 image: "../../artwork-originals/2021/04/2018-04-A-Olaf-Hoppe-„Brot-und-Wasser-2018-Acryl-auf-Leinwand-55-x-90-cm.avif"
 de:

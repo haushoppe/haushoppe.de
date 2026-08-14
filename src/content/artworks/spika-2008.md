@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2008"
 number: "2008-01-A"
 date: "2008-01-26 13:17:00"
+order: 118
 category: paintings
 image: "../../artwork-originals/2021/04/2008-01-A-Olaf-Hoppe-„Spika-2008-©Acryl-auf-Leinwand-90-cm-x-120-cm.avif"
 de:

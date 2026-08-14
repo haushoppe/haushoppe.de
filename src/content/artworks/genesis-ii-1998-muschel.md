@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-19-A"
 date: "1998-12-30 16:49:00"
+order: 165
 category: paintings
 image: "../../artwork-originals/2021/04/1998-19-A©-Olaf-HoppeGenesis-II-MuschelAcryl-auf-Leinwand-115-x-115cm.jpg"
 de:

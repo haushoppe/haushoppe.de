@@ -3,26 +3,37 @@
 // stattdessen die Live-Inschrift (ordinalsbot-iframe) + Kauf-Link mit invertiertem Design.
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import type { CollectionEntry } from 'astro:content';
 import { ordinalData } from '../lib/ordinals';
 import ArtworkMeta from './ArtworkMeta.astro';
-import metaData from '../data/artwork-meta.json';
 import { contact } from '../data/site';
 import { SELF_ORIGIN } from '../lib/lang';
 import { isWoodcut, woodcutPrice } from '../lib/pricing';
 import WoodcutBuy from './WoodcutBuy.astro';
 
 interface Props {
-  art: any;
+  art: CollectionEntry<'artworks'>;
   image: ImageMetadata;
   lang?: 'de' | 'en';
   title?: string;
-  Extra?: any; // gerenderter Zusatz-Content (Beschreibung/Video) aus der artworkExtra-Collection
+  Extra?: any; // gerenderter Prosa-Body des Werks (nur wenn vorhanden)
 }
 const { art, image, lang = 'de', title, Extra } = Astro.props;
 const ord = ordinalData(art);
-// Strukturierte Werk-Beschriftung (Ordinals bekommen keine — eigener Sonderfall).
-// Key = trid (für DE + EN identisch).
-const meta = ord ? null : (metaData as Record<string, any>)[art.trid];
+const side = art.data[lang];
+// Strukturierte Werk-Beschriftung (Ordinals bekommen keine — eigener Sonderfall), bereits für die
+// aktive Sprache aufgelöst.
+const meta = ord
+  ? null
+  : {
+      artist: art.data.artist,
+      title: side.captionTitle,
+      year: art.data.year,
+      technique: side.technique,
+      dimensions: side.dimensions,
+      number: art.data.number,
+      edition: side.edition,
+    };
 const t =
   lang === 'en'
     ? {
@@ -39,8 +50,8 @@ const t =
 // „Interesse anfragen" pro Werk: mailto mit vorausgefülltem Betreff + Text (Titel, Werk-Nummer und
 // Link zur Werk-Seite), damit die Anfrage bei team@haushoppe.de eindeutig zuzuordnen ist. Empfänger
 // kommt aus site.ts (eine Quelle). Ordinals bekommen keinen (eigener Kauf-Flow).
-const rawTitle = ((lang === 'en' ? meta?.en?.title || meta?.title : meta?.title) || title || art.title || '').trim();
-const num = (meta?.number || '').trim();
+const rawTitle = (side.captionTitle || title || side.title || '').trim();
+const num = (art.data.number || '').trim();
 const numSuffix = num ? ` (${num})` : '';
 // Werk-Referenz für Betreff/Text: „Titel“ (Nummer). Fehlt der Titel (unbetitelte Werke), nur die
 // Nummer statt eines leeren „“; fehlt auch die, generisch „dieses Werk“.
@@ -57,10 +68,11 @@ const named = rawTitle
       : 'dieses Werk';
 const workUrl = new URL(Astro.url.pathname, SELF_ORIGIN).href;
 // Slug für die PayPal-Kaufbox (Kennzeichnung der Bestellung) — aus dem Werk oder dem Pfad.
-const slug = (art.slug || Astro.url.pathname.split('/').filter(Boolean).pop() || '').trim();
+const slug = (side.slug || Astro.url.pathname.split('/').filter(Boolean).pop() || '').trim();
 // Holzschnitte haben einen festen Preis: in die Mail aufnehmen und statt „Preis erfahren" nach der
 // Verfügbarkeit fragen. Andere Werke (Gemälde) bleiben ohne Preis (Anfrage zu Verfügbarkeit UND Preis).
-const woodcut = isWoodcut(meta);
+// Erkennung sprachneutral über die DE-Technik + Werk-Nummer.
+const woodcut = isWoodcut({ technique: art.data.de.technique, number: art.data.number });
 const price = woodcut ? woodcutPrice(lang) : null;
 const bodyLead = woodcut
   ? lang === 'en'
@@ -96,7 +108,7 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
         <div class="ordinal-frame">
           <iframe
             src={ord.iframe}
-            title={art.title}
+            title={side.title}
             loading="lazy"
             referrerpolicy="no-referrer"
             sandbox="allow-scripts allow-same-origin"
@@ -119,10 +131,10 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
           fallbackFormat="webp"
           widths={[480, 960, 1440]}
           sizes="(max-width: 1000px) 92vw, 900px"
-          alt={art.title}
+          alt={title || side.title}
           loading="eager"
         />
-        {meta && <ArtworkMeta meta={meta} lang={lang} />}
+        {meta && <ArtworkMeta meta={meta} price={price} />}
       </figure>
       {woodcut && <WoodcutBuy slug={slug} lang={lang} title={rawTitle} />}
       <p class="art-inquire-wrap">

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1999"
 number: "1999-01-HZ"
 date: "1999-01-22 11:36:00"
+order: 13
 category: woodcuts
 image: "../../artwork-originals/2021/04/Olaf-Hoppe-Das-Boot-und-das-Meer-1999-Holzschnitt-von-5-Druckplatten-Auflage-120-auf-Rives-Buetten-Motiv-38-x-46-cm-.jpg"
 de:

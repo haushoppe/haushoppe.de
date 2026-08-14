@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1991-05-A"
 date: "1991-05-03 16:23:00"
+order: 285
 category: paintings
 image: "../../artwork-originals/2021/05/1991-05-A©-Olaf-HoppeChatte-et-sourisAcryl-auf-Leinwand-80-x-60-cm.avif"
 de:

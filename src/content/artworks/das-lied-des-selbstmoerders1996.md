@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-21-A"
 date: "1996-12-28 11:07:00"
+order: 188
 category: paintings
 image: "../../artwork-originals/2021/04/1996-21-A©-Olaf-HoppeDas-Lied-des-SelbstmoerdersAcryl-auf-Leinwand-105-x-80-cm.jpg"
 de:

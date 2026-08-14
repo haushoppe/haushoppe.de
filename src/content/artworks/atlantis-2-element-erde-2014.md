@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2014"
 number: "2014-02-HZ"
 date: "2014-02-22 12:45:00"
+order: 23
 category: woodcuts
 image: "../../artwork-originals/2021/04/Hoppe-Atlantis-2-Gruen-2014-Holzschnitt-von-7-Holzstoecken-Auflage-200-Exemplare-auf-Buetten-Motivgroesse-37-x-37-cm-Blattformat-52-x-52-cm.avif"
 de:

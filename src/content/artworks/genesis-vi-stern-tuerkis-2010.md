@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2010"
 number: "2010-01-HZ"
 date: "2010-01-16 12:06:00"
+order: 6
 category: woodcuts
 image: "../../artwork-originals/2021/04/Diestel-P1000060.jpg"
 de:

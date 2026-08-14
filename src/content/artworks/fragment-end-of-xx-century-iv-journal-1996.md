@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-22-A"
 date: "1996-12-28 11:05:00"
+order: 187
 category: paintings
 image: "../../artwork-originals/2021/04/1996-22-A-Olaf-Hoppe-„Fragment-end-of-XX.-century-IV-Journal-1996©Acryl-auf-Leinwand-50-x-40-cm.avif"
 de:

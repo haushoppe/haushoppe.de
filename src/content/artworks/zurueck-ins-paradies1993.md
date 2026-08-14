@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-09-A"
 date: "1993-09-29 10:20:00"
+order: 244
 category: paintings
 image: "../../artwork-originals/2021/04/1993-09-.-A©-Olaf-HoppeZurueck-ins-ParadiesAcryl-auf-Leinwand-110-x-75-cmbearbeitetklein.jpg"
 de:

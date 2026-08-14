@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2004"
 number: "2004-01-HZ"
 date: "2004-01-16 12:28:00"
+order: 8
 category: woodcuts
 image: "../../artwork-originals/2021/04/DONUMD2.avif"
 de:

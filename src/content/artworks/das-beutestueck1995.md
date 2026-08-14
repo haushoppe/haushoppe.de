@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-10-A"
 date: "1995-10-29 08:53:28"
+order: 212
 category: paintings
 image: "../../artwork-originals/2021/04/1995-10-A©-Olaf-HoppeDas-BeutestueckAcryl-auf-Leinwand-60-x-55-cm.avif"
 de:

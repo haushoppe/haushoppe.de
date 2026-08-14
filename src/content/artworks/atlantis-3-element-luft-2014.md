@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2014"
 number: "2014-06-A"
 date: "2014-06-24 18:57:00"
+order: 63
 category: paintings
 image: "../../artwork-originals/2021/04/2014-06-A-©-Olaf-Hoppe-„Atlantis-3-Element-Luft-2014©-Acryl-auf-Leinwand-115-x-115-cm.avif"
 de:

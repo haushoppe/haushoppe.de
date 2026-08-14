@@ -1,44 +1,33 @@
 ---
-// Konsistente Werk-Beschriftung aus strukturierten Feldern (src/data/artwork-meta.json) —
-// ersetzt das Raten aus dem uneinheitlichen WP-Content. Pflicht: Titel · Jahr · Technik ·
-// Maße · interne Nummer; optional: Auflage (nur Drucke). Freier Text (Beschreibung, Quelle,
-// Auszeichnung) lebt jetzt in der Content-Collection artwork-extra, nicht mehr hier.
-import { isWoodcut, woodcutPrice } from '../lib/pricing';
+// Konsistente Werk-Beschriftung aus strukturierten Feldern (aus der artworks-Collection, bereits
+// für die aktive Sprache aufgelöst). Pflicht: Titel · Jahr · Technik · Maße · interne Nummer;
+// optional: Auflage (nur Drucke) + fester Holzschnitt-Preis (als price-Prop übergeben).
 export interface ArtworkMetaData {
   artist: string;
-  title: string;
+  title: string; // bereinigter Beschriftungs-Titel (captionTitle)
   year: string;
   technique: string;
   dimensions: string; // „Maße" — Gemälde „90 × 170 cm", Druck „Motivgröße … Blattformat …"
   number: string;
   edition?: string; // Auflage (nur Drucke)
-  en?: { title?: string; technique?: string; dimensions?: string; edition?: string };
 }
 
 interface Props {
   meta: ArtworkMetaData;
-  lang?: 'de' | 'en';
+  price?: { amount: string; note: string } | null;
 }
-const { meta, lang = 'de' } = Astro.props;
+const { meta, price = null } = Astro.props;
 
-// EN überschreibt nur die übersetzbaren Felder; Künstler/Jahr/Nummer bleiben identisch.
-const en = lang === 'en' ? meta.en : undefined;
-const title = en?.title || meta.title;
-const technique = (en?.technique || meta.technique || '').trim();
-// Maße sind sprachneutral: leeres EN fällt auf DE zurück. „?“ = unbekannt → nicht anzeigen.
-// Maße dimensional eindeutig: „79 × 110 cm“ → „79 cm × 110 cm“ (idempotent, greift auch bei Handeingaben).
-const rawDim = (en?.dimensions || meta.dimensions || '').trim().replace(/(\d+)\s*×\s*(\d+)\s*cm/g, '$1 cm × $2 cm');
+// Maße dimensional eindeutig: „79 × 110 cm" → „79 cm × 110 cm" (idempotent). „?" = unbekannt → weg.
+const rawDim = (meta.dimensions || '').trim().replace(/(\d+)\s*×\s*(\d+)\s*cm/g, '$1 cm × $2 cm');
 const dimensions = rawDim === '?' ? '' : rawDim;
-// leeres EN fällt auf DE zurück (wie Titel/Technik/Maße) — nicht ??, sonst bleibt EN leer statt DE.
-const edition = (en?.edition || meta.edition || '').trim();
+const edition = (meta.edition || '').trim();
 // Technik + Maße als eine saubere Zeile (kein JSX-Whitespace).
-const techLine = [technique, dimensions].filter(Boolean).join(', ');
-// Fester Preis für Holzschnitte (785 EUR, inkl. 7 % MwSt, versandkostenfrei) — nur bei Drucken.
-const price = isWoodcut(meta) ? woodcutPrice(lang) : null;
+const techLine = [meta.technique, dimensions].filter(Boolean).join(', ');
 ---
 
 <figcaption class="art-meta">
-  <span class="art-meta__title">{meta.artist} · „{title}“ · {meta.year}</span>
+  <span class="art-meta__title">{meta.artist} · „{meta.title}“ · {meta.year}</span>
   {techLine && <span class="art-meta__tech">{techLine}</span>}
   {edition && <span class="art-meta__edition">{edition}</span>}
   {meta.number && <span class="art-meta__num" data-testid="artwork-number">{meta.number}</span>}

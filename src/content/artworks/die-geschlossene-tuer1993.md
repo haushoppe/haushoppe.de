@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-16-A"
 date: "1993-12-29 10:06:00"
+order: 237
 category: paintings
 image: "../../artwork-originals/2021/04/1993-16-.-A©-Olaf-HoppeDie-geschlossene-TuerAcryl-auf-Leinwand-80-x-110klein.jpg"
 de:

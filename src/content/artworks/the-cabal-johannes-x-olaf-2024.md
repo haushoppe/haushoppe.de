@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: ""
 number: "2024-02-O4"
 date: "2024-01-04 10:54:57"
+order: 320
 category: digital-art
 image: "../../artwork-originals/2024/01/the_cabal.png"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2000"
 number: "2000-02-A"
 date: "2000-02-27 16:34:00"
+order: 159
 category: paintings
 image: "../../artwork-originals/2021/04/2000-02-A©-Olaf-HoppeAjina-das-Auge-der-WeisheitAcryl-auf-Leinwand-110-x-080-cm.avif"
 de:

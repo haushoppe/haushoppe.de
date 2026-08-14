@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1990"
 number: "1989-04-A"
 date: "1989-04-03 18:50:00"
+order: 300
 category: paintings
 image: "../../artwork-originals/2021/05/1989-4-A-Olaf-Hoppe-„Leuchturm-Timmendorf-1990©-Acryl-auf-Leinwand-klein6cm.jpg"
 de:

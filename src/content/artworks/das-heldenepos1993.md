@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-12-A"
 date: "1993-12-01 10:12:00"
+order: 241
 category: paintings
 image: "../../artwork-originals/2021/04/1993-12-.-A©-Olaf-HoppeDas-HeldeneposAcryl-auf-Leinwand-80-x-110-cmbearbeitetklein.jpg"
 de:

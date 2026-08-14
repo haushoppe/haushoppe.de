@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-07-A"
 date: "1992-07-29 12:29:00"
+order: 268
 category: paintings
 image: "../../artwork-originals/2021/04/1992-07-.-A©-Olaf-HoppeSommer-im-24-TaktAcryl-auf-Leinwand-70-x-60-cm.avif"
 de:

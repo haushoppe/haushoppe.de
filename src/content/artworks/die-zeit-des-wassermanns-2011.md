@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2011"
 number: "2011-07-A"
 date: "2011-07-25 09:58:00"
+order: 86
 category: paintings
 image: "../../artwork-originals/2021/04/2011-07-©-Olaf-Hoppe-Regen-2011-Acryl-auf-Leinwand-85-x-145-cm.avif"
 de:

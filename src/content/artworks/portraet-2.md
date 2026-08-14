@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2016"
 number: "2016-11"
 date: "2000-04-25 11:13:00"
+order: 101
 category: drawings
 image: "../../artwork-originals/2021/04/20161005_031010.avif"
 de:

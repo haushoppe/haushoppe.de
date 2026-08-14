@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2015"
 number: "2015-09-A"
 date: "2015-09-24 18:34:00"
+order: 55
 category: paintings
 image: "../../artwork-originals/2021/04/2015-09-A-Olaf-Hoppe-„Grasland-2015©-Acryl-auf-Leinwand-140-cm-x-80-cm.avif"
 de:

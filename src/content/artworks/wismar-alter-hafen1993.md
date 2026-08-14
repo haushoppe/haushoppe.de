@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-03-A"
 date: "1993-03-29 10:31:00"
+order: 250
 category: paintings
 image: "../../artwork-originals/2021/04/1993-03-A©-Olaf-HoppeWismar-Alter-HafenAcryl-auf-Leinwand-100-x-140-cm.jpg"
 de:

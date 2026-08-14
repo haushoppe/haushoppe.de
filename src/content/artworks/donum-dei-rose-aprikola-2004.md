@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2004"
 number: "2004-02-HZ"
 date: "2004-02-16 12:09:00"
+order: 7
 category: woodcuts
 image: "../../artwork-originals/2021/04/Holzschnitt-Aprikola-web-b.gif"
 de:

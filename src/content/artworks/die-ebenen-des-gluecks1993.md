@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-08-A"
 date: "1993-08-29 10:22:00"
+order: 245
 category: paintings
 image: "../../artwork-originals/2021/04/1993-08-A©-Olaf-HoppeDie-Ebenen-des-GluecksAcryl-auf-Leinwand-105-x-90-cm.avif"
 de:

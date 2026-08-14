@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2020"
 number: "2020-08-A"
 date: "2020-08-24 16:59:00"
+order: 28
 category: paintings
 image: "../../artwork-originals/2021/04/2020-08-A-©-Olaf-Hoppe-„-Die-zur-Seegehoerige-2020©-Acryl-auf-Leinwand-100-x-165-cm95-x-135-cm.jpg"
 de:

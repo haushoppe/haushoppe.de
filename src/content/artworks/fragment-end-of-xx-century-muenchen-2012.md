@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2012"
 number: "2017-01-A"
 date: "2017-01-24 17:50:00"
+order: 46
 category: paintings
 image: "../../artwork-originals/2021/04/2017-01-A-©-Olaf-Hoppe-„Fragment-end-of-xx-century-Muenchen-2012-Acryl-auf-Leinwand-125-x-95-cm.avif"
 de:

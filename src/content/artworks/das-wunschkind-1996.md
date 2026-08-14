@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-01-A"
 date: "1996-06-15 12:00:00"
+order: 331
 category: paintings
 image: "../../artwork-originals/2021/04/das-wunschkind-1996.jpg"
 de:

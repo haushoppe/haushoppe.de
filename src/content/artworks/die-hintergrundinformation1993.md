@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-06-A"
 date: "1993-06-29 10:26:00"
+order: 247
 category: paintings
 image: "../../artwork-originals/2021/04/1993-06A©-Olaf-Hoppe-„Die-HintergrundinformationAcryl-auf-Leinwand-95-x-85-cm.avif"
 de:

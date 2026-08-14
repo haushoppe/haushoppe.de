@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-19-A"
 date: "1996-12-10 11:12:00"
+order: 190
 category: paintings
 image: "../../artwork-originals/2021/04/1996-19-–-A-©-Olaf-HoppeDas-Lied-des-IdiotenAcryl-auf-Leinwand-105-x-80-cm.jpg"
 de:

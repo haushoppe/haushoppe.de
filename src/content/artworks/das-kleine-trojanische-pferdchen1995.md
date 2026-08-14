@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-08-A"
 date: "1995-08-29 09:03:00"
+order: 214
 category: paintings
 image: "../../artwork-originals/2021/04/1995-08-A©-Olaf-HoppeDas-kleine-trojanische-PferdchenAcryl-auf-Leinwand-080-x-065-cm.avif"
 de:

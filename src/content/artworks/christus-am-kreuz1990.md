@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1990"
 number: "1990-05-MT"
 date: "1990-05-03 16:52:00"
+order: 292
 category: paintings
 image: "../../artwork-originals/2021/05/1990-05-MT-Olaf-Hoppe-„Christus-am-Kreuz1990-©-Mischtechnik-auf-Papier-89-x-60-cm.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-13-A"
 date: "1995-12-13 08:48:00"
+order: 209
 category: paintings
 image: "../../artwork-originals/2021/04/1995-13-A©-Olaf-Hoppe-„Arceus-I-BrotAcryl-auf-Leinwand-70-x-110-cm.avif"
 de:

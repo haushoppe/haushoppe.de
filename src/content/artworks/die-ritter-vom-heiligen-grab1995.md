@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-07-A"
 date: "1995-07-29 09:05:00"
+order: 215
 category: paintings
 image: "../../artwork-originals/2021/04/1995-07-A©-Olaf-HoppeDie-Ritter-vom-Heiligen-GrabAcryl-auf-Leinwand-95-x-80-cm.avif"
 de:

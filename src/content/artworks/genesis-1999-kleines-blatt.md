@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1999"
 number: "1999-00-A"
 date: "1999-01-27 16:46:00"
+order: 164
 category: paintings
 image: "../../artwork-originals/2021/04/1999-01-A©-Olaf-HoppeGenesis-Kleines-BlattAcryl-auf-Leinwand-40-x-45-cm.jpg"
 de:

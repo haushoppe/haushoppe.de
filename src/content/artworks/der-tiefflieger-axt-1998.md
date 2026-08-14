@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-07-A"
 date: "1998-06-15 12:00:00"
+order: 332
 category: paintings
 image: "../../artwork-originals/2021/04/der-tiefflieger-axt-1998.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-13-A"
 date: "1993-12-13 10:11:00"
+order: 240
 category: paintings
 image: "../../artwork-originals/2021/04/1993-13-.-A©-Olaf-HoppeVernissage-der-4.-DimensionAcryl-auf-Leinwand-90-x-105-cmklein.avif"
 de:

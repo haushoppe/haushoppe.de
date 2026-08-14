@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-10-A"
 date: "1993-10-29 10:18:00"
+order: 243
 category: paintings
 image: "../../artwork-originals/2021/04/1993-10-.-A©-Olaf-HoppeIm-Kreise-des-KromlechAcryl-auf-Leinwand-100-x-85-cmklein.jpg"
 de:

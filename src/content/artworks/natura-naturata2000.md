@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2000"
 number: "2000-07-A"
 date: "2000-07-27 16:23:00"
+order: 154
 category: paintings
 image: "../../artwork-originals/2021/04/2000-07-A©-Olaf-Hoppe-Natura-naturataAcryl-auf-Leinwand-50-x-145-cm.avif"
 de:

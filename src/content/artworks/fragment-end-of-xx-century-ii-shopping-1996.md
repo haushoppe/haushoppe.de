@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-13-A"
 date: "1996-10-15 11:38:00"
+order: 195
 category: paintings
 image: "../../artwork-originals/2021/04/1996-13-A©-Olaf-HoppeFragment-end-of-XX.-century-II-shoppingAcryl-auf-Leinwand-40-x-60-cm.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-04-A"
 date: "1995-04-03 13:57:00"
+order: 277
 category: paintings
 image: "../../artwork-originals/2021/05/1995-04-A-Olaf-Hoppe-„Deutschland-ein-Wintermaerchen1995©Acryl-auf-Leinwand-100-x-65-cm.avif"
 de:

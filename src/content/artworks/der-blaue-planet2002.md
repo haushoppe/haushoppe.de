@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2002"
 number: "2002-01-A"
 date: "2002-01-27 15:51:00"
+order: 145
 category: paintings
 image: "../../artwork-originals/2021/04/2002-01-A©-Olaf-HoppeDer-blaue-PlanetAcryl-auf-Leinwand-085-x-150-cm.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2020"
 number: "2020-04-A"
 date: "2020-04-24 17:13:00"
+order: 32
 category: paintings
 image: "../../artwork-originals/2021/04/2020-04-A-©-Olaf-Hoppe-„-Wiese-mit-Klatschmohn2020-©-Acryl-auf-Leinwand-65-x-110-cm.avif"
 de:

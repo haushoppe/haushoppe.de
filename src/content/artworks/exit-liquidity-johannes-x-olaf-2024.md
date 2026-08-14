@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: ""
 number: "2024-02-O2"
 date: "2024-01-02 10:48:50"
+order: 318
 category: digital-art
 image: "../../artwork-originals/2024/01/exit_liquidity.png"
 de:

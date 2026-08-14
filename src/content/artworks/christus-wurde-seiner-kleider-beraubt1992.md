@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-01-MT"
 date: "1992-01-03 14:07:00"
+order: 280
 category: paintings
 image: "../../artwork-originals/2021/05/1990-07-MT-Olaf-Hoppe-„Christus-wurde-seiner-Kleider-beraubt1990©Mischtechnik-auf-Papier-88-x-56-cmohne-rand.avif"
 de:

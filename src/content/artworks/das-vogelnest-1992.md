@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-23-A"
 date: "1992-06-15 12:00:00"
+order: 330
 category: paintings
 image: "../../artwork-originals/2021/04/das-vogelnest-1992.jpg"
 de:

@@ -3,37 +3,34 @@
 // Sprache = Domain: derselbe Pfad in DE (haushoppe.de) und EN (haushoppe.art), je eigener Slug.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArtworkBody from '../../components/ArtworkBody.astro';
-import artworksData from '../../data/artworks.json';
-import type { ImageMetadata } from 'astro';
+import { getCollection, render } from 'astro:content';
 import { getImage } from 'astro:assets';
-import { artworkImage, hasArtworkImage } from '../../lib/artwork-images';
-import { galleryItems } from '../../lib/artworks';
+import { galleryItems, type Art } from '../../lib/artworks';
 import { ordinalData } from '../../lib/ordinals';
 import { artworkJsonLd } from '../../lib/seo';
 import { smartQuotes } from '../../lib/text';
 import { LANG, SELF_ORIGIN } from '../../lib/lang';
-import { getCollection, render } from 'astro:content';
 
-export function getStaticPaths() {
-  const arts = artworksData as any[];
-  const detailArts = arts.filter((a) => a.type === 'portfolio' && a.lang === LANG && hasArtworkImage(a.id));
+export async function getStaticPaths() {
+  // Alle Werke mit Bild bekommen eine Detailseite (auch versteckte — per Direkt-URL erreichbar,
+  // via noindex nicht indexiert).
+  const arts = (await getCollection('artworks')).filter((a) => a.data.image);
   // Prev/Next in EXAKT der Galerie-Reihenfolge (chronologisch), inklusive Ordinals — zyklisch,
-  // damit man endlos durchblättern kann. Nur Einträge, die auch eine Detailseite haben.
-  const detailIds = new Set(detailArts.map((a) => a.id));
-  const order = galleryItems(LANG).filter((it) => detailIds.has(it.id));
-  const idx = new Map(order.map((it, i) => [it.id, i]));
+  // damit man endlos durchblättern kann. Versteckte Werke stehen nicht in der Galerie → kein Prev/Next.
+  const chain = (await galleryItems(LANG)).filter((it) => new Set(arts.map((a) => a.id)).has(it.id));
+  const idx = new Map(chain.map((it, i) => [it.id, i]));
   // Zweite Kette OHNE Ordinals — fürs Lightbox-Blättern (Ordinals haben kein Zoom-Bild).
-  const ordinalIds = new Set(detailArts.filter((a) => ordinalData(a) != null).map((a) => a.id));
-  const imgOrder = order.filter((it) => !ordinalIds.has(it.id));
+  const ordinalIds = new Set(arts.filter((a) => ordinalData(a) != null).map((a) => a.id));
+  const imgOrder = chain.filter((it) => !ordinalIds.has(it.id));
   const imgIdx = new Map(imgOrder.map((it, i) => [it.id, i]));
-  const around = (a: any) => {
+  const around = (a: Art) => {
     const i = idx.get(a.id);
     const full =
-      i == null || order.length < 2
+      i == null || chain.length < 2
         ? { prev: null, next: null }
         : {
-            prev: { href: order[(i - 1 + order.length) % order.length].detailUrl, title: order[(i - 1 + order.length) % order.length].title },
-            next: { href: order[(i + 1) % order.length].detailUrl, title: order[(i + 1) % order.length].title },
+            prev: { href: chain[(i - 1 + chain.length) % chain.length].detailUrl, title: chain[(i - 1 + chain.length) % chain.length].title },
+            next: { href: chain[(i + 1) % chain.length].detailUrl, title: chain[(i + 1) % chain.length].title },
           };
     const j = imgIdx.get(a.id);
     const hasImgChain = j != null && imgOrder.length > 1;
@@ -43,32 +40,34 @@ export function getStaticPaths() {
       lbNext: hasImgChain ? imgOrder[(j + 1) % imgOrder.length].detailUrl : null,
     };
   };
-  // Titel typografisch säubern (DE „…“, EN “…”) — an dieser Wurzel, damit art.title überall stimmt.
-  return detailArts.map((a) => ({
-    params: { slug: a.slug },
-    props: { art: { ...a, title: smartQuotes(a.title, LANG) }, image: artworkImage(a.id), ...around(a) },
+  return arts.map((a) => ({
+    params: { slug: a.data[LANG].slug },
+    props: { art: a, image: a.data.image, ...around(a) },
   }));
 }
 
 const { art, image, prev, next, lbPrev, lbNext } = Astro.props as {
-  art: any;
-  image: ImageMetadata;
+  art: Art;
+  image: import('astro').ImageMetadata;
   prev: { href: string; title: string } | null;
   next: { href: string; title: string } | null;
   lbPrev: string | null;
   lbNext: string | null;
 };
-const desc = LANG === 'de' ? `${art.title}, Werk von Olaf Hoppe.` : `${art.title}, artwork by Olaf Hoppe.`;
+const side = art.data[LANG];
+// Titel typografisch säubern (DE „…“, EN “…”).
+const title = smartQuotes(side.title, LANG);
+const desc = LANG === 'de' ? `${title}, Werk von Olaf Hoppe.` : `${title}, artwork by Olaf Hoppe.`;
 // Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
 const isOrdinal = ordinalData(art) != null;
 // Auf der Ordinal-Detailseite steht die Kollab schon im Eyebrow (Johannes × Olaf) — daher
 // das „(Johannes x Olaf)" aus dem angezeigten Titel entfernen. In der Galerie bleibt es.
-const displayTitle = isOrdinal ? art.title.replace(/\s*\(Johannes\s*[x×]\s*Olaf\)/i, '') : art.title;
+const displayTitle = isOrdinal ? title.replace(/\s*\(Johannes\s*[x×]\s*Olaf\)/i, '') : title;
 
-// Optionaler Zusatz-Content (Beschreibung/Video) aus der Collection „artworkExtra" — nur wenn zu
-// diesem Werk-Slug ein Eintrag existiert. Struktur bleibt im JSON; nur die Prosa kommt als Content.
-const extraEntry = (await getCollection('artworkExtra')).find((e) => e.id === art.slug);
-const ExtraContent = extraEntry ? (await render(extraEntry)).Content : undefined;
+// Optionaler Prosa-Body des Werks (Beschreibung/Video) — nur wenn für diese Sprache vorhanden.
+// Die <De>/<En>-Blöcke im Body prunen die jeweils andere Sprache zur Build-Zeit weg.
+const hasProse = LANG === 'de' ? art.data.prose?.de : art.data.prose?.en;
+const ExtraContent = hasProse ? (await render(art)).Content : undefined;
 
 // Social-Preview (das Gemälde) + VisualArtwork-JSON-LD. Ordinals haben kein Bild -> Default-OG.
 let ogImage: string | undefined;
@@ -76,11 +75,11 @@ let artJsonLd: Record<string, unknown> | undefined;
 if (!isOrdinal) {
   const og = await getImage({ src: image, format: 'jpeg', width: 1200 });
   ogImage = og.src;
-  artJsonLd = artworkJsonLd(art.title, new URL(og.src, SELF_ORIGIN).href, `${SELF_ORIGIN}/portfolio/${art.slug}/`);
+  artJsonLd = artworkJsonLd(title, new URL(og.src, SELF_ORIGIN).href, `${SELF_ORIGIN}/portfolio/${side.slug}/`);
 }
 ---
 
-<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={artJsonLd} noindex={art.hidden}>
+<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={artJsonLd} noindex={art.data.hidden}>
   <article
     class:list={['art-single', isOrdinal && 'art-single--ordinal']}
     data-lb-prev={lbPrev}
@@ -91,7 +90,7 @@ if (!isOrdinal) {
     {
       !isOrdinal && (
         <header class="entry-header">
-          <h1 class="entry-title" itemprop="headline">{art.title}</h1>
+          <h1 class="entry-title" itemprop="headline">{title}</h1>
         </header>
       )
     }

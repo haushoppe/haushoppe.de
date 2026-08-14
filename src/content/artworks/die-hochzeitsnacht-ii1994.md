@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-05-A"
 date: "1994-05-29 09:46:00"
+order: 228
 category: paintings
 image: "../../artwork-originals/2021/04/1994-05-A-Olaf-Hoppe-„Die-Hochzeitsnacht-II1994©Acryl-auf-Leinwand-125-x-50-cm.avif"
 de:

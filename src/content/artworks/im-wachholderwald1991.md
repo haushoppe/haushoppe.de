@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1991-07-A"
 date: "1991-07-03 16:19:00"
+order: 283
 category: paintings
 image: "../../artwork-originals/2021/05/1991-07-A©-Olaf-HoppeIm-WachholderwaldAcryl-auf-Leinwand-80-x-110-cm.jpg"
 de:

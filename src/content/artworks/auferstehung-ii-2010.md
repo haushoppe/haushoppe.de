@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2010"
 number: "2010-02-A"
 date: "2010-02-25 11:20:00"
+order: 103
 category: paintings
 image: "../../artwork-originals/2021/04/2010-04-©-Olaf-Hoppe-Auferstehung-II-2010-Acryl-auf-Leinwand-75-x-185-cm-scaled.avif"
 de:

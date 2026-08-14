@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-10-A"
 date: "1996-10-01 11:54:00"
+order: 198
 category: paintings
 image: "../../artwork-originals/2021/04/1996-10-A©-Olaf-Hoppe-Appraisor-Big-europan-nudeAcryl-auf-Leinwand-120-x-90-cm.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-18-A"
 date: "1992-12-29 12:04:00"
+order: 257
 category: paintings
 image: "../../artwork-originals/2021/04/1992-18-A©-Olaf-HoppeVom-Schatten-ins-LichtAcryl-auf-Leinwand-75-x-100-cm.jpg"
 de:

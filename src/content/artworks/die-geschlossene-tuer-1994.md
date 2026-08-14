@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-02-HZ"
 date: "1994-04-22 11:59:00"
+order: 17
 category: woodcuts
 image: "../../artwork-originals/2021/04/tuer-.jpg"
 de:

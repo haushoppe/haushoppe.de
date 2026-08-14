@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2000"
 number: "2000-05-A"
 date: "2000-05-27 16:28:00"
+order: 156
 category: paintings
 image: "../../artwork-originals/2021/04/2000-05-A©-Olaf-HoppeGenesis-IV-LoewenzahnAcryl-auf-Leinwand-115-x-115cm.jpg"
 de:

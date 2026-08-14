@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1991-08-A"
 date: "1991-08-03 16:17:00"
+order: 282
 category: paintings
 image: "../../artwork-originals/2021/05/1991-08-A©-Olaf-HoppeLueneburger-HeideAcryl-auf-Leinwand-70-x-100-cm.jpg"
 de:

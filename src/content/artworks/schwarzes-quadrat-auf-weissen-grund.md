@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2006"
 number: "2006-02-A"
 date: "2006-02-26 13:30:00"
+order: 125
 category: paintings
 image: "../../artwork-originals/2021/04/2006-02-A-Olaf-Hoppe-„Schwarzes-Quadrat-auf-weissen-Grund-2006©-Acryl-auf-Leinwand-95-cm-x-140-cm.avif"
 de:

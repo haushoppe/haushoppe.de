@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2001"
 number: "2001-01-HZ"
 date: "2001-01-16 11:49:00"
+order: 323
 category: woodcuts
 image: "../../artwork-originals/2021/09/genesis-1-rote-rose-2001.jpg"
 de:

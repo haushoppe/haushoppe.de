@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2011"
 number: "2010-03-A"
 date: "2010-03-25 11:15:00"
+order: 102
 category: paintings
 image: "../../artwork-originals/2021/04/2010-06-die-geburt-der-venus-iii-acryl-auf-leinwand-75-x-105-cm-2010.jpg"
 de:

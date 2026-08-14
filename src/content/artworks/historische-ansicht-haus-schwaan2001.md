@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2001"
 number: "2001-01-A"
 date: "2001-01-27 16:04:00"
+order: 149
 category: paintings
 image: "../../artwork-originals/2021/04/2001-01-A©-Olaf-HoppeHistorische-Ansicht-Haus-SchwaanAcryl-auf-Leinwand-200-x-250-cm.avif"
 de:

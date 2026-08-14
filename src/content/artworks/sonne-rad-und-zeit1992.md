@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-16-A"
 date: "1992-12-16 12:09:00"
+order: 259
 category: paintings
 image: "../../artwork-originals/2021/04/1992-16-.-A©-Olaf-HoppeSonne-Rad-und-Zeit-Acryl-auf-Leinwand-70-x-60-cmklein.jpg"
 de:

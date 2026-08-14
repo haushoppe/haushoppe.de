@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-01-A"
 date: "1992-01-29 12:38:00"
+order: 273
 category: paintings
 image: "../../artwork-originals/2021/04/1992-01-.-A©-Olaf-Hoppe-Sankt-GeorgAcryl-auf-Leinwand-80-x-65-cm.avif"
 de:

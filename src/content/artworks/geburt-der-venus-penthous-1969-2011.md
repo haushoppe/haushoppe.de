@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2011"
 number: "2011-04-A"
 date: "2011-04-25 10:06:00"
+order: 89
 category: paintings
 image: "../../artwork-originals/2021/04/2011-04-©-Olaf-Hoppe-Geburt-der-Venus-IV-Penthous-69-2011-Acryl-auf-Leinwand-105-x-80-cm.avif"
 de:

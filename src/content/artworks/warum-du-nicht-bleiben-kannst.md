@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2012"
 number: "2012-11-A"
 date: "2012-11-24 19:12:00"
+order: 69
 category: paintings
 image: "../../artwork-originals/2026/02/3-Olaf-Hoppe-Warum-du-nicht-bleiben-kannst-2012-Acryl-auf-Leinwand-180-x-65-cm.avif"
 de:

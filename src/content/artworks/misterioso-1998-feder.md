@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-11-A"
 date: "1998-11-28 09:20:00"
+order: 171
 category: paintings
 image: "../../artwork-originals/2021/04/1998-11-A©-Olaf-Hoppemisterioso-FederAcryl-auf-Leinwand-41-x-90-cm.jpg"
 de:

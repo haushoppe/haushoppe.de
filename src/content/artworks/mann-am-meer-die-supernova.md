@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2020"
 number: "2020-02-A"
 date: "2020-02-24 17:18:00"
+order: 34
 category: paintings
 image: "../../artwork-originals/2021/04/2020-02-A-©-Olaf-Hoppe-„-Mann-am-Meer-die-Supernova2020©-Acryl-auf-Leinwand-90x125-cm.avif"
 de:

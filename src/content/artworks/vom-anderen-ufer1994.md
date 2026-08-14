@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-03-A"
 date: "1994-03-29 09:51:00"
+order: 230
 category: paintings
 image: "../../artwork-originals/2021/04/1994-03-A©-Olaf-HoppeVom-anderen-UferAcryl-auf-Leinwand-80-x-115-cm.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2005"
 number: "2005-06-A"
 date: "2005-06-26 13:34:00"
+order: 127
 category: paintings
 image: "../../artwork-originals/2021/04/2005-07-©-Olaf-Hoppe-Rose-Fellowship-2005-Acryl-auf-Leinwand-115-x115-cm.avif"
 de:

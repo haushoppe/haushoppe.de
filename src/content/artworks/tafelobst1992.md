@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-21-A"
 date: "1992-12-21 13:59:00"
+order: 278
 category: paintings
 image: "../../artwork-originals/2021/05/1992-21-A-Olaf-Hoppe-„Tafelobst1992©Acryl-auf-Leinwand-90-x-110-cm.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-07-A"
 date: "1993-07-29 10:24:00"
+order: 246
 category: paintings
 image: "../../artwork-originals/2021/04/1993-07-A©-Olaf-HoppeAlpha-und-OmegaAcryl-auf-Leinwand-100-x-85-cm.jpg"
 de:

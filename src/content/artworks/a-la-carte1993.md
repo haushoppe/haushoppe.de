@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-17-A"
 date: "1993-12-17 10:04:00"
+order: 236
 category: paintings
 image: "../../artwork-originals/2021/04/1993-17-.-A©-Olaf-Hoppea-la-carteAcryl-auf-Leinwand-70-x-110cmkleinklein.jpg"
 de:

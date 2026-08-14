@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-17-A"
 date: "1995-04-28 08:40:00"
+order: 205
 category: paintings
 image: "../../artwork-originals/2021/04/1995-17-A©-Olaf-HoppeIkarusAcryl-auf-Leinwand-85-x-120-cm.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2011"
 number: "2011-01-HZ"
 date: "2011-01-16 11:42:00"
+order: 4
 category: woodcuts
 image: "../../artwork-originals/2021/04/OLAFHO4-ohne-Rand.jpg"
 de:

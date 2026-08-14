@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2000"
 number: "2000-09-A"
 date: "2000-09-03 13:49:00"
+order: 274
 category: paintings
 image: "../../artwork-originals/2021/05/2000-09-–-A-Olaf-Hoppe-„Sinfonia-Concertante-II-2000-©Acryl-auf-Leinwand-80-x-155-cm.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2013"
 number: "2013-06-A"
 date: "2013-06-24 19:20:00"
+order: 73
 category: paintings
 image: "../../artwork-originals/2021/04/2013-06-A-©-Olaf-Hoppe-„Seegras-2013©-Acryl-auf-Leinwand-95-x-135-cm.avif"
 de:

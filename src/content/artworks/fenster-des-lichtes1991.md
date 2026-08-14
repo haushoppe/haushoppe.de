@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1991-03-A"
 date: "1991-03-03 16:27:00"
+order: 287
 category: paintings
 image: "../../artwork-originals/2021/05/1991-03-A©-Olaf-HoppeFenster-des-LichtesAcryl-auf-Leinwand-60-x-80-cm.jpg"
 de:

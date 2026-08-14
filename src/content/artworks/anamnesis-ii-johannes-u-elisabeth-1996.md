@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-05-A"
 date: "1996-05-03 13:55:00"
+order: 276
 category: paintings
 image: "../../artwork-originals/2021/05/1996-05-A-Olaf-Hoppe-„Anamnesis-II-Johannes-u.-Elisabeth-1996©Acryl-auf-Leinwand-70-x-100-cm.avif"
 de:

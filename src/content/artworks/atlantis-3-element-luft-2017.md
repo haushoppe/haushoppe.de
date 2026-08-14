@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2017"
 number: "2017-01-HZ"
 date: "2014-04-22 12:47:00"
+order: 24
 category: woodcuts
 image: "../../artwork-originals/2021/04/P1060557-Atlantis-3_bearbeitet-1.avif"
 de:

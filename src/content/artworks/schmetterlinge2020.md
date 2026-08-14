@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2020"
 number: "2020-05-A"
 date: "2020-05-24 17:11:00"
+order: 31
 category: paintings
 image: "../../artwork-originals/2021/04/2020-05-A-©-Olaf-Hoppe-„-Schmetterlinge2020©-Acryl-auf-Leinwand-130-x-95-cm.avif"
 de:

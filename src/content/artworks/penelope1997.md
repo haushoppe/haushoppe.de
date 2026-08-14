@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1997"
 number: "1997-10-MT"
 date: "1997-10-28 09:45:00"
+order: 179
 category: paintings
 image: "../../artwork-originals/2021/04/1997-10-©-Olaf-Hoppe-Penelope-1997-Mischtechnik-auf-Leinwand-100-x-75-cm.avif"
 de:

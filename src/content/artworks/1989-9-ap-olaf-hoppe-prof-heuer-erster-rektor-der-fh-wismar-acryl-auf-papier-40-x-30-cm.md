@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1989"
 number: "1989-09-AP"
 date: "1989-09-18 16:39:00"
+order: 305
 category: paintings
 image: "../../artwork-originals/2021/05/1989-9-AP-Olaf-Hoppe-Portraet-Prof.-Heuer-erster-Rektor-der-FH-Wismar-Arctryl-auf-Papier-40-x-30-cm.avif"
 de:

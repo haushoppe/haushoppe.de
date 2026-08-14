@@ -17,6 +17,8 @@ const withdrawLabel = lang === 'en' ? 'Withdraw from contract' : 'Vertrag widerr
 // Standalone-Seiten mit placement:'footer' (z. B. Impressum, Datenschutz) als Link-Zeile unten.
 const footerPages = (await getCollection('pages'))
   .filter((p) => p.data.standalone && p.data.placement === 'footer' && p.data.path && p.id.endsWith(`-${lang}`))
+  // Explizite, stabile Reihenfolge (getCollection() ist sonst instabil je Build).
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .map((p) => ({ href: `/${p.data.path}/`, label: p.data.navLabel || p.data.title }));
 
 const icons: Record<string, string> = {

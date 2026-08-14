@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-03-A"
 date: "1998-03-28 09:41:00"
+order: 177
 category: paintings
 image: "../../artwork-originals/2021/04/1998-03-.-A©-Olaf-HoppeMutter-mit-KindAcryl-auf-Leinwand-75-x-44-cmklein.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2005"
 number: "2005-01-HZ"
 date: "2005-01-16 12:43:00"
+order: 11
 category: woodcuts
 image: "../../artwork-originals/2021/04/Holzschnitt-Sangerhaeuser-2000px-X-2000px.jpg"
 de:

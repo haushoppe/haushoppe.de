@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2011"
 number: "2011-03-A"
 date: "2011-03-25 10:08:00"
+order: 90
 category: paintings
 image: "../../artwork-originals/2021/04/2011-03-©-Olaf-Hoppe-2011-fragment-end-of-xx-century-Stuttgard-21-1-Acryl-auf-Leinwand-125-x-95-cm.jpg"
 de:

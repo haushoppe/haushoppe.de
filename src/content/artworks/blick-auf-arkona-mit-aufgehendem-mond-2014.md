@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2014"
 number: "2014-04-A"
 date: "2014-04-24 19:03:00"
+order: 65
 category: paintings
 image: "../../artwork-originals/2021/04/2014-04-A-©-Olaf-Hoppe-„Blick-auf-Arkona-mit-aufgehendem-Mond-2014©-Acryl-auf-Leinwand-85-cm-x-150-cm.avif"
 de:

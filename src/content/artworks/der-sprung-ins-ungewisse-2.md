@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1997"
 number: "1997-06-A"
 date: "1997-04-28 10:07:00"
+order: 183
 category: paintings
 image: "../../artwork-originals/2021/04/1997-06-A©-Olaf-HoppeDer-Sprung-ins-Ungewisse-2Acryl-auf-Leinwand-55-x-125-cm.avif"
 de:

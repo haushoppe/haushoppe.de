@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2003"
 number: "2003-01-A"
 date: "2003-01-27 15:36:00"
+order: 140
 category: paintings
 image: "../../artwork-originals/2021/04/2003-01-A©-Olaf-HoppeDie-geschlossene-TuerAcryl-auf-Leinwand-070-x-200-cm-1-scaled.avif"
 de:

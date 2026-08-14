@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2001"
 number: "2001-03-HZ"
 date: "2001-03-01 10:02:00"
+order: 325
 category: woodcuts
 image: "../../artwork-originals/2021/09/genesis-3-graue-muschel-2001.jpg"
 de:

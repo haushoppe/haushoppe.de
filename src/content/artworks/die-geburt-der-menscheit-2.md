@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2016"
 number: "2016-08-AQ"
 date: "2016-08-24 17:52:00"
+order: 47
 category: paintings
 image: "../../artwork-originals/2021/04/2016-08-AQ-©-Olaf-Hoppe-„Die-Geburt-der-Menscheit-2-Aquarell-auf-Buetten-70-x-100-cm.avif"
 de:

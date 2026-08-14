@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2012"
 number: "2012-01-A"
 date: "2012-01-25 09:42:00"
+order: 80
 category: paintings
 image: "../../artwork-originals/2021/04/2012-01-©-Olaf-Hoppe-Salzwiese-2012-Acryl-auf-Leinwand-65-x185-cm.avif"
 de:

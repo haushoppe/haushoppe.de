@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2016"
 number: "2016-06-AQ"
 date: "2016-06-24 18:01:00"
+order: 49
 category: paintings
 image: "../../artwork-originals/2021/04/2016-205-©-Olaf-Hoppe-„Landschaft-Bradschigowo-Bulgarien-Aquarell-auf-Buetten-70-x-100-cm.avif"
 de:

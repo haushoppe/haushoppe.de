@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-14-A"
 date: "1993-12-14 10:09:00"
+order: 239
 category: paintings
 image: "../../artwork-originals/2021/04/1993-14-.-A©-Olaf-HoppeMuehlstein-der-GerechtigkeitAcryl-auf-Leinwand-85-x-110-cmklein.jpg"
 de:

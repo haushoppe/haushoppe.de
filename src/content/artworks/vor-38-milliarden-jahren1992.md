@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-17-A"
 date: "1992-12-17 12:06:00"
+order: 258
 category: paintings
 image: "../../artwork-originals/2021/04/1992-17-A©-Olaf-HoppeVor-38-Milliarden-JahrenAcryl-auf-Leinwand-80-x-75-cm.jpg"
 de:

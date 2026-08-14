@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2003"
 number: "2003-04-A"
 date: "2003-04-27 15:28:00"
+order: 137
 category: paintings
 image: "../../artwork-originals/2021/04/2003-04-A©-Olaf-HoppeDonum-Dei-klein-Acryl-auf-Leinwand-Rose-Aprikola®-115-x-115cm.avif"
 de:

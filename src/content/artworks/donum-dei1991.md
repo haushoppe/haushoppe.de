@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1991-04-A"
 date: "1991-04-03 16:25:00"
+order: 286
 category: paintings
 image: "../../artwork-originals/2021/05/1991-04-A©-Olaf-HoppeDonum-DeiAcryl-auf-Leinwand-60-x-80-cm.jpg"
 de:

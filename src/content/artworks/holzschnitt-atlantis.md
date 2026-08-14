@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2012"
 number: "2012-01-HZ"
 date: "2012-01-14 10:18:00"
+order: 3
 category: woodcuts
 image: "../../artwork-originals/2021/04/2012-01-HZ-©-Olaf-Hoppe-Genesis-VIII-Orange-Haemanthus-katharine-2012-Original-Farbholzschnitt-von-9-Holzstoecken-Auflage-200-E.jpg"
 de:

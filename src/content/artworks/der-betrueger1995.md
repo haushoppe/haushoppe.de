@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-02-A"
 date: "1995-02-28 09:13:00"
+order: 218
 category: paintings
 image: "../../artwork-originals/2021/04/1995-02-A©-Olaf-HoppeDer-Betrueger1-Acryl-auf-Leinwand100-x-80.avif"
 de:

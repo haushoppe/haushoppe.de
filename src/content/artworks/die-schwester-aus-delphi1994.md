@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-09-A"
 date: "1994-09-29 09:24:00"
+order: 223
 category: paintings
 image: "../../artwork-originals/2021/04/1994-09-.-A©-Olaf-HoppeDie-Schwester-aus-DelphiAcryl-auf-Leinwand-85-x-115-cmklein.jpg"
 de:

@@ -72,8 +72,8 @@ const meta =
     ? { title: `${standaloneFm.title} - HAUS HOPPE`, description: standaloneFm.description }
     : META[type as 'gallery' | 'acquire' | 'contact'][LANG];
 
-const items = type === 'gallery' ? galleryItems(LANG) : [];
-const cats = type === 'gallery' ? galleryCategories(LANG) : [];
+const items = type === 'gallery' ? await galleryItems(LANG) : [];
+const cats = type === 'gallery' ? await galleryCategories(LANG) : [];
 const allLabel = LANG === 'de' ? 'Alle' : 'All';
 const galleryBase = LANG === 'de' ? '/werke' : '/artwork';
 

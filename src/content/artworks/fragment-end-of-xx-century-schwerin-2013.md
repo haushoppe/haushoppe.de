@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2013"
 number: "2013-07-A"
 date: "2013-07-24 19:18:00"
+order: 72
 category: paintings
 image: "../../artwork-originals/2021/04/2013-07-A-©-Olaf-Hoppe-„Fragment-end-of-xx-century-Schwerin-2013©-Acryl-auf-Leinwand-125-x-95cm.avif"
 de:

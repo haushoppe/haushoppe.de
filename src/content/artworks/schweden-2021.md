@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2021"
 number: "2021-02-AQ"
 date: "2021-02-10 11:38:00"
+order: 311
 category: paintings
 image: "../../artwork-originals/2023/08/2021-02-AQ-Olaf-Hoppe-„Schweden-2021-Aquarell-auf-Papier-70-x-100-cm.avif"
 de:

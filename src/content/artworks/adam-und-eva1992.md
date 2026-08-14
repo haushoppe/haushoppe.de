@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-02-A"
 date: "1992-02-03 14:01:00"
+order: 279
 category: paintings
 image: "../../artwork-originals/2021/05/1992-02-A-Olaf-Hoppe-Adam-und-Eva1992©Acyl-auf-Leinwand-80-x-65-cm.avif"
 de:

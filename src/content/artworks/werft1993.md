@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1993"
 number: "1993-01-A"
 date: "1993-01-29 10:35:00"
+order: 252
 category: paintings
 image: "../../artwork-originals/2021/04/1993-01-A©-Olaf-HoppeWerftAcryl-auf-Leinwand-100-x-140-cm.jpg"
 de:

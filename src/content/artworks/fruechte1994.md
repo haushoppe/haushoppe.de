@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-04-A"
 date: "1994-04-29 09:48:00"
+order: 229
 category: paintings
 image: "../../artwork-originals/2021/04/1994-4-.-A©-Olaf-HoppeFruechteAcryl-auf-Leinwand-60-x-80-cmklein.jpg"
 de:

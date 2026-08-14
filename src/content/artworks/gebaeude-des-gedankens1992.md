@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-24-A"
 date: "1992-12-29 11:43:00"
+order: 253
 category: paintings
 image: "../../artwork-originals/2021/04/1992-24-A©-Olaf-HoppeGebaeude-des-GedankensAcryl-auf-Leinwand-75-x-100-cm.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2009"
 number: "2009-03-A"
 date: "2009-03-26 11:56:00"
+order: 114
 category: paintings
 image: "../../artwork-originals/2021/04/2009-03-A-Olaf-Hoppe-„Die-zum-See-gehoerige-2009©-Acryl-auf-Leinwand-115-cm-x-170-cm.jpg"
 de:

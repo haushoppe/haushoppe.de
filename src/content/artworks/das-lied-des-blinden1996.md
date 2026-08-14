@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-18-A"
 date: "1996-11-28 11:15:00"
+order: 191
 category: paintings
 image: "../../artwork-originals/2021/04/1996-18-A©-Olaf-HoppeDas-Lied-des-BlindenAcryl-auf-Leinwand-105-x-80-cm.avif"
 de:

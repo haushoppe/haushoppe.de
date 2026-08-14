@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2011"
 number: "2011-02-A"
 date: "2011-02-25 10:11:00"
+order: 91
 category: paintings
 image: "../../artwork-originals/2021/04/2011-02-©-Olaf-Hoppe-Philosophia-perennis-2011-Acryl-auf-Leinwand-125-x-70-cm.avif"
 de:

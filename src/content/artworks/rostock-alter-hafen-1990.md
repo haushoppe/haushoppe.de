@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1990"
 number: "1989-05-A"
 date: "1989-05-03 18:52:00"
+order: 301
 category: paintings
 image: "../../artwork-originals/2021/05/1989-5-A-Olaf-Hoppe-„Rostock-Alter-Hafen-1990©-Acryl-auf-Leinwand-cm.avif"
 de:

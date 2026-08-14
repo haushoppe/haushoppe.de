@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2020"
 number: "2020-06-A"
 date: "2020-06-24 17:09:00"
+order: 30
 category: paintings
 image: "../../artwork-originals/2021/04/2020-06-A-©-Olaf-Hoppe-„-Leuchturm2020©-Acryl-auf-Leinwand-75-x-95-cm.avif"
 de:

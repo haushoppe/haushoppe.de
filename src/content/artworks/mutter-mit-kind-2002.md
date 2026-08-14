@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2002"
 number: "2002-01-HZ"
 date: "2002-01-22 11:28:00"
+order: 12
 category: woodcuts
 image: "../../artwork-originals/2021/04/mutter-mit-Kind-neu.jpg"
 de:

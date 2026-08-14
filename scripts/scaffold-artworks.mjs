@@ -48,6 +48,15 @@ for (const a of artworks) {
   byTrid.set(a.trid, g);
 }
 
+// Stabiler Sortier-Tiebreaker: die Reihenfolge der DE-Records in artworks.json. Nötig nur für
+// 5 Werke mit identischer Werk-Nummer (sonst sortiert die Nummer eindeutig); die alte Galerie
+// brach diese Gleichstände über die Array-Reihenfolge. So bleibt die DE-Galerie pixelgleich.
+const deOrder = new Map();
+{
+  let i = 0;
+  for (const a of artworks) if (a.type === 'portfolio' && a.lang === 'de' && a.trid) deOrder.set(a.trid, i++);
+}
+
 const J = (v) => JSON.stringify(v ?? '');
 const outDir = path.join(root, 'src/content/artworks');
 fs.rmSync(outDir, { recursive: true, force: true });
@@ -107,6 +116,7 @@ for (const [trid, g] of byTrid) {
   L.push(`year: ${J(m.year || '')}`);
   L.push(`number: ${J(m.number || '')}`);
   if (de.date) L.push(`date: ${J(de.date)}`);
+  L.push(`order: ${deOrder.get(trid)}`); // Sortier-Tiebreaker (siehe oben)
   L.push(`category: ${category}`);
   if (image) L.push(`image: ${J(image)}`);
   const side = (rec, mBase, mOv) => [

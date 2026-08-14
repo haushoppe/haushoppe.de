@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-17-A"
 date: "1996-12-17 13:52:00"
+order: 275
 category: paintings
 image: "../../artwork-originals/2026/02/2-Olaf-Hoppe-Maria-am-Kreuzweg-1996-Acryl-auf-Leinwand-80-x-110-cm.avif"
 de:

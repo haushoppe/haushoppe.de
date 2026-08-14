@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2008"
 number: "2006-03-A"
 date: "2008-03-26 13:29:00"
+order: 124
 category: paintings
 image: "../../artwork-originals/2021/04/2006-04-©-Olaf-Hoppe-Performativer-Wiederspruch-2008-Acryl-auf-Leinwand-55-cm-x-135-cm.jpg"
 de:

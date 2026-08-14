@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-04-A"
 date: "1996-04-29 08:11:00"
+order: 202
 category: paintings
 image: "../../artwork-originals/2021/04/1996-04-A©-Olaf-HoppeDas-SchlachtopferAcryl-auf-Leinwand-110-x-80-cm.avif"
 de:

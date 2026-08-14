@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2025"
 number: "2025-03-A"
 date: "2025-03-30 11:46:00"
+order: 316
 category: paintings
 image: "../../artwork-originals/2026/02/Olaf-Hoppe-„Riomaggiore-2025-Acryl-auf-Leinwand-110-X-170-cm.avif"
 de:

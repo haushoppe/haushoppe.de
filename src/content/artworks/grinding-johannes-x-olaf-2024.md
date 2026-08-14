@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: ""
 number: "2024-02-O1"
 date: "2024-01-01 19:44:06"
+order: 315
 category: digital-art
 image: "../../artwork-originals/2025/11/grinding.avif"
 de:

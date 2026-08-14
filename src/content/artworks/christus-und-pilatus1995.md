@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-16-A"
 date: "1995-12-27 08:42:00"
+order: 206
 category: paintings
 image: "../../artwork-originals/2021/04/1995-16-A©-Olaf-HoppeChristus-und-PilatusAcryl-auf-Leinwand-80-x-110-cm.jpg"
 de:

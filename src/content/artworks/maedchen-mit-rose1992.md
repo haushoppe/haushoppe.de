@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-01-HZ"
 date: "1992-04-22 12:11:00"
+order: 18
 category: woodcuts
 image: "../../artwork-originals/2021/04/P1040699-Maedchen-2.avif"
 de:

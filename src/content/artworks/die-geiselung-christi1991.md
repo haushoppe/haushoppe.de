@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1990-02-MT"
 date: "1990-02-03 16:57:00"
+order: 295
 category: paintings
 image: "../../artwork-originals/2021/05/1990-02-MT-Olaf-Hoppe-„Die-Geiselung-Christi1991©Mischtechnik-auf-Papier-63-x-90-cm.jpg"
 de:

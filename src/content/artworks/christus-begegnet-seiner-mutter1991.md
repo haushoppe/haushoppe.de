@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1989-01-MT"
 date: "1989-01-03 17:22:00"
+order: 297
 category: paintings
 image: "../../artwork-originals/2021/05/1989-01-.-MT©-Olaf-HoppeChristus-begegnet-seiner-MutterMischtechnik-auf-Papier-50-x-65-cmklein.jpg"
 de:

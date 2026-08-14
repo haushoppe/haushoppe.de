@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2018"
 number: "2018-01-HZ"
 date: "2018-04-22 12:55:00"
+order: 25
 category: woodcuts
 image: "../../artwork-originals/2021/04/Olaf-Hoppe-Reinkarnation-2018Holzschnitte-13-Farben-47-39-cm.avif"
 de:

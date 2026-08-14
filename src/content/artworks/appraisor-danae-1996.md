@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-11-A"
 date: "1996-10-14 11:51:00"
+order: 197
 category: paintings
 image: "../../artwork-originals/2021/04/1996-11-A©-Olaf-HoppeAppraisor-DanaeAcryl-auf-Leinwand-105-x-85-cm.jpg"
 de:

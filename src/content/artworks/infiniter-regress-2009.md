@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2009"
 number: "2009-02-A"
 date: "2009-02-26 11:58:00"
+order: 115
 category: paintings
 image: "../../artwork-originals/2021/04/2009-02-A-Olaf-Hoppe-„infiniter-Regress-2009©-Acryl-auf-Leinwand-115-cm-x-115-cm.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-15-A"
 date: "1995-04-29 08:45:00"
+order: 207
 category: paintings
 image: "../../artwork-originals/2021/04/1995-15-A©-Olaf-HoppeBruederchen-und-SchwesterchenAcryl-auf-Leinwand-60-x-75-cm.avif"
 de:

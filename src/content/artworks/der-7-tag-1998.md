@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-17-A"
 date: "1998-12-27 16:54:00"
+order: 166
 category: paintings
 image: "../../artwork-originals/2021/04/1998-17-A©-Olaf-HoppeDer-7.-Tag-FruechtekorbAcryl-auf-Leinwand-40-x-75-cm.avif"
 de:

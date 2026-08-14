@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-01-A"
 date: "1998-01-28 09:49:00"
+order: 180
 category: paintings
 image: "../../artwork-originals/2021/04/1998-01-A©-Olaf-HoppeBewaehrte-FreundschaftAcryl-auf-Leinwand-73-x-98cm-scaled.jpg"
 de:

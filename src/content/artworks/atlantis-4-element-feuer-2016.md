@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2016"
 number: "2016-09-A"
 date: "2016-09-01 11:56:00"
+order: 317
 category: paintings
 image: "../../artwork-originals/2026/02/Olaf-Hoppe-Atlantis-4-Orange-2016.avif"
 de:

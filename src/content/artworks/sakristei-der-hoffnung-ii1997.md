@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1997"
 number: "1997-07-A"
 date: "1997-07-28 10:05:00"
+order: 182
 category: paintings
 image: "../../artwork-originals/2021/04/1997-07-.-A©-Olaf-HoppeSakristei-der-Hoffnung-IIAcryl-auf-Leinwand-132-x-73-cmklein.jpg"
 de:

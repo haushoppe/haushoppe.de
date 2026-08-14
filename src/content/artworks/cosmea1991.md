@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1991"
 number: "1991-02-A"
 date: "1991-02-03 16:28:00"
+order: 288
 category: paintings
 image: "../../artwork-originals/2021/05/1991-02-A©-Olaf-HoppeCosmeaAcryl-auf-Leinwand-80-x-65-cm.jpg"
 de:

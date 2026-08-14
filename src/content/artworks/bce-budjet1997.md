@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1997"
 number: "1997-08-A"
 date: "1997-08-28 10:02:00"
+order: 181
 category: paintings
 image: "../../artwork-originals/2021/04/1997-08-A©-Olaf-HoppeBce-BudjetAcryl-auf-Leinwand-70-x-50-cm.jpg"
 de:

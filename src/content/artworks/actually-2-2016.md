@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2016"
 number: "2016-02-A"
 date: "2016-02-24 18:13:00"
+order: 53
 category: paintings
 image: "../../artwork-originals/2021/04/2016-02-A-©-Olaf-Hoppe-actually-2-2016©-Acryl-auf-Leinwand-240-cm-x-50-cm.avif"
 de:

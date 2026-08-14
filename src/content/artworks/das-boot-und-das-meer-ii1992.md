@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-14-A"
 date: "1992-11-29 12:13:00"
+order: 261
 category: paintings
 image: "../../artwork-originals/2021/04/1992-14-A©-Olaf-HoppeDas-Boot-und-das-Meer-IIAcryl-auf-Leinwand-140-x-180-cmbearbeitet.avif"
 de:

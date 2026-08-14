@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1996"
 number: "1996-02-A"
 date: "1996-02-29 08:13:00"
+order: 203
 category: paintings
 image: "../../artwork-originals/2021/04/1996-02-A©-Olaf-HoppeChristus-faelltAcryl-auf-Leinwand-80-x-180-cm.avif"
 de:

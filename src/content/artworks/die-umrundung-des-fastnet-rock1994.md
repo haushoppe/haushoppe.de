@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-11-A"
 date: "1994-11-29 09:20:00"
+order: 221
 category: paintings
 image: "../../artwork-originals/2021/04/1994-10-A©-Olaf-HoppeDie-Umrundung-des-Fastnet-Rock90-x-100-cm.jpg"
 de:

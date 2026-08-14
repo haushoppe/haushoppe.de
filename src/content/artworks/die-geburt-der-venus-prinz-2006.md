@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2006"
 number: "2006-06-A"
 date: "2006-06-26 13:25:00"
+order: 122
 category: paintings
 image: "../../artwork-originals/2021/04/2006-06-A-Olaf-Hoppe-„Die-Geburt-der-Venus-Prinz-2006©-Acryl-auf-Leinwand-x-cm.jpg"
 de:

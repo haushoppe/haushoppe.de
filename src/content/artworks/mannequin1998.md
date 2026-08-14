@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-06-A"
 date: "1998-06-28 09:34:00"
+order: 174
 category: paintings
 image: "../../artwork-originals/2021/04/1998-06-A©-Olaf-HoppeMannequinAcryl-auf-Leinwand-135-x-40-cm.avif"
 de:

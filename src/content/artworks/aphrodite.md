@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-06-A"
 date: "1995-06-29 09:07:00"
+order: 216
 category: paintings
 image: "../../artwork-originals/2021/04/1995-06-A©-Olaf-HoppeAphroditeAcryl-auf-Leinwand-70-x-110-cm.jpg"
 de:

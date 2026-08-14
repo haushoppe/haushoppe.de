@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2006"
 number: "2006-01-HZ"
 date: "2006-01-16 12:29:00"
+order: 9
 category: woodcuts
 image: "../../artwork-originals/2021/04/2006-01-ohne-rand-1.avif"
 de:

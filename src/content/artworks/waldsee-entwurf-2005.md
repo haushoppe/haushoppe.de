@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2005"
 number: "2005-01-A"
 date: "2005-01-26 13:41:00"
+order: 131
 category: paintings
 image: "../../artwork-originals/2021/04/2005-01-©-Olaf-Hoppe-–-Waldsee-Entwurf-2005-Acryl-auf-Leinwand-1xx-x-1xx-cm.avif"
 de:

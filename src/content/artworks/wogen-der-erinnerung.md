@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2024"
 number: "2024-02-A"
 date: "2024-08-07 17:53:54"
+order: 313
 category: paintings
 image: "../../artwork-originals/2024/08/ostsee_1150602.avif"
 de:

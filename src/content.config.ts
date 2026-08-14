@@ -43,6 +43,9 @@ const pages = defineCollection({
     path: z.string().optional(),
     navLabel: z.string().optional(),
     placement: z.enum(['none', 'nav', 'footer']).default('none'),
+    // Explizite Reihenfolge im Footer (kleiner = weiter vorn). Ohne Wert ans Ende. Nötig, weil
+    // getCollection() sonst eine instabile Reihenfolge liefert (Footer-Links „springen" je Build).
+    order: z.number().optional(),
   }),
 });
 
@@ -66,6 +69,7 @@ const artworks = defineCollection({
       year: z.string().default(''),
       number: z.string().default(''), // „1990-02-H" — Sortier- + Anzeige-Schlüssel
       date: z.string().optional(), // WP-Datum, nur Sortier-Fallback wenn keine Nummer
+      order: z.number().default(0), // Tiebreaker für gleiche Nummern (alte Array-Reihenfolge)
       category: z.enum(['paintings', 'woodcuts', 'drawings', 'digital-art']),
       image: image().optional(), // Ordinals haben kein Bild
       de: side,

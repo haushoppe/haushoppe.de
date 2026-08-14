@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1992"
 number: "1992-05-A"
 date: "1992-05-29 12:32:00"
+order: 270
 category: paintings
 image: "../../artwork-originals/2021/04/1992-05-A©-Olaf-HoppeWoher-WohinAcryl-auf-Leinwand-87-x-70.jpg"
 de:

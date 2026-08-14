@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-08-A"
 date: "1994-08-29 09:26:00"
+order: 224
 category: paintings
 image: "../../artwork-originals/2021/04/1994-08-.-A©-Olaf-HoppeSakristei-der-HoffnungAcryl-auf-Leinwand-113-x-75cmklein.jpg"
 de:

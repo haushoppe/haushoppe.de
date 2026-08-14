@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1975"
 number: "1975-01"
 date: "1975-06-15 12:00:00"
+order: 327
 category: paintings
 image: "../../artwork-originals/2020/12/erzgebirge-1975.jpg"
 de:

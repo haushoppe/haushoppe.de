@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2001"
 number: "2001-02-HZ"
 date: "2001-02-16 11:57:00"
+order: 324
 category: woodcuts
 image: "../../artwork-originals/2021/09/genesis-2-blaue-sonnenblume-2001.jpg"
 de:

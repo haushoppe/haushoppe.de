@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: ""
 number: "2024-02-O5"
 date: "2024-01-05 10:55:44"
+order: 321
 category: digital-art
 image: "../../artwork-originals/2024/01/legends.png"
 de:

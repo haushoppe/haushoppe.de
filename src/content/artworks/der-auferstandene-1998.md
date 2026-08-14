@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1998"
 number: "1998-13-A"
 date: "1998-12-28 09:13:00"
+order: 169
 category: paintings
 image: "../../artwork-originals/2021/04/1998-13-A©-Olaf-HoppeDer-AuferstandeneAcryl-auf-Leinwand-200-x-50-cm.avif"
 de:

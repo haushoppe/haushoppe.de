@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2020"
 number: "2020-03-A"
 date: "2020-03-24 17:16:00"
+order: 33
 category: paintings
 image: "../../artwork-originals/2021/04/2020-03-A-©-Olaf-Hoppe-„-Mann-am-Meer-Broadcasting-2020©-Acryl-auf-Leinwand-90-x-125-cm.avif"
 de:

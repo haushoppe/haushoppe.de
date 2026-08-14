@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2003"
 number: "2003-03-A"
 date: "2003-03-27 15:30:00"
+order: 138
 category: paintings
 image: "../../artwork-originals/2021/04/2003-03-A©-Olaf-HoppeOstseeAcryl-auf-Leinwand-075-x-195-cm.avif"
 de:

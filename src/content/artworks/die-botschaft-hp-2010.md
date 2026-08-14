@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2010"
 number: "2010-01-A"
 date: "2010-01-25 11:23:00"
+order: 104
 category: paintings
 image: "../../artwork-originals/2021/04/2010-01-A-Olaf-Hoppe-„Die-Botschaft-Hoge-Peters-2010-©-Acryl-auf-Leinwand-65-x-180-cm.avif"
 de:

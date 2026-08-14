@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1990"
 number: "1990-06-MT"
 date: "1990-06-03 16:49:00"
+order: 291
 category: paintings
 image: "../../artwork-originals/2021/05/1990-06-MT-Olaf-Hoppe-„Christus-und-Pilatus1990©Mischtechnik-auf-Papier-47-x-66cm.jpg"
 de:

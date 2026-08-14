@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2001"
 number: "2001-04-HZ"
 date: "2001-04-16 12:02:00"
+order: 326
 category: woodcuts
 image: "../../artwork-originals/2021/09/genesis-4-gelber-loewenzahn-2001.jpg"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2005"
 number: "2005-03-A"
 date: "2005-03-26 13:39:00"
+order: 130
 category: paintings
 image: "../../artwork-originals/2021/04/2005-05-©-Olaf-Hoppe-–-Ostsee-Agerholm-2005-Acryl-auf-Leinwand-xx-x-1xx-cm.avif"
 de:

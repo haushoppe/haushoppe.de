@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2006"
 number: "2006-01-A"
 date: "2006-01-26 13:32:00"
+order: 126
 category: paintings
 image: "../../artwork-originals/2021/04/2006-01-AA-Olaf-Hoppe-„Land-am-Morgen-2006©-Acryl-auf-Leinwand-90-cm-x-140-cm.avif"
 de:

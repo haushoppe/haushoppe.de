@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2005"
 number: "2005-04-A"
 date: "2005-04-26 13:37:00"
+order: 129
 category: paintings
 image: "../../artwork-originals/2021/04/2005-02-©-Olaf-Hoppe-–-„Genesis-5-lila-Knautia-arvensis-2005-Acryl-auf-Leinwand-115-x115-cm.avif"
 de:

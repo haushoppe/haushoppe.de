@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2013"
 number: "2013-01-A"
 date: "2013-01-24 19:30:00"
+order: 78
 category: paintings
 image: "../../artwork-originals/2021/04/2013-01-A-©-Olaf-Hoppe-„Im-Reptilienhaus-2013©-Acryl-auf-Leinwand-70-x-100-cm.avif"
 de:

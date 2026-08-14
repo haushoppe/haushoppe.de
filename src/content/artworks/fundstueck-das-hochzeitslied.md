@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2013"
 number: "2013-08-A"
 date: "2013-08-24 19:16:00"
+order: 71
 category: paintings
 image: "../../artwork-originals/2021/04/2013-08-A-©-Olaf-Hoppe-„Fundstueck-das-Hochzeitslied-2013©-Acryl-auf-Leinwand-115-x-65-cm-scaled.avif"
 de:

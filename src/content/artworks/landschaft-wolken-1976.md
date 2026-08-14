@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1976"
 number: "1976-01"
 date: "1976-06-15 12:00:00"
+order: 328
 category: paintings
 image: "../../artwork-originals/2020/12/landschaft-wolken-1976.jpg"
 de:

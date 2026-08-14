@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1990"
 number: "1989-08-A"
 date: "1989-08-03 18:57:00"
+order: 304
 category: paintings
 image: "../../artwork-originals/2021/05/1989-8-A-Olaf-Hoppe-„Landschaft-bei-Nuernberg-1990©-Acryl-auf-Leinwand-cm.jpg"
 de:

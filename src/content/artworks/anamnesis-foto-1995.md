@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-11-A"
 date: "1995-10-29 08:52:00"
+order: 211
 category: paintings
 image: "../../artwork-originals/2021/04/1995-11-A©-Olaf-HoppeAnamnesis-FotoAcryl-auf-Leinwand-80-x-110-cmklein.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2010"
 number: "2010-09-A"
 date: "2010-09-25 12:46:00"
+order: 105
 category: paintings
 image: "../../artwork-originals/2021/04/2010-09-Olaf-Hoppe-„Dreiklang-der-Illusion-2010-©Acryl-auf-Leinwand-125-cm-x-85-cm.avif"
 de:

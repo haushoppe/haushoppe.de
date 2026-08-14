@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2010"
 number: "2010-07-A"
 date: "2010-07-25 10:18:00"
+order: 94
 category: paintings
 image: "../../artwork-originals/2021/04/2010-08-©-Olaf-Hoppe-Genesis-Efeu-2010-Acryl-auf-Leinwand-115-x-115-cm.jpg"
 de:

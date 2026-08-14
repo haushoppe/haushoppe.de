@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2001"
 number: "2001-04-A"
 date: "2001-04-27 15:53:00"
+order: 146
 category: paintings
 image: "../../artwork-originals/2021/04/2001-04-A©-Olaf-HoppeGenesis-V-RoseAcryl-auf-Leinwand-115-x-115cm.avif"
 de:

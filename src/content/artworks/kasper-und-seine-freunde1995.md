@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1995"
 number: "1995-05-A"
 date: "1995-05-29 09:10:00"
+order: 217
 category: paintings
 image: "../../artwork-originals/2021/04/1995-05-A©-Olaf-HoppeKasper-und-seine-FreundeAcryl-auf-Leinwand-75-x-100-cm.avif"
 de:

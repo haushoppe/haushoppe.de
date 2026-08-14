@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "1994"
 number: "1994-10-A"
 date: "1994-10-29 09:22:00"
+order: 222
 category: paintings
 image: "../../artwork-originals/2021/04/1994-05-A©-Olaf-HoppeDie-chinesische-MauerAcryl-auf-Leinwand-105-x-85-cm.avif"
 de:

@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2000"
 number: "2000-04-A"
 date: "2000-04-27 16:29:00"
+order: 157
 category: paintings
 image: "../../artwork-originals/2021/04/2000-04-.-A©-Olaf-HoppeAtmosAcryl-auf-Leinwand-145-x-110-cm-klein.jpg"
 de:

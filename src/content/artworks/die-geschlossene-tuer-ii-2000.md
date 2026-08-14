@@ -3,6 +3,7 @@ artist: "Olaf Hoppe"
 year: "2000"
 number: "2000-12-A"
 date: "2001-12-27 16:06:00"
+order: 150
 category: paintings
 image: "../../artwork-originals/2021/04/2000-12-A©-Olaf-HoppeDie-geschlossene-Tuer-IIAcryl-auf-Leinwand-85-x-155-cm.jpg"
 de:
