@@ -21,6 +21,8 @@ const t =
     ? {
         heading: 'Buy this woodcut',
         note: 'incl. 7% VAT · free shipping',
+        dachNote: 'Shipping currently only within Germany, Austria and Switzerland.',
+        dach: 'Shipping is currently only available within Germany, Austria and Switzerland. Nothing has been charged.',
         secure: 'Secure payment via PayPal or card. PayPal shares your shipping address with us.',
         // Rechtlich zentral: Vertragsschluss erst mit Versand (die Bestätigung ist keine Annahme).
         contract: 'The contract of sale is concluded only upon shipment of the goods.',
@@ -36,6 +38,8 @@ const t =
     : {
         heading: 'Diesen Holzschnitt kaufen',
         note: 'inkl. 7 % MwSt · versandkostenfrei',
+        dachNote: 'Versand aktuell nur innerhalb Deutschlands, Österreichs und der Schweiz.',
+        dach: 'Der Versand ist aktuell nur innerhalb Deutschlands, Österreichs und der Schweiz möglich. Es wurde nichts abgebucht.',
         secure: 'Sichere Zahlung mit PayPal oder Karte. PayPal übermittelt uns Ihre Lieferadresse.',
         contract: 'Der Kaufvertrag kommt erst mit dem Versand der Ware zustande.',
         thanks: 'Vielen Dank! Ihre Bestellung ist bei uns eingegangen. Sie erhalten eine Bestätigung per E-Mail.',
@@ -57,6 +61,7 @@ const t =
   </p>
   <div class="wc-buy__buttons" data-testid="paypal-buttons"></div>
   <p class="wc-buy__secure">{t.secure}</p>
+  <p class="wc-buy__dach">{t.dachNote}</p>
   <p class="wc-buy__contract">{t.contract}</p>
   <p class="wc-buy__links">
     <a href={t.hrefWithdrawal}>{t.withdrawal}</a> · <a href={t.hrefTerms}>{t.terms}</a> · <a href={t.hrefPrivacy}>{t.privacy}</a>
@@ -64,7 +69,7 @@ const t =
   <p class="wc-buy__status" data-testid="paypal-status" role="status" hidden></p>
 </section>
 
-<script define:vars={{ slug, lang, title, thanksMsg: t.thanks, failedMsg: t.failed }}>
+<script define:vars={{ slug, lang, title, thanksMsg: t.thanks, failedMsg: t.failed, dachMsg: t.dach }}>
   (function () {
     let section = null;
     try {
@@ -130,6 +135,8 @@ const t =
                 if (d && d.status === 'COMPLETED') {
                   mount.hidden = true;
                   showStatus(thanksMsg, true);
+                } else if (d && d.error === 'shipping_country') {
+                  showStatus(dachMsg, false);
                 } else {
                   showStatus(failedMsg, false);
                 }

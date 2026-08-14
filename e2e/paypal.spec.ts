@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { site } from './helpers/site';
+import { site, langOf } from './helpers/site';
 
 // PayPal-Kaufbox: wird server-seitig NUR auf Holzschnitten gerendert. Die eigentlichen Smart
 // Buttons laden erst über die Cloudflare-Functions (gegen den statischen Testserver nicht
@@ -12,6 +12,9 @@ test('Holzschnitt: Kaufbox (785 EUR) + Buttons-Mount + E-Mail-CTA', async ({ pag
   const buy = page.getByTestId('paypal-buy');
   await expect(buy).toBeVisible();
   await expect(buy).toContainText('785 €');
+  await expect(buy).toContainText(
+    langOf(info) === 'en' ? 'Germany, Austria and Switzerland' : 'Deutschlands, Österreichs und der Schweiz',
+  );
   await expect(page.getByTestId('paypal-buttons')).toHaveCount(1);
   await expect(page.getByTestId('inquire-link')).toHaveCount(1);
 });

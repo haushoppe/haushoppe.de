@@ -18,6 +18,18 @@ export async function onRequestPost({ request, env, waitUntil }) {
 
   try {
     const token = await accessToken(env);
+
+    // Vorerst nur DACH: die von PayPal erhobene Lieferadresse VOR der Abbuchung prüfen. Ist das
+    // Land nicht DE/AT/CH, wird NICHT abgebucht (keine Belastung) und der Client zeigt einen Hinweis.
+    const ordRes = await fetch(`${paypalBase(env)}/v2/checkout/orders/${orderID}`, {
+      headers: { authorization: `Bearer ${token}` },
+    });
+    const ord = await ordRes.json();
+    const country = ((((ord.purchase_units || [])[0] || {}).shipping || {}).address || {}).country_code;
+    if (!country || ['DE', 'AT', 'CH'].indexOf(country) === -1) {
+      return json({ error: 'shipping_country', country: country || null }, 422);
+    }
+
     const res = await fetch(`${paypalBase(env)}/v2/checkout/orders/${orderID}/capture`, {
       method: 'POST',
       headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
