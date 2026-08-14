@@ -1,13 +1,13 @@
 import { getCollection } from 'astro:content';
 import { CATEGORIES, CATEGORY_KEYS } from './categories';
 
-// Pfad-Helfer, einheitlich für Header + BaseLayout (früher dupliziert).
+// Pfad-Helfer, einheitlich für Header + BaseLayout.
 
 // Pfad mit Trailing-Slash normalisieren (außer Root).
 export const normPath = (p: string): string => (p !== '/' && !p.endsWith('/') ? p + '/' : p);
 
-// DE↔EN-Pendant-Pfade zur Laufzeit aus den Collections ableiten (ersetzt das generierte
-// lang-alt.json). Einmal pro Build gebaut und gecacht. Deckt geroutete Seiten, Kategorien,
+// DE↔EN-Pendant-Pfade zur Laufzeit aus den Collections ableiten. Einmal pro Build gebaut und
+// gecacht. Deckt geroutete Seiten, Kategorien,
 // Werke (aus der artworks-Collection) und Standalone-Seiten (aus der pages-Collection) ab.
 let altMapPromise: Promise<Record<string, string>> | null = null;
 async function buildAltMap(): Promise<Record<string, string>> {

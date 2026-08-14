@@ -1,7 +1,5 @@
 ---
-// Videos-Seite — originalnah zum alten „Automatic YouTube Gallery"-Classic-Slider,
-// aber OHNE das Plugin/jQuery/Slick (kein Lizenzrecht am Code). Schlank in Vanilla-JS.
-// Design 1:1 aus der Original-CSS übernommen: großer Player + Titel, darunter ein
+// Videos-Seite in Vanilla-JS (kein Plugin/jQuery): großer Player + Titel, darunter ein
 // Thumbnail-Karussell mit halbtransparenten Pfeilen (an den Rändern) und Punkten;
 // Klick auf ein Thumbnail spielt oben ab, markiert die Kachel („Wird abgespielt") und
 // scrollt sanft zum Anfang. YouTube-Klick-Facade: iframe erst beim Klick.
@@ -336,6 +334,20 @@ const embed = (id: string) =>
     .vg__carousel {
       grid-column: 2;
       min-height: 0;
+    }
+    /* Unterkante der Playlist sanft ausblenden, damit das angeschnittene letzte Element
+       ausfadet statt hart unter dem Runter-Chevron abzuschneiden (liegt über dem Track,
+       unter den Pfeilen z-index 9). */
+    .vg__carousel::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 44px;
+      background: linear-gradient(to top, #f4f3f1, rgba(244, 243, 241, 0));
+      pointer-events: none;
+      z-index: 8;
     }
     .vg__track {
       position: absolute;

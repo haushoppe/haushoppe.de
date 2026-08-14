@@ -1,6 +1,5 @@
 // Ordinal-Werke (Johannes x Olaf 2024): Live-Inschrift (iframe über ordinals.com) + Kauf-Link
-// (Gamma). Beides steht jetzt als `ordinal`-Frontmatter am Werk (vom Scaffolder aus dem alten
-// WP-Content extrahiert) — kein Regex zur Laufzeit mehr.
+// (Gamma), beide als `ordinal`-Frontmatter am Werk.
 import type { CollectionEntry } from 'astro:content';
 
 export interface Ordinal {

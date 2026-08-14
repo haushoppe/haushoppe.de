@@ -1,6 +1,5 @@
-// Werk-Kategorien als EINE Quelle (Slug + Anzeigename je Sprache). Ersetzt die aus dem
-// WP-Dump gezogenen, sprachspezifischen Taxonomie-Objekte. Der kanonische Schlüssel
-// (sprachneutral) steht im Frontmatter jedes Werks; Slug/Name pro Sprache kommen von hier.
+// Werk-Kategorien als EINE Quelle (Slug + Anzeigename je Sprache). Der kanonische, sprachneutrale
+// Schlüssel steht im Frontmatter jedes Werks; Slug und Anzeigename pro Sprache kommen von hier.
 export type CategoryKey = 'paintings' | 'woodcuts' | 'drawings' | 'digital-art';
 
 interface CatLocale {
@@ -16,7 +15,7 @@ export const CATEGORIES: Record<CategoryKey, { de: CatLocale; en: CatLocale }> =
 
 export const CATEGORY_KEYS = Object.keys(CATEGORIES) as CategoryKey[];
 
-// DE-Slug (aus dem alten WP-Dump) -> kanonischer Schlüssel (für den Scaffolder + Alt-Pfade).
+// DE-/EN-Slug -> kanonischer Schlüssel.
 export function keyByDeSlug(slug: string): CategoryKey | undefined {
   return CATEGORY_KEYS.find((k) => CATEGORIES[k].de.slug === slug);
 }

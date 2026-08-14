@@ -49,10 +49,10 @@ const pages = defineCollection({
   }),
 });
 
-// Werke: EINE Datei pro Werk (beide Sprachen im Frontmatter), ersetzt den WordPress-Dump
-// artworks.json + artwork-meta.json + lang-alt.json. Geteilte Daten (Bild, Nummer, Jahr,
-// Kategorie) stehen einmal; nur Titel/Technik/Maße/Auflage haben einen de-/en-Block. Prosa
-// (nur ~13 Werke) lebt im Body zwischen <De>/<En>-Blöcken, die je Build weggeprunt werden.
+// Werke: EINE Datei pro Werk, beide Sprachen im Frontmatter. Geteilte Daten (Bild, Nummer, Jahr,
+// Kategorie) stehen einmal; nur Titel/Technik/Maße/Auflage haben einen de-/en-Block. Eine
+// Beschreibung (wo vorhanden) lebt im Body zwischen <De>/<En>-Blöcken, die je Build die jeweils
+// andere Sprache wegprunen.
 const side = z.object({
   title: z.string(), // WP-Record-Titel: h1, Galerie, Seitentitel (mit Anführungszeichen)
   slug: z.string(), // sprachspezifischer Detail-Slug (/portfolio/<slug>/)
@@ -69,7 +69,7 @@ const artworks = defineCollection({
       year: z.string().default(''),
       number: z.string().default(''), // „1990-02-H" — Sortier- + Anzeige-Schlüssel
       date: z.string().optional(), // WP-Datum, nur Sortier-Fallback wenn keine Nummer
-      order: z.number().default(0), // Tiebreaker für gleiche Nummern (alte Array-Reihenfolge)
+      order: z.number().default(0), // Tiebreaker bei gleicher Werk-Nummer (stabile Galerie-Reihenfolge)
       category: z.enum(['paintings', 'woodcuts', 'drawings', 'digital-art']),
       image: image().optional(), // Ordinals haben kein Bild
       de: side,

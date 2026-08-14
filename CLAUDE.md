@@ -18,12 +18,11 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
 2. Im Terminal ausführen und **auf grün warten**:
    ```bash
    npm install        # beim ersten Mal (installiert Abhängigkeiten)
-   npm run build      # macht ALLES: Beschriftungen/Verknüpfungen erneuern → Vollständigkeit (DE+EN)
-                      # prüfen → beide Sprachen bauen. Bricht mit klarer Meldung ab, wenn etwas fehlt.
+   npm run build      # prüft die Vollständigkeit (DE+EN) und baut beide Sprachen.
+                      # Bricht mit klarer Meldung ab, wenn etwas fehlt.
    ```
 3. Meckert etwas? **Meldung lesen**, betroffene Datei korrigieren, Schritt 2 wiederholen — bis alles grün ist.
 4. **Erst wenn `npm run build` grün durchläuft**, committen und den Pull Request öffnen. **Öffne NIE einen PR, solange der Build rot ist.**
-   Hinweis: `npm run build` kann `artwork-meta.json` und `lang-alt.json` automatisch aktualisieren — **committe diese Änderungen mit** (`git add -A`).
 
 > Falls `npm install` in deiner Sandbox nicht läuft (kein Netz): mach die Änderung trotzdem sauber und öffne den PR — die **CI auf GitHub** führt `check` + Build automatisch aus und markiert den PR rot/grün. Prüfe aber lokal, wann immer du kannst.
 
@@ -34,21 +33,25 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
 1. **Deutsch zuerst, dann Englisch 1:1.** Jede Änderung muss in **BEIDEN** Sprachen gemacht werden. Fehlt eine Sprache, schlägt der automatische Test (`npm run check`) fehl und der PR kann **nicht** gemergt werden.
 2. **Fass NUR diese Dateien an:**
    - `src/content/pages/*.mdx` — die Seitentexte (Startseite, Kontakt, Kunst Erwerben, Vita)
-   - `src/data/artwork-meta.json` — Werk-Beschriftungen / fehlende Maße
+   - `src/content/artworks/*.md` — die Werke: Titel, Beschriftung (Technik, Maße, Auflage), Kategorie. Eine Datei pro Werk, beide Sprachen im selben File.
    - `src/data/site.ts` — Navigation, Kontaktadresse, Social-Links
-   - `src/data/artworks.json` — nur beim Hinzufügen neuer Werke (fortgeschritten); die Werk-**Bilder** liegen im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv")
+   - Die Werk-**Bilder** liegen im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv").
 
    **NIEMALS anfassen:** `src/components/`, `src/lib/`, `src/layouts/`, `src/pages/`, `scripts/`, `astro.config.mjs`, `package.json`, `src/content.config.ts`.
 3. **Echte Umlaute** schreiben: `ä ö ü ß Ä Ö Ü` — niemals `ae/oe/ue/ss`. Typografische Zeichen benutzen: Anführungszeichen `„ "`, Gedankenstrich `–`, Maß-Kreuz `×` (nicht `x`).
 4. **Vor jedem PR prüfen:** `npm install` (einmal), dann `npm run check`. Muss **grün** sein.
-5. **Gültiges JSON/Markdown.** Bei JSON-Dateien auf Kommas und Anführungszeichen achten — eine kaputte Klammer bricht alles. Nichts an der Struktur ändern, nur die Text-Werte.
+5. **Gültiges Markdown/Frontmatter.** In den Werk-Dateien auf Anführungszeichen und Einrückung im Kopf (zwischen den `---`) achten — ein kaputtes Zeichen bricht den Build. Nichts an der Struktur ändern, nur die Text-Werte.
 6. **Ein PR = eine Sache.** Kleine, klare Änderung, aussagekräftiger Titel, 1–2 Sätze Beschreibung.
 
 ---
 
 ## 🗄️ Das Langzeit-Archiv der Werke (Olafs digitaler Nachlass) — VERBINDLICH
 
-`src/artwork-originals/` ist das **digitale Langzeit-Archiv** von Olaf Hoppes Werk — der wertvollste und oft **unwiederbringliche** Bestand dieses Repos. Es ist die **einzige versionierte Bildquelle**: Die auf der Website ausgelieferten Bilder (AVIF + WebP, mehrere Größen) erzeugt Astro **beim Build automatisch aus diesem Archiv**. Nichts Abgeleitetes wird versioniert.
+Es geht hier **nicht um eine bestimmte Datei oder ein Format**, sondern um das eine Ziel: **Olafs Nachlass bleibt erhalten — das vollständige Werkverzeichnis und die Bilder in bester Qualität für die Nachwelt.** Ob die Daten als JSON, MDX o. Ä. vorliegen, ist zweitrangig.
+
+Der Nachlass besteht aus zwei Teilen:
+- **Das Werkverzeichnis** (alle Werke mit Metadaten, zweisprachig) lebt als **eine Datei pro Werk** in `src/content/artworks/` — die saubere, typsichere, versionierte Quelle des Werkbestands. (`src/data/artworks.json` ist die Eingangsdatei des `npm run archive`-Bildgenerators.)
+- **Die Bilder:** `src/artwork-originals/` ist das **digitale Langzeit-Archiv** von Olaf Hoppes Werk — der wertvollste und oft **unwiederbringliche** Bestand dieses Repos. Es ist die **einzige versionierte Bildquelle**: Die auf der Website ausgelieferten Bilder (AVIF + WebP, mehrere Größen) erzeugt Astro **beim Build automatisch aus diesem Archiv**. Nichts Abgeleitetes wird versioniert.
 
 **Deshalb gilt für jedes Werk-Bild: so hochauflösend und originalgetreu wie möglich archivieren.**
 
@@ -92,7 +95,7 @@ Taucht später eine **bessere Datei** auf — ein neues, hochauflösendes Foto d
 - **Innerhalb eines Bausteins (Box, Karte, Absatzgruppe) konsistente Größen.** Nicht mehrere leicht unterschiedliche Größen stapeln (z. B. 0.72 / 0.76 / 0.78 / 0.8 nebeneinander). Ein Kleingedrucktes = eine Größe, ein Absatz. Zusammengehörige Hinweise als EINEN Absatz, nicht als drei mit je eigener Größe.
 - **⛔ Jedes Textelement bekommt eine explizite `font-size`.** Fehlt sie, erbt das Element eine abweichende Standardgröße und fällt aus der Reihe (genau dieser Bug ist schon passiert).
 
-> Styling kommt aus Tailwind v4 (`@import "tailwindcss"` inkl. Preflight in `global.css`) plus dem schlanken Basis-CSS darunter. Das alte WordPress-Bundle `wp-design.css` ist entfernt — es gibt keine px-Größen oder fremden Font-Stacks mehr zu erben.
+> Styling kommt aus Tailwind v4 (`@import "tailwindcss"` inkl. Preflight in `global.css`) plus dem schlanken Basis-CSS darunter. Schriftgrößen und Font-Stacks kommen ausschließlich von dort.
 
 ---
 
@@ -176,33 +179,31 @@ Die Ausstellungen stehen als **Markdown-Tabelle** in `vita-de.mdx` und `vita-en.
 
 ---
 
-### C) Fehlendes Maß bei einem Werk nachtragen
+### C) Fehlendes Maß (oder Titel/Technik) bei einem Werk nachtragen
 
-Manche Werke haben `"?"` als Maß (weil es unbekannt war). So trägst du das echte Maß nach:
+Jedes Werk ist eine Datei unter `src/content/artworks/` — der Dateiname ist der deutsche Slug. Titel, Technik, Maße und Auflage stehen zweisprachig im Kopf (Blöcke `de:` und `en:`). Manche Werke haben `"?"` als Maß (weil es unbekannt war).
 
 **Schritte:**
-1. Öffne `src/data/artwork-meta.json`.
-2. Suche den Eintrag über den **`slug`** (steht in der Datei). Beispiel-Eintrag:
-   ```json
-   "1410": {
-     "slug": "die-geburt-der-venus-prinz-2006",
-     "artist": "Olaf Hoppe",
-     "title": "Die Geburt der Venus ( Prinz )",
-     "year": "2006",
-     "technique": "Acryl auf Leinwand",
-     "dimensions": "?",
-     "number": "2006-06-A",
-     ...
-   }
+1. Öffne die Datei des Werks unter `src/content/artworks/` (Dateiname = deutscher Slug, z. B. `die-geburt-der-venus-prinz-2006.md`).
+2. Im Kopf (zwischen den beiden `---`) stehen die Blöcke `de:` und `en:` mit `dimensions:`:
+   ```yaml
+   de:
+     title: "„Die Geburt der Venus" (Prinz) 2006"
+     technique: "Acryl auf Leinwand"
+     dimensions: "?"
+   en:
+     title: "\"The Birth of Venus\" (Prince) 2006"
+     technique: "Acrylic on canvas"
+     dimensions: "?"
    ```
-3. Ersetze bei `"dimensions"` das `"?"` durch das echte Maß — **Breite × Höhe** mit dem Zeichen `×`:
+3. Ersetze bei `dimensions` das `"?"` durch das echte Maß — **Breite × Höhe** mit dem Zeichen `×` — in **beiden** Blöcken (`de:` und `en:`):
    ```diff
-   -     "dimensions": "?",
-   +     "dimensions": "90 × 120 cm",
+   -     dimensions: "?"
+   +     dimensions: "90 × 120 cm"
    ```
-4. Fertig. Die **englische** Seite übernimmt das Maß automatisch (Zahlen sind sprachneutral). `npm run check`.
+4. Fertig. `npm run check`.
 
-> Nur den `"dimensions"`-Wert ändern, sonst nichts an dem Eintrag.
+> Nur den `dimensions`-Wert ändern, sonst nichts an der Datei.
 
 ---
 

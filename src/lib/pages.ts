@@ -1,8 +1,8 @@
 import { getCollection, render } from 'astro:content';
 import { LANG } from './lang';
 
-// Lädt die MDX-Prosa-Seite <base>-<LANG> aus der Collection „pages" und rendert sie.
-// Ersetzt das früher in index/vita/[slug] kopierte getCollection+find+throw+render.
+// Lädt die MDX-Prosa-Seite <base>-<LANG> aus der Collection „pages" und rendert sie — die eine
+// Stelle für getCollection+find+throw+render, genutzt von index/vita/[slug].
 export async function loadPage(base: string) {
   const pages = await getCollection('pages');
   const entry = pages.find((p) => p.id === `${base}-${LANG}`);

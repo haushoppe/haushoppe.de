@@ -1,4 +1,4 @@
-// Zentrale, saubere Chrome-Daten (ersetzt das portierte Astra-Header/Footer-HTML).
+// Zentrale Chrome-Daten für Header + Footer: Navigation, Logo, Kontakt, Social-Links.
 export interface NavItem {
   href: string;
   label: string;

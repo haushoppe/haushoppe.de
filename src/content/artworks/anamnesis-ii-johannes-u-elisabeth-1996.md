@@ -7,7 +7,7 @@ order: 276
 category: paintings
 image: "../../artwork-originals/2021/05/1996-05-A-Olaf-Hoppe-„Anamnesis-II-Johannes-u.-Elisabeth-1996©Acryl-auf-Leinwand-70-x-100-cm.avif"
 de:
-  title: "„Anamnesis, II (Johannes u. Elisabeth) 1996"
+  title: "„Anamnesis, II\" (Johannes u. Elisabeth) 1996"
   slug: "anamnesis-ii-johannes-u-elisabeth-1996"
   captionTitle: "Anamnesis, II (Johannes u. Elisabeth)"
   technique: "Acryl auf Leinwand"

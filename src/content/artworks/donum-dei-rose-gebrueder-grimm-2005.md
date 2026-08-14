@@ -7,14 +7,14 @@ order: 10
 category: woodcuts
 image: "../../artwork-originals/2021/04/2005-01.avif"
 de:
-  title: "Donum Dei (Rose Gebrüder Grimm)\" 2005"
+  title: "„Donum Dei\" (Rose Gebrüder Grimm) 2005"
   slug: "donum-dei-rose-gebrueder-grimm-2005"
   captionTitle: "Donum Dei (Rose Gebrüder Grimm)"
   technique: "Original-Farbholzschnitt von 8 Holzstöcken"
   dimensions: "Motiv 37 cm × 37 cm, Blattformat 52 cm × 53 cm"
   edition: "Auflage 18-300 Exemplare auf Rives-Bütten, nummeriert und handsigniert."
 en:
-  title: "Donum Dei (Rose Brothers Grimm)\" 2005"
+  title: "\"Donum Dei\" (Rose Brothers Grimm) 2005"
   slug: "donum-dei-rose-brothers-grimm-2005"
   captionTitle: "Donum Dei (Rose Brothers Grimm)"
   technique: "Original colour woodcut from 8 woodblocks"

@@ -7,9 +7,9 @@ const QUOTES: Record<Lang, { open: string; close: string }> = {
 };
 
 // Wandelt gerade Anführungszeichen in einem Text in typografisch korrekte um — sprachabhängig und
-// idempotent. Behebt zentral die uneinheitlichen Werktitel aus dem WordPress-Import (mal „…“, mal
-// "…", mal gemischt), ohne die Daten Titel für Titel anzufassen. Angewendet dort, wo Titel gebaut
-// werden (galleryItems + Detailseite) -> greift für ALLE Werke, überall.
+// idempotent. Vereinheitlicht die Werktitel zentral (Titel dürfen im Frontmatter gemischte
+// Anführungszeichen tragen), ohne die Daten Titel für Titel anzufassen. Angewendet dort, wo Titel
+// gebaut werden (galleryItems + Detailseite) -> greift für ALLE Werke, überall.
 export function smartQuotes(input: string, lang: Lang): string {
   if (!input) return input;
   const { open, close } = QUOTES[lang];

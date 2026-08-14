@@ -7,14 +7,14 @@ order: 267
 category: paintings
 image: "../../artwork-originals/2021/04/1992-08-.A©-Olaf-HoppeIkonostasAcryl-auf-Leinwand-70-x-95-cm.avif"
 de:
-  title: "„Ikonostas1992"
+  title: "„Ikonostas\"1992"
   slug: "ikonostas1992"
   captionTitle: "Ikonostas"
   technique: "Acryl auf Leinwand"
   dimensions: "70 cm × 95 cm"
   edition: ""
 en:
-  title: "\"Ikonostas1992"
+  title: "\"Ikonostas\"1992"
   slug: "iconostas1992"
   captionTitle: "Ikonostas"
   technique: "Acrylic on canvas"

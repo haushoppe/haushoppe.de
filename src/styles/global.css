@@ -1,7 +1,6 @@
-/* Tailwind v4 — vollständige Migration: kompletter Import inkl. Preflight (Reset). Ersetzt das
-   19-KB-WordPress-Bundle wp-design.css (gelöscht). Die eigenen Basisregeln unten stehen bewusst
-   OHNE @layer und schlagen damit Preflight (base-Layer) — sie bleiben die maßgebliche Typo-/Farb-
-   Quelle. Utilities/Theme kommen aus Tailwind, Layout-CSS aus den Komponenten. */
+/* Tailwind v4: kompletter Import inkl. Preflight (Reset). Die eigenen Basisregeln unten stehen
+   bewusst OHNE @layer und schlagen damit Preflight (base-Layer) — sie sind die maßgebliche
+   Typo-/Farb-Quelle. Utilities/Theme kommen aus Tailwind, Layout-CSS aus den Komponenten. */
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
@@ -14,8 +13,7 @@
   --color-paper: #ffffff;
 }
 
-/* Schlanke Design-Basis — Tokens exakt aus der Live-Seite gemessen. Steht ohne @layer und
-   schlägt damit Preflight; ersetzt das frühere WordPress-Theme-Bundle vollständig. */
+/* Schlanke Design-Basis — Design-Tokens. Steht ohne @layer und schlägt damit Preflight. */
 :root {
   --serif: 'Merriweather', Georgia, 'Times New Roman', serif;
   --sans: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
@@ -27,15 +25,15 @@
   --footer-bg: #3a3a3a;
   --container: 1240px;
   --pad: 20px;
-  /* Fluide Typo-Skala (Stufe 1): auf dem Desktop selbstbewusst groß, mobil moderat. */
+  /* Fluide Typo-Skala: auf dem Desktop selbstbewusst groß, mobil moderat. */
   --fs-body: clamp(1rem, 0.95rem + 0.35vw, 1.1875rem); /* 16 → ~19px */
   --fs-lead: clamp(1.12rem, 1rem + 0.6vw, 1.4rem);
   --fs-h1: clamp(2rem, 1.35rem + 2.7vw, 3rem); /* ~32 → ~48px */
   --fs-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
   --fs-h3: clamp(1.25rem, 1.12rem + 0.6vw, 1.6rem);
   /* Sub-Body-Skala: EINE Quelle für alle kleinen Textgrößen (Bildunterschriften, Meta,
-     Fußzeile, Kleingedrucktes, Labels, Badges). Ersetzt ~14 verstreute Einzelwerte, damit
-     kleine Schrift überall einheitlich ist (CLAUDE.md: einheitliche Fonts). */
+     Fußzeile, Kleingedrucktes, Labels, Badges), damit kleine Schrift überall einheitlich
+     ist (CLAUDE.md: einheitliche Fonts). */
   --fs-md: 0.95rem; /* nah am Fließtext: sekundäre CTAs */
   --fs-sm: 0.9rem; /* Bildunterschriften, Meta, Fußzeile */
   --fs-xs: 0.8rem; /* Kleingedrucktes, Formularhinweise */
@@ -55,7 +53,7 @@ body {
   line-height: 1.65;
   color: var(--text);
   background: var(--bg);
-  /* Wie zuvor (Theme-Bundle): kein horizontales Scrollen durch Randüberläufe. */
+  /* Kein horizontales Scrollen durch Randüberläufe. */
   overflow-x: hidden;
 }
 /* Textauswahl wie im alten Theme: neutrales Grau, schwarze Schrift. */
@@ -90,7 +88,7 @@ h3 {
   font-size: var(--fs-h3);
   margin: 0 0 0.8rem;
 }
-/* Ported WP-Content-Wrapper: Überschriften auf die fluide Skala ziehen (schlägt wp-design.css). */
+/* Content-Überschriften (.entry-content/.entry-title) auf die fluide Skala ziehen. */
 .entry-content h1,
 .entry-title {
   font-size: var(--fs-h1);

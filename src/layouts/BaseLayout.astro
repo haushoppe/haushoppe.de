@@ -1,7 +1,6 @@
 ---
-// Basis-Layout mit sauberen Header/Footer-Komponenten (statt portiertem Theme-Chrome).
-// Styling komplett aus global.css (Tailwind v4 inkl. Preflight) + Komponenten-CSS; das alte
-// WordPress-Bundle wp-design.css ist entfernt.
+// Basis-Layout mit Header/Footer-Komponenten. Styling aus global.css (Tailwind v4 inkl.
+// Preflight) + Komponenten-CSS.
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -52,7 +51,7 @@ const {
 
 // canonical + hreflang über die zwei Domains (Sprache = Domain, kein /en/-Pfad).
 const path = normPath(Astro.url.pathname);
-// Nur ECHTE Pendants als hreflang ausgeben: fehlt der Alt-Pfad (kein lang-alt-Eintrag), zeigt der
+// Nur ECHTE Pendants als hreflang ausgeben: fehlt der Alt-Pfad (kein Sprach-Pendant), zeigt der
 // Alternate sonst auf einen Cross-Domain-404. Dann lassen wir ihn weg (fail safe) — so kann eine
 // neue Kategorie-/Standalone-Seite ohne Paar nie mehr still auf eine 404 verlinken.
 const alt = await altOf(path);
@@ -178,8 +177,8 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     top: 8px;
   }
   /* Ordinal-Seiten „geflippt": dunkler Header + schwarzer Body, damit die On-Chain-Bühne
-     vollflächig schwarz steht (kein weißer Streifen, auch nicht über dem Footer). Sauber
-     ausgestaltet statt des alten filter:invert()-Hacks. Die Sprach-Flagge bleibt bewusst
+     vollflächig schwarz steht (kein weißer Streifen, auch nicht über dem Footer). Die
+     einzelnen Elemente werden gezielt hell gesetzt. Die Sprach-Flagge bleibt bewusst
      in Originalfarben — nur Logo/Navi/Suche werden hell. */
   body.theme-invert {
     background: #000;
@@ -216,7 +215,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
       border-bottom-color: rgba(255, 255, 255, 0.35);
     }
   }
-  /* YouTube-Klick-Facade (ersetzt die ayg-player-Custom-Elemente). */
+  /* YouTube-Klick-Facade: iframe erst beim Klick. */
   .yt-facade { position: relative; width: 100%; overflow: hidden; background: #000; }
   .yt-facade__btn { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; background: none; cursor: pointer; display: block; }
   .yt-facade__poster { width: 100%; height: 100%; object-fit: cover; display: block; }

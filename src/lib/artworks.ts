@@ -40,9 +40,9 @@ export interface FilterCat {
   count: number;
 }
 
-// Werke einer Sprache mit Bild — nach Werk-Nummer absteigend (neueste zuerst). Gleichstände (5 Werke
-// mit identischer Nummer) über `order` = die frühere artworks.json-Array-Reihenfolge, damit die
-// Galerie-Reihenfolge stabil bleibt.
+// Werke einer Sprache mit Bild — nach Werk-Nummer absteigend (neueste zuerst). Bei identischer
+// Nummer bricht `order` den Gleichstand auf, damit die Galerie-Reihenfolge stabil und
+// deterministisch bleibt.
 export async function galleryItems(lang: Lang): Promise<GalleryItem[]> {
   const arts = await getCollection('artworks');
   return arts

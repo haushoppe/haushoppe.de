@@ -1,6 +1,6 @@
 ---
-// Sauberer Header (ersetzt das portierte Theme-Markup): Logo zentriert, darunter die
-// Navigation als 700-px-Leiste mit schwarzen Linien oben/unten (wie live), Sprach-Flagge
+// Header: Logo zentriert, darunter die
+// Navigation als 700-px-Leiste mit schwarzen Linien oben/unten, Sprach-Flagge
 // + Such-Icon rechts, mobil als Hamburger. Aktiver Menüpunkt + Sprach-Pendant server-seitig.
 import { nav as navData, logo } from '../data/site';
 import { OTHER_ORIGIN } from '../lib/lang';
@@ -188,7 +188,7 @@ const homeHref = '/';
   .mainnav__link.is-active {
     color: #000;
   }
-  /* Aktive Seite markiert — fett, wie im alten System (.current_page_item > a). */
+  /* Aktive Seite markiert — fett. */
   .mainnav__link.is-active {
     font-weight: 700;
   }
