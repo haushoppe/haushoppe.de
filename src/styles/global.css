@@ -1,3 +1,19 @@
+/* Tailwind v4 — Migrations-Stufe 0: Theme + Utilities OHNE Preflight (der bestehende Reset unten
+   bleibt vorerst, Preflight kommt in einer späteren Stufe). Kein sichtbarer Diff in dieser Stufe. */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --font-serif: 'Merriweather', Georgia, 'Times New Roman', serif;
+  --font-sans: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+  --color-ink: #3a3a3a;
+  --color-text: #4b4f58;
+  --color-muted: #666666;
+  --color-paper: #ffffff;
+}
+
 /* Schlanke Design-Basis — Tokens exakt aus der Live-Seite gemessen. Ersetzt schrittweise
    das 557-KB-Theme-Bundle. Wird NACH wp-design.css geladen und gewinnt bei Konflikten. */
 :root {

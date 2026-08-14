@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
+import tailwindcss from '@tailwindcss/vite';
 import { readFileSync } from 'node:fs';
 
 // Sprache = Domain (kein /en/-Pfad). Zwei Builds aus einer Quelle, gesteuert über SITE_LANG:
@@ -29,6 +30,7 @@ export default defineConfig({
     responsiveStyles: true,
   },
   vite: {
+    plugins: [tailwindcss()],
     // SITE_LANG zur Build-Zeit literal in den App-Code injizieren (import.meta.env.SITE_LANG).
     define: { 'import.meta.env.SITE_LANG': JSON.stringify(LANG) },
   },
