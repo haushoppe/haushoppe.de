@@ -18,6 +18,8 @@ interface Props {
   total?: number; // Gesamtzahl aller Werke — als Zahl am „Alle"-Button
 }
 const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading, total } = Astro.props;
+// Marker-Text „online kaufbar" pro Sprache (Sprache = Galerie-Wurzel).
+const buyLabel = base === '/artwork' ? 'buy online' : 'online kaufbar';
 
 // Kacheldaten mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
 const data = await Promise.all(
@@ -26,7 +28,7 @@ const data = await Promise.all(
       getImage({ src: it.image, format: 'avif', height: 480 }),
       getImage({ src: it.image, format: 'webp', height: 480 }),
     ]);
-    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), w: it.w, h: it.h, n: it.number, a: a.src, p: p.src };
+    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), w: it.w, h: it.h, n: it.number, a: a.src, p: p.src, b: it.buyable };
   }),
 );
 ---
@@ -46,6 +48,7 @@ const data = await Promise.all(
   <div class="gallery__grid">
     {data.map((d, i) => (
       <article class="gallery__item" data-testid="gallery-item" data-cats={d.c} data-w={d.w} data-h={d.h}>
+        {d.b && <span class="gallery__buy" data-testid="gallery-buy">{buyLabel}</span>}
         <a href={d.u} class="gallery__link" aria-label={d.t}>
           <picture class="gallery__thumb">
             <source srcset={d.a} type="image/avif" />
@@ -156,6 +159,24 @@ const data = await Promise.all(
   }
   .gallery__item:hover .gallery__thumb img {
     transform: scale(1.05);
+  }
+  /* „online kaufbar"-Marker: kleine eckige Pill oben links, immer sichtbar (z-index über dem
+     Hover-Overlay). pointer-events:none, damit der Klick weiter auf den Werk-Link geht. */
+  .gallery__buy {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 3;
+    background: #fff;
+    color: #1a1a1a;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 0.35em 0.6em;
+    white-space: nowrap;
+    pointer-events: none;
   }
   /* Hover-Overlay: Bild blendet zu Schwarz, Titel + Nummer erscheinen (gestaffelt). */
   .gallery__overlay {

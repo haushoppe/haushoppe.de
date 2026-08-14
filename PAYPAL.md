@@ -107,8 +107,8 @@ Footer-Seiten (DE + EN) unter `src/content/pages/`: `impressum`, `datenschutz`, 
 Olaf/haushoppe.de angepasst; Datenschutz um **PayPal** und **Resend** erweitert. Der Vertrag kommt
 laut Seite + AGB + E-Mail **erst mit Versand** zustande (Eingangsbestätigung ist keine Annahme).
 
-**Noch zu ergänzen / prüfen (vor Live):**
+**Noch zu prüfen:**
 
-- **USt-IdNr.** im Impressum (Platzhalter `[bitte ergänzen]`) und der exakte **Firmenname**.
+- Exakten **Firmennamen** bestätigen (USt-IdNr. DE 159112438 ist eingetragen).
 - Zuständige **Datenschutz-Aufsichtsbehörde** (aktuell Mecklenburg-Vorpommern angenommen).
-- Alle Rechtstexte vor dem echten Verkauf **juristisch prüfen** lassen.
+- Alle Rechtstexte **juristisch prüfen** lassen (Adaption, keine Rechtsberatung).

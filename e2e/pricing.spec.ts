@@ -22,6 +22,16 @@ test('Ordinal zeigt KEINEN Preis', async ({ page }, info) => {
   await expect(page.getByTestId('artwork-price')).toHaveCount(0);
 });
 
+// Galerie-Marker „online kaufbar": genau auf den 30 Holzschnitten, nicht bei Gemälden.
+test('Galerie: „online kaufbar"-Pill genau auf den Holzschnitten', async ({ page }, info) => {
+  const s = site(info);
+  await page.goto(`${s.galleryBase}/${s.cats[0].slug}/`); // Holzschnitte/Woodcuts
+  await expect(page.getByTestId('gallery-buy')).toHaveCount(30);
+  await expect(page.getByTestId('gallery-buy').first()).toHaveText(langOf(info) === 'en' ? 'buy online' : 'online kaufbar');
+  await page.goto(`${s.galleryBase}/${s.cats[1].slug}/`); // Gemälde/Paintings
+  await expect(page.getByTestId('gallery-buy')).toHaveCount(0);
+});
+
 // Regressions-Anker: GENAU die 30 Holzschnitte tragen den Preis (keine Drift der isWoodcut-Logik).
 test('Genau 30 Holzschnitt-Seiten zeigen den Preis', async ({ page }, info) => {
   const s = site(info);

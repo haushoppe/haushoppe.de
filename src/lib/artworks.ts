@@ -3,6 +3,7 @@ import metaData from '../data/artwork-meta.json';
 import type { ImageMetadata } from 'astro';
 import { artworkImage, hasArtworkImage } from './artwork-images';
 import { smartQuotes } from './text';
+import { isWoodcut } from './pricing';
 
 type Lang = 'de' | 'en';
 type Cat = { name: string; slug: string; taxonomy: string };
@@ -31,6 +32,7 @@ export interface GalleryItem {
   id: string; title: string; detailUrl: string;
   categorySlugs: string[]; primaryCategory: string;
   image: ImageMetadata; w: number; h: number; number: string;
+  buyable: boolean; // online kaufbar (Holzschnitte) — zuverlässig über isWoodcut, NICHT über Kategorie
 }
 export interface FilterCat { slug: string; name: string; count: number; }
 
@@ -50,6 +52,7 @@ export function galleryItems(lang: Lang): GalleryItem[] {
         primaryCategory: pcats[0]?.slug ?? '',
         image, w: image.width, h: image.height,
         number: artworkNumber(a.trid),
+        buyable: a.trid ? isWoodcut((metaData as Record<string, any>)[a.trid]) : false,
       };
     });
 }
