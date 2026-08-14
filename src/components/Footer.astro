@@ -10,6 +10,9 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = lang === 'en' ? { follow: 'Follow us', contact: 'Contact' } : { follow: 'Folge uns bei', contact: 'Kontakt' };
+// Widerrufsfunktion (§ 356a BGB): hervorgehobener Button, bewusst NICHT in der Legal-Link-Zeile.
+const withdrawHref = lang === 'en' ? '/withdraw/' : '/widerruf-erklaeren/';
+const withdrawLabel = lang === 'en' ? 'Withdraw from contract' : 'Vertrag widerrufen';
 
 // Standalone-Seiten mit placement:'footer' (z. B. Impressum, Datenschutz) als Link-Zeile unten.
 const footerPages = (await getCollection('pages'))
@@ -57,6 +60,9 @@ const icons: Record<string, string> = {
         {contact.phones.map((ph) => <span>{ph}<br /></span>)}
       </div>
     </div>
+  </div>
+  <div class="site-footer__withdraw">
+    <a href={withdrawHref} class="site-footer__withdraw-btn" data-testid="withdraw-button">{withdrawLabel}</a>
   </div>
   {
     footerPages.length > 0 && (
@@ -139,6 +145,26 @@ const icons: Record<string, string> = {
     .site-footer__meta {
       text-align: left;
     }
+  }
+  /* Widerrufs-Button (§ 356a BGB): hervorgehoben, klar abgesetzt (kein reiner Textlink). */
+  .site-footer__withdraw {
+    text-align: center;
+    padding: 0 1rem 1.25rem;
+  }
+  .site-footer__withdraw-btn {
+    display: inline-block;
+    padding: 0.6em 1.4em;
+    border: 1.5px solid #fff;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .site-footer__withdraw-btn:hover,
+  .site-footer__withdraw-btn:focus-visible {
+    background: #fff;
+    color: var(--footer-bg);
   }
   /* Rechtliches/Standalone-Links: zentrierte Zeile unter dem Kontaktblock */
   .site-footer__legal {

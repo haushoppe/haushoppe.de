@@ -610,5 +610,7 @@
   "/impressum/": "/imprint/",
   "/imprint/": "/impressum/",
   "/widerruf/": "/right-of-withdrawal/",
-  "/right-of-withdrawal/": "/widerruf/"
+  "/right-of-withdrawal/": "/widerruf/",
+  "/widerruf-erklaeren/": "/withdraw/",
+  "/withdraw/": "/widerruf-erklaeren/"
 }

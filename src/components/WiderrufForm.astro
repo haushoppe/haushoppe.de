@@ -1,0 +1,335 @@
+---
+// Zweistufige Widerrufsfunktion nach § 356a BGB.
+//  Stufe 1: Eingabemaske mit NUR den zulässigen Angaben — Pflicht: Name, Bestellnummer, E-Mail;
+//           freiwillig: betroffene Werke (Teilwiderruf) und Grund. Button „Weiter zur Bestätigung"
+//           löst den Widerruf NICHT aus.
+//  Stufe 2: Zusammenfassung + gesonderter Button „Widerruf bestätigen" (§ 356a Abs. 3). Erst dieser
+//           übermittelt die Erklärung an /api/widerruf; der Server stempelt Datum + Uhrzeit und
+//           schickt die Eingangsbestätigung (Abs. 4). Kein Login, keine weiteren Pflichtfelder.
+interface Props {
+  lang?: 'de' | 'en';
+}
+const { lang = 'de' } = Astro.props;
+const t =
+  lang === 'en'
+    ? {
+        intro:
+          'With this form you can withdraw from a contract you concluded in our online shop. You do not need to give any reason. After submitting, you will receive a confirmation of receipt by email.',
+        name: 'Your name',
+        nameHelp: 'Please enter the name you used to order.',
+        order: 'Order number',
+        orderHelp:
+          'You will find your order number in the order confirmation we sent you by email. If you do not have it, please state your order date and the works ordered.',
+        email: 'Your email address',
+        emailHelp: 'We will send your confirmation of receipt to this address.',
+        works: 'Which works does your withdrawal concern? (optional)',
+        worksHelp:
+          'If you only want to withdraw from part of your order, name the works here. Without an entry we treat your withdrawal as covering the entire order.',
+        reason: 'Reason for your withdrawal (optional)',
+        reasonHelp: 'Giving a reason is voluntary and not required for your withdrawal to be effective.',
+        next: 'Continue to confirmation',
+        review: 'Please check your details. Clicking “Confirm withdrawal” declares the withdrawal of your contract. We will then send a confirmation of receipt to',
+        sumName: 'Name',
+        sumOrder: 'Order',
+        sumWorks: 'Withdrawal concerns',
+        sumEmail: 'Confirmation to',
+        wholeOrder: 'the entire order',
+        timeNote:
+          'The time of receipt of this declaration at our end counts as the time of your withdrawal. We will tell you the date and time in the confirmation of receipt.',
+        confirm: 'Confirm withdrawal',
+        back: 'Change details',
+        required: 'Please fill in name, order number and a valid email address.',
+        successTitle: 'Thank you. We have received your withdrawal.',
+        successBody: 'We have just sent a confirmation of receipt to',
+        failed: 'Something went wrong. Please try again, or send your withdrawal by email to team@haushoppe.de.',
+        heading: 'Withdraw from contract',
+      }
+    : {
+        intro:
+          'Mit diesem Formular können Sie Ihren bei uns im Onlineshop geschlossenen Vertrag widerrufen. Sie müssen keinen Grund angeben. Nach dem Absenden erhalten Sie von uns eine Eingangsbestätigung per E-Mail.',
+        name: 'Ihr Name',
+        nameHelp: 'Bitte geben Sie den Namen an, mit dem Sie bestellt haben.',
+        order: 'Bestellnummer',
+        orderHelp:
+          'Ihre Bestellnummer finden Sie in der Bestellbestätigung, die wir Ihnen per E-Mail gesendet haben. Falls Ihnen die Nummer nicht vorliegt, nennen Sie uns bitte Ihr Bestelldatum und die bestellten Werke.',
+        email: 'Ihre E-Mail-Adresse',
+        emailHelp: 'An diese Adresse senden wir Ihre Eingangsbestätigung.',
+        works: 'Auf welche Werke bezieht sich Ihr Widerruf? (freiwillig)',
+        worksHelp:
+          'Wenn Sie nur einen Teil Ihrer Bestellung widerrufen möchten, geben Sie hier die betreffenden Werke an. Ohne Angabe verstehen wir Ihren Widerruf als Widerruf der gesamten Bestellung.',
+        reason: 'Grund für Ihren Widerruf (freiwillig)',
+        reasonHelp: 'Die Angabe eines Grundes ist freiwillig und für die Wirksamkeit Ihres Widerrufs nicht erforderlich.',
+        next: 'Weiter zur Bestätigung',
+        review:
+          'Bitte prüfen Sie Ihre Angaben. Mit dem Klick auf „Widerruf bestätigen" erklären Sie den Widerruf Ihres Vertrags. Anschließend senden wir Ihnen eine Eingangsbestätigung an',
+        sumName: 'Name',
+        sumOrder: 'Bestellung',
+        sumWorks: 'Widerruf bezieht sich auf',
+        sumEmail: 'Eingangsbestätigung an',
+        wholeOrder: 'die gesamte Bestellung',
+        timeNote:
+          'Als Zeitpunkt Ihres Widerrufs gilt der Eingang dieser Erklärung bei uns. Datum und Uhrzeit teilen wir Ihnen in der Eingangsbestätigung mit.',
+        confirm: 'Widerruf bestätigen',
+        back: 'Angaben ändern',
+        required: 'Bitte füllen Sie Name, Bestellnummer und eine gültige E-Mail-Adresse aus.',
+        successTitle: 'Vielen Dank. Ihr Widerruf ist bei uns eingegangen.',
+        successBody: 'Wir haben Ihnen soeben eine Eingangsbestätigung gesendet an',
+        failed: 'Es ist etwas schiefgelaufen. Bitte versuchen Sie es erneut oder senden Sie Ihren Widerruf per E-Mail an team@haushoppe.de.',
+        heading: 'Vertrag widerrufen',
+      };
+---
+
+<section class="wf" data-testid="widerruf-form" data-lang={lang}>
+  <!-- Stufe 1: Eingabemaske -->
+  <form class="wf__step1" data-testid="widerruf-step1" novalidate>
+    <p class="wf__intro">{t.intro}</p>
+
+    <label class="wf__field">
+      <span class="wf__label">{t.name} *</span>
+      <input name="name" type="text" autocomplete="name" required />
+      <span class="wf__help">{t.nameHelp}</span>
+    </label>
+
+    <label class="wf__field">
+      <span class="wf__label">{t.order} *</span>
+      <input name="orderId" type="text" required />
+      <span class="wf__help">{t.orderHelp}</span>
+    </label>
+
+    <label class="wf__field">
+      <span class="wf__label">{t.email} *</span>
+      <input name="email" type="email" autocomplete="email" required />
+      <span class="wf__help">{t.emailHelp}</span>
+    </label>
+
+    <label class="wf__field">
+      <span class="wf__label">{t.works}</span>
+      <input name="works" type="text" />
+      <span class="wf__help">{t.worksHelp}</span>
+    </label>
+
+    <label class="wf__field">
+      <span class="wf__label">{t.reason}</span>
+      <textarea name="reason" rows="2"></textarea>
+      <span class="wf__help">{t.reasonHelp}</span>
+    </label>
+
+    <p class="wf__error" data-wf-error role="alert" hidden></p>
+    <button type="submit" class="wf__btn wf__btn--next" data-testid="widerruf-next">{t.next}</button>
+  </form>
+
+  <!-- Stufe 2: Zusammenfassung + gesonderte Bestätigung -->
+  <div class="wf__step2" data-testid="widerruf-step2" hidden>
+    <h2 class="wf__h2" tabindex="-1" data-wf-step2-h>{t.confirm}</h2>
+    <p><span data-wf-review>{t.review}</span> <strong data-wf-sum-email></strong>.</p>
+    <dl class="wf__summary">
+      <dt>{t.sumName}</dt>
+      <dd data-wf-sum-name></dd>
+      <dt>{t.sumOrder}</dt>
+      <dd data-wf-sum-order></dd>
+      <dt>{t.sumWorks}</dt>
+      <dd data-wf-sum-works></dd>
+      <dt>{t.sumEmail}</dt>
+      <dd data-wf-sum-email2></dd>
+    </dl>
+    <p class="wf__help">{t.timeNote}</p>
+    <p class="wf__error" data-wf-error2 role="alert" hidden></p>
+    <div class="wf__actions">
+      <button type="button" class="wf__btn wf__btn--confirm" data-testid="widerruf-confirm" data-wf-confirm>{t.confirm}</button>
+      <button type="button" class="wf__btn wf__btn--back" data-wf-back>{t.back}</button>
+    </div>
+  </div>
+
+  <!-- Erfolg -->
+  <div class="wf__success" data-testid="widerruf-success" role="status" hidden>
+    <h2 class="wf__h2" tabindex="-1" data-wf-success-h>{t.successTitle}</h2>
+    <p><span data-wf-success-body>{t.successBody}</span> <strong data-wf-success-email></strong> <span data-wf-success-when></span></p>
+  </div>
+</section>
+
+<script define:vars={{ lang, whole: t.wholeOrder, requiredMsg: t.required, failedMsg: t.failed }}>
+  (function () {
+    const root = document.querySelector('.wf[data-lang="' + lang + '"]') || document.querySelector('.wf');
+    if (!root) return;
+    const step1 = root.querySelector('.wf__step1');
+    const step2 = root.querySelector('.wf__step2');
+    const success = root.querySelector('.wf__success');
+    const err1 = root.querySelector('[data-wf-error]');
+    const err2 = root.querySelector('[data-wf-error2]');
+    const val = (n) => (root.querySelector('[name="' + n + '"]') || {}).value || '';
+    const emailOk = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+    function collect() {
+      return {
+        name: val('name').trim(),
+        orderId: val('orderId').trim(),
+        email: val('email').trim(),
+        works: val('works').trim(),
+        reason: val('reason').trim(),
+        lang: lang,
+      };
+    }
+
+    // Stufe 1 -> Stufe 2 (löst den Widerruf NICHT aus).
+    step1.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const d = collect();
+      if (!d.name || !d.orderId || !emailOk(d.email)) {
+        err1.textContent = requiredMsg;
+        err1.hidden = false;
+        return;
+      }
+      err1.hidden = true;
+      root.querySelector('[data-wf-sum-name]').textContent = d.name;
+      root.querySelector('[data-wf-sum-order]').textContent = d.orderId;
+      root.querySelector('[data-wf-sum-works]').textContent = d.works || whole;
+      root.querySelector('[data-wf-sum-email]').textContent = d.email;
+      root.querySelector('[data-wf-sum-email2]').textContent = d.email;
+      step1.hidden = true;
+      step2.hidden = false;
+      const h = root.querySelector('[data-wf-step2-h]');
+      if (h) h.focus();
+    });
+
+    // „Angaben ändern" -> zurück zu Stufe 1.
+    root.querySelector('[data-wf-back]').addEventListener('click', function () {
+      step2.hidden = true;
+      step1.hidden = false;
+      err2.hidden = true;
+    });
+
+    // Stufe 2: „Widerruf bestätigen" -> übermittelt die Erklärung.
+    root.querySelector('[data-wf-confirm]').addEventListener('click', function () {
+      const btn = this;
+      const d = collect();
+      btn.disabled = true;
+      err2.hidden = true;
+      fetch('/api/widerruf', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (res) {
+          if (!res || !res.ok) throw new Error('failed');
+          root.querySelector('[data-wf-success-email]').textContent = d.email;
+          const when = root.querySelector('[data-wf-success-when]');
+          if (when && res.receivedAt) when.textContent = '(' + (lang === 'en' ? 'received: ' : 'Eingang: ') + res.receivedAt + ').';
+          step2.hidden = true;
+          success.hidden = false;
+          const h = root.querySelector('[data-wf-success-h]');
+          if (h) h.focus();
+        })
+        .catch(function () {
+          err2.textContent = failedMsg;
+          err2.hidden = false;
+          btn.disabled = false;
+        });
+    });
+  })();
+</script>
+
+<style>
+  .wf {
+    max-width: 640px;
+  }
+  .wf__intro {
+    margin: 0 0 1.5rem;
+    color: #333;
+  }
+  .wf__field {
+    display: block;
+    margin: 0 0 1.1rem;
+  }
+  .wf__label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .wf__field input,
+  .wf__field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6em 0.7em;
+    font: inherit;
+    color: #111;
+    border: 1px solid #b7b7b7;
+    background: #fff;
+  }
+  .wf__field input:focus,
+  .wf__field textarea:focus {
+    outline: 2px solid var(--ink, #111);
+    outline-offset: 1px;
+    border-color: var(--ink, #111);
+  }
+  .wf__help {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: #666;
+  }
+  .wf__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8em 1.6em;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--ink, #111);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .wf__btn--next,
+  .wf__btn--confirm {
+    background: var(--ink, #111);
+    color: #fff;
+  }
+  .wf__btn--next:hover,
+  .wf__btn--confirm:hover,
+  .wf__btn--next:focus-visible,
+  .wf__btn--confirm:focus-visible {
+    background: #fff;
+    color: var(--ink, #111);
+  }
+  .wf__btn--back {
+    background: #fff;
+    color: var(--ink, #111);
+    margin-left: 0.75rem;
+  }
+  .wf__btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  .wf__actions {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .wf__summary {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.35rem 1rem;
+    margin: 1rem 0;
+    padding: 1rem 1.2rem;
+    border: 1px solid #ddd;
+    background: #fafafa;
+  }
+  .wf__summary dt {
+    color: #666;
+  }
+  .wf__summary dd {
+    margin: 0;
+    font-weight: 600;
+  }
+  .wf__h2 {
+    font-family: var(--serif, serif);
+    font-weight: 400;
+    margin: 0 0 0.6rem;
+  }
+  .wf__h2:focus {
+    outline: none;
+  }
+  .wf__error {
+    color: #b42318;
+    margin: 0 0 1rem;
+    font-weight: 600;
+  }
+</style>
