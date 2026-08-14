@@ -31,6 +31,7 @@ const description =
 ---
 
 <BaseLayout title={title} description={description}>
-  {showGlitchVideo && <GlitchArtBanner lang={LANG} />}
-  <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={galleryItems(LANG).length} />
+  <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={galleryItems(LANG).length}>
+    {showGlitchVideo && <GlitchArtBanner lang={LANG} slot="afterFilter" />}
+  </Gallery>
 </BaseLayout>

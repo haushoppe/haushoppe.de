@@ -9,7 +9,7 @@ interface Props {
 const { lang = 'de' } = Astro.props;
 const src = '/media/glitch-hong-kong-2025.mp4';
 const poster = '/media/glitch-hong-kong-2025.jpg';
-const creditHref = 'https://x.com/BtcArtSociety';
+const creditHref = 'https://www.bitcoinartsociety.com/';
 const t =
   lang === 'en'
     ? {
@@ -66,8 +66,8 @@ const t =
 
 <style>
   .gav {
-    /* Volle Breite, bündig mit der Galerie (gleicher 15px-Rand). */
-    margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+    max-width: 900px;
+    margin: 0 auto clamp(1.75rem, 4vw, 2.5rem);
     padding-inline: 15px;
   }
   .gav__frame {
