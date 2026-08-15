@@ -45,7 +45,8 @@ const { title, hideTitle = false } = Astro.props;
   .page__body :global(ol) {
     list-style: decimal;
   }
-  .page__body :global(a) {
+  /* Fließtext-Links unterstrichen; Button-CTAs (.btn) tragen ihre eigene Optik. */
+  .page__body :global(a:not(.btn)) {
     text-decoration: underline;
   }
   /* Hervorgehobene Notiz (z. B. Sicherheitshinweis) am Seitenende, mit Icon links. */
