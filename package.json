@@ -14,7 +14,6 @@
     "deploy:art": "wrangler pages deploy dist-art --project-name=haushoppe-art --branch=main --commit-dirty=true",
     "preview": "astro preview",
     "preview:art": "SITE_LANG=en astro preview",
-    "archive": "node scripts/gen-artwork-archive.mjs",
     "astro": "astro",
     "videos": "node scripts/gen-videos.mjs",
     "e2e": "playwright test",
