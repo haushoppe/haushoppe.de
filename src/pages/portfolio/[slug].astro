@@ -105,7 +105,13 @@ const jsonLd = [artJsonLd, breadcrumb];
     itemtype="https://schema.org/CreativeWork"
     itemscope
   >
-    <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} Extra={ExtraContent} />
+    {ExtraContent ? (
+      <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle}>
+        <ExtraContent />
+      </ArtworkBody>
+    ) : (
+      <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} />
+    )}
     {
       (prev || next) && (
         <nav class="art-nav" aria-label={LANG === 'de' ? 'Weitere Werke' : 'More artworks'}>

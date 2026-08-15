@@ -57,6 +57,17 @@ const t = lang === 'en'
       dots.forEach((d, i) => d.addEventListener('click', () => { show(i); start(); }));
       root.querySelector<HTMLElement>('[data-ss-prev]')?.addEventListener('click', () => { show(idx - 1); start(); });
       root.querySelector<HTMLElement>('[data-ss-next]')?.addEventListener('click', () => { show(idx + 1); start(); });
+      // Touch-Swipe auf Mobil: horizontal wischen blättert vor/zurück (vertikal scrollt weiter).
+      const frame = root.querySelector<HTMLElement>('.slideshow__frame') ?? root;
+      let tx = 0;
+      let ty = 0;
+      frame.addEventListener('touchstart', (e: TouchEvent) => { const t = e.changedTouches[0]; tx = t.clientX; ty = t.clientY; }, { passive: true });
+      frame.addEventListener('touchend', (e: TouchEvent) => {
+        const t = e.changedTouches[0];
+        const dx = t.clientX - tx;
+        const dy = t.clientY - ty;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { show(idx + (dx < 0 ? 1 : -1)); start(); }
+      }, { passive: true });
       root.addEventListener('mouseenter', stop);
       root.addEventListener('mouseleave', start);
       show(0);
@@ -79,6 +90,8 @@ const t = lang === 'en'
     aspect-ratio: 3 / 2;
     overflow: hidden;
     background: #ececec;
+    /* Horizontales Wischen blättert (JS); vertikales Wischen scrollt die Seite. */
+    touch-action: pan-y;
   }
   .slideshow__slide {
     position: absolute;

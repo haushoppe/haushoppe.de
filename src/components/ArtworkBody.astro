@@ -16,9 +16,12 @@ interface Props {
   image: ImageMetadata;
   lang?: 'de' | 'en';
   title?: string;
-  Extra?: any; // gerenderter Prosa-Body des Werks (nur wenn vorhanden)
 }
-const { art, image, lang = 'de', title, Extra } = Astro.props;
+const { art, image, lang = 'de', title } = Astro.props;
+// Der Prosa-Body des Werks kommt als DEFAULT-SLOT (nicht als Prop): nur so sammelt Astro die
+// Styles/Scripts der darin genutzten Komponenten (Slideshow, YouTube) für die Werk-Seite ein.
+// Als durchgereichter Prop gingen die scoped Styles verloren (Slideshow lag ohne CSS im Fluss).
+const hasExtra = Astro.slots.has('default');
 const ord = ordinalData(art);
 const side = art.data[lang];
 // Strukturierte Werk-Beschriftung (Ordinals bekommen keine — eigener Sonderfall), bereits für die
@@ -144,8 +147,18 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
           alt={title || side.title}
           loading="eager"
         />
-        {meta && <ArtworkMeta meta={meta} price={price} />}
+        {meta && <ArtworkMeta meta={meta} />}
       </figure>
+      {hasExtra && (
+        <div class="art-extra">
+          <slot />
+        </div>
+      )}
+      {price && (
+        <p class="art-buy-price" data-testid="artwork-price">
+          {price.amount} <span class="art-buy-price__note">{price.note}</span>
+        </p>
+      )}
       {woodcut && <WoodcutBuy slug={slug} lang={lang} title={rawTitle} />}
       <p class="art-inquire-wrap">
         <a class="art-inquire" href={contactHref} data-inq-user={mailUser} data-inq-domain={mailDomain} data-inq-query={inquireQuery} aria-label={inquire.aria} data-testid="inquire-link">
@@ -156,11 +169,6 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
           <span>{inquire.label}</span>
         </a>
       </p>
-      {Extra && (
-        <div class="art-extra">
-          <Extra />
-        </div>
-      )}
     </div>
   )
 }
@@ -281,6 +289,17 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
   }
   /* „Interesse anfragen" pro Werk — dominanter mailto-CTA unter der Beschriftung (bei
      Holzschnitten zusätzlich zur PayPal-Kaufbox). */
+  /* Preis-Zeile über der Kaufbox (Werke mit Zusatztext: Kaufteil steht unter der Story). */
+  .art-buy-price {
+    margin: 1.75rem 0 0;
+    text-align: center;
+    color: #3a3a3a;
+    font-size: 1.02rem;
+  }
+  .art-buy-price__note {
+    color: #6b6b6b;
+    font-size: var(--fs-xs);
+  }
   .art-inquire-wrap {
     text-align: center;
     margin: 1.5rem 0 0;

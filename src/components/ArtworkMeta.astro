@@ -1,7 +1,7 @@
 ---
 // Konsistente Werk-Beschriftung aus strukturierten Feldern (aus der artworks-Collection, bereits
 // für die aktive Sprache aufgelöst). Pflicht: Titel · Jahr · Technik · Maße · interne Nummer;
-// optional: Auflage (nur Drucke) + fester Holzschnitt-Preis (als price-Prop übergeben).
+// optional: Auflage (nur Drucke). Der Preis steht separat im Kaufteil (ArtworkBody).
 export interface ArtworkMetaData {
   artist: string;
   title: string; // bereinigter Beschriftungs-Titel (captionTitle)
@@ -14,9 +14,8 @@ export interface ArtworkMetaData {
 
 interface Props {
   meta: ArtworkMetaData;
-  price?: { amount: string; note: string } | null;
 }
-const { meta, price = null } = Astro.props;
+const { meta } = Astro.props;
 
 // Maße dimensional eindeutig: „79 × 110 cm" → „79 cm × 110 cm" (idempotent). „?" = unbekannt → weg.
 const rawDim = (meta.dimensions || '').trim().replace(/(\d+)\s*×\s*(\d+)\s*cm/g, '$1 cm × $2 cm');
@@ -31,9 +30,6 @@ const techLine = [meta.technique, dimensions].filter(Boolean).join(', ');
   {techLine && <span class="art-meta__tech">{techLine}</span>}
   {edition && <span class="art-meta__edition">{edition}</span>}
   {meta.number && <span class="art-meta__num" data-testid="artwork-number">{meta.number}</span>}
-  {price && (
-    <span class="art-meta__price" data-testid="artwork-price">{price.amount} <span class="art-meta__pricenote">{price.note}</span></span>
-  )}
 </figcaption>
 
 <style>
