@@ -6,7 +6,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Gallery from '../../components/Gallery.astro';
 import GlitchArtBanner from '../../components/GlitchArtBanner.astro';
 import { galleryItems, galleryCategories } from '../../lib/artworks';
-import { LANG } from '../../lib/lang';
+import { breadcrumbJsonLd, itemListJsonLd } from '../../lib/seo';
+import { LANG, SELF_ORIGIN } from '../../lib/lang';
 
 export async function getStaticPaths() {
   const slug = LANG === 'de' ? 'werke' : 'artwork';
@@ -24,14 +25,22 @@ const allItems = await galleryItems(LANG);
 const items = allItems.filter((it) => it.categorySlugs.includes(cat.slug));
 // „Angeber"-Video nur auf der Kategorie Digitale Kunst (DE) / Digital Art (EN).
 const showGlitchVideo = cat.slug === 'digitale-kunst' || cat.slug === 'digital-art';
-const title = `${cat.name} - HAUS HOPPE`;
 const description =
   LANG === 'de'
     ? `${cat.name} von Olaf Hoppe. HAUS HOPPE, Galerie für Bildende Kunst.`
     : `${cat.name} by Olaf Hoppe. HAUS HOPPE fine art gallery.`;
+// Strukturierte Daten: Breadcrumb (Start → Werke → Kategorie) + ItemList (sichtbare Werk-Reihenfolge).
+const jsonLd = [
+  breadcrumbJsonLd([
+    { name: LANG === 'de' ? 'Start' : 'Home', url: `${SELF_ORIGIN}/` },
+    { name: LANG === 'de' ? 'Werke' : 'Artwork', url: `${SELF_ORIGIN}${base}/` },
+    { name: cat.name, url: `${SELF_ORIGIN}${base}/${cat.slug}/` },
+  ]),
+  itemListJsonLd(items.map((it) => ({ name: it.title, url: SELF_ORIGIN + it.detailUrl }))),
+];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={cat.name} description={description} jsonLd={jsonLd}>
   <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={allItems.length} />
   {showGlitchVideo && <GlitchArtBanner lang={LANG} />}
 </BaseLayout>

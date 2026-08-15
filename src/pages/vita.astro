@@ -4,6 +4,8 @@ import Vita from '../components/Vita.astro';
 import { loadPage } from '../lib/pages';
 import { getImage } from 'astro:assets';
 import { bannerImage } from '../lib/banner-images';
+import { personJsonLd } from '../lib/person';
+import { LANG, SELF_ORIGIN } from '../lib/lang';
 
 // Vita: Struktur (Hero, Titel) aus dem MDX-Frontmatter, Inhalt (Lebenslauf/Ausstellungen als
 // Markdown-Listen) aus dem Body (content/pages/vita-<lang>.mdx).
@@ -11,9 +13,11 @@ const { Content, data: fm } = await loadPage('vita');
 // Hero-Bild als Social-Preview (statt der generischen Marken-Karte).
 const heroImg = fm.hero?.name ? bannerImage(fm.hero.name) : undefined;
 const ogImage = heroImg ? (await getImage({ src: heroImg, format: 'jpeg', width: 1200 })).src : undefined;
+// Vita ist die kanonische Künstler-Seite: hier die volle Person-Entität (Olaf Hoppe) ausgeben.
+const jsonLd = personJsonLd(SELF_ORIGIN, LANG);
 ---
 
-<BaseLayout title={fm.title} description={fm.description} image={ogImage}>
+<BaseLayout title={fm.title} description={fm.description} image={ogImage} jsonLd={jsonLd}>
   <Vita hero={fm.hero} h1={fm.h1}>
     <Content />
   </Vita>

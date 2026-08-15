@@ -46,16 +46,16 @@ const { type, base } = Astro.props as {
 
 const META = {
   gallery: {
-    de: { title: 'Werke - HAUS HOPPE', description: 'Gemälde und Holzschnitte von Olaf Hoppe.' },
-    en: { title: 'Artwork - HAUS HOPPE', description: 'Paintings and woodcuts by Olaf Hoppe.' },
+    de: { title: 'Werke', description: 'Gemälde und Holzschnitte von Olaf Hoppe.' },
+    en: { title: 'Artwork', description: 'Paintings and woodcuts by Olaf Hoppe.' },
   },
   acquire: {
-    de: { title: 'Kunst Erwerben - HAUS HOPPE', description: 'Kunst von Olaf Hoppe erwerben. Ratenzahlung, Leasing, Auftragswerke und individuelle Wünsche.' },
-    en: { title: 'Acquire Art - HAUS HOPPE', description: 'Acquire art by Olaf Hoppe. Instalments, leasing, commissioned works and individual wishes.' },
+    de: { title: 'Kunst Erwerben', description: 'Kunst von Olaf Hoppe erwerben. Ratenzahlung, Leasing, Auftragswerke und individuelle Wünsche.' },
+    en: { title: 'Acquire Art', description: 'Acquire art by Olaf Hoppe. Instalments, leasing, commissioned works and individual wishes.' },
   },
   contact: {
-    de: { title: 'Kontakt - HAUS HOPPE', description: 'HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Öffnungszeiten, Kontakt und Anfahrt.' },
-    en: { title: 'Contact - HAUS HOPPE', description: 'HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Opening hours, contact and directions.' },
+    de: { title: 'Kontakt', description: 'HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Öffnungszeiten, Kontakt und Anfahrt.' },
+    en: { title: 'Contact', description: 'HAUS HOPPE – Galerie für Bildende Kunst, Olaf Hoppe. Opening hours, contact and directions.' },
   },
 } as const;
 // Standalone-Seite: Inhalt + Titel/Beschreibung aus dem MDX-Frontmatter.
@@ -69,7 +69,7 @@ if (type === 'standalone' && base) {
 
 const meta =
   type === 'standalone'
-    ? { title: `${standaloneFm.title} - HAUS HOPPE`, description: standaloneFm.description }
+    ? { title: `${standaloneFm.title}`, description: standaloneFm.description }
     : META[type as 'gallery' | 'acquire' | 'contact'][LANG];
 
 const items = type === 'gallery' ? await galleryItems(LANG) : [];

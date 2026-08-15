@@ -1,5 +1,5 @@
 ---
-// Kunstwerk-Detailseite /portfolio/<slug>/ — 1:1 wie WP (CreativeWork: Titel + großes Bild).
+// Kunstwerk-Detailseite /portfolio/<slug>/ (CreativeWork: Titel + großes Bild).
 // Sprache = Domain: derselbe Pfad in DE (haushoppe.de) und EN (haushoppe.art), je eigener Slug.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArtworkBody from '../../components/ArtworkBody.astro';
@@ -7,7 +7,8 @@ import { getCollection, render } from 'astro:content';
 import { getImage } from 'astro:assets';
 import { galleryItems, type Art } from '../../lib/artworks';
 import { ordinalData } from '../../lib/ordinals';
-import { artworkJsonLd } from '../../lib/seo';
+import { artworkJsonLd, breadcrumbJsonLd } from '../../lib/seo';
+import { catSlug, catName } from '../../lib/categories';
 import { smartQuotes } from '../../lib/text';
 import { LANG, SELF_ORIGIN } from '../../lib/lang';
 
@@ -69,17 +70,36 @@ const displayTitle = isOrdinal ? title.replace(/\s*\(Johannes\s*[x×]\s*Olaf\)/i
 const hasProse = LANG === 'de' ? art.data.prose?.de : art.data.prose?.en;
 const ExtraContent = hasProse ? (await render(art)).Content : undefined;
 
-// Social-Preview (das Gemälde) + VisualArtwork-JSON-LD. Ordinals haben kein Bild -> Default-OG.
+// Breadcrumb: Start → Werke → Kategorie → Werk.
+const gBase = LANG === 'de' ? '/werke' : '/artwork';
+const cat = art.data.category;
+const breadcrumb = breadcrumbJsonLd([
+  { name: LANG === 'de' ? 'Start' : 'Home', url: `${SELF_ORIGIN}/` },
+  { name: LANG === 'de' ? 'Werke' : 'Artwork', url: `${SELF_ORIGIN}${gBase}/` },
+  { name: catName(cat, LANG), url: `${SELF_ORIGIN}${gBase}/${catSlug(cat, LANG)}/` },
+  { name: title, url: `${SELF_ORIGIN}/portfolio/${side.slug}/` },
+]);
+
+// Social-Preview (das Gemälde) + angereichertes VisualArtwork-JSON-LD. Ordinals haben kein Bild -> Default-OG.
 let ogImage: string | undefined;
 let artJsonLd: Record<string, unknown> | undefined;
 if (!isOrdinal) {
   const og = await getImage({ src: image, format: 'jpeg', width: 1200 });
   ogImage = og.src;
-  artJsonLd = artworkJsonLd(title, new URL(og.src, SELF_ORIGIN).href, `${SELF_ORIGIN}/portfolio/${side.slug}/`);
+  artJsonLd = artworkJsonLd({
+    origin: SELF_ORIGIN,
+    title,
+    image: new URL(og.src, SELF_ORIGIN).href,
+    url: `${SELF_ORIGIN}/portfolio/${side.slug}/`,
+    technique: side.technique,
+    year: art.data.year,
+    category: cat,
+  });
 }
+const jsonLd = artJsonLd ? [artJsonLd, breadcrumb] : [breadcrumb];
 ---
 
-<BaseLayout title={`${displayTitle} - HAUS HOPPE`} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={artJsonLd} noindex={art.data.hidden}>
+<BaseLayout title={displayTitle} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={jsonLd} noindex={art.data.hidden}>
   <article
     class:list={['art-single', isOrdinal && 'art-single--ordinal']}
     data-lb-prev={lbPrev}

@@ -65,8 +65,14 @@ const defaultDesc =
   lang === 'en'
     ? 'HAUS HOPPE – fine art gallery on the Baltic coast. Paintings and multi-coloured woodcuts by Olaf Hoppe.'
     : 'HAUS HOPPE – Galerie für Bildende Kunst an der Ostseeküste. Gemälde und mehrfarbige Holzschnitte von Olaf Hoppe.';
-const metaDesc = description || defaultDesc;
+// Description auf ~160 Zeichen begrenzen (SERP-Snippet-Grenze), sauber am Wort abschneiden.
+const rawDesc = description || defaultDesc;
+const metaDesc = rawDesc.length <= 160 ? rawDesc : rawDesc.slice(0, 157).replace(/\s+\S*$/, '') + '…';
 const siteName = lang === 'en' ? 'HAUS HOPPE – Fine Art Gallery' : 'HAUS HOPPE – Galerie für Bildende Kunst';
+// Titel: Seiten übergeben den ROHEN Titel; hier den Marken-Suffix nur anhängen, solange der
+// Gesamttitel die SERP-Grenze (~62 Zeichen) hält. Titel, die die Marke schon tragen
+// (Startseite, Default), bleiben unangetastet.
+const pageTitle = /HAUS HOPPE/i.test(title) ? title : `${title} – HAUS HOPPE`.length <= 62 ? `${title} – HAUS HOPPE` : title;
 const ogLocale = lang === 'en' ? 'en_US' : 'de_DE';
 const ogImageIsDefault = !image;
 const ogImage = image ? new URL(image, SELF_ORIGIN).href : SELF_ORIGIN + '/og-default.png';
@@ -79,8 +85,9 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preload" href={merriweather400} as="font" type="font/woff2" crossorigin />
-    <title>{title}</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={metaDesc} />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href={canonical} />
     {dePath && <link rel="alternate" hreflang="de" href={DE_ORIGIN + dePath} />}
     {enPath && <link rel="alternate" hreflang="en" href={EN_ORIGIN + enPath} />}
@@ -90,13 +97,17 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     <meta property="og:site_name" content={siteName} />
     <meta property="og:type" content={type} />
     <meta property="og:locale" content={ogLocale} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={metaDesc} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     {ogImageIsDefault && <meta property="og:image:width" content="1200" />}
     {ogImageIsDefault && <meta property="og:image:height" content="630" />}
     <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={metaDesc} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
