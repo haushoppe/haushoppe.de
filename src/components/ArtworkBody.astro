@@ -130,7 +130,7 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
           formats={['avif', 'webp']}
           fallbackFormat="webp"
           widths={[480, 960, 1440]}
-          sizes="(max-width: 1000px) 92vw, 900px"
+          sizes="(max-width: 1120px) 92vw, 1056px"
           alt={title || side.title}
           loading="eager"
         />
@@ -158,7 +158,7 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
 <style is:global>
   /* Zusatz-Content (Werkbeschreibung / Video / Auszeichnung) unter dem Bild — lesbare Prosa-Spalte. */
   .art-extra {
-    max-width: 900px;
+    max-width: var(--container);
     margin: 1.5rem auto 0;
     font-size: 1.02rem;
     line-height: 1.7;
@@ -189,7 +189,7 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
   /* „Interesse anfragen" pro Werk — dominanter mailto-CTA unter der Beschriftung (bei
      Holzschnitten zusätzlich zur PayPal-Kaufbox). */
   .art-inquire-wrap {
-    text-align: center;
+    text-align: left;
     margin: 1.5rem 0 0;
   }
   /* Dominanter CTA-Button (bei Gemälden der Haupt-CTA, bei Holzschnitten neben dem Kauf-Button):

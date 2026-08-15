@@ -79,6 +79,16 @@ Taucht später eine **bessere Datei** auf — ein neues, hochauflösendes Foto d
 
 ---
 
+## 📐 Design-Regel: EINE Inhaltsbreite (VERBINDLICH)
+
+**Alle Seiten fluchten auf derselben Breite.** Es gibt genau **ein** Breiten-Token: `--container` (72rem = 1152px) in `src/styles/global.css`. Jeder Seiten-Wrapper nutzt `max-width: var(--container)` — Werk-Detail, Kunst Erwerben, Kontakt, Vita, Rechtstexte, Startseiten-Inhalt, Fußzeile, Header.
+
+- **⛔ Kein Seitentyp erfindet eine eigene Breite** (kein `max-width: 1100px`, `820px`, `1000px` …). Beim Navigieren darf die Inhaltsspalte nicht „springen".
+- **Bewusste Ausnahmen (voll-breit):** nur das **Galerie-Raster** (Schaufenster mit vielen Thumbnails) und die schwarze **Ordinal-Bühne**. Diese zwei sind die einzigen full-bleed-Bereiche.
+- Braucht ein neuer Bereich eine Breite, nimmt er `var(--container)`. Ist eine Ausnahme wirklich nötig, wird sie hier dokumentiert — sonst gilt: eine Breite, kein Wildwuchs.
+
+---
+
 ## 🔤 Design-Regel: einheitliche Schriften (VERBINDLICH)
 
 **Es gibt genau zwei Schriften, beide ausschließlich über die Tokens aus `src/styles/global.css`:**

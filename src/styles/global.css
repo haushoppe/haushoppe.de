@@ -23,7 +23,11 @@
   --bg: #fff;
   --rule: #000; /* Header-Linien */
   --footer-bg: #3a3a3a;
-  --container: 1240px;
+  /* DIE EINE Inhaltsbreite (72rem = 1152px) — verbindlich für ALLE Seiten-Wrapper: Werk-Detail,
+     Kunst Erwerben, Kontakt, Vita, Rechtstexte, Startseiten-Inhalt, Fußzeile, Header. Kein
+     Seitentyp erfindet eine eigene Breite. Bewusste Ausnahmen (voll-breit): das Galerie-Raster
+     (Schaufenster) und die schwarze Ordinal-Bühne. */
+  --container: 72rem;
   --pad: 20px;
   /* Fluide Typo-Skala: auf dem Desktop selbstbewusst groß, mobil moderat. */
   --fs-body: clamp(1rem, 0.95rem + 0.35vw, 1.1875rem); /* 16 → ~19px */
@@ -184,27 +188,20 @@ a:hover {
 .site-main--bleed {
   padding-block: 0;
 }
-/* Inhaltsbreiten. Ohne Modifier: volle Breite (Content-Komponenten zentrieren selbst,
-   Galerie full-bleed). */
-.site-main--boxed,
-.site-main--article {
-  max-width: var(--container);
-  margin-inline: auto;
-  padding-inline: var(--pad);
-}
-/* Detailseite: oberes Doppel-Padding auflösen — der Titel soll ~48px unter der Navi
-   sitzen (nicht ~92px). Oben trägt nur noch der Kasten seinen Innenabstand. */
+/* Inhaltsbreite tragen die Inhalts-Wrapper selbst (.art-single, .vg, .acq, .page, .kontakt,
+   .vita, .home) über max-width: var(--container) — genau EINE Ebene begrenzt, damit alle Seiten
+   auf derselben Kante fluchten. Die Layout-Modifier steuern nur noch Sonderfälle. */
+/* Detailseite: oberes Doppel-Padding auflösen — der Titel soll ~48px unter der Navi sitzen. */
 .site-main--article {
   padding-top: 0;
 }
-/* Werk-Detailseite: Inhalts-Kasten mit Innenabstand. Oben bewusst schlanker als seitlich/unten,
-   damit der Titel nah an die Navi rückt. Auf ~Bildbreite zentriert, damit Bild, Beschriftung und
-   Kaufbox auf breiten Screens dieselbe Achse teilen. */
+/* Werk-Detailseite: Inhalts-Wrapper auf var(--container), oben bewusst schlanker als unten,
+   damit der Titel nah an die Navi rückt. */
 .art-single {
   background: #fff;
-  max-width: 1000px;
+  max-width: var(--container);
   margin-inline: auto;
-  padding: 1.75rem clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+  padding: 1.75rem var(--pad) clamp(1.5rem, 5vw, 3rem);
 }
 /* Ordinals: kein Kasten, volle Breite — die schwarze Bühne (.ordinal-content) trägt Fläche + Padding. */
 .art-single--ordinal {
