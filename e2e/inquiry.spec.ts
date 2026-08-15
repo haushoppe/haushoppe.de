@@ -13,7 +13,7 @@ test('Holzschnitt-Anfrage: Empfänger, Betreff, Werk-Link + Preis in der Mail', 
   await page.goto(`/portfolio/${s.work.woodcut}/`);
   const a = page.getByTestId('inquire-link');
   await expect(a).toBeVisible();
-  await expect(a).toHaveText(lang === 'en' ? 'Enquire' : 'Interesse anfragen');
+  await expect(a).toHaveText(lang === 'en' ? 'Enquire' : 'Unverbindlich anfragen');
   const m = mailto((await a.getAttribute('href'))!);
   expect(m.to).toBe('team@haushoppe.de');
   expect(m.subject).toContain(lang === 'en' ? 'Interest in' : 'Interesse an');

@@ -82,8 +82,8 @@ const bodyLead = woodcut
     ? `I'm interested in ${named} and would like to know more about availability and price.`
     : `Ich interessiere mich für ${named} und würde gern mehr zu Verfügbarkeit und Preis erfahren.`;
 const inquire = {
-  label: lang === 'en' ? 'Enquire' : 'Interesse anfragen',
-  aria: lang === 'en' ? `Enquire about ${named}` : `Interesse an ${named} anfragen`,
+  label: lang === 'en' ? 'Enquire' : 'Unverbindlich anfragen',
+  aria: lang === 'en' ? `Enquire about ${named}` : `Zu ${named} unverbindlich anfragen`,
   subject: lang === 'en' ? `Interest in ${named}` : `Interesse an ${named}`,
   body: [
     bodyLead,
@@ -232,7 +232,7 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
   /* „Interesse anfragen" pro Werk — dominanter mailto-CTA unter der Beschriftung (bei
      Holzschnitten zusätzlich zur PayPal-Kaufbox). */
   .art-inquire-wrap {
-    text-align: left;
+    text-align: center;
     margin: 1.5rem 0 0;
   }
   /* Dominanter CTA-Button (bei Gemälden der Haupt-CTA, bei Holzschnitten neben dem Kauf-Button):

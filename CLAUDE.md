@@ -50,7 +50,7 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
 Es geht hier **nicht um eine bestimmte Datei oder ein Format**, sondern um das eine Ziel: **Olafs Nachlass bleibt erhalten — das vollständige Werkverzeichnis und die Bilder in bester Qualität für die Nachwelt.** Ob die Daten als JSON, MDX o. Ä. vorliegen, ist zweitrangig.
 
 Der Nachlass besteht aus zwei Teilen:
-- **Das Werkverzeichnis** (alle Werke mit Metadaten, zweisprachig) lebt als **eine Datei pro Werk** in `src/content/artworks/` — die saubere, typsichere, versionierte Quelle des Werkbestands. (`src/data/artworks.json` ist die Eingangsdatei des `npm run archive`-Bildgenerators.)
+- **Das Werkverzeichnis** (alle Werke mit Metadaten, zweisprachig) lebt als **eine Datei pro Werk** in `src/content/artworks/` — die saubere, typsichere, versionierte Quelle des Werkbestands.
 - **Die Bilder:** `src/artwork-originals/` ist das **digitale Langzeit-Archiv** von Olaf Hoppes Werk — der wertvollste und oft **unwiederbringliche** Bestand dieses Repos. Es ist die **einzige versionierte Bildquelle**: Die auf der Website ausgelieferten Bilder (AVIF + WebP, mehrere Größen) erzeugt Astro **beim Build automatisch aus diesem Archiv**. Nichts Abgeleitetes wird versioniert.
 
 **Deshalb gilt für jedes Werk-Bild: so hochauflösend und originalgetreu wie möglich archivieren.**
@@ -58,7 +58,7 @@ Der Nachlass besteht aus zwei Teilen:
 ### So wird ein Werk-Bild in bester Auflösung abgelegt
 1. **Beste verfügbare Originaldatei nehmen** — höchste Auflösung, unbeschnitten, farbecht, unkomprimiert oder nur gering komprimiert. Liegen mehrere Fassungen vor, immer die **größte/beste**.
 2. Ablage unter `src/artwork-originals/<jahr>/<monat>/<sprechender-name>.<endung>`. Der **Dateiname trägt die Metadaten** (Titel · Jahr · Technik · Maße) — bewusst so lassen.
-3. **Format:** **AVIF** (visuell verlustfrei, Qualität 80) für große Fotos; bereits kleine oder verlustfreie Quellen **verlustfrei** ablegen. **Kein BMP** (nicht web-tauglich → nach AVIF wandeln). Der Generator `npm run archive` macht das korrekt und pflegt `manifest.json` (Datei → Werk-IDs, Titel, Datum, Maße).
+3. **Format:** **AVIF** (visuell verlustfrei, Qualität 80) für große Fotos; bereits kleine oder verlustfreie Quellen **verlustfrei** ablegen. **Kein BMP** (nicht web-tauglich → nach AVIF wandeln).
 4. **Volle Auflösung behalten.**
 
 ### ⛔ Niemals hochskalieren — wir nehmen, was wir haben
@@ -228,29 +228,44 @@ Datei: `src/data/site.ts`. Nur die Texte in den `'…'`-Anführungszeichen ände
 
 ---
 
-### E) Neues Werk hinzufügen — FORTGESCHRITTEN
+### E) Neues Werk hinzufügen
 
-Das ist die einzige komplexe Aufgabe (Bild + zwei Daten-Einträge + Beschriftung). **Wenn du unsicher bist: nur die Daten eintragen und im PR schreiben „Bild + `npm run meta` bitte ergänzen" — Johannes macht den Rest.**
+Ein Werk = **eine** Datei (beide Sprachen im selben File) + **ein** Master-Bild im Archiv. Kein JSON, kein Generator. **Orientiere dich an einem ähnlichen bestehenden Werk in `src/content/artworks/`.**
 
-Ein Werk braucht **immer beide Sprachen**, verbunden über dieselbe `trid` (eine eindeutige Zahl):
-
-1. **Original-Bild ins Archiv:** die **bestaufgelöste** Datei des Werks unter `src/artwork-originals/<jahr>/<monat>/<name>.avif` ablegen — **volle Auflösung, kein Upscaling** (siehe „🗄️ Langzeit-Archiv"). Die Website-Bilder (AVIF + WebP, responsive) entstehen daraus **automatisch beim Build** — es gibt **kein** `public/artworks/` und **keine** `artworks-media.json` mehr.
-2. Die Zuordnung Werk-ID ↔ Archiv-Datei erzeugt `npm run archive` im `manifest.json` (aus dem `thumbFile` des `artworks.json`-Eintrags, Schritt 3). *(Das ist fortgeschritten — im Zweifel im PR „Werk-Bild bitte Johannes" notieren.)*
-3. **Zwei** Einträge in `src/data/artworks.json` (Array) — Vorlage (Gemälde). `<ID>` und `<trid>` durch neue, noch nicht vergebene Zahlen ersetzen; für die englische Fassung `<ID>` z. B. mit `-en`:
-   ```json
-   {
-     "id": "<ID>", "type": "portfolio", "status": "publish",
-     "slug": "mein-neues-werk-2025", "title": "„Mein neues Werk" 2025",
-     "date": "2025-06-01 12:00:00", "menuOrder": 0, "lang": "de", "trid": "<trid>",
-     "thumbFile": "2025/06/mein-neues-werk.jpg",
-     "categories": [{ "name": "Gemälde", "slug": "gemaelde", "taxonomy": "portfolio_category" }],
-     "tags": [],
-     "content": "<figure class=\"wp-block-image size-large\"><figcaption>Olaf Hoppe „Mein neues Werk" 2025<br>Acryl auf Leinwand 90 × 120 cm<br>2025-01-A</figcaption></figure>",
-     "excerpt": "", "metaKeys": []
-   }
+1. **Master-Bild ins Archiv:** die **bestaufgelöste** Datei unter `src/artwork-originals/<jahr>/<monat>/<sprechender-name>.avif` — **volle Auflösung, kein Upscaling** (siehe „🗄️ Langzeit-Archiv"). Die Website-Bilder (AVIF + WebP, responsive) entstehen daraus **automatisch beim Build**.
+   > Ein in den Chat gepastetes Bild lässt sich **nicht** committen — Werk-Bilder laufen über Google Drive (siehe „📎 Bilder & Dateien"). Im Zweifel im PR „Werk-Bild bitte Johannes" notieren.
+2. **Eine Werk-Datei** `src/content/artworks/<deutscher-slug>.md` anlegen — beide Sprachen im selben Kopf. Vorlage:
+   ```yaml
+   ---
+   artist: "Olaf Hoppe"
+   year: "2026"
+   number: "2026-01-A"        # PFLICHT: YYYY-MM-… ; steuert die Galerie-Sortierung (neueste zuerst)
+   date: "2026-06-01 12:00:00"
+   order: 0
+   category: paintings        # paintings | woodcuts | drawings | digital-art
+   image: "../../artwork-originals/2026/06/mein-neues-werk.avif"
+   de:
+     title: "„Mein neues Werk" 2026"
+     slug: "mein-neues-werk-2026"
+     captionTitle: "Mein neues Werk"
+     technique: "Acryl auf Leinwand"
+     dimensions: "90 cm × 120 cm"
+     edition: ""
+   en:
+     title: "\"My new work\" 2026"
+     slug: "my-new-work-2026"
+     captionTitle: "My new work"
+     technique: "Acrylic on canvas"
+     dimensions: "90 cm × 120 cm"
+     edition: ""
+   ---
    ```
-   Und derselbe Eintrag noch einmal mit `"id": "<ID>-en"`, `"lang": "en"`, **gleicher** `"trid"`, englischem `title`/`content` und `"categories": [{ "name": "Paintings", "slug": "paintings", "taxonomy": "portfolio_category" }]`. (Kategorien: Gemälde/Paintings · Holzschnitte/Woodcuts · Zeichnungen/Drawings · Digitale Kunst/Digital Art.)
-4. Danach: `npm run meta` (erzeugt die Beschriftung aus dem `content`) + `npm run check`.
+   - **`number`** ist Pflicht (`YYYY-MM-…`). Monat unbekannt → `YYYY-??`.
+   - **Holzschnitte** (Nummer endet auf `-HZ` **oder** Technik enthält „Holzschnitt") werden automatisch für 785 € direkt kaufbar. Soll ein Werk nur „anfragbar" sein, keine `-HZ`-Nummer und keine Holzschnitt-Technik verwenden.
+   - `image:` zeigt **relativ** auf die Master-Datei aus Schritt 1.
+3. `npm run check` + `npm run build` → grün.
+
+> **Für Entwickler:** Die E2E-Katalogzähler sind **bewusste Invarianten** (fangen versehentlichen Datenverlust ab) und müssen bei jedem **neuen oder entfernten** Werk mitwachsen: Gesamtzahl in `e2e/gallery.spec.ts`, Kategorie-Zahl in `e2e/helpers/site.ts`, Holzschnitt-Zahl in `e2e/pricing.spec.ts`. (Redaktion: einfach im PR „Zähler +1" notieren — den Rest macht Johannes.)
 
 ---
 
@@ -287,7 +302,7 @@ npm run build:de   # baut die deutsche Seite (findet Tippfehler/kaputtes Markdow
 
 - **`npm run check` meckert?** Dann fehlt genau das Gemeldete. Beispiele:
   - „*MDX-Seite vita-en.mdx fehlt*" → englische Datei anlegen/ergänzen.
-  - „*Werk … : fehlt EN-Übersetzung*" → zweiten (englischen) Eintrag mit gleicher `trid` hinzufügen.
+  - „*Werk … : fehlt EN-Übersetzung*" → im `en:`-Block der Werk-Datei die fehlenden Felder ergänzen (Titel, Slug, Technik, Maße).
   - „*Werk … : kein Bild*" → das Werk-Bild fehlt im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv").
   - „*Werk … : keine Nummer*" → **jedes** Werk braucht eine **Nummer** `YYYY-MM-…` (z. B. `2025-01-A`) — sie ist die **letzte Zeile** der Bildunterschrift im `content` und steuert Sortierung + Anzeige in der Galerie. **Pflichtfeld** — ohne Nummer bricht der Build ab. Ist der Monat unbekannt, `YYYY-??` schreiben (ehrlicher Platzhalter).
 - **`npm run build:de` bricht ab?** Meist ein Markdown-/JSON-Fehler (fehlendes Komma, kaputte Klammer) in der gerade geänderten Datei. Fehlermeldung lesen, Datei korrigieren.

@@ -57,11 +57,11 @@ Ziel: **alles**, was wir in die Seite programmiert haben, gegen Regressionen abs
 
 ### 8. Ordinals (`ordinals.spec`)
 - 5 Ordinal-Detailseiten: schwarze Bühne (`.ordinal-content`), Eyebrow „REVEALED …", `<iframe>` (ordinals.com/ordinalsbot), Buy-Link (gamma.io) `target=_blank rel=noopener`.
-- **Kein** „Interesse anfragen"-Button, **kein** Preis.
+- **Kein** „Unverbindlich anfragen"-Button, **kein** Preis.
 - Dunkles Theme (`body.theme-invert`), Layout `bleed`.
 
 ### 9. Interesse-Anfragen-Mailto (`inquiry.spec`)
-- Auf normalen Werk-Detailseiten: dezenter Link „Interesse anfragen"/„Enquire" mit Briefumschlag-Icon.
+- Auf normalen Werk-Detailseiten: dezenter Link „Unverbindlich anfragen"/„Enquire" mit Briefumschlag-Icon.
 - `mailto:` an **team@haushoppe.de**; Betreff `Interesse an „Titel" (Nummer)` (EN: `Interest in …`); Body enthält den Interesse-Satz **und den Werk-Link** (`https://haushoppe.de/portfolio/<slug>/`).
 - **Titelloses Werk (2016-07-AQ):** Fallback `Werk 2016-07-AQ` (EN `artwork 2016-07-AQ`), keine leeren Anführungszeichen.
 - **Ordinals:** kein Anker vorhanden.
