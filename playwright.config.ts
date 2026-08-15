@@ -25,8 +25,11 @@ export default defineConfig({
     { command: 'python3 -m http.server 4322 --directory dist-art', url: EN, reuseExistingServer: !CI, timeout: 60_000 },
   ],
   projects: [
-    { name: 'de', use: { ...devices['Desktop Chrome'], baseURL: DE, locale: 'de-DE' }, testIgnore: /mobile\.spec\.ts/ },
-    { name: 'en', use: { ...devices['Desktop Chrome'], baseURL: EN, locale: 'en-US' }, testIgnore: /mobile\.spec\.ts/ },
+    // Sprachspezifische Tests tragen ein Tag (@de-only / @en-only) und werden über grepInvert
+    // aus dem jeweils anderen Projekt herausgefiltert — sie laufen selektiv, statt zur Laufzeit
+    // als „skipped" aufzutauchen.
+    { name: 'de', use: { ...devices['Desktop Chrome'], baseURL: DE, locale: 'de-DE' }, testIgnore: /mobile\.spec\.ts/, grepInvert: /@en-only/ },
+    { name: 'en', use: { ...devices['Desktop Chrome'], baseURL: EN, locale: 'en-US' }, testIgnore: /mobile\.spec\.ts/, grepInvert: /@de-only/ },
     // Mobiles Projekt bewusst auf chromium-basiertem Pixel 5 (kein WebKit nötig; die mobilen
     // Sonderlocken sind CSS-Media-Queries, browser-agnostisch). Viewport 393px -> Burger + flush.
     { name: 'de-mobile', use: { ...devices['Pixel 5'], baseURL: DE, locale: 'de-DE' }, testMatch: /mobile\.spec\.ts/ },

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { site, langOf } from './helpers/site';
+import { site } from './helpers/site';
 
 test('h1, Bild (avif+webp), Nummer, Prev/Next vorhanden', async ({ page }, info) => {
   const s = site(info);
@@ -19,9 +19,10 @@ const NUMBERS: Record<string, string> = {
   'portraet-1': '2016-10',
   'portraet-2': '2016-11',
 };
+// Nummer ist sprachneutral; geprüft über DE-Slugs (EN-Slugs weichen ab) → @de-only, läuft nur
+// im de-Projekt (per grepInvert aus en herausgefiltert).
 for (const [slug, num] of Object.entries(NUMBERS)) {
-  test(`Vergebene Nummer als Badge: ${slug} → ${num}`, async ({ page }, info) => {
-    test.skip(langOf(info) !== 'de', 'Nummer ist sprachneutral; DE-Slugs geprüft (EN-Slugs weichen ab)');
+  test(`Vergebene Nummer als Badge: ${slug} → ${num}`, { tag: '@de-only' }, async ({ page }) => {
     await page.goto(`/portfolio/${slug}/`);
     await expect(page.getByTestId('artwork-number')).toHaveText(num);
   });

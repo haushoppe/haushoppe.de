@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { site, langOf } from './helpers/site';
+import { site } from './helpers/site';
 
 test('404-Seite hat passenden Inhalt', async ({ page }) => {
   await page.goto('/404.html');
@@ -28,8 +28,8 @@ test('Sitemap enthält Kernrouten + ein Werk', async ({ request }, info) => {
   }
 });
 
-test('EN _redirects enthält Weiterleitungen', async ({ request }, info) => {
-  test.skip(langOf(info) !== 'en', 'nur die EN-Site liefert _redirects (gen-en-redirects)');
+// Nur die EN-Site liefert _redirects (gen-en-redirects) → @en-only, per grepInvert aus de gefiltert.
+test('EN _redirects enthält Weiterleitungen', { tag: '@en-only' }, async ({ request }) => {
   const r = await request.get('/_redirects');
   expect(r.status()).toBe(200);
   expect(await r.text()).toMatch(/\/en\/\*\s+https:\/\/haushoppe\.art/);
