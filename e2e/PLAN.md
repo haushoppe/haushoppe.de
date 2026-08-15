@@ -67,9 +67,9 @@ Ziel: **alles**, was wir in die Seite programmiert haben, gegen Regressionen abs
 - **Ordinals:** kein Anker vorhanden.
 
 ### 10. Holzschnitt-Preis (`pricing.spec`)
-- Genau **30** Werk-Detailseiten (de) mit Preis-Markup `<span class="art-meta__price">` „785 EUR" + Notiz „inkl. 7 % MwSt, versandkostenfrei" (EN „incl. 7% VAT, free shipping"). EN ebenfalls 30.
+- Genau **31** Holzschnitt-Detailseiten (de wie en) mit Preis-Block (`data-testid="artwork-price"` in der Kaufbox): zwei Varianten-Karten „785 €" ungerahmt / „1.000 €" gerahmt (HALBE-Museumsrahmen) + Notiz „inkl. 7 % MwSt · versandkostenfrei" (EN „incl. 7% VAT · free shipping"); Vorauswahl ungerahmt.
 - **Gemälde/Aquarelle/Zeichnungen/Ordinals:** kein Preis-Markup.
-- Holzschnitt-Mail enthält Zeile `Preis: 785 EUR (…)` und fragt nach **Verfügbarkeit**; Nicht-Holzschnitt-Mail fragt nach „Verfügbarkeit und Preis" ohne Preis-Zeile.
+- Holzschnitt-Mail enthält Zeile `Preis: 785 € ungerahmt oder 1.000 € gerahmt (…)` und fragt nach **Verfügbarkeit**; Nicht-Holzschnitt-Mail fragt nach „Verfügbarkeit und Preis" ohne Preis-Zeile.
 
 ### 11. Camper-Seite (`camper.spec`, DE + EN)
 - Titel „Camper willkommen"/„Campers Welcome"; steht unter `/kunst-und-camping/` bzw. `/art-and-camping/`.

@@ -1,13 +1,16 @@
 ---
-// Direktkauf-Box für Holzschnitte (fester Preis 785 EUR, versandkostenfrei). Rendert PayPal Smart
-// Buttons, die die Bestellung server-seitig über die Cloudflare-Functions anlegen und abbuchen —
-// der API-Key bleibt geschützt. „Möglichst wenig Klicks": PayPal erhebt die Lieferadresse selbst
-// (GET_FROM_FILE), Zahlung + Adresse landen im PayPal-Konto (keine Bestätigungsmail).
+// Direktkauf-Box für Holzschnitte in zwei Ausführungen: ungerahmt (785 EUR) oder fertig gerahmt
+// im HALBE-Museumsrahmen (1000 EUR), beides versandkostenfrei. Die Ausführung wählt der Käufer
+// über zwei Auswahl-Karten; die gewählte Variante geht als Schlüssel an create-order, der Server
+// setzt den Betrag aus seiner Preistabelle (keine Preis-Manipulation vom Client möglich).
+// Rendert PayPal Smart Buttons über die Cloudflare-Functions — der API-Key bleibt geschützt.
+// „Möglichst wenig Klicks": PayPal erhebt die Lieferadresse selbst (GET_FROM_FILE), Zahlung +
+// Adresse landen im PayPal-Konto (keine Bestätigungsmail).
 //
 // Graceful Degradation: Ohne konfigurierte Functions/Keys (z. B. lokaler `astro preview`, e2e-
 // Server) liefert /api/paypal/config kein enabled -> die Buttons erscheinen nicht, der darunter
 // liegende E-Mail-CTA bleibt der Kaufweg. Die Box selbst wird immer server-seitig gerendert.
-import { WOODCUT_PRICE_EUR } from '../lib/pricing';
+import { woodcutPrice } from '../lib/pricing';
 
 interface Props {
   slug: string;
@@ -15,12 +18,17 @@ interface Props {
   title?: string;
 }
 const { slug, lang = 'de', title = '' } = Astro.props;
-const price = `${WOODCUT_PRICE_EUR} €`;
+const price = woodcutPrice(lang);
 const t =
   lang === 'en'
     ? {
         heading: 'Buy this woodcut',
         note: 'incl. 7% VAT · free shipping',
+        legend: 'Choose your version',
+        unframed: 'Unframed',
+        unframedDesc: 'The woodcut, numbered and hand-signed',
+        framed: 'Framed',
+        framedDesc: 'The woodcut, numbered and hand-signed. High-quality HALBE® frame: aluminium magnetic frame, museum glass, acid-free passe-partout. Ready to hang.',
         dachNote: 'Shipping currently only within Germany, Austria and Switzerland.',
         dach: 'Shipping is currently only available within Germany, Austria and Switzerland. Nothing has been charged.',
         secure: 'Secure payment via PayPal or card. PayPal shares your shipping address with us.',
@@ -38,6 +46,11 @@ const t =
     : {
         heading: 'Diesen Holzschnitt kaufen',
         note: 'inkl. 7 % MwSt · versandkostenfrei',
+        legend: 'Ausführung wählen',
+        unframed: 'Ungerahmt',
+        unframedDesc: 'Der Holzschnitt, nummeriert und handsigniert',
+        framed: 'Gerahmt',
+        framedDesc: 'Der Holzschnitt, nummeriert und handsigniert. Hochwertiger Rahmen von HALBE®: Alu-Magnetrahmen, Museumsglas, säurefreies Passepartout. Fertig zum Aufhängen.',
         dachNote: 'Versand aktuell nur innerhalb von Deutschland, Österreich und der Schweiz.',
         dach: 'Der Versand ist aktuell nur innerhalb von Deutschland, Österreich und der Schweiz möglich. Es wurde nichts abgebucht.',
         secure: 'Sichere Zahlung mit PayPal oder Karte. PayPal übermittelt uns Ihre Lieferadresse.',
@@ -55,10 +68,32 @@ const t =
 
 <section class="wc-buy" data-testid="paypal-buy" data-slug={slug} data-lang={lang} data-title={title}>
   <h2 class="wc-buy__heading">{t.heading}</h2>
-  <p class="wc-buy__price" data-testid="artwork-price">
-    {price}
-    <span class="wc-buy__note">{t.note}</span>
-  </p>
+  <div class="wc-buy__pricing" data-testid="artwork-price">
+    <fieldset class="wc-buy__variants">
+      <legend class="visually-hidden">{t.legend}</legend>
+      <label class="wc-buy__variant">
+        <input class="wc-buy__variant-input" type="radio" name={`wc-variant-${slug}`} value="unframed" checked />
+        <span class="wc-buy__variant-body">
+          <span class="wc-buy__variant-head">
+            <span class="wc-buy__variant-name">{t.unframed}</span>
+            <span class="wc-buy__variant-price">{price.amount}</span>
+          </span>
+          <span class="wc-buy__variant-desc">{t.unframedDesc}</span>
+        </span>
+      </label>
+      <label class="wc-buy__variant">
+        <input class="wc-buy__variant-input" type="radio" name={`wc-variant-${slug}`} value="framed" />
+        <span class="wc-buy__variant-body">
+          <span class="wc-buy__variant-head">
+            <span class="wc-buy__variant-name">{t.framed}</span>
+            <span class="wc-buy__variant-price">{price.amountFramed}</span>
+          </span>
+          <span class="wc-buy__variant-desc">{t.framedDesc}</span>
+        </span>
+      </label>
+    </fieldset>
+    <p class="wc-buy__note">{t.note}</p>
+  </div>
   <div class="wc-buy__buttons" data-testid="paypal-buttons"></div>
   <p class="wc-buy__fineprint">{t.secure} {t.dachNote} {t.contract}</p>
   <p class="wc-buy__links">
@@ -111,10 +146,13 @@ const t =
         .Buttons({
           style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
           createOrder: function () {
+            // Die im Moment des Kaufs gewählte Ausführung; der Server übersetzt den Schlüssel
+            // in den Preis (Fallback server-seitig: ungerahmt).
+            const sel = section.querySelector('.wc-buy__variant-input:checked');
             return fetch('/api/paypal/create-order', {
               method: 'POST',
               headers: { 'content-type': 'application/json' },
-              body: JSON.stringify({ slug: slug, title: title, lang: lang }),
+              body: JSON.stringify({ slug: slug, title: title, lang: lang, variant: sel ? sel.value : 'unframed' }),
             })
               .then(function (r) { return r.json(); })
               .then(function (d) {
@@ -159,22 +197,65 @@ const t =
     text-align: center;
   }
   .wc-buy__heading {
-    margin: 0 0 0.35rem;
+    margin: 0 0 1rem;
     font-family: var(--serif);
     font-weight: 400;
     font-size: 1.15rem;
   }
-  .wc-buy__price {
-    margin: 0 0 1.1rem;
-    font-size: 1.35rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+  /* Zwei Auswahl-Karten (ungerahmt/gerahmt): linksbündige Zeilen mit Radio, Name + Preis in
+     einer Kopfzeile, kurze Beschreibung darunter. Die gewählte Karte bekommt die dunkle Kante. */
+  .wc-buy__variants {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0 0 0.6rem;
+    padding: 0;
+    border: 0;
   }
-  .wc-buy__note {
+  .wc-buy__variant {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid #c9c9c9;
+    text-align: left;
+    cursor: pointer;
+  }
+  .wc-buy__variant:has(.wc-buy__variant-input:checked) {
+    border-color: var(--ink, #111);
+    box-shadow: inset 0 0 0 1px var(--ink, #111);
+  }
+  .wc-buy__variant-input {
+    margin: 0.2rem 0 0;
+    accent-color: var(--ink, #111);
+    flex: none;
+  }
+  .wc-buy__variant-body {
+    flex: 1;
+  }
+  .wc-buy__variant-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .wc-buy__variant-name {
+    font-weight: 600;
+  }
+  .wc-buy__variant-price {
+    font-weight: 600;
+    font-size: 1.1rem;
+    white-space: nowrap;
+  }
+  .wc-buy__variant-desc {
     display: block;
     margin-top: 0.15rem;
     font-size: var(--fs-xs);
-    font-weight: 400;
+    line-height: 1.45;
+    color: #6a6a6a;
+  }
+  .wc-buy__note {
+    margin: 0 0 1.1rem;
+    font-size: var(--fs-xs);
     letter-spacing: 0.02em;
     color: #6a6a6a;
   }

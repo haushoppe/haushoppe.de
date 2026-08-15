@@ -1,15 +1,19 @@
 import { test, expect } from '@playwright/test';
 import { site, langOf } from './helpers/site';
 
-test('Holzschnitt zeigt Preis 785 € (inkl. 7 % MwSt, versandkostenfrei)', async ({ page }, info) => {
+test('Holzschnitt zeigt beide Preise: 785 € ungerahmt, 1.000 € gerahmt', async ({ page }, info) => {
   const s = site(info);
+  const en = langOf(info) === 'en';
   await page.goto(`/portfolio/${s.work.woodcut}/`);
   const price = page.getByTestId('artwork-price');
   await expect(price).toBeVisible();
   await expect(price).toContainText('785 €');
-  await expect(price).toContainText(
-    langOf(info) === 'en' ? 'incl. 7% VAT · free shipping' : 'inkl. 7 % MwSt · versandkostenfrei',
-  );
+  await expect(price).toContainText(en ? '1,000 €' : '1.000 €');
+  await expect(price).toContainText(en ? 'incl. 7% VAT · free shipping' : 'inkl. 7 % MwSt · versandkostenfrei');
+  // Vorauswahl: ungerahmt; die gerahmte Variante ist wählbar (HALBE-Museumsrahmen).
+  await expect(price.locator('input[value="unframed"]')).toBeChecked();
+  await expect(price.locator('input[value="framed"]')).not.toBeChecked();
+  await expect(price).toContainText('HALBE');
 });
 
 test('Nicht-Holzschnitt (Aquarell) zeigt KEINEN Preis', async ({ page }, info) => {

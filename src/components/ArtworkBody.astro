@@ -90,7 +90,14 @@ const inquire = {
   subject: lang === 'en' ? `Interest in ${named}` : `Interesse an ${named}`,
   body: [
     bodyLead,
-    ...(price ? ['', lang === 'en' ? `Price: ${price.amount} (${price.note})` : `Preis: ${price.amount} (${price.note})`] : []),
+    ...(price
+      ? [
+          '',
+          lang === 'en'
+            ? `Price: ${price.amount} unframed or ${price.amountFramed} framed (${price.note})`
+            : `Preis: ${price.amount} ungerahmt oder ${price.amountFramed} gerahmt (${price.note})`,
+        ]
+      : []),
     '',
     workUrl,
   ].join('\r\n'),

@@ -3,10 +3,11 @@
 // aus den Cloudflare-Projekt-Variablen (PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET) und tauchen nie im
 // Client-Code oder im Repo auf. Dateien mit führendem "_" werden von Pages NICHT als Route geroutet.
 
-// Fester Brutto-Preis aller Holzschnitte in EUR. MUSS mit WOODCUT_PRICE_EUR in src/lib/pricing.ts
-// übereinstimmen (dort die fachliche Quelle). Der Betrag wird server-seitig gesetzt, damit der
-// Client den Preis nicht manipulieren kann.
-export const WOODCUT_PRICE_EUR = '785.00';
+// Feste Brutto-Preise aller Holzschnitte in EUR je Ausführung (ungerahmt / fertig gerahmt im
+// HALBE-Museumsrahmen). MUSS mit den WOODCUT_PRICE_*-Konstanten in src/lib/pricing.ts
+// übereinstimmen (dort die fachliche Quelle). Der Betrag wird server-seitig aus dieser Tabelle
+// gewählt — der Client liefert nur den Varianten-Schlüssel, nie einen Preis.
+export const WOODCUT_PRICES_EUR = { unframed: '785.00', framed: '1000.00' };
 export const CURRENCY = 'EUR';
 
 export function paypalBase(env) {

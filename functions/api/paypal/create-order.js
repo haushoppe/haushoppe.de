@@ -1,9 +1,11 @@
-import { WOODCUT_PRICE_EUR, CURRENCY, paypalBase, accessToken, json } from './_paypal.js';
+import { WOODCUT_PRICES_EUR, CURRENCY, paypalBase, accessToken, json } from './_paypal.js';
 
-// Legt eine PayPal-Bestellung für EINEN Holzschnitt an. Der Betrag wird server-seitig fest auf
-// WOODCUT_PRICE_EUR gesetzt (keine Preis-Manipulation vom Client möglich); der Client liefert nur
-// Slug/Titel/Sprache zur Kennzeichnung. shipping_preference=GET_FROM_FILE -> PayPal erhebt die
-// Lieferadresse; sie landet mit der Zahlung im PayPal-Konto (keine Bestätigungsmail nötig).
+// Legt eine PayPal-Bestellung für EINEN Holzschnitt an. Der Betrag wird server-seitig aus
+// WOODCUT_PRICES_EUR gewählt (keine Preis-Manipulation vom Client möglich); der Client liefert nur
+// Slug/Titel/Sprache/Varianten-Schlüssel zur Kennzeichnung. Die Ausführung (ungerahmt/gerahmt)
+// steht im Bestell-Label, damit sie in PayPal-Konto UND Bestell-Mails eindeutig sichtbar ist.
+// shipping_preference=GET_FROM_FILE -> PayPal erhebt die Lieferadresse; sie landet mit der
+// Zahlung im PayPal-Konto (keine Bestätigungsmail nötig).
 export async function onRequestPost({ request, env }) {
   let body = {};
   try {
@@ -14,8 +16,18 @@ export async function onRequestPost({ request, env }) {
   const slug = typeof body.slug === 'string' ? body.slug.slice(0, 120) : '';
   const rawTitle = typeof body.title === 'string' ? body.title.trim() : '';
   const lang = body.lang === 'en' ? 'en' : 'de';
+  const variant = body.variant === 'framed' ? 'framed' : 'unframed';
+  const price = WOODCUT_PRICES_EUR[variant];
   const name = rawTitle || slug || (lang === 'en' ? 'Woodcut' : 'Holzschnitt');
-  const label = (lang === 'en' ? `Woodcut: ${name}` : `Holzschnitt: ${name}`).slice(0, 127);
+  const variantLabel =
+    lang === 'en'
+      ? variant === 'framed'
+        ? 'framed (HALBE museum frame)'
+        : 'unframed'
+      : variant === 'framed'
+        ? 'gerahmt (HALBE-Museumsrahmen)'
+        : 'ungerahmt';
+  const label = `${lang === 'en' ? 'Woodcut' : 'Holzschnitt'}: ${name} · ${variantLabel}`.slice(0, 127);
 
   try {
     const token = await accessToken(env);
@@ -30,9 +42,9 @@ export async function onRequestPost({ request, env }) {
             description: label,
             amount: {
               currency_code: CURRENCY,
-              value: WOODCUT_PRICE_EUR,
+              value: price,
               breakdown: {
-                item_total: { currency_code: CURRENCY, value: WOODCUT_PRICE_EUR },
+                item_total: { currency_code: CURRENCY, value: price },
                 shipping: { currency_code: CURRENCY, value: '0.00' },
               },
             },
@@ -41,7 +53,7 @@ export async function onRequestPost({ request, env }) {
                 name: label,
                 quantity: '1',
                 category: 'PHYSICAL_GOODS',
-                unit_amount: { currency_code: CURRENCY, value: WOODCUT_PRICE_EUR },
+                unit_amount: { currency_code: CURRENCY, value: price },
               },
             ],
           },

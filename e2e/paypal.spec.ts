@@ -6,12 +6,13 @@ import { site, langOf } from './helpers/site';
 // vorhanden) — geprüft wird also die konditionale Server-Ausgabe + Graceful Degradation: der
 // E-Mail-CTA bleibt in jedem Fall als Kaufweg erhalten.
 
-test('Holzschnitt: Kaufbox (785 EUR) + Buttons-Mount + E-Mail-CTA', async ({ page }, info) => {
+test('Holzschnitt: Kaufbox (785 € / 1.000 € gerahmt) + Buttons-Mount + E-Mail-CTA', async ({ page }, info) => {
   const s = site(info);
   await page.goto(`/portfolio/${s.work.woodcut}/`);
   const buy = page.getByTestId('paypal-buy');
   await expect(buy).toBeVisible();
   await expect(buy).toContainText('785 €');
+  await expect(buy).toContainText(langOf(info) === 'en' ? '1,000 €' : '1.000 €');
   await expect(buy).toContainText(
     langOf(info) === 'en' ? 'Germany, Austria and Switzerland' : 'Deutschland, Österreich und der Schweiz',
   );
