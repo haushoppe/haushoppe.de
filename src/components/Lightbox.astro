@@ -32,28 +32,52 @@ const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
     var lbCap = lb.querySelector('.lightbox__caption');
     var navBtns = lb.querySelectorAll('.lightbox__nav');
 
-    // Vor/Zurück-Knöpfe nur zeigen, wenn die aktuelle Seite eine Bild-Kette hat (Werk-Detail
-    // trägt data-lb-prev/next; auf Kunst-Erwerben o. Ä. gibt es keine -> Knöpfe aus).
+    // Lokale Bildgruppe (Detail-Ausschnitte): innerhalb der Gruppe blättern Pfeile/Tasten/Swipe
+    // NUR durch diese Bilder, nie zum nächsten Werk. Ohne Gruppe (Hauptbild) gilt die Werk-Kette.
+    var group = null;
+    var gi = 0;
+
+    // Vor/Zurück-Knöpfe zeigen, wenn eine lokale Gruppe offen ist ODER die Seite eine
+    // Werk-Kette hat (Werk-Detail trägt data-lb-prev/next; Kunst-Erwerben o. Ä. nicht).
     function updateNav() {
-      var has = !!document.querySelector('[data-lb-prev]');
+      var has = !!group || !!document.querySelector('[data-lb-prev]');
       for (var i = 0; i < navBtns.length; i++) navBtns[i].hidden = !has;
     }
 
-    function open(img) {
-      // data-full = große Version (von <Img>); sonst das aktuell geladene Bild.
+    function show(img) {
+      // data-full = große Version (von <Img>/<ZoomImg>); sonst das aktuell geladene Bild.
       lbImg.src = img.dataset.full || img.currentSrc || img.src;
       lbImg.alt = img.alt || '';
       lbCap.textContent = img.alt || '';
       lbCap.style.display = img.alt ? '' : 'none';
+    }
+    function open(img) {
+      var wrap = img.closest && img.closest('.detail-reihe');
+      if (wrap) {
+        group = Array.prototype.slice.call(wrap.querySelectorAll('img[data-lb]'));
+        gi = group.indexOf(img);
+      } else {
+        group = null;
+      }
+      show(img);
       lb.hidden = false;
       document.documentElement.style.overflow = 'hidden';
       updateNav();
     }
     function close() {
       lb.hidden = true;
+      group = null;
       lbImg.removeAttribute('src');
       document.documentElement.style.overflow = '';
     }
+    // Blättert innerhalb der lokalen Gruppe; true = verarbeitet (kein Werkwechsel). Wird von der
+    // globalen Pfeil-/Swipe-Navigation (BaseLayout) VOR der Werk-Kette befragt.
+    lb.__lbStep = function (next) {
+      if (!group || group.length < 2) return false;
+      gi = (gi + (next ? 1 : -1) + group.length) % group.length;
+      show(group[gi]);
+      return true;
+    };
 
     // Zoombare Bilder markieren (Tastaturfokus; Cursor kommt aus dem CSS). Läuft bei jedem
     // View-Transition-Wechsel neu, weil der Seiteninhalt (und damit die Bilder) getauscht wird.
@@ -73,6 +97,7 @@ const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
     document.addEventListener('astro:page-load', function () {
       mark();
       if (lb.hidden) return;
+      group = null; // Seitenwechsel: alte Gruppen-Bilder sind nicht mehr im DOM
       updateNav();
       var main = document.querySelector('.art-figure img');
       if (main) {

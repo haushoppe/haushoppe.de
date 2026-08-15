@@ -146,6 +146,9 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
           var lb = document.getElementById('lightbox');
           var url;
           if (lb && !lb.hidden) {
+            // Lokale Bildgruppe (Detail-Ausschnitte) hat Vorrang: blättert in der Lightbox,
+            // ohne das Werk zu wechseln.
+            if (lb.__lbStep && lb.__lbStep(right)) return;
             var host = document.querySelector('[data-lb-' + (right ? 'next' : 'prev') + ']');
             url = host && host.getAttribute('data-lb-' + (right ? 'next' : 'prev'));
           } else {
@@ -166,6 +169,32 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
           var btn = e.target && e.target.closest ? e.target.closest('[data-lb-nav]') : null;
           if (btn) go(btn.getAttribute('data-lb-nav') === 'next');
         });
+        // Mobil: horizontales Wischen in der OFFENEN Lightbox blättert wie die Pfeile durch die
+        // Werke (Seiten ohne Werk-Kette: go() findet kein Ziel, Wischen bleibt folgenlos). Ein
+        // Tap schließt weiterhin — nach einem echten Swipe feuert der Browser keinen click.
+        var tx = 0;
+        var ty = 0;
+        document.addEventListener(
+          'touchstart',
+          function (e) {
+            var lb = document.getElementById('lightbox');
+            if (!lb || lb.hidden || !e.touches.length) return;
+            tx = e.touches[0].clientX;
+            ty = e.touches[0].clientY;
+          },
+          { passive: true },
+        );
+        document.addEventListener(
+          'touchend',
+          function (e) {
+            var lb = document.getElementById('lightbox');
+            if (!lb || lb.hidden || !e.changedTouches.length) return;
+            var dx = e.changedTouches[0].clientX - tx;
+            var dy = e.changedTouches[0].clientY - ty;
+            if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(dx < 0);
+          },
+          { passive: true },
+        );
       }
     </script>
   </body>

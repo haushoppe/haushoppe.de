@@ -17,11 +17,13 @@ const pages = defineCollection({
     signature: z.object({ image: z.string(), alt: z.string() }).optional(),
     featured: z
       .object({
+        eyebrow: z.string().default(''), // kleines Label über dem Werk („Neuestes Werk")
         image: z.string(),
         alt: z.string(),
         href: z.string().default(''),
         caption: z.string(),
-        award: z.string().default(''),
+        intro: z.string().default(''), // Kurzbeschreibung unter der Bildunterschrift
+        ctaText: z.string().default(''), // Button-Text („Weiterlesen") — Ziel ist href
       })
       .optional(),
     // Kunst Erwerben
