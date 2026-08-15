@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { site } from './helpers/site';
 
-test('Filter: Gesamtzahl 333 + Kategorie-Zahlen', async ({ page }, info) => {
+test('Filter: Gesamtzahl 334 + Kategorie-Zahlen', async ({ page }, info) => {
   const s = site(info);
   await page.goto(s.routes.gallery);
-  await expect(page.getByTestId('gallery-filter').first().locator('.gallery__filter-count')).toHaveText('333');
+  await expect(page.getByTestId('gallery-filter').first().locator('.gallery__filter-count')).toHaveText('334');
   for (const c of s.cats) {
     const link = page.locator(`[data-testid="gallery-filter"][href$="${s.galleryBase}/${c.slug}/"]`);
     await expect(link, `Filter-Link ${c.slug}`).toHaveCount(1);

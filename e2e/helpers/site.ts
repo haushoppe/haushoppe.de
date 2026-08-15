@@ -48,7 +48,7 @@ export const SITE: Record<Lang, SiteData> = {
     },
     galleryBase: '/werke',
     cats: [
-      { slug: 'holzschnitte', label: 'Holzschnitte', count: 30 },
+      { slug: 'holzschnitte', label: 'Holzschnitte', count: 31 },
       { slug: 'gemaelde', label: 'Gemälde', count: 293 },
       { slug: 'zeichnungen', label: 'Zeichnungen', count: 5 },
       { slug: 'digitale-kunst', label: 'Digitale Kunst', count: 5 },
@@ -72,7 +72,7 @@ export const SITE: Record<Lang, SiteData> = {
     },
     galleryBase: '/artwork',
     cats: [
-      { slug: 'woodcuts', label: 'Woodcuts', count: 30 },
+      { slug: 'woodcuts', label: 'Woodcuts', count: 31 },
       { slug: 'paintings', label: 'Paintings', count: 293 },
       { slug: 'drawings', label: 'Drawings', count: 5 },
       { slug: 'digital-art', label: 'Digital Art', count: 5 },
