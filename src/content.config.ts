@@ -71,7 +71,7 @@ const artworks = defineCollection({
       date: z.string().optional(), // WP-Datum, nur Sortier-Fallback wenn keine Nummer
       order: z.number().default(0), // Tiebreaker bei gleicher Werk-Nummer (stabile Galerie-Reihenfolge)
       category: z.enum(['paintings', 'woodcuts', 'drawings', 'digital-art']),
-      image: image().optional(), // Ordinals haben kein Bild
+      image: image().optional(), // Galerie-Bild des Werks (auch Ordinals haben ein Thumbnail)
       de: side,
       en: side,
       // Ordinals (5 Werke): On-Chain-Inschrift + Kauf-Link statt Bild.

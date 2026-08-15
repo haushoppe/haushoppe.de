@@ -1,175 +1,178 @@
 ---
-// Footer: dunkler Balken, „Folge uns bei" + Social-Icons (Discord/Instagram/YouTube),
-// darunter Kontakt 2-spaltig.
-import { socials, contact } from '../data/site';
-import MailObfuscate from './MailObfuscate.astro';
+// Footer: dunkler Balken mit Marken-Spalte + Link-Spalten (Folgen, Galerie, Rechtliches) und
+// einer schlichten Legal-Zeile unten. Aufbau an haushoppe-its orientiert. Adresse/Telefon
+// stehen auf Kontakt + Impressum; hier nur ein Kontakt-Link.
+import { socials } from '../data/site';
 import { getCollection } from 'astro:content';
 
 interface Props {
   lang: 'de' | 'en';
 }
 const { lang } = Astro.props;
-const t = lang === 'en' ? { follow: 'Follow us', contact: 'Contact' } : { follow: 'Folge uns bei', contact: 'Kontakt' };
-// Widerrufsfunktion (§ 356a BGB): hervorgehobener Button, bewusst NICHT in der Legal-Link-Zeile.
+const year = new Date().getFullYear();
+const t =
+  lang === 'en'
+    ? { follow: 'Follow', gallery: 'Gallery', legal: 'Legal', tag: 'Fine art gallery on the Baltic coast. Paintings and multi-coloured woodcuts by Olaf Hoppe.', kontakt: 'Contact', vita: 'Vita' }
+    : { follow: 'Folgen', gallery: 'Galerie', legal: 'Rechtliches', tag: 'Galerie für Bildende Kunst an der Ostseeküste. Gemälde und mehrfarbige Holzschnitte von Olaf Hoppe.', kontakt: 'Kontakt', vita: 'Vita' };
+
+const galleryLinks = [
+  { href: lang === 'en' ? '/contact/' : '/kontakt/', label: t.kontakt },
+  { href: '/vita/', label: t.vita },
+];
+
+// Widerrufsfunktion (§ 356a BGB): dezenter Link am Ende der Rechtliches-Spalte.
 const withdrawHref = lang === 'en' ? '/withdraw/' : '/widerruf-erklaeren/';
 const withdrawLabel = lang === 'en' ? 'Withdraw from contract' : 'Vertrag widerrufen';
 
-// Standalone-Seiten mit placement:'footer' (z. B. Impressum, Datenschutz) als Link-Zeile unten.
+// Standalone-Seiten mit placement:'footer' (Impressum, Datenschutz, AGB, Widerruf) in stabiler
+// Reihenfolge (getCollection() ist sonst instabil je Build).
 const footerPages = (await getCollection('pages'))
   .filter((p) => p.data.standalone && p.data.placement === 'footer' && p.data.path && p.id.endsWith(`-${lang}`))
-  // Explizite, stabile Reihenfolge (getCollection() ist sonst instabil je Build).
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .map((p) => ({ href: `/${p.data.path}/`, label: p.data.navLabel || p.data.title }));
 
+// Monochrome Inline-SVG-Icons (currentColor), à la haushoppe-its — kein farbiger Kreis mehr.
 const icons: Record<string, string> = {
-  Discord:
-    '<path fill="currentColor" d="M20.3 4.9A19.8 19.8 0 0 0 15.4 3.4l-.2.5c1.6.4 2.9 1 4.2 1.8-2.3-1-4.6-1.6-7.4-1.6s-5.1.6-7.4 1.6c1.3-.8 2.7-1.4 4.2-1.8l-.2-.5A19.8 19.8 0 0 0 3.7 4.9C1.2 8.6.5 12.2.8 15.8a20 20 0 0 0 6 3l.8-1.2c-.7-.3-1.4-.6-2-1l.5-.4c3.9 1.8 8.1 1.8 12 0l.5.4c-.6.4-1.3.7-2 1l.8 1.2a20 20 0 0 0 6-3c.4-4.2-.6-7.8-3.1-10.9ZM8.9 13.7c-1 0-1.7-.9-1.7-1.9s.8-1.9 1.7-1.9 1.8.9 1.7 1.9c0 1-.8 1.9-1.7 1.9Zm6.2 0c-1 0-1.7-.9-1.7-1.9s.8-1.9 1.7-1.9 1.8.9 1.7 1.9c0 1-.7 1.9-1.7 1.9Z"/>',
   Instagram:
     '<rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/>',
   YouTube:
     '<path fill="currentColor" d="M22 8.2a2.6 2.6 0 0 0-1.8-1.8C18.6 6 12 6 12 6s-6.6 0-8.2.4A2.6 2.6 0 0 0 2 8.2 27 27 0 0 0 1.7 12 27 27 0 0 0 2 15.8a2.6 2.6 0 0 0 1.8 1.8C5.4 18 12 18 12 18s6.6 0 8.2-.4a2.6 2.6 0 0 0 1.8-1.8c.3-1.3.3-2.5.3-3.8s0-2.5-.3-3.8ZM10 15V9l5 3-5 3Z"/>',
 };
+const domain = lang === 'en' ? 'haushoppe.art' : 'haushoppe.de';
 ---
 
 <footer class="site-footer">
-  <div class="site-footer__social">
-    <h2>{t.follow}</h2>
-    <ul>
+  <div class="site-footer__inner">
+    <div class="site-footer__brand">
+      <span class="site-footer__wordmark">HAUS HOPPE</span>
+      <p class="site-footer__tag">{t.tag}</p>
+    </div>
+
+    <nav class="site-footer__col" aria-label={t.follow}>
+      <p class="site-footer__heading">{t.follow}</p>
       {
         socials.map((s) => (
-          <li>
-            <a href={s.href} target="_blank" rel="noopener nofollow">
-              <span class="social-icon" style={`--c:${s.color}`}>
-                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" set:html={icons[s.name]} />
-              </span>
-              <span>{s.name}</span>
-            </a>
-          </li>
+          <a href={s.href} target="_blank" rel="noopener nofollow" class="site-footer__iconlink">
+            <span class="site-footer__ico">
+              <svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons[s.name]} />
+            </span>
+            <span>{s.name}</span>
+          </a>
         ))
       }
-    </ul>
+    </nav>
+
+    <nav class="site-footer__col" aria-label={t.gallery}>
+      <p class="site-footer__heading">{t.gallery}</p>
+      {galleryLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <nav class="site-footer__col" aria-label={t.legal}>
+      <p class="site-footer__heading">{t.legal}</p>
+      {footerPages.map((p) => <a href={p.href}>{p.label}</a>)}
+      <a href={withdrawHref} class="site-footer__withdraw-link" data-testid="withdraw-button">{withdrawLabel}</a>
+    </nav>
   </div>
-  <div class="site-footer__contact container">
-    <h2>{t.contact}</h2>
-    <div class="site-footer__cols">
-      <address>
-        {contact.name}<br />
-        {contact.street}<br />
-        {contact.city}
-      </address>
-      <div class="site-footer__meta">
-        <MailObfuscate address={contact.email} /><br />
-        {contact.phones.map((ph) => <span>{ph}<br /></span>)}
-      </div>
-    </div>
+
+  <div class="site-footer__baseline">
+    <span>© {year} Olaf Hoppe · HAUS HOPPE</span>
+    <span>{domain}</span>
   </div>
-  {
-    footerPages.length > 0 && (
-      <nav class="site-footer__legal" aria-label={lang === 'en' ? 'Legal' : 'Rechtliches'}>
-        {footerPages.map((p) => (
-          <a href={p.href}>{p.label}</a>
-        ))}
-        <a href={withdrawHref} class="site-footer__withdraw-link" data-testid="withdraw-button">{withdrawLabel}</a>
-      </nav>
-    )
-  }
 </footer>
 
 <style>
   .site-footer {
     background: var(--footer-bg);
-    color: #fff;
+    color: rgba(255, 255, 255, 0.82);
     margin-top: clamp(2rem, 6vw, 4rem);
   }
-  .site-footer a {
+  .site-footer__inner {
+    max-width: var(--container);
+    margin-inline: auto;
+    padding: clamp(2.5rem, 5vw, 3.5rem) var(--pad) 1.5rem;
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .site-footer__inner {
+      grid-template-columns: 1.7fr 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+  }
+  .site-footer__wordmark {
+    font-family: var(--serif);
+    font-size: 1.25rem;
     color: #fff;
   }
-  .site-footer h2 {
+  .site-footer__tag {
+    margin: 0.6rem 0 0;
+    max-width: 26rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+  }
+  .site-footer__col {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+  }
+  .site-footer__heading {
+    margin: 0 0 0.3rem;
+    font-size: var(--fs-2xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .site-footer__col a {
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    font-size: var(--fs-sm);
+  }
+  .site-footer__col a:hover {
     color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
-  /* Social-Block: zentriert */
-  .site-footer__social {
-    text-align: center;
-    padding: 2.5rem 1rem 1.5rem;
-  }
-  .site-footer__social h2 {
-    margin: 0 0 1.25rem;
-  }
-  .site-footer__social ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .site-footer__social a {
+  /* Icon + Label eng nebeneinander (Flexbox), Icon monochrom, Hover -> weiß. */
+  .site-footer__iconlink {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
   }
-  .social-icon {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--c);
-    color: #fff;
+  .site-footer__ico {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: none;
+    color: rgba(255, 255, 255, 0.55);
   }
-  /* Kontakt-Block: 2-spaltig */
-  .site-footer__contact {
-    padding-bottom: 2.5rem;
+  .site-footer__ico svg {
+    width: 1.1em;
+    height: 1.1em;
+    display: block;
   }
-  .site-footer__contact h2 {
-    margin: 0 0 1rem;
-  }
-  .site-footer__cols {
-    display: flex;
-    justify-content: space-between;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-  .site-footer__contact address {
-    font-style: normal;
-    line-height: 1.7;
-  }
-  .site-footer__meta {
-    text-align: right;
-    line-height: 1.7;
-  }
-  /* Die obfuszierte E-Mail wird per JS als <a> OHNE Astro-Scope-Attribut eingesetzt und fiele
-     sonst auf die graue Standard-Linkfarbe (var(--muted)) zurück — sie sah dadurch wie
-     „deaktiviert" aus. :global() greift auch ohne Scope-Attribut → gleiches Weiß wie die
-     Telefonnummern daneben. */
-  .site-footer__meta :global(a.mailto) {
+  .site-footer__iconlink:hover .site-footer__ico {
     color: #fff;
   }
-  @media (max-width: 600px) {
-    .site-footer__meta {
-      text-align: left;
-    }
-  }
-  /* Widerrufsfunktion (§ 356a BGB): direkt nach den Rechts-Links, nur dezent abgesetzt (dünner
-     Rahmen), nicht dominant. Leicht hervorgehoben, damit die Funktion auffindbar bleibt. */
+  /* Widerrufsfunktion (§ 356a BGB): dezent abgesetzt (dünner Rahmen), nicht dominant. */
   .site-footer__withdraw-link {
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    margin-top: 0.35rem;
+    justify-self: start;
+    border: 1px solid rgba(255, 255, 255, 0.35);
     padding: 0.2em 0.7em;
   }
-  .site-footer__withdraw-link:hover,
-  .site-footer__withdraw-link:focus-visible {
+  .site-footer__withdraw-link:hover {
     border-color: #fff;
+    text-decoration: none;
   }
-  /* Rechtliches/Standalone-Links: zentrierte Zeile unter dem Kontaktblock */
-  .site-footer__legal {
+  .site-footer__baseline {
+    max-width: var(--container);
+    margin-inline: auto;
+    padding: 1.1rem var(--pad) 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem 1.5rem;
-    padding: 0 1rem 2rem;
-    font-size: var(--fs-sm);
+    justify-content: space-between;
+    gap: 0.4rem 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: var(--fs-xs);
   }
 </style>

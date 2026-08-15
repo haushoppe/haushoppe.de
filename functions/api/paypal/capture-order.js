@@ -24,6 +24,9 @@ export async function onRequestPost({ request, env, waitUntil }) {
     const ordRes = await fetch(`${paypalBase(env)}/v2/checkout/orders/${orderID}`, {
       headers: { authorization: `Bearer ${token}` },
     });
+    // Schlägt der Lookup fehl (Token abgelaufen, 5xx, Rate-Limit), retrybar melden — NICHT als
+    // Lieferland-Ablehnung, sonst bekäme ein legitimer Käufer fälschlich die DACH-Meldung.
+    if (!ordRes.ok) return json({ error: 'order_lookup_failed' }, 502);
     const ord = await ordRes.json();
     const country = ((((ord.purchase_units || [])[0] || {}).shipping || {}).address || {}).country_code;
     if (!country || ['DE', 'AT', 'CH'].indexOf(country) === -1) {
@@ -36,8 +39,11 @@ export async function onRequestPost({ request, env, waitUntil }) {
     });
     const data = await res.json();
     if (!res.ok) return json({ error: 'capture_failed', detail: data }, 502);
-    // Bestätigungs-Mails nur bei abgeschlossener Zahlung, im Hintergrund (blockiert die Antwort nicht).
-    if (data.status === 'COMPLETED') {
+    // Bestätigungs-Mails bei platzierter Zahlung — COMPLETED ODER PENDING (z. B. eCheck / Prüfung):
+    // in beiden Fällen ist die Bestellung aufgegeben, also Kunde + Olaf benachrichtigen. Im
+    // Hintergrund, damit ein Mail-Fehler die Antwort nie berührt.
+    const placed = data.status === 'COMPLETED' || data.status === 'PENDING';
+    if (placed) {
       const mail = sendOrderEmails(env, data, lang).catch(() => {});
       if (typeof waitUntil === 'function') waitUntil(mail);
     }

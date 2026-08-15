@@ -31,6 +31,7 @@
     "@playwright/test": "^1.62.1",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
+    "js-yaml": "^4.1.0",
     "pagefind": "^1.5.2",
     "playwright": "^1.61.1",
     "purgecss": "^8.0.0",

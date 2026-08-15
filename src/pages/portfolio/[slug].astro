@@ -18,7 +18,8 @@ export async function getStaticPaths() {
   const arts = (await getCollection('artworks')).filter((a) => a.data.image);
   // Prev/Next in EXAKT der Galerie-Reihenfolge (chronologisch), inklusive Ordinals — zyklisch,
   // damit man endlos durchblättern kann. Versteckte Werke stehen nicht in der Galerie → kein Prev/Next.
-  const chain = (await galleryItems(LANG)).filter((it) => new Set(arts.map((a) => a.id)).has(it.id));
+  const artIds = new Set(arts.map((a) => a.id));
+  const chain = (await galleryItems(LANG)).filter((it) => artIds.has(it.id));
   const idx = new Map(chain.map((it, i) => [it.id, i]));
   // Zweite Kette OHNE Ordinals — fürs Lightbox-Blättern (Ordinals haben kein Zoom-Bild).
   const ordinalIds = new Set(arts.filter((a) => ordinalData(a) != null).map((a) => a.id));
@@ -80,23 +81,20 @@ const breadcrumb = breadcrumbJsonLd([
   { name: title, url: `${SELF_ORIGIN}/portfolio/${side.slug}/` },
 ]);
 
-// Social-Preview (das Gemälde) + angereichertes VisualArtwork-JSON-LD. Ordinals haben kein Bild -> Default-OG.
-let ogImage: string | undefined;
-let artJsonLd: Record<string, unknown> | undefined;
-if (!isOrdinal) {
-  const og = await getImage({ src: image, format: 'jpeg', width: 1200 });
-  ogImage = og.src;
-  artJsonLd = artworkJsonLd({
-    origin: SELF_ORIGIN,
-    title,
-    image: new URL(og.src, SELF_ORIGIN).href,
-    url: `${SELF_ORIGIN}/portfolio/${side.slug}/`,
-    technique: side.technique,
-    year: art.data.year,
-    category: cat,
-  });
-}
-const jsonLd = artJsonLd ? [artJsonLd, breadcrumb] : [breadcrumb];
+// Social-Preview (das Werk als Bild) + angereichertes VisualArtwork-JSON-LD. Jedes Werk mit
+// Detailseite hat ein Bild (auch Ordinals: ihr Galerie-Thumbnail), also für alle erzeugen.
+const og = await getImage({ src: image, format: 'jpeg', width: 1200 });
+const ogImage = og.src;
+const artJsonLd = artworkJsonLd({
+  origin: SELF_ORIGIN,
+  title,
+  image: new URL(og.src, SELF_ORIGIN).href,
+  url: `${SELF_ORIGIN}/portfolio/${side.slug}/`,
+  technique: side.technique,
+  year: art.data.year,
+  category: cat,
+});
+const jsonLd = [artJsonLd, breadcrumb];
 ---
 
 <BaseLayout title={displayTitle} description={desc} layout={isOrdinal ? 'bleed' : 'article'} inverted={isOrdinal} type="article" image={ogImage} jsonLd={jsonLd} noindex={art.data.hidden}>
@@ -107,13 +105,6 @@ const jsonLd = artJsonLd ? [artJsonLd, breadcrumb] : [breadcrumb];
     itemtype="https://schema.org/CreativeWork"
     itemscope
   >
-    {
-      !isOrdinal && (
-        <header class="entry-header">
-          <h1 class="entry-title" itemprop="headline">{title}</h1>
-        </header>
-      )
-    }
     <ArtworkBody art={art} image={image} lang={LANG} title={displayTitle} Extra={ExtraContent} />
     {
       (prev || next) && (

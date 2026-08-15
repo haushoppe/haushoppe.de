@@ -2,6 +2,7 @@
 export interface NavItem {
   href: string;
   label: string;
+  badge?: string; // kleines Tag am Menüpunkt (z. B. „NEU"/„NEW")
 }
 
 export const nav: Record<'de' | 'en', NavItem[]> = {

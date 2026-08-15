@@ -92,7 +92,12 @@ const inquire = {
     workUrl,
   ].join('\r\n'),
 };
-const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquire.subject)}&body=${encodeURIComponent(inquire.body)}`;
+// E-Mail NICHT als Klartext-mailto ins HTML (sonst greift Cloudflares Email-Obfuscation und
+// injiziert ihr eigenes Script). Adresse geteilt in data-Attribute; ein kleines is:inline-Skript
+// baut den mailto-Link mit Betreff/Text erst im Client. Ohne JS führt der Button zur Kontaktseite.
+const [mailUser, mailDomain] = contact.email.split('@');
+const inquireQuery = `?subject=${encodeURIComponent(inquire.subject)}&body=${encodeURIComponent(inquire.body)}`;
+const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
 ---
 
 {
@@ -124,6 +129,11 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
     </div>
   ) : (
     <div class="entry-content clear" itemprop="text">
+      {title && (
+        <header class="entry-header">
+          <h1 class="entry-title">{title}</h1>
+        </header>
+      )}
       <figure class="wp-block-image size-large art-figure" data-testid="artwork-image">
         <Picture
           src={image}
@@ -138,7 +148,7 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
       </figure>
       {woodcut && <WoodcutBuy slug={slug} lang={lang} title={rawTitle} />}
       <p class="art-inquire-wrap">
-        <a class="art-inquire" href={inquireHref} aria-label={inquire.aria} data-testid="inquire-link">
+        <a class="art-inquire" href={contactHref} data-inq-user={mailUser} data-inq-domain={mailDomain} data-inq-query={inquireQuery} aria-label={inquire.aria} data-testid="inquire-link">
           <svg class="art-inquire__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="3" y="5" width="18" height="14" stroke="currentColor" stroke-width="1.6" />
             <path d="M3.5 6.5l8.5 6 8.5-6" stroke="currentColor" stroke-width="1.6" />
@@ -155,7 +165,40 @@ const inquireHref = `mailto:${contact.email}?subject=${encodeURIComponent(inquir
   )
 }
 
+<script is:inline>
+  // Baut den „Interesse anfragen"-mailto (Adresse aus data-Attributen, kein Klartext im HTML) im
+  // Client. Läuft synchron beim Parsen (href steht vor dem load-Event) UND nach View-Transitions.
+  (function () {
+    function reveal() {
+      document.querySelectorAll('a.art-inquire[data-inq-user]').forEach(function (a) {
+        var u = a.dataset.inqUser,
+          d = a.dataset.inqDomain;
+        if (u && d) a.href = 'mailto:' + u + '@' + d + (a.dataset.inqQuery || '');
+      });
+    }
+    reveal();
+    if (!window.__inqReveal) {
+      window.__inqReveal = true;
+      document.addEventListener('astro:page-load', reveal);
+    }
+  })();
+</script>
+
 <style is:global>
+  /* Der Werk-Block (Titel, Bild, Beschriftung, Kaufbox) schrumpft auf seine breiteste Zeile und
+     zentriert sich als Ganzes: Titel und Beschriftung teilen die linke Bildkante, das Bild sitzt
+     mittig auf der Seite. Große Bilder füllen die volle Breite (kein Unterschied), kleine Scans
+     wirken zentriert deutlich besser als links gestrandet. Ordinals (dunkle Vollbild-Bühne) ausgenommen. */
+  .entry-content:not(.ordinal-content) {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+  /* Sehr kleine Scans (wenige Werke) bekommen einen Boden, damit sie nicht mikroskopisch wirken;
+     hochauflösende Bilder liegen längst darüber und bleiben unberührt. */
+  .art-figure img {
+    min-width: 14rem;
+  }
   /* Zusatz-Content (Werkbeschreibung / Video / Auszeichnung) unter dem Bild — lesbare Prosa-Spalte. */
   .art-extra {
     max-width: var(--container);

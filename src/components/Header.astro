@@ -51,7 +51,7 @@ const homeHref = '/';
                 data-text={it.label}
                 data-testid="nav-link"
               >
-                <span class="mainnav__label">{it.label}{(it as any).badge && <span class="mainnav__badge" data-testid="nav-badge">{(it as any).badge}</span>}</span>
+                <span class="mainnav__label">{it.label}{it.badge && <span class="mainnav__badge" data-testid="nav-badge">{it.badge}</span>}</span>
               </a>
             </li>
           ))

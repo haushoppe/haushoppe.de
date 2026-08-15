@@ -130,7 +130,8 @@ const t =
             })
               .then(function (r) { return r.json(); })
               .then(function (d) {
-                if (d && d.status === 'COMPLETED') {
+                // COMPLETED ODER PENDING (z. B. eCheck) = Bestellung aufgegeben -> Danke.
+                if (d && (d.status === 'COMPLETED' || d.status === 'PENDING')) {
                   mount.hidden = true;
                   showStatus(thanksMsg, true);
                 } else if (d && d.error === 'shipping_country') {

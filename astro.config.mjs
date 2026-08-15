@@ -2,20 +2,32 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
+import yaml from 'js-yaml';
 
 // Sprache = Domain (kein /en/-Pfad). Zwei Builds aus einer Quelle, gesteuert über SITE_LANG:
 //   SITE_LANG=de  → haushoppe.de  → dist-de
 //   SITE_LANG=en  → haushoppe.art → dist-art
 const LANG = process.env.SITE_LANG === 'en' ? 'en' : 'de';
 
-// "Versteckte" Werke (hidden:true in artworks.json) sind nur per Direkt-URL erreichbar —
-// hier aus der sitemap.xml ausschliessen (die Galerie/Suche/robots-Ausschluss steckt im Code).
-const hiddenPaths = new Set(
-  JSON.parse(readFileSync(new URL('./src/data/artworks.json', import.meta.url), 'utf8'))
-    .filter((a) => a.hidden)
-    .map((a) => `/portfolio/${a.slug}/`),
-);
+// "Versteckte" Werke (hidden:true im Werk-Frontmatter) sind nur per Direkt-URL erreichbar und
+// via noindex nicht indexiert — hier auch aus der sitemap.xml ausschließen. Quelle ist dieselbe
+// Collection, die die Seiten erzeugt (Pfad = der sprachspezifische Slug dieser Build-Sprache).
+const artDir = new URL('./src/content/artworks/', import.meta.url);
+const hiddenPaths = new Set();
+for (const f of readdirSync(artDir)) {
+  if (!/\.(md|mdx)$/.test(f)) continue;
+  const src = readFileSync(new URL(f, artDir), 'utf8');
+  const m = src.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!m) continue;
+  let d;
+  try {
+    d = yaml.load(m[1]);
+  } catch {
+    continue;
+  }
+  if (d?.hidden && d[LANG]?.slug) hiddenPaths.add(`/portfolio/${d[LANG].slug}/`);
+}
 
 export default defineConfig({
   site: LANG === 'en' ? 'https://haushoppe.art' : 'https://haushoppe.de',
