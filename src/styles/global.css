@@ -184,8 +184,8 @@ a:hover {
 .site-main--bleed {
   padding-block: 0;
 }
-/* Inhaltsbreiten — ersetzen die Theme-Body-Klassen (ast-page-builder/plain/separate).
-   Ohne Modifier: volle Breite (Content-Komponenten zentrieren selbst, Galerie full-bleed). */
+/* Inhaltsbreiten. Ohne Modifier: volle Breite (Content-Komponenten zentrieren selbst,
+   Galerie full-bleed). */
 .site-main--boxed,
 .site-main--article {
   max-width: var(--container);
@@ -197,15 +197,19 @@ a:hover {
 .site-main--article {
   padding-top: 0;
 }
-/* Werk-Detailseite: weißer Artikel-Kasten mit Innenabstand (wie Theme separate-container).
-   Oben bewusst schlanker als seitlich/unten, damit der Titel nah an die Navi rückt. */
+/* Werk-Detailseite: Inhalts-Kasten mit Innenabstand. Oben bewusst schlanker als seitlich/unten,
+   damit der Titel nah an die Navi rückt. Auf ~Bildbreite zentriert, damit Bild, Beschriftung und
+   Kaufbox auf breiten Screens dieselbe Achse teilen. */
 .art-single {
   background: #fff;
+  max-width: 1000px;
+  margin-inline: auto;
   padding: 1.75rem clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 5vw, 3rem);
 }
-/* Ordinals: kein weißer Kasten — die schwarze Bühne (.ordinal-content) trägt Fläche + Padding. */
+/* Ordinals: kein Kasten, volle Breite — die schwarze Bühne (.ordinal-content) trägt Fläche + Padding. */
 .art-single--ordinal {
   background: transparent;
+  max-width: none;
   padding: 0;
 }
 /* Gemeinsame Karussell-Punkte (Videos-Playlist + In-Content-Slideshow): runde Punkte, aktiver
