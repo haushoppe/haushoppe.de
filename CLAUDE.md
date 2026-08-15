@@ -109,6 +109,22 @@ Taucht später eine **bessere Datei** auf — ein neues, hochauflösendes Foto d
 
 ---
 
+## 🔘 Design-Regel: EINE Button-Klasse (VERBINDLICH)
+
+**Jeder Button-CTA (auch als `<a>`-Link) nutzt die gemeinsame Basis `.btn` aus `src/styles/global.css` plus einen Farb-Modifier** — nie eine selbstgebaute Button-Optik in einer Komponente:
+
+- **`.btn .btn--dark`**: dunkle Volltonfläche, Hover invertiert (Werk-Anfrage, „Weiterlesen", Rechtstext-CTAs).
+- **`.btn .btn--light`**: weiße Fläche für Buttons über Bildern (Seiten-Hero).
+- **`.btn .btn--outline`**: Umriss in Versalien auf dunklem Grund (Ordinal-Kauf).
+
+**Regeln:**
+
+- **⛔ Keine Button-Styles in Komponenten neu erfinden** (kein eigenes `padding`/`background`/`text-decoration`-Set für einen einzelnen CTA). Komponenten-CSS ergänzt höchstens Positionierung (Margin, Ausrichtung) oder ein Extra wie den `::after`-Pfeil.
+- **Unterstreichung ist gelöst — nicht nachbessern.** `.btn` trägt `text-decoration: none !important` und gewinnt damit gegen jede Fließtext-Linkregel (`.site-main a`, Seiten-/Werk-Prosa). Es braucht **keine** Kontext-Ausnahmen wie `a:not(.btn)` oder Einträge in Ausnahmelisten; taucht ein unterstrichener Button auf, fehlt schlicht die `.btn`-Klasse am Element.
+- Braucht ein neuer CTA eine vierte Optik, wird sie als Modifier in `global.css` ergänzt und hier dokumentiert — kein Einzelstück in einer Komponente.
+
+---
+
 ## 📎 Bilder & Dateien einfügen — über Google Drive
 
 **Ein in den Chat eingefügtes/„gepastetes" Bild kannst du NICHT committen** — es kommt nur als Bildinhalt an (du siehst es), nicht als Datei mit Bytes. **Bild- und Dateiaustausch läuft deshalb über den geteilten Google-Drive-Ordner:**

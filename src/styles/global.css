@@ -129,9 +129,10 @@ a:hover {
 }
 
 /* Gemeinsame Button-Basis für alle eckigen CTAs (Werk-Anfrage, Highlight-„Weiterlesen",
-   Seiten-Hero, Ordinal-Kauf): EINE Klasse trägt die Grundhaltung, das Farbschema kommt über
-   den Modifier. `.site-main a.btn` hebt zugleich die Fließtext-Unterstreichung von `.site-main a`
-   auf — so muss kein Button-Link mehr einzeln in die Ausnahmeliste eingetragen werden. */
+   Seiten-Hero, Ordinal-Kauf, Rechtstext-CTAs): EINE Klasse trägt die Grundhaltung, das
+   Farbschema kommt über den Modifier. Ein Button ist NIE unterstrichen — das !important
+   gewinnt bewusst gegen jede Fließtext-Linkregel (.site-main a, Seiten-/Werk-Prosa), damit
+   nirgendwo Kontext-Ausnahmen nötig sind. */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -143,12 +144,9 @@ a:hover {
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: 0.02em;
-  text-decoration: none;
+  text-decoration: none !important;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
-}
-.site-main a.btn {
-  text-decoration: none;
 }
 /* Dunkle Volltonfläche → invertiert beim Hover. */
 .btn--dark {
