@@ -60,6 +60,7 @@ const side = z.object({
   technique: z.string().default(''),
   dimensions: z.string().default(''),
   edition: z.string().default(''),
+  intro: z.string().default(''), // Teaser-Text für die Highlight-Kachel in der Galerie
 });
 const artworks = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/artworks' }),
@@ -79,6 +80,8 @@ const artworks = defineCollection({
       // Welche Sprache eine Prosa-Beschreibung im Body hat (für den .art-extra-Wrapper).
       prose: z.object({ de: z.boolean().default(false), en: z.boolean().default(false) }).default({ de: false, en: false }),
       hidden: z.boolean().default(false),
+      // Highlight: nimmt in der Galerie oben die volle Breite ein (Kachel: Bild + Intro + „Weiterlesen").
+      highlight: z.boolean().default(false),
     }),
 });
 

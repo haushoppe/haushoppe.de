@@ -18,17 +18,33 @@ interface Props {
   total?: number; // Gesamtzahl aller Werke — als Zahl am „Alle"-Button
 }
 const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading, total } = Astro.props;
-// Marker-Text „online kaufbar" pro Sprache (Sprache = Galerie-Wurzel).
+// Marker „online kaufbar" + Highlight-CTA „Weiterlesen" pro Sprache (Sprache = Galerie-Wurzel).
 const buyLabel = base === '/artwork' ? 'buy online' : 'online kaufen';
+const moreLabel = base === '/artwork' ? 'Read more' : 'Weiterlesen';
 
-// Kacheldaten mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
+// Highlights nehmen oben die volle Breite ein (eigene Kachel), getrennt vom Justified-Grid —
+// gallery.js fasst nur .gallery__grid an, die Highlight-Kacheln bleiben statisch stehen.
+const highlightItems = items.filter((it) => it.highlight);
+const gridItems = items.filter((it) => !it.highlight);
+
+// Grid-Kacheln mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
 const data = await Promise.all(
-  items.map(async (it) => {
+  gridItems.map(async (it) => {
     const [a, p] = await Promise.all([
       getImage({ src: it.image, format: 'avif', height: 480 }),
       getImage({ src: it.image, format: 'webp', height: 480 }),
     ]);
     return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), w: it.w, h: it.h, n: it.number, a: a.src, p: p.src, b: it.buyable };
+  }),
+);
+// Highlight-Kacheln mit größerem Bild (breiter dargestellt).
+const hlData = await Promise.all(
+  highlightItems.map(async (it) => {
+    const [a, p] = await Promise.all([
+      getImage({ src: it.image, format: 'avif', width: 1000 }),
+      getImage({ src: it.image, format: 'webp', width: 1000 }),
+    ]);
+    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), intro: it.intro, w: it.w, h: it.h, a: a.src, p: p.src, b: it.buyable };
   }),
 );
 ---
@@ -41,6 +57,28 @@ const data = await Promise.all(
       <a href={`${base}/${c.slug}/`} class:list={['gallery__filter-btn', activeCat === c.slug && 'is-active']} aria-current={activeCat === c.slug ? 'page' : undefined} data-testid="gallery-filter">{c.name} <span class="gallery__filter-count">{c.count}</span></a>
     ))}
   </nav>
+
+  {hlData.length > 0 && (
+    <div class="gallery__highlights">
+      {hlData.map((d) => (
+        <article class="gallery__highlight" data-testid="gallery-item" data-cats={d.c}>
+          <a href={d.u} class="gallery__highlight-media" aria-label={d.t}>
+            {d.b && <span class="gallery__buy" data-testid="gallery-buy">{buyLabel}</span>}
+            <picture>
+              <source srcset={d.a} type="image/avif" />
+              <source srcset={d.p} type="image/webp" />
+              <img src={d.p} width={d.w} height={d.h} alt="" loading="eager" fetchpriority="high" />
+            </picture>
+          </a>
+          <div class="gallery__highlight-body">
+            <h2 class="gallery__highlight-title">{d.t}</h2>
+            {d.intro && <p class="gallery__highlight-intro">{d.intro}</p>}
+            <a href={d.u} class="gallery__highlight-cta">{moreLabel}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  )}
 
   {/* ALLE Werke server-seitig — ohne JS ein CSS-Raster (voll sichtbar + crawlbar). Mit JS
       versteckt gallery.js zunächst alles jenseits der ersten Charge und blendet beim Scrollen
@@ -116,6 +154,80 @@ const data = await Promise.all(
     font-size: 0.6em;
     vertical-align: super;
     margin-left: 0.3em;
+  }
+  /* ── Highlight-Kachel: volle Breite oben, Bild links, Intro + „Weiterlesen" rechts. Liegt
+     außerhalb von .gallery__grid, wird also nicht vom Justified-Layout angefasst. ──────────── */
+  .gallery__highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  .gallery__highlight {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+  }
+  .gallery__highlight-media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+  }
+  .gallery__highlight-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease-in-out;
+  }
+  .gallery__highlight:hover .gallery__highlight-media img {
+    transform: scale(1.03);
+  }
+  .gallery__highlight-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    line-height: 1.2;
+    margin: 0 0 0.7rem;
+    color: var(--ink);
+  }
+  .gallery__highlight-intro {
+    color: var(--text, #4b4f58);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0 0 1.4rem;
+    max-width: 42rem;
+  }
+  /* CTA: eckiger Volltonbutton, invertiert beim Hover (wie der Werk-CTA auf der Detailseite). */
+  .gallery__highlight-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.8em 1.6em;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .gallery__highlight-cta::after {
+    content: '→';
+  }
+  .gallery__highlight-cta:hover {
+    background: #fff;
+    color: var(--ink);
+  }
+  @media (max-width: 720px) {
+    .gallery__highlight {
+      grid-template-columns: 1fr;
+      gap: 1.1rem;
+    }
+    .gallery__highlight-media {
+      aspect-ratio: 3 / 2;
+    }
   }
   /* Progressive Enhancement: OHNE JS ein einfaches, sofort sichtbares Raster — die serverseitig
      gerenderte erste Charge steht so IMMER im Bild, unabhängig von View-Transition-Timing oder

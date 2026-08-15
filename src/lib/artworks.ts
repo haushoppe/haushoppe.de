@@ -33,6 +33,8 @@ export interface GalleryItem {
   h: number;
   number: string;
   buyable: boolean;
+  highlight: boolean;
+  intro: string; // Teaser für die Highlight-Kachel
 }
 export interface FilterCat {
   slug: string;
@@ -40,14 +42,14 @@ export interface FilterCat {
   count: number;
 }
 
-// Werke einer Sprache mit Bild — nach Werk-Nummer absteigend (neueste zuerst). Bei identischer
-// Nummer bricht `order` den Gleichstand auf, damit die Galerie-Reihenfolge stabil und
-// deterministisch bleibt.
+// Werke einer Sprache mit Bild. Highlights stehen IMMER oben; danach nach Werk-Nummer absteigend
+// (neueste zuerst). Bei identischer Nummer bricht `order` den Gleichstand auf, damit die
+// Galerie-Reihenfolge stabil und deterministisch bleibt.
 export async function galleryItems(lang: Lang): Promise<GalleryItem[]> {
   const arts = await getCollection('artworks');
   return arts
     .filter((a) => !a.data.hidden && a.data.image)
-    .sort((a, b) => sortKey(b).localeCompare(sortKey(a)) || a.data.order - b.data.order)
+    .sort((a, b) => Number(b.data.highlight) - Number(a.data.highlight) || sortKey(b).localeCompare(sortKey(a)) || a.data.order - b.data.order)
     .map((a) => {
       const side = a.data[lang];
       const image = a.data.image!;
@@ -63,6 +65,8 @@ export async function galleryItems(lang: Lang): Promise<GalleryItem[]> {
         h: image.height,
         number: artworkNumber(a),
         buyable: buyableOf(a),
+        highlight: a.data.highlight,
+        intro: side.intro,
       };
     });
 }
