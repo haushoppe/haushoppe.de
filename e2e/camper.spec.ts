@@ -18,7 +18,7 @@ test('Hero, Slideshow, Bullets, Feuer-Hinweis', async ({ page }, info) => {
 
   const ss = page.getByTestId('slideshow');
   await expect(ss).toBeVisible();
-  await expect(page.getByTestId('slideshow-dot')).toHaveCount(6);
+  await expect(page.getByTestId('slideshow-dot')).toHaveCount(8);
   await expect(page.getByTestId('slideshow-caption').first()).toContainText(t.firstCaption);
   await expect(ss.getByTestId('carousel-arrow')).toHaveCount(2);
 
