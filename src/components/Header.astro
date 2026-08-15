@@ -224,7 +224,14 @@ const homeHref = '/';
   .mainnav__burger {
     display: none;
   }
-  /* Mobil: Logo links, Burger rechts (eine Zeile), Menü als Dropdown — wie live. */
+  /* Tablet-Klemmbereich: Menü-Innenabstände straffen, damit die 7 Punkte + Flagge + Lupe
+     einzeilig in die ~780px-Leiste passen, statt Flagge/Lupe in eine zweite Zeile umzubrechen. */
+  @media (min-width: 721px) and (max-width: 820px) {
+    .mainnav__link {
+      padding: 0 8px;
+    }
+  }
+  /* Mobil: Logo links, Burger rechts (eine Zeile), Menü als Dropdown. */
   @media (max-width: 720px) {
     .site-header {
       padding-top: 0;
