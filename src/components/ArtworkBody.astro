@@ -124,7 +124,7 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
         </div>
         <p class="ordinal-caption">{t.line}</p>
         {ord.buy && (
-          <a class="ordinal-buy" href={ord.buy} target="_blank" rel="noopener" data-testid="ordinal-buy">
+          <a class="ordinal-buy btn btn--outline" href={ord.buy} target="_blank" rel="noopener" data-testid="ordinal-buy">
             {t.buy}
           </a>
         )}
@@ -154,14 +154,9 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
           <slot />
         </div>
       )}
-      {price && (
-        <p class="art-buy-price" data-testid="artwork-price">
-          {price.amount} <span class="art-buy-price__note">{price.note}</span>
-        </p>
-      )}
       {woodcut && <WoodcutBuy slug={slug} lang={lang} title={rawTitle} />}
       <p class="art-inquire-wrap">
-        <a class="art-inquire" href={contactHref} data-inq-user={mailUser} data-inq-domain={mailDomain} data-inq-query={inquireQuery} aria-label={inquire.aria} data-testid="inquire-link">
+        <a class="art-inquire btn btn--dark" href={contactHref} data-inq-user={mailUser} data-inq-domain={mailDomain} data-inq-query={inquireQuery} aria-label={inquire.aria} data-testid="inquire-link">
           <svg class="art-inquire__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="3" y="5" width="18" height="14" stroke="currentColor" stroke-width="1.6" />
             <path d="M3.5 6.5l8.5 6 8.5-6" stroke="currentColor" stroke-width="1.6" />
@@ -230,16 +225,6 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
     font-weight: 400;
     margin: 1.5rem 0 0.5rem;
   }
-  /* Fließtext auf lesbare Zeilenlänge begrenzen und zentrieren; Medien (Slideshow, Video)
-     bleiben in voller Spaltenbreite. */
-  .art-extra > p,
-  .art-extra > h2,
-  .art-extra > h3,
-  .art-extra > ul,
-  .art-extra > ol {
-    max-width: 42rem;
-    margin-inline: auto;
-  }
   .art-extra a {
     color: #000;
     text-decoration: underline;
@@ -287,48 +272,17 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
       grid-template-columns: 1fr;
     }
   }
-  /* „Interesse anfragen" pro Werk — dominanter mailto-CTA unter der Beschriftung (bei
-     Holzschnitten zusätzlich zur PayPal-Kaufbox). */
-  /* Preis-Zeile über der Kaufbox (Werke mit Zusatztext: Kaufteil steht unter der Story). */
-  .art-buy-price {
-    margin: 1.75rem 0 0;
-    text-align: center;
-    color: #3a3a3a;
-    font-size: 1.02rem;
-  }
-  .art-buy-price__note {
-    color: #6b6b6b;
-    font-size: var(--fs-xs);
-  }
+  /* „Unverbindlich anfragen" pro Werk — mailto-CTA unter der Beschriftung (bei Holzschnitten
+     zusätzlich zur PayPal-Kaufbox). Button-Optik trägt die gemeinsame Basis (.btn .btn--dark);
+     hier nur Zentrierung des Wrappers + Größe des Briefsymbols. */
   .art-inquire-wrap {
     text-align: center;
     margin: 1.5rem 0 0;
-  }
-  /* Dominanter CTA-Button (bei Gemälden der Haupt-CTA, bei Holzschnitten neben dem Kauf-Button):
-     eckige Volltonfläche, invertiert beim Hover. */
-  .art-inquire {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55em;
-    padding: 0.85em 1.7em;
-    background: var(--ink);
-    color: #fff;
-    font-size: var(--fs-md);
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    border: 1px solid var(--ink);
-    text-decoration: none;
-    transition: background 0.15s ease, color 0.15s ease;
   }
   .art-inquire__icon {
     width: 1.15em;
     height: 1.15em;
     flex: none;
-  }
-  .art-inquire:hover,
-  .art-inquire:focus-visible {
-    background: #fff;
-    color: var(--ink);
   }
   /* Ordinals: durchgehend schwarze Bühne für die On-Chain-Inschrift (full-bleed, wie eine
      dunkle Galeriewand). Titel + Inschrift + CTA gestapelt und zentriert. */
@@ -380,20 +334,11 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
     color: #b4b4b4;
     line-height: 1.6;
   }
-  /* Eckige CTA (kein Border-Radius): Outline → Hover invertiert. */
+  /* Ordinal-Kauf nutzt die Outline-Variante (.btn .btn--outline) auf dunklem Grund; hier nur die
+     helle Farbe + der Abstand. Hover invertiert auf hell. */
   .ordinal-buy {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
     margin-top: 1.5rem;
-    padding: 0.75em 1.5em;
-    border: 1px solid #f4f4f4;
     color: #f4f4f4;
-    font-size: var(--fs-xs);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.15s, color 0.15s;
   }
   .ordinal-buy:hover,
   .ordinal-buy:focus-visible {

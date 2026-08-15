@@ -73,7 +73,7 @@ const hlData = await Promise.all(
           <div class="gallery__highlight-body">
             <h2 class="gallery__highlight-title">{d.t}</h2>
             {d.intro && <p class="gallery__highlight-intro">{d.intro}</p>}
-            <a href={d.u} class="gallery__highlight-cta">{moreLabel}</a>
+            <a href={d.u} class="gallery__highlight-cta btn btn--dark">{moreLabel}</a>
           </div>
         </article>
       ))}
@@ -199,26 +199,9 @@ const hlData = await Promise.all(
     margin: 0 0 1.4rem;
     max-width: 42rem;
   }
-  /* CTA: eckiger Volltonbutton, invertiert beim Hover (wie der Werk-CTA auf der Detailseite). */
-  .gallery__highlight-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
-    padding: 0.8em 1.6em;
-    background: var(--ink);
-    color: #fff;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    border: 1px solid var(--ink);
-    transition: background 0.15s ease, color 0.15s ease;
-  }
+  /* CTA nutzt die gemeinsame Button-Basis (.btn .btn--dark); hier nur der nachgestellte Pfeil. */
   .gallery__highlight-cta::after {
     content: '→';
-  }
-  .gallery__highlight-cta:hover {
-    background: #fff;
-    color: var(--ink);
   }
   @media (max-width: 720px) {
     .gallery__highlight {

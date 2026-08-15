@@ -122,11 +122,64 @@ a:hover {
   /* Linie etwas vom Text absetzen (Standard klebt am Text). */
   text-underline-offset: 0.2em;
 }
-/* Ausnahmen: Karten-, Filter- und Button-Links (kein Fließtext) — höhere Spezifität nötig. */
+/* Ausnahmen: Karten- und Filter-Links (kein Fließtext) — höhere Spezifität nötig. */
 .site-main .gallery__link,
-.site-main .gallery__filter-btn,
-.site-main .ordinal-buy {
+.site-main .gallery__filter-btn {
   text-decoration: none;
+}
+
+/* Gemeinsame Button-Basis für alle eckigen CTAs (Werk-Anfrage, Highlight-„Weiterlesen",
+   Seiten-Hero, Ordinal-Kauf): EINE Klasse trägt die Grundhaltung, das Farbschema kommt über
+   den Modifier. `.site-main a.btn` hebt zugleich die Fließtext-Unterstreichung von `.site-main a`
+   auf — so muss kein Button-Link mehr einzeln in die Ausnahmeliste eingetragen werden. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.85em 1.7em;
+  border: 1px solid transparent;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.site-main a.btn {
+  text-decoration: none;
+}
+/* Dunkle Volltonfläche → invertiert beim Hover. */
+.btn--dark {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.btn--dark:hover,
+.btn--dark:focus-visible {
+  background: #fff;
+  color: var(--ink);
+}
+/* Helle Volltonfläche (Hero über Bild). */
+.btn--light {
+  padding: 0.72em 1.5em;
+  background: #fff;
+  color: #141414;
+  border-color: #fff;
+}
+.btn--light:hover,
+.btn--light:focus-visible {
+  background: rgba(255, 255, 255, 0.85);
+}
+/* Outline (Versalien) auf dunklem Grund; Farbe erbt der Kontext (currentColor). */
+.btn--outline {
+  padding: 0.75em 1.5em;
+  background: transparent;
+  border-color: currentColor;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 /* Layout-Container + Hauptbereich */

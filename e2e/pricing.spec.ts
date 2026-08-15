@@ -8,7 +8,7 @@ test('Holzschnitt zeigt Preis 785 € (inkl. 7 % MwSt, versandkostenfrei)', asyn
   await expect(price).toBeVisible();
   await expect(price).toContainText('785 €');
   await expect(price).toContainText(
-    langOf(info) === 'en' ? 'incl. 7% VAT, free shipping' : 'inkl. 7 % MwSt, versandkostenfrei',
+    langOf(info) === 'en' ? 'incl. 7% VAT · free shipping' : 'inkl. 7 % MwSt · versandkostenfrei',
   );
 });
 

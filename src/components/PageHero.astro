@@ -32,7 +32,7 @@ const { image, alt, title, lead, ctaText, ctaHref } = Astro.props;
     <h1 class="page-hero__title" data-testid="page-hero-title">{title}</h1>
     {lead && <p class="page-hero__lead">{lead}</p>}
     {ctaText && ctaHref && (
-      <a class="page-hero__cta" href={ctaHref} data-testid="page-hero-cta">
+      <a class="page-hero__cta btn btn--light" href={ctaHref} data-testid="page-hero-cta">
         {ctaText}
       </a>
     )}
@@ -104,16 +104,9 @@ const { image, alt, title, lead, ctaText, ctaHref } = Astro.props;
     color: rgba(255, 255, 255, 0.94);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 2px 12px rgba(0, 0, 0, 0.55);
   }
+  /* Optik trägt die gemeinsame Button-Basis (.btn .btn--light); hier nur die Ausrichtung am
+     linken Rand der Hero-Spalte. */
   .page-hero__cta {
-    display: inline-block;
     align-self: flex-start;
-    padding: 0.72rem 1.5rem;
-    background: #fff;
-    color: #141414;
-    font-weight: 600;
-    text-decoration: none;
-  }
-  .page-hero__cta:hover {
-    background: rgba(255, 255, 255, 0.85);
   }
 </style>
