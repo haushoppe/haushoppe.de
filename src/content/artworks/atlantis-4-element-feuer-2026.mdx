@@ -27,6 +27,7 @@ prose:
   de: true
   en: true
 ---
+import { Picture } from 'astro:assets';
 import De from '../../components/mdx/De.astro';
 import En from '../../components/mdx/En.astro';
 import Slideshow from '../../components/Slideshow.astro';
@@ -36,6 +37,15 @@ import img02 from '../../assets/atlantis-4/02-farbrezepte.jpg';
 import img03 from '../../assets/atlantis-4/03-druckfarben.jpg';
 import img04 from '../../assets/atlantis-4/04-auflage-trocknung.jpg';
 import img05 from '../../assets/atlantis-4/05-atelier.jpg';
+import det01 from '../../assets/atlantis-4/detail-spirale.jpg';
+import det02 from '../../assets/atlantis-4/detail-flammen.jpg';
+import det03 from '../../assets/atlantis-4/detail-schichten.jpg';
+import zykWasser from '../../artwork-originals/2021/04/OL7D791.avif';
+import zykErde from '../../artwork-originals/2021/04/Hoppe-Atlantis-2-Gruen-2014-Holzschnitt-von-7-Holzstoecken-Auflage-200-Exemplare-auf-Buetten-Motivgroesse-37-x-37-cm-Blattformat-52-x-52-cm.avif';
+import zykLuft from '../../artwork-originals/2021/04/P1060557-Atlantis-3_bearbeitet-1.avif';
+import zykFeuer from '../../artwork-originals/2026/08/Olaf-Hoppe-Atlantis-4-Element-Feuer-Holzschnitt-2026.avif';
+import clipLebenswerk from '../../assets/atlantis-4/lebenswerk-clip.mp4';
+import posterLebenswerk from '../../assets/atlantis-4/lebenswerk-poster.jpg';
 
 <De>
 
@@ -48,6 +58,12 @@ Mit „Atlantis 4" schließe ich den Zyklus. Es ist das Element Feuer, und für 
 Das Gemälde dazu habe ich 2016 gemalt. Ob daraus je ein Druck werden würde, habe ich lange offen gelassen. Der Holzschnitt ist eine der ältesten Techniken der Bildkunst, und die schwierigste Frage war immer, wie ich die Malerei aufs Holz bringe. Darüber habe ich mehr als dreißig Jahre nachgedacht.
 
 Von einer Masterplatte übertrage ich die Zeichnung millimetergenau auf jede weitere Platte. Zehn Holzstöcke, jeder trägt eine einzige Farbe. Gelb, Orange, Violett, Schicht um Schicht, und jede Farbe verändert die darunter. Geschnitten habe ich mit über hundert Stechbeiteln aus der Schweiz, gedruckt auf einer alten Buchdruckmaschine vom Ostdruck Rostock, die ich eigens dafür umgebaut habe. Auf diese Präzision kommt alles an, anders lässt sich ein solches Bild nicht drucken. Zehn Monate für ein einziges Blatt. Und ganz am Ende zählt das Licht: Ich arbeite so lange daran, bis es strahlt.
+
+<div class="detail-reihe">
+<figure class="detail-werk"><Picture src={det01} formats={['avif', 'webp']} widths={[400, 800]} sizes="(max-width: 560px) 92vw, 360px" alt="Detailausschnitt: das Zentrum der Ammoniten-Spirale in Originalgröße" /><figcaption>Das Zentrum der Spirale, Linie für Linie aus dem Holz geschnitten</figcaption></figure>
+<figure class="detail-werk"><Picture src={det02} formats={['avif', 'webp']} widths={[400, 800]} sizes="(max-width: 560px) 92vw, 360px" alt="Detailausschnitt: die gerippten Flammenbögen in Originalgröße" /><figcaption>Die Flammenbögen: jeder Grat ein Schnitt mit dem Stechbeitel</figcaption></figure>
+<figure class="detail-werk"><Picture src={det03} formats={['avif', 'webp']} widths={[400, 800]} sizes="(max-width: 560px) 92vw, 360px" alt="Detailausschnitt: übereinanderliegende Farbschichten mit glühender Kugel in Originalgröße" /><figcaption>Zehn Farben übereinander, jede verändert die darunter</figcaption></figure>
+</div>
 
 ## Die Entstehung
 
@@ -72,7 +88,25 @@ Ein Filmteam hat mich während der gesamten Arbeit an diesem Werk begleitet, von
 <div class="doku-soon"><span class="doku-soon__nr">Teil 6</span><span class="doku-soon__txt">Demnächst</span></div>
 </div>
 
-<p class="art-finale">Dies ist aller Voraussicht nach der letzte Holzschnitt, den ich schaffe. Mit diesem Blatt lege ich die Stechbeitel aus der Hand und beende eine Tradition, die ich perfektioniert habe. <strong>Sichern Sie sich jetzt Ihr Exemplar aus dieser limitierten Auflage.</strong></p>
+## Der vollendete Zyklus
+
+Vier Elemente, ein Zyklus: Wasser, Erde und Luft gingen voran. Mit dem Feuer ist er vollendet.
+
+<div class="zyklus-reihe">
+<a class="zyklus-werk" href="/portfolio/atlantis-1-element-wasser-2014/"><Picture src={zykWasser} formats={['avif', 'webp']} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 260px" alt="Atlantis 1 (Element Wasser), Farbholzschnitt 2014" /><span class="zyklus-werk__label">Wasser · 2014</span></a>
+<a class="zyklus-werk" href="/portfolio/atlantis-2-element-erde-2014/"><Picture src={zykErde} formats={['avif', 'webp']} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 260px" alt="Atlantis 2 (Element Erde), Farbholzschnitt 2014" /><span class="zyklus-werk__label">Erde · 2014</span></a>
+<a class="zyklus-werk" href="/portfolio/atlantis-3-element-luft-2017/"><Picture src={zykLuft} formats={['avif', 'webp']} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 260px" alt="Atlantis 3 (Element Luft), Farbholzschnitt 2017" /><span class="zyklus-werk__label">Luft · 2017</span></a>
+<span class="zyklus-werk zyklus-werk--aktuell"><Picture src={zykFeuer} formats={['avif', 'webp']} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 260px" alt="Atlantis 4 (Element Feuer), Farbholzschnitt 2026, dieses Werk" /><span class="zyklus-werk__label">Feuer · 2026</span></span>
+</div>
+
+## Mein letzter Holzschnitt
+
+<div class="finale-hero">
+<div class="finale-hero__media"><video class="finale-hero__video" src={clipLebenswerk} autoplay muted loop playsinline preload="metadata" poster={posterLebenswerk.src} aria-hidden="true"></video><img class="finale-hero__still" src={posterLebenswerk.src} alt="" width="1280" height="720" loading="lazy" decoding="async" /></div>
+<p class="finale-hero__quote">Ein Vermächtnis in zehn Farben.</p>
+</div>
+
+Atlantis 4 ist aller Voraussicht nach mein letzter Holzschnitt. Ich lege die Stechbeitel aus der Hand, auf dem Höhepunkt einer Tradition, die ich perfektioniert habe. Ein solches Meisterwerk entsteht nie wieder. Sichern Sie sich jetzt Ihr Exemplar aus der limitierten Auflage.
 
 </De>
 
@@ -87,6 +121,12 @@ With “Atlantis 4” I close the cycle. It is the element of fire, and for me t
 I painted the picture behind it in 2016. For a long time I left open whether it would ever become a print. The woodcut is one of the oldest techniques in art, and the hardest question was always how to bring the painting onto the wood. I thought about it for more than thirty years.
 
 From a master block I transfer the drawing onto every further block, exact to the millimetre. Ten blocks, each carrying a single colour. Yellow, orange, violet, layer upon layer, and every colour changes the one beneath. I cut with more than a hundred chisels from Switzerland and print on an old letterpress from Ostdruck Rostock that I rebuilt for the purpose. Everything depends on this precision; a picture like this cannot be printed any other way. Ten months for a single sheet. And in the very end it comes down to the light: I keep working until it radiates.
+
+<div class="detail-reihe">
+<figure class="detail-werk"><Picture src={det01} formats={['avif', 'webp']} widths={[400, 800]} sizes="(max-width: 560px) 92vw, 360px" alt="Detail view: the centre of the ammonite spiral at original size" /><figcaption>The centre of the spiral, cut from the wood line by line</figcaption></figure>
+<figure class="detail-werk"><Picture src={det02} formats={['avif', 'webp']} widths={[400, 800]} sizes="(max-width: 560px) 92vw, 360px" alt="Detail view: the ribbed flame arcs at original size" /><figcaption>The flame arcs: every ridge a cut of the chisel</figcaption></figure>
+<figure class="detail-werk"><Picture src={det03} formats={['avif', 'webp']} widths={[400, 800]} sizes="(max-width: 560px) 92vw, 360px" alt="Detail view: layered colours with a glowing orb at original size" /><figcaption>Ten colours on top of each other, each changing the one beneath</figcaption></figure>
+</div>
 
 ## The making
 
@@ -111,6 +151,24 @@ A film crew accompanied me throughout the entire making of this work, from the f
 <div class="doku-soon"><span class="doku-soon__nr">Part 6</span><span class="doku-soon__txt">Coming soon</span></div>
 </div>
 
-<p class="art-finale">This is, in all likelihood, the last woodcut I will make. With this sheet I lay down the chisels and bring to a close a tradition I have perfected. <strong>Secure your copy from this limited edition now.</strong></p>
+## The completed cycle
+
+Four elements, one cycle: water, earth and air came first. With fire it is complete.
+
+<div class="zyklus-reihe">
+<a class="zyklus-werk" href="/portfolio/atlantis-1-element-water-2014/"><Picture src={zykWasser} formats={['avif', 'webp']} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 260px" alt="Atlantis 1 (Element Water), colour woodcut 2014" /><span class="zyklus-werk__label">Water · 2014</span></a>
+<a class="zyklus-werk" href="/portfolio/atlantis-2-element-earth-2014/"><Picture src={zykErde} formats={['avif', 'webp']} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 260px" alt="Atlantis 2 (Element Earth), colour woodcut 2014" /><span class="zyklus-werk__label">Earth · 2014</span></a>
+<a class="zyklus-werk" href="/portfolio/atlantis-3-element-air-2017/"><Picture src={zykLuft} formats={['avif', 'webp']} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 260px" alt="Atlantis 3 (Element Air), colour woodcut 2017" /><span class="zyklus-werk__label">Air · 2017</span></a>
+<span class="zyklus-werk zyklus-werk--aktuell"><Picture src={zykFeuer} formats={['avif', 'webp']} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 260px" alt="Atlantis 4 (Element Fire), colour woodcut 2026, this work" /><span class="zyklus-werk__label">Fire · 2026</span></span>
+</div>
+
+## My last woodcut
+
+<div class="finale-hero">
+<div class="finale-hero__media"><video class="finale-hero__video" src={clipLebenswerk} autoplay muted loop playsinline preload="metadata" poster={posterLebenswerk.src} aria-hidden="true"></video><img class="finale-hero__still" src={posterLebenswerk.src} alt="" width="1280" height="720" loading="lazy" decoding="async" /></div>
+<p class="finale-hero__quote">A legacy in ten colours.</p>
+</div>
+
+Atlantis 4 is, in all likelihood, my last woodcut. I am laying down my chisels at the height of a tradition I have perfected. A masterpiece like this will never be made again. Secure your copy from the limited edition now.
 
 </En>
