@@ -25,7 +25,7 @@ const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
 
 <script is:inline data-cfasync="false">
   (function () {
-    var SEL = '.acq-portrait img, .acq-gallery img, .art-figure img';
+    var SEL = '.acq-portrait img, .acq-gallery img, .art-figure img, .detail-reihe img';
     var lb = document.getElementById('lightbox');
     if (!lb) return;
     var lbImg = lb.querySelector('.lightbox__img');
@@ -109,10 +109,12 @@ const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
 </script>
 
 <style is:global>
-  /* Zoombare Inhalts-Bilder (Porträt + Auftrags-Galerien + Werk-Detail; Banner NICHT). */
+  /* Zoombare Inhalts-Bilder (Porträt + Auftrags-Galerien + Werk-Detail + Detail-Ausschnitte;
+     Banner NICHT). */
   .acq-portrait img,
   .acq-gallery img,
-  .art-figure img {
+  .art-figure img,
+  .detail-reihe img {
     cursor: zoom-in;
   }
   .lightbox {
