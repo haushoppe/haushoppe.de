@@ -272,6 +272,17 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
       grid-template-columns: 1fr;
     }
   }
+  /* Abschluss-Statement direkt vor der Kaufbox (Werke mit Story): zentriert als Brücke in den
+     ebenfalls zentrierten Kaufbereich; die Kaufaufforderung steht als eigene Zeile. */
+  .art-extra .art-finale {
+    margin-top: 2rem;
+    text-align: center;
+    color: #2a2a2a;
+  }
+  .art-extra .art-finale strong {
+    display: block;
+    margin-top: 0.6rem;
+  }
   /* „Unverbindlich anfragen" pro Werk — mailto-CTA unter der Beschriftung (bei Holzschnitten
      zusätzlich zur PayPal-Kaufbox). Button-Optik trägt die gemeinsame Basis (.btn .btn--dark);
      hier nur Zentrierung des Wrappers + Größe des Briefsymbols. */
