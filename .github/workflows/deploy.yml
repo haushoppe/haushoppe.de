@@ -8,6 +8,14 @@ name: deploy
 on:
   push:
     branches: [main]
+    # Reine Doku-/Test-Änderungen berühren den gebauten Output nicht → kein Redeploy.
+    # (Werk-Inhalte liegen in src/content/**, nicht hier — die deployen weiterhin.)
+    paths-ignore:
+      - 'CLAUDE.md'
+      - 'CLAUDE-admin.md'
+      - '**/README.md'
+      - 'e2e/**'
+      - 'playwright.config.ts'
   schedule:
     - cron: '0 3 * * *'
   workflow_dispatch:
