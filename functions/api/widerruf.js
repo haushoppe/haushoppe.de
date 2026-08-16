@@ -8,25 +8,27 @@ function json(data, status = 200) {
 }
 
 export async function onRequestPost({ request, env }) {
-  // Missbrauchs-Bremse: der Endpoint mailt an eine frei wählbare Adresse — ohne Bremse wäre er
-  // ein Spam-Relay. (1) Nur Aufrufe von den eigenen Seiten (Origin-Check inkl. Preview-Deploys
-  // und lokaler Entwicklung). (2) Je IP höchstens ein Widerruf pro Minute (Soft-Limit über den
-  // Colo-Cache; kein globaler Zähler nötig, es geht um das Stoppen von Schleifen).
+  // Missbrauchs-Bremsen hinter Turnstile (Defense in depth — greifen auch, falls der
+  // TURNSTILE_SECRET_KEY je aus der Env fällt): (1) Nur Aufrufe von den eigenen Seiten
+  // (Origin-Check inkl. Preview-Deploys und lokaler Entwicklung). (2) Je IP höchstens eine
+  // VERSENDETE Widerrufs-Mail pro Minute (Soft-Limit über den Colo-Cache). Der Marker wird
+  // erst nach erfolgreichem Versand gesetzt — ein fehlgeschlagener Versuch (Turnstile,
+  // mail_failed) blockiert den sofortigen zweiten Versuch nicht.
   const origin = request.headers.get('origin') || '';
   const originOk =
     /^https:\/\/(www\.)?(haushoppe\.de|haushoppe\.art)$/.test(origin) ||
     /^https:\/\/[a-z0-9-]+\.haushoppe-(de|art)\.pages\.dev$/.test(origin) ||
     /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
   if (!originOk) return json({ error: 'forbidden' }, 403);
+  let rateKey = null;
   try {
     const ip = request.headers.get('cf-connecting-ip') || '';
     if (ip) {
-      const key = new Request('https://rate-limit.invalid/widerruf/' + encodeURIComponent(ip));
-      if (await caches.default.match(key)) return json({ error: 'rate_limited' }, 429);
-      await caches.default.put(key, new Response('1', { headers: { 'cache-control': 'max-age=60' } }));
+      rateKey = new Request('https://rate-limit.invalid/widerruf/' + encodeURIComponent(ip));
+      if (await caches.default.match(rateKey)) return json({ error: 'rate_limited' }, 429);
     }
   } catch {
-    // Cache API nicht verfügbar -> ohne Bremse fortfahren
+    rateKey = null; // Cache API nicht verfügbar -> ohne Bremse fortfahren
   }
 
   let body = {};
@@ -97,5 +99,13 @@ export async function onRequestPost({ request, env }) {
     return json({ error: 'mail_failed' }, 502);
   }
 
+  // Bremse scharf stellen: gezählt werden nur erfolgreich versendete Widerrufe.
+  if (rateKey) {
+    try {
+      await caches.default.put(rateKey, new Response('1', { headers: { 'cache-control': 'max-age=60' } }));
+    } catch {
+      // Cache API nicht verfügbar -> nichts zu markieren
+    }
+  }
   return json({ ok: true, receivedAt });
 }
