@@ -7,7 +7,7 @@ order: 279
 category: paintings
 image: "../../artwork-originals/2021/05/1992-02-A-Olaf-Hoppe-Adam-und-Eva1992©Acyl-auf-Leinwand-80-x-65-cm.avif"
 de:
-  title: "\"Adam und Eva\"1992"
+  title: "\"Adam und Eva\" 1992"
   slug: "adam-und-eva1992"
   captionTitle: "Adam und Eva"
   technique: "Acryl auf Leinwand"

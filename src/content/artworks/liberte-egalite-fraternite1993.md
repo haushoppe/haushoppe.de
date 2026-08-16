@@ -7,7 +7,7 @@ order: 248
 category: paintings
 image: "../../artwork-originals/2021/04/1993-05-A©-Olaf-HoppeLiberte-Egalite-FraterniteAcryl-auf-Leinwand-105-x-85-cm.jpg"
 de:
-  title: "„Liberté, Égalité, Fraternité\"1993"
+  title: "„Liberté, Égalité, Fraternité\" 1993"
   slug: "liberte-egalite-fraternite1993"
   captionTitle: "Liberté, Égalité, Fraternité"
   technique: "Acryl auf Leinwand"

@@ -7,7 +7,7 @@ order: 255
 category: paintings
 image: "../../artwork-originals/2021/04/1992-20-.-A©-Olaf-HoppeDer-skandaloese-FreispruchAcryl-auf-Leinwand-80-x-65-cmbearbeitetklein.jpg"
 de:
-  title: "„Der skandalöse Freispruch\"1992"
+  title: "„Der skandalöse Freispruch\" 1992"
   slug: "der-skandaloese-freispruch1992"
   captionTitle: "Der skandalöse Freispruch"
   technique: "Acryl auf Leinwand"

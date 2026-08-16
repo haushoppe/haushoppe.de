@@ -102,7 +102,10 @@ const t =
   <p class="wc-buy__status" data-testid="paypal-status" role="status" hidden></p>
 </section>
 
-<script define:vars={{ slug, lang, title, thanksMsg: t.thanks, failedMsg: t.failed, dachMsg: t.dach }}>
+{/* data-astro-rerun: der ClientRouter dedupliziert Inline-Skripte über den Textinhalt — ohne das
+    Attribut liefe das Skript beim erneuten Besuch derselben Werk-Seite (View Transition) nicht
+    und die Kaufbox bliebe ohne Buttons. */}
+<script define:vars={{ slug, lang, title, thanksMsg: t.thanks, failedMsg: t.failed, dachMsg: t.dach }} data-astro-rerun>
   (function () {
     let section = null;
     try {
@@ -122,11 +125,16 @@ const t =
     };
 
     // Server-Config holen (Client-ID + sandbox/live). Fehlt sie (keine Functions/kein Key),
-    // bleibt die Box ohne Buttons — der E-Mail-CTA darunter übernimmt.
+    // bleibt die Box ohne Buttons — der E-Mail-CTA darunter übernimmt. Ist das SDK schon geladen
+    // (Rückkehr per View Transition), direkt rendern statt es erneut einzuhängen.
     fetch('/api/paypal/config')
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (cfg) {
         if (!cfg || !cfg.enabled || !cfg.clientId) return;
+        if (window.paypal && window.paypal.Buttons) {
+          renderButtons();
+          return;
+        }
         const params = new URLSearchParams({
           'client-id': cfg.clientId,
           currency: cfg.currency || 'EUR',
@@ -142,6 +150,7 @@ const t =
 
     function renderButtons() {
       if (!window.paypal || !window.paypal.Buttons) return;
+      if (mount.childElementCount) return; // schon gerendert (doppelter Aufruf)
       window.paypal
         .Buttons({
           style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
@@ -160,7 +169,7 @@ const t =
                 return d.id;
               });
           },
-          onApprove: function (data) {
+          onApprove: function (data, actions) {
             return fetch('/api/paypal/capture-order', {
               method: 'POST',
               headers: { 'content-type': 'application/json' },
@@ -172,6 +181,10 @@ const t =
                 if (d && (d.status === 'COMPLETED' || d.status === 'PENDING')) {
                   mount.hidden = true;
                   showStatus(thanksMsg, true);
+                } else if (d && d.error === 'instrument_declined' && actions && actions.restart) {
+                  // Zahlungsmittel abgelehnt: PayPal-Fenster erneut öffnen, Käufer wählt eine
+                  // andere Zahlungsart (offizieller PayPal-Vertrag für diesen Fall).
+                  return actions.restart();
                 } else if (d && d.error === 'shipping_country') {
                   showStatus(dachMsg, false);
                 } else {

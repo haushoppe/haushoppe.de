@@ -7,7 +7,7 @@ order: 295
 category: paintings
 image: "../../artwork-originals/2021/05/1990-02-MT-Olaf-Hoppe-„Die-Geiselung-Christi1991©Mischtechnik-auf-Papier-63-x-90-cm.jpg"
 de:
-  title: "„Die Geiselung Christi\"1991"
+  title: "„Die Geiselung Christi\" 1991"
   slug: "die-geiselung-christi1991"
   captionTitle: "Die Geiselung Christi"
   technique: "Mischtechnik auf Papier"

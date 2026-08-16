@@ -7,7 +7,7 @@ order: 239
 category: paintings
 image: "../../artwork-originals/2021/04/1993-14-.-A©-Olaf-HoppeMuehlstein-der-GerechtigkeitAcryl-auf-Leinwand-85-x-110-cmklein.jpg"
 de:
-  title: "„Mühlstein der Gerechtigkeit\"1993"
+  title: "„Mühlstein der Gerechtigkeit\" 1993"
   slug: "muehlstein-der-gerechtigkeit1993"
   captionTitle: "Mühlstein der Gerechtigkeit"
   technique: "Acryl auf Leinwand"

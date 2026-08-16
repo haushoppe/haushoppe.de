@@ -7,7 +7,7 @@ order: 158
 category: paintings
 image: "../../artwork-originals/2021/04/2000-03-A©-Olaf-HoppeSusanne-im-BadeAcryl-auf-Leinwand-85-x-70-cm.avif"
 de:
-  title: "„Susanne im Bade\"2000"
+  title: "„Susanne im Bade\" 2000"
   slug: "susanne-im-bade2000"
   captionTitle: "Susanne im Bade"
   technique: "Acryl auf Leinwand"

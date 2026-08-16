@@ -67,6 +67,12 @@ Auflösung wird **nie künstlich vergrößert** (kein KI-Upscaling, kein „Aufb
 ### ✅ Bessere Versionen sind jederzeit willkommen
 Taucht später eine **bessere Datei** auf — ein neues, hochauflösendes Foto des physischen Werks oder ein besserer Scan —, **darf und soll** sie hochgeladen werden; sie ersetzt die schwächere. Das Archiv soll über die Zeit **besser** werden.
 
+### ⛔ Unsichere Werkdaten → in den Sammel-Issue, nicht ändern
+Weicht ein Werkdatum (Jahr, Nummer, Titel) von einer anderen Quelle ab (Signatur im Bild, Archiv-Dateiname) und ist die Wahrheit **nicht eindeutig belegbar**, wird **nicht geändert**, sondern mit Belegen als Kommentar in den **Sammel-Issue [#5](https://github.com/haushoppe/haushoppe.de/issues/5)** („Werke: unvollständige Metadaten nachtragen") eingetragen — Olaf entscheidet. **Keine neuen Einzel-Issues** für Werkdaten-Fragen anlegen. Eindeutig belegbare Übertragungsfehler (z. B. Frontmatter widerspricht dem Archiv-Dateinamen, der die Original-Nummer trägt) dürfen direkt korrigiert werden.
+
+### ⛔ Gleicher Titel ≠ gleiches Werk — niemals Einträge zusammenlegen
+Olaf malt Motive manchmal **zweimal** (gleicher oder fast gleicher Titel, z. B. eine spätere überarbeitete Fassung). Das sind **eigenständige Werke** mit eigenem Eintrag im Werkverzeichnis. **Niemals** zwei Werk-Einträge zusammenlegen oder einen als „Duplikat" löschen, nur weil Titel/Jahr übereinstimmen — im Zweifel Johannes/Olaf fragen. (Echte Versehen wie doppelt vergebene Werk-Nummern sind davon getrennt zu klären; das Werk selbst bleibt immer bestehen.)
+
 > **Auftrag an dich (Assistent):** Fällt dir auf, dass ein Werk nur in **schwacher Auflösung** vorliegt, **ermutige den Nutzer aktiv**, eine bessere Aufnahme des physischen Werks nachzureichen — das Original hängt ja bei Olaf. Nicht drängen, aber freundlich darauf hinweisen, dass sich das Archiv jederzeit verbessern lässt.
 
 ---

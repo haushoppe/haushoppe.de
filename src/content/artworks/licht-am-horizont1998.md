@@ -7,7 +7,7 @@ order: 170
 category: paintings
 image: "../../artwork-originals/2021/04/1998-12-A©-Olaf-HoppeLicht-am-HorizontAcryl-auf-Leinwand-55-x-75-cm.jpg"
 de:
-  title: "„Licht am Horizont\"1998"
+  title: "„Licht am Horizont\" 1998"
   slug: "licht-am-horizont1998"
   captionTitle: "Licht am Horizont"
   technique: "Acryl auf Leinwand"

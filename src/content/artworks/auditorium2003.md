@@ -7,7 +7,7 @@ order: 139
 category: paintings
 image: "../../artwork-originals/2021/04/2003-02-A©-Olaf-HoppeAuditorium-Klosterruine-EldenaAcryl-auf-Leinwand-100-x-170cm.jpg"
 de:
-  title: "„Auditorium\"2003"
+  title: "„Auditorium\" 2003"
   slug: "auditorium2003"
   captionTitle: "Auditorium"
   technique: "Acryl auf Leinwand"

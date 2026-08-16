@@ -7,7 +7,7 @@ order: 189
 category: paintings
 image: "../../artwork-originals/2021/04/1996-20-A©-Olaf-HoppeDas-Lied-des-BettlersAcryl-auf-Leinwand-105-x-80-cm.jpg"
 de:
-  title: "„Das Lied des Bettlers\"1996"
+  title: "„Das Lied des Bettlers\" 1996"
   slug: "das-lied-des-bettlers1996"
   captionTitle: "Das Lied des Bettlers"
   technique: "Acryl auf Leinwand"

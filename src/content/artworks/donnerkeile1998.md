@@ -7,7 +7,7 @@ order: 167
 category: paintings
 image: "../../artwork-originals/2021/04/1998-16-A©-Olaf-HoppeDonnerkeileAcryl-auf-Leinwand-80-x-125-cm.avif"
 de:
-  title: "„Donnerkeile\"1998"
+  title: "„Donnerkeile\" 1998"
   slug: "donnerkeile1998"
   captionTitle: "Donnerkeile"
   technique: "Acryl auf Leinwand"

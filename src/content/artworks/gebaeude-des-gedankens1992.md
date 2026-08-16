@@ -7,7 +7,7 @@ order: 253
 category: paintings
 image: "../../artwork-originals/2021/04/1992-24-A©-Olaf-HoppeGebaeude-des-GedankensAcryl-auf-Leinwand-75-x-100-cm.avif"
 de:
-  title: "„Gebäude des Gedankens\"1992"
+  title: "„Gebäude des Gedankens\" 1992"
   slug: "gebaeude-des-gedankens1992"
   captionTitle: "Gebäude des Gedankens"
   technique: "Acryl auf Leinwand"

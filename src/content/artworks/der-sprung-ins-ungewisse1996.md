@@ -7,7 +7,7 @@ order: 201
 category: paintings
 image: "../../artwork-originals/2021/04/1996-06-A©-Olaf-HoppeDer-Sprung-ins-UngewisseAcryl-auf-Leinwand-55-x-125-cm.avif"
 de:
-  title: "„Der Sprung ins Ungewisse\"1996"
+  title: "„Der Sprung ins Ungewisse\" 1996"
   slug: "der-sprung-ins-ungewisse1996"
   captionTitle: "Der Sprung ins Ungewisse"
   technique: "Acryl auf Leinwand"

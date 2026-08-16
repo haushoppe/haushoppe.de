@@ -7,7 +7,7 @@ order: 257
 category: paintings
 image: "../../artwork-originals/2021/04/1992-18-A©-Olaf-HoppeVom-Schatten-ins-LichtAcryl-auf-Leinwand-75-x-100-cm.jpg"
 de:
-  title: "„Vom Schatten ins Licht\"1992"
+  title: "„Vom Schatten ins Licht\" 1992"
   slug: "vom-schatten-ins-licht1992"
   captionTitle: "Vom Schatten ins Licht"
   technique: "Acryl auf Leinwand"

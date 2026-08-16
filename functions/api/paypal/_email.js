@@ -4,14 +4,25 @@
 // Kopie mit allen Infos. Ohne RESEND_API_KEY wird nichts versendet (Graceful Degradation) —
 // die Zahlung ist da bereits abgeschlossen, der Mailversand darf sie nie scheitern lassen.
 
+import { WOODCUT_PRICES_EUR } from './_paypal.js';
+
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
 
-// PayPal liefert Beträge als "785.00" -> "785,00 €" (de) bzw. "785.00 €" (en).
+// PayPal liefert Beträge als "1000.00" -> lokalisiert inkl. Tausendertrennung:
+// "1.000,00 €" (de) bzw. "€1,000.00" (en). Fallback: einfacher Komma-Tausch.
 function money(value, currency, lang) {
+  const n = Number(value);
+  if (Number.isFinite(n)) {
+    try {
+      return new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-GB', { style: 'currency', currency: currency || 'EUR' }).format(n);
+    } catch {
+      // unbekannter Währungscode -> Fallback unten
+    }
+  }
   const sym = currency === 'EUR' ? '€' : `${currency} `;
   const v = lang === 'de' ? String(value).replace('.', ',') : String(value);
   return `${v} ${sym}`.trim();
@@ -40,9 +51,12 @@ function extract(data, lang) {
   return {
     orderId: data.id || '',
     captureId: cap.id || '',
+    // PENDING (z. B. eCheck): Bestellung ist aufgegeben, Geld aber noch nicht final da —
+    // die Händler-Mail warnt dann ausdrücklich vor dem Versand.
+    pending: data.status === 'PENDING' || cap.status === 'PENDING',
     item: pu.description || pu.custom_id || (lang === 'en' ? 'Woodcut' : 'Holzschnitt'),
     slug: pu.custom_id || '',
-    amount: money(amount.value || '785.00', amount.currency_code || 'EUR', lang),
+    amount: money(amount.value || WOODCUT_PRICES_EUR.unframed, amount.currency_code || 'EUR', lang),
     buyerName: [payer.name && payer.name.given_name, payer.name && payer.name.surname].filter(Boolean).join(' '),
     buyerEmail: payer.email_address || '',
     shipName: (shipping.name || {}).full_name || '',
@@ -109,8 +123,12 @@ ${widerruf(seller)}
 
 function merchantHtml(o) {
   const addr = [o.shipName, ...o.addrLines].filter(Boolean).map(esc).join('<br>');
+  const warn = o.pending
+    ? '<p style="background:#fff3cd;border-left:4px solid #b45309;padding:8px 12px;font-size:14px"><strong>Zahlung noch AUSSTEHEND</strong> (z. B. eCheck). Bitte NICHT versenden, bevor die Zahlung im PayPal-Konto als abgeschlossen erscheint.</p>'
+    : '';
   return `<div style="font-family:Arial,Helvetica,sans-serif;color:#222;max-width:620px">
-<h2 style="margin:0 0 .4em">Neue Bestellung (bezahlt)</h2>
+<h2 style="margin:0 0 .4em">Neue Bestellung ${o.pending ? '(Zahlung ausstehend)' : '(bezahlt)'}</h2>
+${warn}
 <table style="border-collapse:collapse;font-size:14px">
 ${row('Werk', o.item)}${row('Slug', o.slug)}${row('Betrag', o.amount)}${row('Bestellnummer', o.orderId)}${row('Capture-ID', o.captureId)}${row('Datum', o.date)}${row('Käufer', o.buyerName)}${row('E-Mail', o.buyerEmail)}
 </table>
@@ -151,7 +169,7 @@ export async function sendOrderEmails(env, data, lang) {
       from,
       to: [merchant],
       reply_to: o.buyerEmail || merchant,
-      subject: `Neue Bestellung: ${o.item} (${o.amount})`,
+      subject: `Neue Bestellung${o.pending ? ' (Zahlung ausstehend)' : ''}: ${o.item} (${o.amount})`,
       html: merchantHtml(o),
     });
   } catch (e) {

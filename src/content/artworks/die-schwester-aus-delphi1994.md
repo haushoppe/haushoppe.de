@@ -7,7 +7,7 @@ order: 223
 category: paintings
 image: "../../artwork-originals/2021/04/1994-09-.-A©-Olaf-HoppeDie-Schwester-aus-DelphiAcryl-auf-Leinwand-85-x-115-cmklein.jpg"
 de:
-  title: "„Die Schwester aus Delphi\"1994"
+  title: "„Die Schwester aus Delphi\" 1994"
   slug: "die-schwester-aus-delphi1994"
   captionTitle: "Die Schwester aus Delphi"
   technique: "Acryl auf Leinwand"

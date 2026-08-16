@@ -53,7 +53,9 @@ const t =
 // „Interesse anfragen" pro Werk: mailto mit vorausgefülltem Betreff + Text (Titel, Werk-Nummer und
 // Link zur Werk-Seite), damit die Anfrage bei team@haushoppe.de eindeutig zuzuordnen ist. Empfänger
 // kommt aus site.ts (eine Quelle). Ordinals bekommen keinen (eigener Kauf-Flow).
-const rawTitle = (side.captionTitle || title || side.title || '').trim();
+// Roh aus den Werkdaten (nicht aus dem Anzeige-Titel, der bei unbetitelten Werken auf
+// „Ohne Titel" zurückfällt): die Mail nennt titellose Werke gezielt „Werk <Nummer>".
+const rawTitle = (side.captionTitle || side.title || '').trim();
 const num = (art.data.number || '').trim();
 const numSuffix = num ? ` (${num})` : '';
 // Werk-Referenz für Betreff/Text: „Titel“ (Nummer). Fehlt der Titel (unbetitelte Werke), nur die
@@ -74,8 +76,7 @@ const workUrl = new URL(Astro.url.pathname, SELF_ORIGIN).href;
 const slug = (side.slug || Astro.url.pathname.split('/').filter(Boolean).pop() || '').trim();
 // Holzschnitte haben einen festen Preis: in die Mail aufnehmen und statt „Preis erfahren" nach der
 // Verfügbarkeit fragen. Andere Werke (Gemälde) bleiben ohne Preis (Anfrage zu Verfügbarkeit UND Preis).
-// Erkennung sprachneutral über die DE-Technik + Werk-Nummer.
-const woodcut = isWoodcut({ technique: art.data.de.technique, number: art.data.number });
+const woodcut = isWoodcut(art.data.category);
 const price = woodcut ? woodcutPrice(lang) : null;
 const bodyLead = woodcut
   ? lang === 'en'

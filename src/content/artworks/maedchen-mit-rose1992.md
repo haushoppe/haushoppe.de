@@ -7,7 +7,7 @@ order: 18
 category: woodcuts
 image: "../../artwork-originals/2021/04/P1040699-Maedchen-2.avif"
 de:
-  title: "„Mädchen mit Rose“1992"
+  title: "„Mädchen mit Rose“ 1992"
   slug: "maedchen-mit-rose1992"
   captionTitle: "Mädchen mit Rose"
   technique: "Original Farbholzschnitt von 12 Druckplatten"

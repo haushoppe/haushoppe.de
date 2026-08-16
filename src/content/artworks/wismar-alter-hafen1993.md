@@ -7,7 +7,7 @@ order: 250
 category: paintings
 image: "../../artwork-originals/2021/04/1993-03-A©-Olaf-HoppeWismar-Alter-HafenAcryl-auf-Leinwand-100-x-140-cm.jpg"
 de:
-  title: "„Wismar - Alter Hafen\"1993"
+  title: "„Wismar - Alter Hafen\" 1993"
   slug: "wismar-alter-hafen1993"
   captionTitle: "Wismar - Alter Hafen"
   technique: "Acryl auf Leinwand"

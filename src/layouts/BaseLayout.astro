@@ -113,7 +113,9 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <ClientRouter />
-    {jsonLdItems.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+    {/* "<" als Unicode-Escape serialisieren, damit kein Inhalts-String (z. B. ein Werktitel mit
+        schließendem script-Tag) das Inline-Script vorzeitig beenden und Markup injizieren kann. */}
+    {jsonLdItems.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj).replace(/</g, '\\u003c')} />)}
   </head>
   <body class:list={[inverted && 'theme-invert']}>
     <a href="#main" class="skip-link">{lang === 'en' ? 'Skip to content' : 'Zum Inhalt springen'}</a>

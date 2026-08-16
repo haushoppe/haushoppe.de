@@ -7,7 +7,7 @@ order: 273
 category: paintings
 image: "../../artwork-originals/2021/04/1992-01-.-A©-Olaf-Hoppe-Sankt-GeorgAcryl-auf-Leinwand-80-x-65-cm.avif"
 de:
-  title: "\"Sankt Georg\"1992"
+  title: "\"Sankt Georg\" 1992"
   slug: "sankt-georg1992"
   captionTitle: "Sankt Georg"
   technique: "Acryl auf Leinwand"

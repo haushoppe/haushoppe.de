@@ -7,7 +7,7 @@ order: 180
 category: paintings
 image: "../../artwork-originals/2021/04/1998-01-A©-Olaf-HoppeBewaehrte-FreundschaftAcryl-auf-Leinwand-73-x-98cm-scaled.jpg"
 de:
-  title: "„Bewährte Freundschaft\"1998"
+  title: "„Bewährte Freundschaft\" 1998"
   slug: "bewaehrte-freundschaft1998"
   captionTitle: "Bewährte Freundschaft"
   technique: "Acryl auf Leinwand"

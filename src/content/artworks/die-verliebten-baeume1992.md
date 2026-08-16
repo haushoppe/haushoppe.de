@@ -7,7 +7,7 @@ order: 272
 category: paintings
 image: "../../artwork-originals/2021/04/1992-03-A©-Olaf-Hoppe-Die-verliebten-BaeumeAcryl-auf-Leinwand-100-x-80-cm.jpg"
 de:
-  title: "\"Die verliebten Bäume\"1992"
+  title: "\"Die verliebten Bäume\" 1992"
   slug: "die-verliebten-baeume1992"
   captionTitle: "Die verliebten Bäume"
   technique: "Acryl auf Leinwand"

@@ -1,4 +1,4 @@
-import { paypalBase, accessToken, json } from './_paypal.js';
+import { WOODCUT_PRICES_EUR, CURRENCY, paypalBase, accessToken, json } from './_paypal.js';
 import { sendOrderEmails } from './_email.js';
 
 // Bucht eine zuvor angelegte Bestellung final ab. Danach liegen Zahlung UND Lieferadresse im
@@ -28,17 +28,36 @@ export async function onRequestPost({ request, env, waitUntil }) {
     // Lieferland-Ablehnung, sonst bekäme ein legitimer Käufer fälschlich die DACH-Meldung.
     if (!ordRes.ok) return json({ error: 'order_lookup_failed' }, 502);
     const ord = await ordRes.json();
-    const country = ((((ord.purchase_units || [])[0] || {}).shipping || {}).address || {}).country_code;
+    const pu = (ord.purchase_units || [])[0] || {};
+
+    // Betrag/Währung der Order MÜSSEN einem Eintrag der server-seitigen Preistabelle entsprechen.
+    // Die PayPal-Client-ID ist öffentlich — ohne diese Prüfung könnte ein manipulierter Client eine
+    // beliebig billige Order anlegen lassen und hier abbuchen + bestätigen lassen.
+    const amount = pu.amount || {};
+    const priceOk =
+      amount.currency_code === CURRENCY &&
+      Object.values(WOODCUT_PRICES_EUR).indexOf(String(amount.value)) !== -1;
+    if (!priceOk) return json({ error: 'bad_amount' }, 422);
+
+    const country = ((pu.shipping || {}).address || {}).country_code;
     if (!country || ['DE', 'AT', 'CH'].indexOf(country) === -1) {
       return json({ error: 'shipping_country', country: country || null }, 422);
     }
 
+    // return=representation: die Capture-Antwort enthält dann purchase_units inkl. description/
+    // custom_id — daraus ziehen die Bestell-Mails Werk und Ausführung (sonst nur Minimalantwort).
     const res = await fetch(`${paypalBase(env)}/v2/checkout/orders/${orderID}/capture`, {
       method: 'POST',
-      headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+      headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json', prefer: 'return=representation' },
     });
     const data = await res.json();
-    if (!res.ok) return json({ error: 'capture_failed', detail: data }, 502);
+    if (!res.ok) {
+      // Zahlungsmittel abgelehnt: dem Client explizit melden, damit er actions.restart() aufruft
+      // und der Käufer im selben Checkout eine andere Zahlungsart wählen kann.
+      const declined = (data.details || []).some((d) => d && d.issue === 'INSTRUMENT_DECLINED');
+      if (declined) return json({ error: 'instrument_declined' }, 422);
+      return json({ error: 'capture_failed', detail: data }, 502);
+    }
     // Bestätigungs-Mails bei platzierter Zahlung — COMPLETED ODER PENDING (z. B. eCheck / Prüfung):
     // in beiden Fällen ist die Bestellung aufgegeben, also Kunde + Olaf benachrichtigen. Im
     // Hintergrund, damit ein Mail-Fehler die Antwort nie berührt.

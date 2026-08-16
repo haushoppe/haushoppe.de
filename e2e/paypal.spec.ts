@@ -22,7 +22,7 @@ test('Holzschnitt: Kaufbox (785 € / 1.000 € gerahmt) + Buttons-Mount + E-Mai
 
 test('Kein Holzschnitt (Aquarell 1167): keine Kaufbox, aber E-Mail-CTA', async ({ page }, info) => {
   const s = site(info);
-  await page.goto(`/portfolio/${s.work.untitled}/`);
+  await page.goto(`/portfolio/${s.work.aquarell}/`);
   await expect(page.getByTestId('paypal-buy')).toHaveCount(0);
   await expect(page.getByTestId('inquire-link')).toHaveCount(1);
 });

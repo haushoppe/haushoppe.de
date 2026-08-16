@@ -7,7 +7,7 @@ order: 283
 category: paintings
 image: "../../artwork-originals/2021/05/1991-07-A©-Olaf-HoppeIm-WachholderwaldAcryl-auf-Leinwand-80-x-110-cm.jpg"
 de:
-  title: "„Im Wachholderwald\"1991"
+  title: "„Im Wachholderwald\" 1991"
   slug: "im-wachholderwald1991"
   captionTitle: "Im Wachholderwald"
   technique: "Acryl auf Leinwand"

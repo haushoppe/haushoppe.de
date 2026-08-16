@@ -7,7 +7,7 @@ order: 246
 category: paintings
 image: "../../artwork-originals/2021/04/1993-07-A©-Olaf-HoppeAlpha-und-OmegaAcryl-auf-Leinwand-100-x-85-cm.jpg"
 de:
-  title: "„Alpha und Omega\"1993"
+  title: "„Alpha und Omega\" 1993"
   slug: "alpha-und-omega1993"
   captionTitle: "Alpha und Omega"
   technique: "Acryl auf Leinwand"

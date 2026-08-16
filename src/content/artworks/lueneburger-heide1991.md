@@ -7,7 +7,7 @@ order: 282
 category: paintings
 image: "../../artwork-originals/2021/05/1991-08-A©-Olaf-HoppeLueneburger-HeideAcryl-auf-Leinwand-70-x-100-cm.jpg"
 de:
-  title: "„Lüneburger Heide\"1991"
+  title: "„Lüneburger Heide\" 1991"
   slug: "lueneburger-heide1991"
   captionTitle: "Lüneburger Heide"
   technique: "Acryl auf Leinwand"

@@ -64,7 +64,9 @@ ${r('Eingang', `${o.receivedAt} (${o.iso})`)}${r('Name', o.name)}${r('Bestellnum
 </div>`;
 }
 
-// Wirft NIE nach aussen (der Erfolg gegenüber dem Kunden hängt nicht am Mailversand).
+// Liefert je Mail das Resend-Ergebnis (customer/merchant) bzw. den Fehler (customerError/
+// merchantError). Der Endpoint meldet dem Kunden nur dann Erfolg, wenn BEIDE Sendungen
+// angenommen wurden — die Kopie an team@haushoppe.de ist die dauerhafte Ablage des Widerrufs.
 export async function sendWithdrawalEmails(env, o, lang) {
   if (!env.RESEND_API_KEY) return { skipped: 'no RESEND_API_KEY' };
   const from = env.MAIL_FROM || 'HAUS HOPPE - ITS <team@haushoppe.de>';

@@ -4,10 +4,12 @@
 // Client-Code oder im Repo auf. Dateien mit führendem "_" werden von Pages NICHT als Route geroutet.
 
 // Feste Brutto-Preise aller Holzschnitte in EUR je Ausführung (ungerahmt / fertig gerahmt im
-// HALBE-Museumsrahmen). MUSS mit den WOODCUT_PRICE_*-Konstanten in src/lib/pricing.ts
-// übereinstimmen (dort die fachliche Quelle). Der Betrag wird server-seitig aus dieser Tabelle
-// gewählt — der Client liefert nur den Varianten-Schlüssel, nie einen Preis.
-export const WOODCUT_PRICES_EUR = { unframed: '785.00', framed: '1000.00' };
+// HALBE-Museumsrahmen), aus DERSELBEN Quelle wie die Website-Anzeige
+// (src/data/woodcut-prices.json) — beworbener und abgebuchter Betrag können nicht
+// auseinanderlaufen. Der Betrag wird server-seitig aus dieser Tabelle gewählt — der Client
+// liefert nur den Varianten-Schlüssel, nie einen Preis.
+import prices from '../../../src/data/woodcut-prices.json';
+export const WOODCUT_PRICES_EUR = { unframed: prices.unframed.toFixed(2), framed: prices.framed.toFixed(2) };
 export const CURRENCY = 'EUR';
 
 export function paypalBase(env) {

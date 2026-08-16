@@ -7,7 +7,7 @@ order: 230
 category: paintings
 image: "../../artwork-originals/2021/04/1994-03-A©-Olaf-HoppeVom-anderen-UferAcryl-auf-Leinwand-80-x-115-cm.avif"
 de:
-  title: "„Vom anderen Ufer\"1994"
+  title: "„Vom anderen Ufer\" 1994"
   slug: "vom-anderen-ufer1994"
   captionTitle: "Vom anderen Ufer"
   technique: "Acryl auf Leinwand"

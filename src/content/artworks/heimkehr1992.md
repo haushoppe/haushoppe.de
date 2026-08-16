@@ -7,7 +7,7 @@ order: 271
 category: paintings
 image: "../../artwork-originals/2021/04/1992-04-A©-Olaf-HoppeHeimkehrAcryl-auf-Leinwand-90-x-70-cm.jpg"
 de:
-  title: "\"Heimkehr\"1992"
+  title: "\"Heimkehr\" 1992"
   slug: "heimkehr1992"
   captionTitle: "Heimkehr"
   technique: "Acryl auf Leinwand"

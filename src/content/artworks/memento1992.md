@@ -7,7 +7,7 @@ order: 264
 category: paintings
 image: "../../artwork-originals/2021/04/1992-11-A©-Olaf-HoppeMementoAcryl-auf-Leinwand-80-x-65-cm.jpg"
 de:
-  title: "„Memento\"1992"
+  title: "„Memento\" 1992"
   slug: "memento1992"
   captionTitle: "Memento"
   technique: "Acryl auf Leinwand"

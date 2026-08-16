@@ -1,7 +1,7 @@
 ---
 artist: "Olaf Hoppe"
 year: "2010"
-number: "2010-05-A"
+number: "2010-02-A"
 date: "2010-05-25 10:25:00"
 order: 96
 category: paintings

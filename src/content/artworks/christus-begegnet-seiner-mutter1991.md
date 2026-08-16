@@ -7,7 +7,7 @@ order: 297
 category: paintings
 image: "../../artwork-originals/2021/05/1989-01-.-MT©-Olaf-HoppeChristus-begegnet-seiner-MutterMischtechnik-auf-Papier-50-x-65-cmklein.jpg"
 de:
-  title: "\"Christus begegnet seiner Mutter\"1991"
+  title: "\"Christus begegnet seiner Mutter\" 1991"
   slug: "christus-begegnet-seiner-mutter1991"
   captionTitle: "Christus begegnet seiner Mutter"
   technique: "Mischtechnik auf Papier"

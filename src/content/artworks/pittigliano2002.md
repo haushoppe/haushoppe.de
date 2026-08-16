@@ -7,7 +7,7 @@ order: 142
 category: paintings
 image: "../../artwork-originals/2021/04/2002-04-A©-Olaf-HoppePittiglianoAcryl-auf-Leinwand-070-x-185-cm.jpg"
 de:
-  title: "„Pittigliano\"2002"
+  title: "„Pittigliano\" 2002"
   slug: "pittigliano2002"
   captionTitle: "Pittigliano"
   technique: "Acryl auf Leinwand"

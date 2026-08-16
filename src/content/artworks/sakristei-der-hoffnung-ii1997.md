@@ -7,7 +7,7 @@ order: 182
 category: paintings
 image: "../../artwork-originals/2021/04/1997-07-.-A©-Olaf-HoppeSakristei-der-Hoffnung-IIAcryl-auf-Leinwand-132-x-73-cmklein.jpg"
 de:
-  title: "„Sakristei der Hoffnung, II\"1997"
+  title: "„Sakristei der Hoffnung, II\" 1997"
   slug: "sakristei-der-hoffnung-ii1997"
   captionTitle: "Sakristei der Hoffnung, II"
   technique: "Acryl auf Leinwand"

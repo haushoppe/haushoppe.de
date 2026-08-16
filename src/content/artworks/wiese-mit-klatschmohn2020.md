@@ -7,7 +7,7 @@ order: 32
 category: paintings
 image: "../../artwork-originals/2021/04/2020-04-A-©-Olaf-Hoppe-„-Wiese-mit-Klatschmohn2020-©-Acryl-auf-Leinwand-65-x-110-cm.avif"
 de:
-  title: "„Wiese mit Klatschmohn“2020"
+  title: "„Wiese mit Klatschmohn“ 2020"
   slug: "wiese-mit-klatschmohn2020"
   captionTitle: "Wiese mit Klatschmohn"
   technique: "Acryl auf Leinwand"

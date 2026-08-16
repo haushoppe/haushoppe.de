@@ -7,7 +7,7 @@ order: 154
 category: paintings
 image: "../../artwork-originals/2021/04/2000-07-A©-Olaf-Hoppe-Natura-naturataAcryl-auf-Leinwand-50-x-145-cm.avif"
 de:
-  title: "„Natura naturata\"2000"
+  title: "„Natura naturata\" 2000"
   slug: "natura-naturata2000"
   captionTitle: "Natura naturata"
   technique: "Acryl auf Leinwand"

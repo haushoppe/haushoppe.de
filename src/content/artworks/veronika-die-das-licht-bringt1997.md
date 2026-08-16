@@ -7,7 +7,7 @@ order: 185
 category: paintings
 image: "../../artwork-originals/2021/04/1997-02-A-Olaf-Hoppe-„Veronika-die-das-Licht-bringt1997©Acryl-auf-Leinwand-80-x-105-cm.jpg"
 de:
-  title: "„Veronika, die das Licht bringt\"1997"
+  title: "„Veronika, die das Licht bringt\" 1997"
   slug: "veronika-die-das-licht-bringt1997"
   captionTitle: "Veronika, die das Licht bringt"
   technique: "Acryl auf Leinwand"

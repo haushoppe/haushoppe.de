@@ -7,7 +7,7 @@ order: 281
 category: paintings
 image: "../../artwork-originals/2021/05/1991-10-MT-Olaf-Hoppe-„Christus-faellt-das-zweite-Mal1991©Mischtechnik-auf-Papier-90-x-48cm-2.avif"
 de:
-  title: "„Christus fällt das zweite Mal\"1991"
+  title: "„Christus fällt das zweite Mal\" 1991"
   slug: "christus-faellt-das-zweite-mal1991"
   captionTitle: "Christus fällt das zweite Mal"
   technique: "Mischtechnik auf Papier"

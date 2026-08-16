@@ -7,7 +7,7 @@ order: 291
 category: paintings
 image: "../../artwork-originals/2021/05/1990-06-MT-Olaf-Hoppe-„Christus-und-Pilatus1990©Mischtechnik-auf-Papier-47-x-66cm.jpg"
 de:
-  title: "„Christus und Pilatus\"1990"
+  title: "„Christus und Pilatus\" 1990"
   slug: "christus-und-pilatus1990"
   captionTitle: "Christus und Pilatus"
   technique: "Mischtechnik auf Papier"

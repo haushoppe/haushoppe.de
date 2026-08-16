@@ -3,13 +3,15 @@
 // Intro-Prosa, Akkordeon) kommt als <slot/> aus der MDX-Seite (content/pages/acquire-<lang>.mdx).
 import Banner from './Banner.astro';
 interface Props {
-  content: { title: string; hero: { name: string; alt: string } };
+  // hero ist im pages-Schema optional — ohne Block rendert die Seite schlicht ohne Banner
+  // statt im Build zu crashen.
+  content: { title: string; hero?: { name: string; alt: string } };
 }
 const { content } = Astro.props;
 ---
 
 <article class="acq">
-  <Banner name={content.hero.name} alt={content.hero.alt} hero />
+  {content.hero && <Banner name={content.hero.name} alt={content.hero.alt} hero />}
   <div class="acq-body">
     <h1 class="entry-title">{content.title}</h1>
     <slot />

@@ -7,7 +7,7 @@ order: 256
 category: paintings
 image: "../../artwork-originals/2021/04/1992-19-.-A©-Olaf-HoppeFossilieAcryl-auf-Leinwand-85-x-95-cmklein.jpg"
 de:
-  title: "„Fossilie\"1992"
+  title: "„Fossilie\" 1992"
   slug: "fossilie1992"
   captionTitle: "Fossilie"
   technique: "Acryl auf Leinwand"

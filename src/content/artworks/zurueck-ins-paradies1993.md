@@ -7,7 +7,7 @@ order: 244
 category: paintings
 image: "../../artwork-originals/2021/04/1993-09-.-A©-Olaf-HoppeZurueck-ins-ParadiesAcryl-auf-Leinwand-110-x-75-cmbearbeitetklein.jpg"
 de:
-  title: "„Zurück ins Paradies\"1993"
+  title: "„Zurück ins Paradies\" 1993"
   slug: "zurueck-ins-paradies1993"
   captionTitle: "Zurück ins Paradies"
   technique: "Acryl auf Leinwand"

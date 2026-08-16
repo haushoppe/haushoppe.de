@@ -1,7 +1,7 @@
 ---
 artist: "Olaf Hoppe"
 year: "1991"
-number: "1991-02-HZ"
+number: "1991-03-HZ"
 date: "1991-02-22 12:26:00"
 order: 21
 category: woodcuts

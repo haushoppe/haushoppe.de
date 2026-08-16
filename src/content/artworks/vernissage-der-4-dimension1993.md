@@ -7,7 +7,7 @@ order: 240
 category: paintings
 image: "../../artwork-originals/2021/04/1993-13-.-A©-Olaf-HoppeVernissage-der-4.-DimensionAcryl-auf-Leinwand-90-x-105-cmklein.avif"
 de:
-  title: "„Vernissage der 4. Dimension\"1993"
+  title: "„Vernissage der 4. Dimension\" 1993"
   slug: "vernissage-der-4-dimension1993"
   captionTitle: "Vernissage der 4. Dimension"
   technique: "Acryl auf Leinwand"

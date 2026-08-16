@@ -7,7 +7,7 @@ order: 203
 category: paintings
 image: "../../artwork-originals/2021/04/1996-02-A©-Olaf-HoppeChristus-faelltAcryl-auf-Leinwand-80-x-180-cm.avif"
 de:
-  title: "„Christus fällt\"1996"
+  title: "„Christus fällt\" 1996"
   slug: "christus-faellt1996"
   captionTitle: "Christus fällt"
   technique: "Acryl auf Leinwand"

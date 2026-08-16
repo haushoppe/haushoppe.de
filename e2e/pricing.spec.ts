@@ -17,7 +17,7 @@ test('Holzschnitt zeigt beide Preise: 785 € ungerahmt, 1.000 € gerahmt', asy
 });
 
 test('Nicht-Holzschnitt (Aquarell) zeigt KEINEN Preis', async ({ page }, info) => {
-  await page.goto(`/portfolio/${site(info).work.untitled}/`);
+  await page.goto(`/portfolio/${site(info).work.aquarell}/`);
   await expect(page.getByTestId('artwork-price')).toHaveCount(0);
 });
 

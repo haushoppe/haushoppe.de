@@ -7,7 +7,7 @@ order: 214
 category: paintings
 image: "../../artwork-originals/2021/04/1995-08-A©-Olaf-HoppeDas-kleine-trojanische-PferdchenAcryl-auf-Leinwand-080-x-065-cm.avif"
 de:
-  title: "„Das kleine trojanische Pferdchen\"1995"
+  title: "„Das kleine trojanische Pferdchen\" 1995"
   slug: "das-kleine-trojanische-pferdchen1995"
   captionTitle: "Das kleine trojanische Pferdchen"
   technique: "Acryl auf Leinwand"

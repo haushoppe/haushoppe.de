@@ -7,7 +7,7 @@ order: 178
 category: paintings
 image: "../../artwork-originals/2021/04/1998-02-A©-Olaf-HoppeIkonostas-IIAcryl-auf-Leinwand-120-x-55-cm.avif"
 de:
-  title: "„Ikonostas II\"1998"
+  title: "„Ikonostas II\" 1998"
   slug: "ikonostas-ii1998"
   captionTitle: "Ikonostas II"
   technique: "Acryl auf Leinwand"

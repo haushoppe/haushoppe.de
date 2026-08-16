@@ -7,7 +7,7 @@ order: 140
 category: paintings
 image: "../../artwork-originals/2021/04/2003-01-A©-Olaf-HoppeDie-geschlossene-TuerAcryl-auf-Leinwand-070-x-200-cm-1-scaled.avif"
 de:
-  title: "„Die geschlossene Tür\"2003"
+  title: "„Die geschlossene Tür\" 2003"
   slug: "die-geschlossene-tuer2003"
   captionTitle: "Die geschlossene Tür"
   technique: "Acryl auf Leinwand"

@@ -1,7 +1,7 @@
 ---
 artist: "Olaf Hoppe"
 year: "1999"
-number: "1999-01-A"
+number: "1999-03-A"
 date: "1999-01-27 16:45:00"
 order: 163
 category: paintings

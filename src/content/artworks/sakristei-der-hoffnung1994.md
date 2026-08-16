@@ -7,7 +7,7 @@ order: 224
 category: paintings
 image: "../../artwork-originals/2021/04/1994-08-.-A©-Olaf-HoppeSakristei-der-HoffnungAcryl-auf-Leinwand-113-x-75cmklein.jpg"
 de:
-  title: "„Sakristei der Hoffnung\"1994"
+  title: "„Sakristei der Hoffnung\" 1994"
   slug: "sakristei-der-hoffnung1994"
   captionTitle: "Sakristei der Hoffnung"
   technique: "Acryl auf Leinwand"

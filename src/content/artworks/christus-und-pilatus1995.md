@@ -7,7 +7,7 @@ order: 206
 category: paintings
 image: "../../artwork-originals/2021/04/1995-16-A©-Olaf-HoppeChristus-und-PilatusAcryl-auf-Leinwand-80-x-110-cm.jpg"
 de:
-  title: "„Christus und Pilatus\"1995"
+  title: "„Christus und Pilatus\" 1995"
   slug: "christus-und-pilatus1995"
   captionTitle: "Christus und Pilatus"
   technique: "Acryl auf Leinwand"

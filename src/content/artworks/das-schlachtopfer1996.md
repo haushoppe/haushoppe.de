@@ -7,7 +7,7 @@ order: 202
 category: paintings
 image: "../../artwork-originals/2021/04/1996-04-A©-Olaf-HoppeDas-SchlachtopferAcryl-auf-Leinwand-110-x-80-cm.avif"
 de:
-  title: "„Das Schlachtopfer\"1996"
+  title: "„Das Schlachtopfer\" 1996"
   slug: "das-schlachtopfer1996"
   captionTitle: "Das Schlachtopfer"
   technique: "Acryl auf Leinwand"

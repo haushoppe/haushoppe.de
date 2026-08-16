@@ -7,7 +7,7 @@ order: 181
 category: paintings
 image: "../../artwork-originals/2021/04/1997-08-A©-Olaf-HoppeBce-BudjetAcryl-auf-Leinwand-70-x-50-cm.jpg"
 de:
-  title: "„Bce Budjet\"1997"
+  title: "„Bce Budjet\" 1997"
   slug: "bce-budjet1997"
   captionTitle: "Bce Budjet"
   technique: "Acryl auf Leinwand"

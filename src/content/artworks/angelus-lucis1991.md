@@ -7,7 +7,7 @@ order: 284
 category: paintings
 image: "../../artwork-originals/2021/05/1991-06-A-Olaf-HoppeAngelus-LucisAcryl-auf-Leinwand-80-x-60-cm.avif"
 de:
-  title: "„Angelus Lucis\"1991"
+  title: "„Angelus Lucis\" 1991"
   slug: "angelus-lucis1991"
   captionTitle: "Angelus Lucis"
   technique: "Acryl auf Leinwand"

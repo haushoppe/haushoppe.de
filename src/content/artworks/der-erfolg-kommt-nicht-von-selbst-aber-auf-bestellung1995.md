@@ -7,7 +7,7 @@ order: 208
 category: paintings
 image: "../../artwork-originals/2021/04/1995-14-A©-Olaf-HoppeDer-Erfolg-kommt-nicht-von-selbst-aber-auf-BestellungAcryl-auf-Leinwand-140-x-65-cm.avif"
 de:
-  title: "„Der Erfolg kommt nicht von selbst, aber auf Bestellung\"1995"
+  title: "„Der Erfolg kommt nicht von selbst, aber auf Bestellung\" 1995"
   slug: "der-erfolg-kommt-nicht-von-selbst-aber-auf-bestellung1995"
   captionTitle: "Der Erfolg kommt nicht von selbst, aber auf Bestellung"
   technique: "Acryl auf Leinwand"

@@ -7,7 +7,7 @@ order: 191
 category: paintings
 image: "../../artwork-originals/2021/04/1996-18-A©-Olaf-HoppeDas-Lied-des-BlindenAcryl-auf-Leinwand-105-x-80-cm.avif"
 de:
-  title: "„Das Lied des Blinden\"1996"
+  title: "„Das Lied des Blinden\" 1996"
   slug: "das-lied-des-blinden1996"
   captionTitle: "Das Lied des Blinden"
   technique: "Acryl auf Leinwand"

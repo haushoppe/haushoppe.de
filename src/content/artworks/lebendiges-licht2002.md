@@ -7,7 +7,7 @@ order: 144
 category: paintings
 image: "../../artwork-originals/2021/04/2002-02-A©-Olaf-HoppeLebendiges-LichtAcryl-auf-Leinwand-075-x-190-cm.avif"
 de:
-  title: "„Lebendiges Licht\"2002"
+  title: "„Lebendiges Licht\" 2002"
   slug: "lebendiges-licht2002"
   captionTitle: "Lebendiges Licht"
   technique: "Acryl auf Leinwand"

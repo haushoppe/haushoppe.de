@@ -7,7 +7,28 @@ function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8' } });
 }
 
-export async function onRequestPost({ request, env, waitUntil }) {
+export async function onRequestPost({ request, env }) {
+  // Missbrauchs-Bremse: der Endpoint mailt an eine frei wählbare Adresse — ohne Bremse wäre er
+  // ein Spam-Relay. (1) Nur Aufrufe von den eigenen Seiten (Origin-Check inkl. Preview-Deploys
+  // und lokaler Entwicklung). (2) Je IP höchstens ein Widerruf pro Minute (Soft-Limit über den
+  // Colo-Cache; kein globaler Zähler nötig, es geht um das Stoppen von Schleifen).
+  const origin = request.headers.get('origin') || '';
+  const originOk =
+    /^https:\/\/(www\.)?(haushoppe\.de|haushoppe\.art)$/.test(origin) ||
+    /^https:\/\/[a-z0-9-]+\.haushoppe-(de|art)\.pages\.dev$/.test(origin) ||
+    /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+  if (!originOk) return json({ error: 'forbidden' }, 403);
+  try {
+    const ip = request.headers.get('cf-connecting-ip') || '';
+    if (ip) {
+      const key = new Request('https://rate-limit.invalid/widerruf/' + encodeURIComponent(ip));
+      if (await caches.default.match(key)) return json({ error: 'rate_limited' }, 429);
+      await caches.default.put(key, new Response('1', { headers: { 'cache-control': 'max-age=60' } }));
+    }
+  } catch {
+    // Cache API nicht verfügbar -> ohne Bremse fortfahren
+  }
+
   let body = {};
   try {
     body = await request.json();
@@ -39,9 +60,18 @@ export async function onRequestPost({ request, env, waitUntil }) {
   }
 
   const data = { name, orderId, email, works, reason, receivedAt, iso: now.toISOString() };
-  const mail = sendWithdrawalEmails(env, data, lang).catch(() => {});
-  if (typeof waitUntil === 'function') waitUntil(mail);
-  else await mail;
+  // Eingang zusätzlich ins Function-Log stempeln (Cloudflare-Logs) — die Erklärung ist rechtlich
+  // bindend und darf nicht spurlos verschwinden, falls der Mailversand scheitert.
+  console.log('widerruf', JSON.stringify(data));
+
+  // Erfolg NUR melden, wenn BEIDE Mails (Eingangsbestätigung an den Kunden nach § 356a Abs. 4 +
+  // Kopie an team@haushoppe.de als dauerhafte Ablage) von Resend angenommen wurden. Sonst sieht
+  // der Kunde den Fehlerhinweis mit dem E-Mail-Fallback statt einer falschen Erfolgsmeldung.
+  const results = await sendWithdrawalEmails(env, data, lang).catch((e) => ({ error: String((e && e.message) || e) }));
+  if (!results || !results.customer || !results.merchant) {
+    console.log('widerruf mail_failed', JSON.stringify(results));
+    return json({ error: 'mail_failed' }, 502);
+  }
 
   return json({ ok: true, receivedAt });
 }

@@ -7,7 +7,7 @@ order: 143
 category: paintings
 image: "../../artwork-originals/2021/04/2002-03-A©-Olaf-HoppeWo-der-Wind-schlaeftAcryl-auf-Leinwand-115-x-200-cm.jpg"
 de:
-  title: "„Wo der Wind schläft\"2002"
+  title: "„Wo der Wind schläft\" 2002"
   slug: "wo-der-wind-schlaeft2002"
   captionTitle: "Wo der Wind schläft"
   technique: "Acryl auf Leinwand"

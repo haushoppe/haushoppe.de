@@ -7,7 +7,7 @@ order: 215
 category: paintings
 image: "../../artwork-originals/2021/04/1995-07-A©-Olaf-HoppeDie-Ritter-vom-Heiligen-GrabAcryl-auf-Leinwand-95-x-80-cm.avif"
 de:
-  title: "„Die Ritter vom Heiligen Grab\"1995"
+  title: "„Die Ritter vom Heiligen Grab\" 1995"
   slug: "die-ritter-vom-heiligen-grab1995"
   captionTitle: "Die Ritter vom Heiligen Grab"
   technique: "Acryl auf Leinwand"

@@ -7,7 +7,7 @@ order: 259
 category: paintings
 image: "../../artwork-originals/2021/04/1992-16-.-A©-Olaf-HoppeSonne-Rad-und-Zeit-Acryl-auf-Leinwand-70-x-60-cmklein.jpg"
 de:
-  title: "„Sonne, Rad und Zeit\"1992"
+  title: "„Sonne, Rad und Zeit\" 1992"
   slug: "sonne-rad-und-zeit1992"
   captionTitle: "Sonne, Rad und Zeit"
   technique: "Acryl auf Leinwand"

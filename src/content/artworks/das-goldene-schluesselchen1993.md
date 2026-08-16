@@ -7,7 +7,7 @@ order: 235
 category: paintings
 image: "../../artwork-originals/2021/04/1993-18-.-A©-Olaf-HoppeDas-goldene-SchluesselchenAcryl-auf-Leinwand-75-x-95-cmklein.avif"
 de:
-  title: "„Das goldene Schlüsselchen\"1993"
+  title: "„Das goldene Schlüsselchen\" 1993"
   slug: "das-goldene-schluesselchen1993"
   captionTitle: "Das goldene Schlüsselchen"
   technique: "Acryl auf Leinwand"

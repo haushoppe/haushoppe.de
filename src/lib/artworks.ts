@@ -16,10 +16,9 @@ function artworkNumber(a: Art): string {
 function sortKey(a: Art): string {
   return artworkNumber(a) || (a.data.date || '').slice(0, 7);
 }
-// Werk online kaufbar = Holzschnitt (PayPal) ODER Ordinal (Kauf über Gamma). Holzschnitt-Erkennung
-// sprachneutral über die DE-Technik + Werk-Nummer.
+// Werk online kaufbar = Holzschnitt (PayPal) ODER Ordinal (Kauf über Gamma).
 function buyableOf(a: Art): boolean {
-  return isWoodcut({ technique: a.data.de.technique, number: a.data.number }) || a.data.ordinal != null;
+  return isWoodcut(a.data.category) || a.data.ordinal != null;
 }
 
 export interface GalleryItem {
@@ -56,7 +55,9 @@ export async function galleryItems(lang: Lang): Promise<GalleryItem[]> {
       const slug = catSlug(a.data.category, lang);
       return {
         id: a.id,
-        title: smartQuotes(side.title, lang),
+        // Unbetitelte Werke (title: "") heißen in der Anzeige „Ohne Titel" — sonst stünde eine
+        // leere Galerie-Caption bzw. ein leerer Linkname da.
+        title: smartQuotes(side.title, lang) || (lang === 'en' ? 'Untitled' : 'Ohne Titel'),
         detailUrl: `/portfolio/${side.slug}/`,
         categorySlugs: [slug],
         primaryCategory: slug,

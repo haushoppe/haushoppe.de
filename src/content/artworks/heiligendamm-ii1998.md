@@ -7,7 +7,7 @@ order: 172
 category: paintings
 image: "../../artwork-originals/2021/04/1998-10-A©-Olaf-HoppeHeiligendamm-IIAcryl-auf-Leinwand-60-x-115cmbearbeitet.avif"
 de:
-  title: "„Heiligendamm II\"1998"
+  title: "„Heiligendamm II\" 1998"
   slug: "heiligendamm-ii1998"
   captionTitle: "Heiligendamm II"
   technique: "Acryl auf Leinwand"

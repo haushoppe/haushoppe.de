@@ -7,7 +7,7 @@ order: 190
 category: paintings
 image: "../../artwork-originals/2021/04/1996-19-–-A-©-Olaf-HoppeDas-Lied-des-IdiotenAcryl-auf-Leinwand-105-x-80-cm.jpg"
 de:
-  title: "„Das Lied des Idioten\"1996"
+  title: "„Das Lied des Idioten\" 1996"
   slug: "das-lied-des-idioten1996"
   captionTitle: "Das Lied des Idioten"
   technique: "Acryl auf Leinwand"

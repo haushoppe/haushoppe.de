@@ -7,7 +7,7 @@ order: 149
 category: paintings
 image: "../../artwork-originals/2021/04/2001-01-A©-Olaf-HoppeHistorische-Ansicht-Haus-SchwaanAcryl-auf-Leinwand-200-x-250-cm.avif"
 de:
-  title: "„Historische Ansicht Haus Schwaan\"2001"
+  title: "„Historische Ansicht Haus Schwaan\" 2001"
   slug: "historische-ansicht-haus-schwaan2001"
   captionTitle: "Historische Ansicht Haus Schwaan"
   technique: "Acryl auf Leinwand"

@@ -7,7 +7,7 @@ order: 186
 category: paintings
 image: "../../artwork-originals/2021/04/1997-01-A©-Olaf-HoppeSimeon-der-das-Kreuz-getragen-hatAcryl-auf-Leinwand-80-x-105-cm.jpg"
 de:
-  title: "„Simeon, der das Kreuz getragen hat\"1997"
+  title: "„Simeon, der das Kreuz getragen hat\" 1997"
   slug: "simeon-der-das-kreuz-getragen-hat1997"
   captionTitle: "Simeon, der das Kreuz getragen hat"
   technique: "Acryl auf Leinwand"

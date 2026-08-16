@@ -7,7 +7,7 @@ order: 243
 category: paintings
 image: "../../artwork-originals/2021/04/1993-10-.-A©-Olaf-HoppeIm-Kreise-des-KromlechAcryl-auf-Leinwand-100-x-85-cmklein.jpg"
 de:
-  title: "„Im Kreise des Kromlech\"1993"
+  title: "„Im Kreise des Kromlech\" 1993"
   slug: "im-kreise-des-kromlech1993"
   captionTitle: "Im Kreise des Kromlech"
   technique: "Acryl auf Leinwand"

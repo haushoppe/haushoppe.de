@@ -7,7 +7,7 @@ order: 177
 category: paintings
 image: "../../artwork-originals/2021/04/1998-03-.-A©-Olaf-HoppeMutter-mit-KindAcryl-auf-Leinwand-75-x-44-cmklein.jpg"
 de:
-  title: "„Mutter mit Kind\"1998"
+  title: "„Mutter mit Kind\" 1998"
   slug: "mutter-mit-kind1998"
   captionTitle: "Mutter mit Kind"
   technique: "Acryl auf Leinwand"

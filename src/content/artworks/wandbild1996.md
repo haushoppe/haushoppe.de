@@ -7,7 +7,7 @@ order: 193
 category: paintings
 image: "../../artwork-originals/2021/04/1996-15-A©-Olaf-HoppeWandbildAcryl-auf-Leinwand-200-x-140-cm.jpg"
 de:
-  title: "„Wandbild\"1996"
+  title: "„Wandbild\" 1996"
   slug: "wandbild1996"
   captionTitle: "Wandbild"
   technique: "Acryl auf Leinwand"

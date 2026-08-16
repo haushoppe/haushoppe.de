@@ -7,7 +7,7 @@ order: 212
 category: paintings
 image: "../../artwork-originals/2021/04/1995-10-A©-Olaf-HoppeDas-BeutestueckAcryl-auf-Leinwand-60-x-55-cm.avif"
 de:
-  title: "„Das Beutestück\"1995"
+  title: "„Das Beutestück\" 1995"
   slug: "das-beutestueck1995"
   captionTitle: "Das Beutestück"
   technique: "Acryl auf Leinwand"

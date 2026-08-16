@@ -7,7 +7,7 @@ order: 229
 category: paintings
 image: "../../artwork-originals/2021/04/1994-4-.-A©-Olaf-HoppeFruechteAcryl-auf-Leinwand-60-x-80-cmklein.jpg"
 de:
-  title: "„Früchte\"1994"
+  title: "„Früchte\" 1994"
   slug: "fruechte1994"
   captionTitle: "Früchte"
   technique: "Acryl auf Leinwand"

@@ -7,7 +7,7 @@ order: 175
 category: paintings
 image: "../../artwork-originals/2021/04/1998-05-A©-Olaf-HoppeDer-Extrabonus-SpielkarteAcryl-auf-Leinwand-60-x-75-cm.avif"
 de:
-  title: "„Der Extrabonus\"1998"
+  title: "„Der Extrabonus\" 1998"
   slug: "der-extrabonus1998"
   captionTitle: "Der Extrabonus"
   technique: "Acryl auf Leinwand"

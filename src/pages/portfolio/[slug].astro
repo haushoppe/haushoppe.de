@@ -57,8 +57,9 @@ const { art, image, prev, next, lbPrev, lbNext } = Astro.props as {
   lbNext: string | null;
 };
 const side = art.data[LANG];
-// Titel typografisch säubern (DE „…“, EN “…”).
-const title = smartQuotes(side.title, LANG);
+// Titel typografisch säubern (DE „…“, EN “…”); unbetitelte Werke heißen in der Anzeige
+// „Ohne Titel" — sonst stünden leere h1/Seitentitel da.
+const title = smartQuotes(side.title, LANG) || (LANG === 'en' ? 'Untitled' : 'Ohne Titel');
 const desc = LANG === 'de' ? `${title}, Werk von Olaf Hoppe.` : `${title}, artwork by Olaf Hoppe.`;
 // Ordinals: full-bleed schwarze Bühne (kein weißer Artikel-Kasten, Titel steht in der Bühne).
 const isOrdinal = ordinalData(art) != null;

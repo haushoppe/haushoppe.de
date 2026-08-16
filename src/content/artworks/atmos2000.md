@@ -7,7 +7,7 @@ order: 157
 category: paintings
 image: "../../artwork-originals/2021/04/2000-04-.-A©-Olaf-HoppeAtmosAcryl-auf-Leinwand-145-x-110-cm-klein.jpg"
 de:
-  title: "„Atmós\"2000"
+  title: "„Atmós\" 2000"
   slug: "atmos2000"
   captionTitle: "Atmós"
   technique: "Acryl auf Leinwand"

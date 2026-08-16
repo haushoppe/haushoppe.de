@@ -7,7 +7,7 @@ order: 258
 category: paintings
 image: "../../artwork-originals/2021/04/1992-17-A©-Olaf-HoppeVor-38-Milliarden-JahrenAcryl-auf-Leinwand-80-x-75-cm.jpg"
 de:
-  title: "„Vor 3,8 Milliarden Jahren\"1992"
+  title: "„Vor 3,8 Milliarden Jahren\" 1992"
   slug: "vor-38-milliarden-jahren1992"
   captionTitle: "Vor 3,8 Milliarden Jahren"
   technique: "Acryl auf Leinwand"

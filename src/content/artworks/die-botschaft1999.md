@@ -7,7 +7,7 @@ order: 162
 category: paintings
 image: "../../artwork-originals/2021/04/1999-02-A©-Olaf-HoppeDie-BotschaftAcryl-auf-Leinwand-55-x-130-cm.avif"
 de:
-  title: "„Die Botschaft\"1999"
+  title: "„Die Botschaft\" 1999"
   slug: "die-botschaft1999"
   captionTitle: "Die Botschaft"
   technique: "Acryl auf Leinwand"

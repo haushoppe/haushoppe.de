@@ -7,7 +7,7 @@ order: 31
 category: paintings
 image: "../../artwork-originals/2021/04/2020-05-A-©-Olaf-Hoppe-„-Schmetterlinge2020©-Acryl-auf-Leinwand-130-x-95-cm.avif"
 de:
-  title: "„Schmetterlinge“2020"
+  title: "„Schmetterlinge“ 2020"
   slug: "schmetterlinge2020"
   captionTitle: "Schmetterlinge"
   technique: "Acryl auf Leinwand"

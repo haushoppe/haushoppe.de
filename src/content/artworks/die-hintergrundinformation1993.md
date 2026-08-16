@@ -7,7 +7,7 @@ order: 247
 category: paintings
 image: "../../artwork-originals/2021/04/1993-06A©-Olaf-Hoppe-„Die-HintergrundinformationAcryl-auf-Leinwand-95-x-85-cm.avif"
 de:
-  title: "„Die Hintergrundinformation\"1993"
+  title: "„Die Hintergrundinformation\" 1993"
   slug: "die-hintergrundinformation1993"
   captionTitle: "Die Hintergrundinformation"
   technique: "Acryl auf Leinwand"

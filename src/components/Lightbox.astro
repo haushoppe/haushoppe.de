@@ -105,6 +105,9 @@ const nextLabel = lang === 'en' ? 'Next artwork' : 'Nächstes Werk';
         lbImg.alt = main.alt || '';
         lbCap.textContent = main.alt || '';
         lbCap.style.display = main.alt ? '' : 'none';
+        // Astros Seitenwechsel ersetzt die <html>-Attribute und löscht damit den Inline-Scroll-Lock
+        // — bei weiterhin offener Lightbox neu setzen, sonst scrollt die Seite unterm Overlay.
+        document.documentElement.style.overflow = 'hidden';
       } else {
         close();
       }

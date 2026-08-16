@@ -63,7 +63,7 @@ Ziel: **alles**, was wir in die Seite programmiert haben, gegen Regressionen abs
 ### 9. Interesse-Anfragen-Mailto (`inquiry.spec`)
 - Auf normalen Werk-Detailseiten: dezenter Link „Unverbindlich anfragen"/„Enquire" mit Briefumschlag-Icon.
 - `mailto:` an **team@haushoppe.de**; Betreff `Interesse an „Titel" (Nummer)` (EN: `Interest in …`); Body enthält den Interesse-Satz **und den Werk-Link** (`https://haushoppe.de/portfolio/<slug>/`).
-- **Titelloses Werk (2016-07-AQ):** Fallback `Werk 2016-07-AQ` (EN `artwork 2016-07-AQ`), keine leeren Anführungszeichen.
+- **Aquarell 1167 (2016-07-AQ):** Betreff nennt Titel („Die Geburt der Menschheit 1") + Werk-Nummer, keine leeren Anführungszeichen. (Der Code hat zusätzlich einen „Werk <Nr>"-Fallback für Werke ganz ohne Titel.)
 - **Ordinals:** kein Anker vorhanden.
 
 ### 10. Holzschnitt-Preis (`pricing.spec`)

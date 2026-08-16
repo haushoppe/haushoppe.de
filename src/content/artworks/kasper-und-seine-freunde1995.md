@@ -7,7 +7,7 @@ order: 217
 category: paintings
 image: "../../artwork-originals/2021/04/1995-05-A©-Olaf-HoppeKasper-und-seine-FreundeAcryl-auf-Leinwand-75-x-100-cm.avif"
 de:
-  title: "„Kasper und seine Freunde\"1995"
+  title: "„Kasper und seine Freunde\" 1995"
   slug: "kasper-und-seine-freunde1995"
   captionTitle: "Kasper und seine Freunde"
   technique: "Acryl auf Leinwand"

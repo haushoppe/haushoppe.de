@@ -7,7 +7,7 @@ order: 296
 category: paintings
 image: "../../artwork-originals/2021/05/1990-01-MT©-Olaf-HoppeLot-und-seine-ToechterMischtechnik-auf-Papier-60-x-80-cm.jpg"
 de:
-  title: "„Lot und seine Töchter\"1991"
+  title: "„Lot und seine Töchter\" 1991"
   slug: "lot-und-seine-toechter1991"
   captionTitle: "Lot und seine Töchter"
   technique: "Mischtechnik auf Papier"

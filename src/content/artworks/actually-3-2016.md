@@ -7,7 +7,7 @@ order: 52
 category: paintings
 image: "../../artwork-originals/2021/04/2016-03-A-©-Olaf-Hoppe-actually-3-2016©-Acryl-auf-Leinwand-240-cm-x-50-cm.avif"
 de:
-  title: "„actually  3  2016“"
+  title: "„actually  3 2016“"
   slug: "actually-3-2016"
   captionTitle: "actually 3"
   technique: "Acryl auf Leinwand"

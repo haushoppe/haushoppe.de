@@ -7,7 +7,7 @@ order: 153
 category: paintings
 image: "../../artwork-originals/2021/04/2000-08-A©-Olaf-HoppeSinfonia-ConcertanteAcryl-auf-Leinwand-75-x-120-cm.jpg"
 de:
-  title: "„Sinfonia Concertante\"2000"
+  title: "„Sinfonia Concertante\" 2000"
   slug: "sinfonia-concertante2000"
   captionTitle: "Sinfonia Concertante"
   technique: "Acryl auf Leinwand"

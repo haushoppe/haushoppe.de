@@ -7,7 +7,7 @@ order: 231
 category: paintings
 image: "../../artwork-originals/2021/04/1994-02-.-A©-Olaf-HoppeDer-AbschiedsbriefAcryl-auf-Leinwand-80-x-110-cmklein.avif"
 de:
-  title: "„Der Abschiedsbrief\"1994"
+  title: "„Der Abschiedsbrief\" 1994"
   slug: "der-abschiedsbrief1994"
   captionTitle: "Der Abschiedsbrief"
   technique: "Acryl auf Leinwand"

@@ -7,7 +7,7 @@ order: 207
 category: paintings
 image: "../../artwork-originals/2021/04/1995-15-A©-Olaf-HoppeBruederchen-und-SchwesterchenAcryl-auf-Leinwand-60-x-75-cm.avif"
 de:
-  title: "„Brüderchen und Schwesterchen\"1995"
+  title: "„Brüderchen und Schwesterchen\" 1995"
   slug: "bruederchen-und-schwesterchen1995"
   captionTitle: "Brüderchen und Schwesterchen"
   technique: "Acryl auf Leinwand"

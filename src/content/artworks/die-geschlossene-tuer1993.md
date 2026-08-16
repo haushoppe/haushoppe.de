@@ -7,7 +7,7 @@ order: 237
 category: paintings
 image: "../../artwork-originals/2021/04/1993-16-.-A©-Olaf-HoppeDie-geschlossene-TuerAcryl-auf-Leinwand-80-x-110klein.jpg"
 de:
-  title: "„Die geschlossene Tür\"1993"
+  title: "„Die geschlossene Tür\" 1993"
   slug: "die-geschlossene-tuer1993"
   captionTitle: "Die geschlossene Tür"
   technique: "Acryl auf Leinwand"

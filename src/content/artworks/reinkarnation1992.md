@@ -7,7 +7,7 @@ order: 266
 category: paintings
 image: "../../artwork-originals/2021/04/1992-09-.-A©-Olaf-HoppeReinkarnationAcryl-auf-Leinwand-85-x-70-cm.avif"
 de:
-  title: "„Reinkarnation\"1992"
+  title: "„Reinkarnation\" 1992"
   slug: "reinkarnation1992"
   captionTitle: "Reinkarnation"
   technique: "Acryl auf Leinwand"

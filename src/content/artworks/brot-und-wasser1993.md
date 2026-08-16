@@ -7,7 +7,7 @@ order: 242
 category: paintings
 image: "../../artwork-originals/2021/04/1993-11-.A©-Olaf-HoppeBrot-und-WasserAcryl-auf-Leinwand-70-x-110-cmklein.avif"
 de:
-  title: "„Brot und Wasser\"1993"
+  title: "„Brot und Wasser\" 1993"
   slug: "brot-und-wasser1993"
   captionTitle: "Brot und Wasser"
   technique: "Acryl auf Leinwand"

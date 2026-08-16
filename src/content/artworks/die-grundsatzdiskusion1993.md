@@ -7,7 +7,7 @@ order: 251
 category: paintings
 image: "../../artwork-originals/2021/04/1993-02-A©-Olaf-HoppeDie-GrundsatzdiskusionAcryl-auf-Leinwand-120-x-90-cm.jpg"
 de:
-  title: "„Die Grundsatzdiskusion\"1993"
+  title: "„Die Grundsatzdiskusion\" 1993"
   slug: "die-grundsatzdiskusion1993"
   captionTitle: "Die Grundsatzdiskusion"
   technique: "Acryl auf Leinwand"

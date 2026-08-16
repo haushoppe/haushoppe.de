@@ -7,7 +7,7 @@ order: 286
 category: paintings
 image: "../../artwork-originals/2021/05/1991-04-A©-Olaf-HoppeDonum-DeiAcryl-auf-Leinwand-60-x-80-cm.jpg"
 de:
-  title: "„Donum Dei\"1991"
+  title: "„Donum Dei\" 1991"
   slug: "donum-dei1991"
   captionTitle: "Donum Dei"
   technique: "Acryl auf Leinwand"

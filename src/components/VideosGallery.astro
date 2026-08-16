@@ -16,6 +16,10 @@ const t =
   lang === 'en'
     ? { play: 'Play video', prev: 'Previous', next: 'Next', nowPlaying: 'Now playing' }
     : { play: 'Video abspielen', prev: 'Zurück', next: 'Weiter', nowPlaying: 'Wird abgespielt' };
+// Klare Fehlermeldung statt kryptischem undefined-Crash, falls die (CI-generierte) Liste je
+// leer sein sollte — gen-videos.mjs überschreibt zwar nie mit leer, aber die Seite braucht
+// mindestens ein Video für Player + Karussell.
+if (!videos.length) throw new Error('src/data/videos.json ist leer — die Videos-Seite braucht mindestens ein Video (scripts/gen-videos.mjs prüfen).');
 const first = videos[0];
 const embed = (id: string) =>
   `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;

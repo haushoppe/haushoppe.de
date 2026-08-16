@@ -7,7 +7,7 @@ order: 173
 category: paintings
 image: "../../artwork-originals/2021/04/1998-09-A©-Olaf-HoppeHeiligendamm-IAcryl-auf-Leinwand-95-x-105-cm-1-scaled.jpg"
 de:
-  title: "„Heiligendamm I\"1998"
+  title: "„Heiligendamm I\" 1998"
   slug: "heiligendamm-i1998"
   captionTitle: "Heiligendamm I"
   technique: "Acryl auf Leinwand"

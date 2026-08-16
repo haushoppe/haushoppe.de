@@ -56,8 +56,10 @@ const pages = defineCollection({
 // Beschreibung (wo vorhanden) lebt im Body zwischen <De>/<En>-Blöcken, die je Build die jeweils
 // andere Sprache wegprunen.
 const side = z.object({
-  title: z.string(), // WP-Record-Titel: h1, Galerie, Seitentitel (mit Anführungszeichen)
-  slug: z.string(), // sprachspezifischer Detail-Slug (/portfolio/<slug>/)
+  // Werk-Titel für h1, Galerie und Seitentitel (mit Anführungszeichen). Leer = bewusst
+  // unbetiteltes Werk; die Anzeige fällt dann auf „Ohne Titel"/„Untitled" zurück.
+  title: z.string(),
+  slug: z.string().min(1), // sprachspezifischer Detail-Slug (/portfolio/<slug>/) — nie leer
   captionTitle: z.string().default(''), // bereinigter Beschriftungs-Titel (ArtworkMeta-figcaption)
   technique: z.string().default(''),
   dimensions: z.string().default(''),

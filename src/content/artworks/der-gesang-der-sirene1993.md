@@ -7,7 +7,7 @@ order: 233
 category: paintings
 image: "../../artwork-originals/2021/04/1993-20-.-A©-Olaf-HoppeDer-Gesang-der-SireneAcryl-auf-Leinwand-70-x-110-cmklein.avif"
 de:
-  title: "„Der Gesang der Sirene\"1993"
+  title: "„Der Gesang der Sirene\" 1993"
   slug: "der-gesang-der-sirene1993"
   captionTitle: "Der Gesang der Sirene"
   technique: "Acryl auf Leinwand"

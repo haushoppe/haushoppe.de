@@ -7,7 +7,7 @@ order: 278
 category: paintings
 image: "../../artwork-originals/2021/05/1992-21-A-Olaf-Hoppe-„Tafelobst1992©Acryl-auf-Leinwand-90-x-110-cm.avif"
 de:
-  title: "„Tafelobst\"1992"
+  title: "„Tafelobst\" 1992"
   slug: "tafelobst1992"
   captionTitle: "Tafelobst"
   technique: "Acryl auf Leinwand"

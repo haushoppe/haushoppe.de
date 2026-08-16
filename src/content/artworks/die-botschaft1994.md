@@ -7,7 +7,7 @@ order: 225
 category: paintings
 image: "../../artwork-originals/2021/04/1994-07-A©-Olaf-HoppeDie-BotschaftAcryl-auf-Leinwand-80-x-115-cm.avif"
 de:
-  title: "„Die Botschaft\"1994"
+  title: "„Die Botschaft\" 1994"
   slug: "die-botschaft1994"
   captionTitle: "Die Botschaft"
   technique: "Acryl auf Leinwand"

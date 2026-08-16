@@ -7,7 +7,7 @@ order: 222
 category: paintings
 image: "../../artwork-originals/2021/04/1994-05-A©-Olaf-HoppeDie-chinesische-MauerAcryl-auf-Leinwand-105-x-85-cm.avif"
 de:
-  title: "„Die chinesische Mauer\"1994"
+  title: "„Die chinesische Mauer\" 1994"
   slug: "die-chinesische-mauer1994"
   captionTitle: "Die chinesische Mauer"
   technique: "Acryl auf Leinwand"

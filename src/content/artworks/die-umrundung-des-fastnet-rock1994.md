@@ -7,7 +7,7 @@ order: 221
 category: paintings
 image: "../../artwork-originals/2021/04/1994-10-A©-Olaf-HoppeDie-Umrundung-des-Fastnet-Rock90-x-100-cm.jpg"
 de:
-  title: "„Die Umrundung des Fastnet Rock\"1994"
+  title: "„Die Umrundung des Fastnet Rock\" 1994"
   slug: "die-umrundung-des-fastnet-rock1994"
   captionTitle: "Die Umrundung des Fastnet Rock"
   technique: "Acryl auf Leinwand"

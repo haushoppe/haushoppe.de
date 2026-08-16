@@ -7,7 +7,7 @@ order: 188
 category: paintings
 image: "../../artwork-originals/2021/04/1996-21-A©-Olaf-HoppeDas-Lied-des-SelbstmoerdersAcryl-auf-Leinwand-105-x-80-cm.jpg"
 de:
-  title: "„Das Lied des Selbstmörders\"1996"
+  title: "„Das Lied des Selbstmörders\" 1996"
   slug: "das-lied-des-selbstmoerders1996"
   captionTitle: "Das Lied des Selbstmörders"
   technique: "Acryl auf Leinwand"

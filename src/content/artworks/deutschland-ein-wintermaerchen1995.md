@@ -7,7 +7,7 @@ order: 277
 category: paintings
 image: "../../artwork-originals/2021/05/1995-04-A-Olaf-Hoppe-„Deutschland-ein-Wintermaerchen1995©Acryl-auf-Leinwand-100-x-65-cm.avif"
 de:
-  title: "„Deutschland ein Wintermärchen\"1995"
+  title: "„Deutschland ein Wintermärchen\" 1995"
   slug: "deutschland-ein-wintermaerchen1995"
   captionTitle: "Deutschland ein Wintermärchen"
   technique: "Acryl auf Leinwand"

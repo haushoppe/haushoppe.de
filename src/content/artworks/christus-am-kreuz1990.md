@@ -7,7 +7,7 @@ order: 292
 category: paintings
 image: "../../artwork-originals/2021/05/1990-05-MT-Olaf-Hoppe-„Christus-am-Kreuz1990-©-Mischtechnik-auf-Papier-89-x-60-cm.jpg"
 de:
-  title: "„Christus am Kreuz\"1990"
+  title: "„Christus am Kreuz\" 1990"
   slug: "christus-am-kreuz1990"
   captionTitle: "Christus am Kreuz"
   technique: "Mischtechnik auf Papier"

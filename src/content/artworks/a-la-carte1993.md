@@ -7,7 +7,7 @@ order: 236
 category: paintings
 image: "../../artwork-originals/2021/04/1993-17-.-A©-Olaf-Hoppea-la-carteAcryl-auf-Leinwand-70-x-110cmkleinklein.jpg"
 de:
-  title: "„à la carte\"1993"
+  title: "„à la carte\" 1993"
   slug: "a-la-carte1993"
   captionTitle: "à la carte"
   technique: "Acryl auf Leinwand"

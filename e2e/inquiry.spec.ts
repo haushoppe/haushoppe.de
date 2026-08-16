@@ -22,12 +22,13 @@ test('Holzschnitt-Anfrage: Empfänger, Betreff, Werk-Link + Preis in der Mail', 
   expect(m.body, 'Rahmen-Preis in Holzschnitt-Mail').toContain(lang === 'en' ? '1,000 € framed' : '1.000 € gerahmt');
 });
 
-test('Titelloses Werk: Fallback „Werk <Nr>" statt leerer Anführungszeichen', async ({ page }, info) => {
+test('Aquarell 1167: Betreff nennt Titel + Werk-Nummer, keine leeren Anführungszeichen', async ({ page }, info) => {
   const lang = langOf(info);
   const s = site(info);
-  await page.goto(`/portfolio/${s.work.untitled}/`);
+  await page.goto(`/portfolio/${s.work.aquarell}/`);
   const m = mailto((await page.getByTestId('inquire-link').getAttribute('href'))!);
-  expect(m.subject).toContain(lang === 'en' ? 'artwork 2016-07-AQ' : 'Werk 2016-07-AQ');
+  expect(m.subject).toContain(lang === 'en' ? 'The Birth of Humankind 1' : 'Die Geburt der Menschheit 1');
+  expect(m.subject).toContain('2016-07-AQ');
   expect(m.subject).not.toContain('""');
   expect(m.subject).not.toContain('„“');
 });

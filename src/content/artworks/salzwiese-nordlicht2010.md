@@ -7,7 +7,7 @@ order: 107
 category: paintings
 image: "../../artwork-originals/2021/04/2009-11-A-Olaf-Hoppe-Salzwiese-Nordlicht2010©-Acryl-auf-Leinwand-65-x-185-cm.avif"
 de:
-  title: "„Salzwiese-Nordlicht“2010"
+  title: "„Salzwiese-Nordlicht“ 2010"
   slug: "salzwiese-nordlicht2010"
   captionTitle: "Salzwiese-Nordlicht"
   technique: "Acryl auf Leinwand"

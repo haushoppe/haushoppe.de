@@ -7,7 +7,7 @@ order: 252
 category: paintings
 image: "../../artwork-originals/2021/04/1993-01-A©-Olaf-HoppeWerftAcryl-auf-Leinwand-100-x-140-cm.jpg"
 de:
-  title: "„Werft\"1993"
+  title: "„Werft\" 1993"
   slug: "werft1993"
   captionTitle: "Werft"
   technique: "Acryl auf Leinwand"

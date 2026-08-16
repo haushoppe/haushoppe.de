@@ -7,7 +7,7 @@ order: 294
 category: paintings
 image: "../../artwork-originals/2021/05/1990-03-MT-Olaf-Hoppe-„Christus-nimmt-das-Kreuz-auf1991©Mischtechnik-auf-Papier-54-x-80-cm.jpg"
 de:
-  title: "„Christus nimmt das Kreuz auf\"1991"
+  title: "„Christus nimmt das Kreuz auf\" 1991"
   slug: "christus-nimmt-das-kreuz-auf1991"
   captionTitle: "Christus nimmt das Kreuz auf"
   technique: "Mischtechnik auf Papier"

@@ -7,7 +7,7 @@ order: 288
 category: paintings
 image: "../../artwork-originals/2021/05/1991-02-A©-Olaf-HoppeCosmeaAcryl-auf-Leinwand-80-x-65-cm.jpg"
 de:
-  title: "„Cosmea\"1991"
+  title: "„Cosmea\" 1991"
   slug: "cosmea1991"
   captionTitle: "Cosmea"
   technique: "Acryl auf Leinwand"

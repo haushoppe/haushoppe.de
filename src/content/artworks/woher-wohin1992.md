@@ -7,7 +7,7 @@ order: 270
 category: paintings
 image: "../../artwork-originals/2021/04/1992-05-A©-Olaf-HoppeWoher-WohinAcryl-auf-Leinwand-87-x-70.jpg"
 de:
-  title: "„Woher - Wohin\"1992"
+  title: "„Woher - Wohin\" 1992"
   slug: "woher-wohin1992"
   captionTitle: "Woher - Wohin"
   technique: "Acryl auf Leinwand"

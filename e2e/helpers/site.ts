@@ -26,7 +26,7 @@ interface SiteData {
   galleryBase: string; // '/werke' | '/artwork'
   cats: Cat[];
   camper: { path: string; title: string; cta: string };
-  work: { untitled: string; woodcut: string; ordinal: string };
+  work: { aquarell: string; woodcut: string; ordinal: string };
 }
 
 export type SiteDataLike = SiteData;
@@ -54,7 +54,7 @@ export const SITE: Record<Lang, SiteData> = {
       { slug: 'digitale-kunst', label: 'Digitale Kunst', count: 5 },
     ],
     camper: { path: '/kunst-und-camping/', title: 'Kunst und Camping', cta: 'Anrufen' },
-    work: { untitled: '1167', woodcut: '90-02-h-winter-im-dorf', ordinal: 'broke-johannes-x-olaf-2024' },
+    work: { aquarell: '1167', woodcut: '90-02-h-winter-im-dorf', ordinal: 'broke-johannes-x-olaf-2024' },
   },
   en: {
     origin: 'https://haushoppe.art',
@@ -78,7 +78,7 @@ export const SITE: Record<Lang, SiteData> = {
       { slug: 'digital-art', label: 'Digital Art', count: 5 },
     ],
     camper: { path: '/art-and-camping/', title: 'Art and Camping', cta: 'Call' },
-    work: { untitled: '1167', woodcut: '1990-02-h-winter-in-the-village', ordinal: 'broke-johannes-x-olaf-2024' },
+    work: { aquarell: '1167', woodcut: '1990-02-h-winter-in-the-village', ordinal: 'broke-johannes-x-olaf-2024' },
   },
 };
 

@@ -7,7 +7,7 @@ order: 145
 category: paintings
 image: "../../artwork-originals/2021/04/2002-01-A©-Olaf-HoppeDer-blaue-PlanetAcryl-auf-Leinwand-085-x-150-cm.jpg"
 de:
-  title: "„Der blaue Planet\"2002"
+  title: "„Der blaue Planet\" 2002"
   slug: "der-blaue-planet2002"
   captionTitle: "Der blaue Planet"
   technique: "Acryl auf Leinwand"

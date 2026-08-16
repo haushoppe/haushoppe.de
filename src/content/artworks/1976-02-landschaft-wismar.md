@@ -7,7 +7,7 @@ order: 2
 category: drawings
 image: "../../artwork-originals/2020/12/1976-03-©-Olaf-Hoppe-„Landschaft-Wismar1976-Tuschzeichnung-auf-Buetten-14-x-16-cm.avif"
 de:
-  title: "„Landschaft Wismar“1976"
+  title: "„Landschaft Wismar“ 1976"
   slug: "1976-02-landschaft-wismar"
   captionTitle: "Landschaft Wismar"
   technique: "Tuschzeichnung auf Bütten"

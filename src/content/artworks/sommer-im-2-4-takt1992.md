@@ -7,7 +7,7 @@ order: 268
 category: paintings
 image: "../../artwork-originals/2021/04/1992-07-.-A©-Olaf-HoppeSommer-im-24-TaktAcryl-auf-Leinwand-70-x-60-cm.avif"
 de:
-  title: "„Sommer im 2/4 Takt\"1992"
+  title: "„Sommer im 2/4 Takt\" 1992"
   slug: "sommer-im-2-4-takt1992"
   captionTitle: "Sommer im 2/4 Takt"
   technique: "Acryl auf Leinwand"

@@ -1,13 +1,13 @@
 ---
 artist: "Olaf Hoppe"
 year: "1992"
-number: "1992-22-A"
+number: "1992-25-A"
 date: "1992-12-29 11:58:00"
 order: 254
 category: paintings
 image: "../../artwork-originals/2021/04/1992-25-A©-Olaf-HoppeStein-der-ErkenntnisAcryl-auf-Leinwand-100-x-75-cm.avif"
 de:
-  title: "„Stein der Erkenntnis\"1992"
+  title: "„Stein der Erkenntnis\" 1992"
   slug: "stein-der-erkenntnis1992"
   captionTitle: "Stein der Erkenntnis"
   technique: "Acryl auf Leinwand"

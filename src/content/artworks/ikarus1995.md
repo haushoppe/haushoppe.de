@@ -7,7 +7,7 @@ order: 205
 category: paintings
 image: "../../artwork-originals/2021/04/1995-17-A©-Olaf-HoppeIkarusAcryl-auf-Leinwand-85-x-120-cm.avif"
 de:
-  title: "„Ikarus\"1995"
+  title: "„Ikarus\" 1995"
   slug: "ikarus1995"
   captionTitle: "Ikarus"
   technique: "Acryl auf Leinwand"

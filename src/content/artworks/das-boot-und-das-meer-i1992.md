@@ -7,7 +7,7 @@ order: 262
 category: paintings
 image: "../../artwork-originals/2021/04/1992-13-.A©-Olaf-HoppeDas-Boot-und-das-Meer-IAcryl-auf-Leinwand-80-x-110-cmklein.jpg"
 de:
-  title: "„Das Boot und das Meer, I\"1992"
+  title: "„Das Boot und das Meer, I\" 1992"
   slug: "das-boot-und-das-meer-i1992"
   captionTitle: "Das Boot und das Meer, I"
   technique: "Acryl auf Leinwand"
