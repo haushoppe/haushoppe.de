@@ -116,8 +116,8 @@ Es gibt **keine** `artworks.json`, `artwork-meta.json`, `artworks-media.json`, `
 `functions/api/` (laufen **nur produktiv** auf Cloudflare — lokal in `preview`/e2e fehlen sie, daher Graceful Degradation):
 
 - **PayPal-Direktkauf (Holzschnitte):** `paypal/config.js` (liefert `enabled` + Client-ID + Umgebung an den Client), `create-order.js`, `capture-order.js`; Helfer `_paypal.js` (PayPal-REST) + `_email.js` (Bestätigung). Fester Preis aus `lib/pricing.ts`, Versand nur **DACH**, Vertragsschluss erst mit Versand. Nach erfolgreicher Zahlung (`COMPLETED` **oder** `PENDING`) Bestätigungs-E-Mail via **Resend**.
-- **Widerruf-Formular:** `widerruf.js` + `_widerruf-email.js` (verschickt die Widerrufserklärung).
-- **Env (in Cloudflare Pages gesetzt, nicht im Repo):** `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_ENV` (sandbox/live), `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`.
+- **Widerruf-Formular:** `widerruf.js` + `_widerruf-email.js` (verschickt die Widerrufserklärung). Missbrauchsschutz: Origin-Check, Soft-Rate-Limit pro IP und **Cloudflare Turnstile** (Widget „haushoppe-widerruf", Managed-Modus; Sitekey via `turnstile-config.js` an den Client, Token-Pflicht fail-closed, sobald `TURNSTILE_SECRET_KEY` gesetzt ist). Lokal ohne Keys bzw. mit den Testkeys aus `.dev.vars.example` läuft das Formular ohne bzw. mit Immer-bestehen-Widget.
+- **Env (in Cloudflare Pages gesetzt, nicht im Repo):** `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_ENV` (sandbox/live), `RESEND_API_KEY`, `MAIL_FROM`, `MAIL_TO`, `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`.
 
 ---
 

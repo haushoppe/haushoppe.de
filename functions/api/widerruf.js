@@ -35,6 +35,30 @@ export async function onRequestPost({ request, env }) {
   } catch {
     // leerer Body -> unten als missing_fields abgewiesen
   }
+
+  // Turnstile (Cloudflare Bot-Schutz): sobald das Secret konfiguriert ist, ist ein gültiges
+  // Token PFLICHT — fail-closed, auch bei Verifikations-Fehlern. Der Client zeigt bei 403 den
+  // E-Mail-Fallback-Hinweis. Ohne konfiguriertes Secret (lokale Entwicklung) entfällt die Prüfung.
+  if (env.TURNSTILE_SECRET_KEY) {
+    const token = typeof body.turnstileToken === 'string' ? body.turnstileToken.slice(0, 2048) : '';
+    if (!token) return json({ error: 'turnstile' }, 403);
+    try {
+      const vres = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          secret: env.TURNSTILE_SECRET_KEY,
+          response: token,
+          remoteip: request.headers.get('cf-connecting-ip') || undefined,
+        }),
+      });
+      const v = await vres.json();
+      if (!v || v.success !== true) return json({ error: 'turnstile' }, 403);
+    } catch {
+      return json({ error: 'turnstile' }, 403);
+    }
+  }
+
   const lang = body.lang === 'en' ? 'en' : 'de';
   const name = String(body.name || '').trim().slice(0, 120);
   const orderId = String(body.orderId || '').trim().slice(0, 120);

@@ -10,3 +10,9 @@
 PAYPAL_ENV=sandbox
 PAYPAL_CLIENT_ID=
 PAYPAL_CLIENT_SECRET=
+
+# Turnstile (Bot-Schutz fürs Widerruf-Formular). Unten stehen die offiziellen Cloudflare-TESTKEYS
+# (Widget rendert sichtbar und besteht immer) — für lokales `wrangler pages dev` einfach so lassen.
+# In PRODUKTION liegen die echten Keys des Widgets „haushoppe-widerruf" in beiden Pages-Projekten.
+TURNSTILE_SITE_KEY=1x00000000000000000000AA
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA

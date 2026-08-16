@@ -127,6 +127,9 @@ const t =
       <dd data-wf-sum-email2></dd>
     </dl>
     <p class="wf__help">{t.timeNote}</p>
+    {/* Turnstile-Widget (Cloudflare Bot-Schutz) — erscheint nur, wenn der Server ihn per
+        /api/turnstile-config aktiviert hat; sonst bleibt der Container leer und versteckt. */}
+    <div class="wf__turnstile" data-wf-turnstile hidden></div>
     <p class="wf__error" data-wf-error2 role="alert" hidden></p>
     <div class="wf__actions">
       <button type="button" class="wf__btn wf__btn--confirm" data-testid="widerruf-confirm" data-wf-confirm>{t.confirm}</button>
@@ -141,7 +144,9 @@ const t =
   </div>
 </section>
 
-<script define:vars={{ lang, whole: t.wholeOrder, requiredMsg: t.required, failedMsg: t.failed }}>
+{/* data-astro-rerun: sonst dedupliziert der ClientRouter das Inline-Skript beim Wiederbesuch
+    der Seite (View Transition) und das Formular bliebe ohne Listener. */}
+<script define:vars={{ lang, whole: t.wholeOrder, requiredMsg: t.required, failedMsg: t.failed }} data-astro-rerun>
   (function () {
     const root = document.querySelector('.wf[data-lang="' + lang + '"]') || document.querySelector('.wf');
     if (!root) return;
@@ -152,6 +157,34 @@ const t =
     const err2 = root.querySelector('[data-wf-error2]');
     const val = (n) => (root.querySelector('[name="' + n + '"]') || {}).value || '';
     const emailOk = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+    // Turnstile (Cloudflare Bot-Schutz): Konfiguration vom Server holen; nur wenn aktiv, das
+    // Widget-Script laden und in Stufe 2 rendern. Ohne Functions (lokal, e2e) bleibt alles aus.
+    let tsWidgetId = null;
+    const tsHolder = root.querySelector('[data-wf-turnstile]');
+    const tsSetup = fetch('/api/turnstile-config')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (cfg) {
+        if (!cfg || !cfg.enabled || !cfg.sitekey || !tsHolder) return false;
+        return new Promise(function (resolve) {
+          const render = function () {
+            tsHolder.hidden = false;
+            tsWidgetId = window.turnstile.render(tsHolder, {
+              sitekey: cfg.sitekey,
+              language: lang === 'en' ? 'en' : 'de',
+            });
+            resolve(true);
+          };
+          if (window.turnstile && window.turnstile.render) return render();
+          const s = document.createElement('script');
+          s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+          s.async = true;
+          s.onload = render;
+          s.onerror = function () { resolve(false); };
+          document.head.appendChild(s);
+        });
+      })
+      .catch(function () { return false; });
 
     function collect() {
       return {
@@ -192,13 +225,20 @@ const t =
       err2.hidden = true;
     });
 
-    // Stufe 2: „Widerruf bestätigen" -> übermittelt die Erklärung.
+    // Stufe 2: „Widerruf bestätigen" -> übermittelt die Erklärung (inkl. Turnstile-Token,
+    // wenn der Bot-Schutz aktiv ist; bei Ablehnung Widget zurücksetzen für den nächsten Versuch).
     root.querySelector('[data-wf-confirm]').addEventListener('click', function () {
       const btn = this;
       const d = collect();
       btn.disabled = true;
       err2.hidden = true;
-      fetch('/api/widerruf', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) })
+      tsSetup
+        .then(function (tsActive) {
+          if (tsActive && window.turnstile && tsWidgetId !== null) {
+            d.turnstileToken = window.turnstile.getResponse(tsWidgetId) || '';
+          }
+          return fetch('/api/widerruf', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(d) });
+        })
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (res) {
           if (!res || !res.ok) throw new Error('failed');
@@ -214,6 +254,9 @@ const t =
           err2.textContent = failedMsg;
           err2.hidden = false;
           btn.disabled = false;
+          if (window.turnstile && tsWidgetId !== null) {
+            try { window.turnstile.reset(tsWidgetId); } catch (e) {}
+          }
         });
     });
   })();
@@ -321,5 +364,8 @@ const t =
     color: #b42318;
     margin: 0 0 1rem;
     font-weight: 600;
+  }
+  .wf__turnstile {
+    margin: 1rem 0;
   }
 </style>
