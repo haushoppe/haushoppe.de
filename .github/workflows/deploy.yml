@@ -24,6 +24,11 @@ concurrency:
   group: deploy-main
   cancel-in-progress: true
 
+# contents: write — NUR für den Nutzdaten-Rücklauf (letzter Step committet die vom Build
+# regenerierte videos.json zurück, sonst driftet git vom Live-Stand).
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -67,3 +72,32 @@ jobs:
 
       - name: Deploy haushoppe.art (dist-art)
         run: npm run deploy:art
+
+      # Nutzdaten-Rücklauf: Der Build regeneriert src/data/videos.json aus der YouTube-Playlist;
+      # ohne Rück-Commit driftet git vom Live-Stand. Committet wird über eine ALLOWLIST (nie
+      # `git add -A`) — ausschließlich Nutzdaten, nie package.json/Lockfiles o. Ä. Ein Wächter
+      # bricht ab, falls je etwas anderes gestaged wäre. `[skip ci]` verhindert die
+      # Deploy-Schleife (die Live-Seite hat den frischen Stand ja bereits).
+      - name: Nutzdaten zurück ins Repo (Allowlist)
+        run: |
+          set -euo pipefail
+          ALLOWLIST=("src/data/videos.json")
+          git add -- "${ALLOWLIST[@]}"
+          if git diff --cached --quiet; then
+            echo "Keine Nutzdaten-Änderung — nichts zu committen."
+            exit 0
+          fi
+          GESTAGED=$(git diff --cached --name-only)
+          while IFS= read -r datei; do
+            erlaubt=false
+            for a in "${ALLOWLIST[@]}"; do [ "$datei" = "$a" ] && erlaubt=true; done
+            if [ "$erlaubt" = false ]; then
+              echo "::error::Unerwartete Datei gestaged: $datei — Abbruch."
+              exit 1
+            fi
+          done <<< "$GESTAGED"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Videos-Liste aus der YouTube-Playlist aktualisieren [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
