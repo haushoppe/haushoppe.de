@@ -108,10 +108,14 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={metaDesc} />
     <meta name="twitter:image" content={ogImage} />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {/* Video-Poster (YouTube-Facades: Doku-Reihe, Videos-Seite) laden von i.ytimg.com —
+        die Verbindung vorab aufbauen spart den Handshake beim ersten Poster. */}
+    <link rel="preconnect" href="https://i.ytimg.com" />
     <ClientRouter />
     {/* "<" als Unicode-Escape serialisieren, damit kein Inhalts-String (z. B. ein Werktitel mit
         schließendem script-Tag) das Inline-Script vorzeitig beenden und Markup injizieren kann. */}

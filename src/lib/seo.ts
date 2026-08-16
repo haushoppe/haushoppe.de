@@ -2,6 +2,7 @@
 // Cloudflares „Email Address Obfuscation" sie im HTML und injiziert wieder ihr Script.
 import { contact, socials } from '../data/site';
 import { personRef } from './person';
+import { WOODCUT_PRICE_EUR, WOODCUT_PRICE_FRAMED_EUR } from './pricing';
 import type { CategoryKey } from './categories';
 
 const GALLERY_NAME = 'HAUS HOPPE – Galerie für Bildende Kunst';
@@ -38,7 +39,25 @@ export function galleryJsonLd(origin: string, image: string) {
   };
 }
 
-// Ein einzelnes Kunstwerk (Werk-Detailseite) — angereichert um die vorhandenen Katalogdaten.
+// Kauf-Angebote für Holzschnitte (ungerahmt/gerahmt) — Preise aus der EINEN Preisquelle
+// (lib/pricing), damit JSON-LD, Kaufbox und PayPal-Server nie auseinanderlaufen.
+export function woodcutOffers(lang: 'de' | 'en', url: string) {
+  const variant = (name: string, price: number) => ({
+    '@type': 'Offer',
+    name,
+    price,
+    priceCurrency: 'EUR',
+    availability: 'https://schema.org/InStock',
+    url,
+    seller: { '@type': 'ArtGallery', name: GALLERY_NAME },
+  });
+  return lang === 'en'
+    ? [variant('Unframed', WOODCUT_PRICE_EUR), variant('Framed (HALBE museum frame)', WOODCUT_PRICE_FRAMED_EUR)]
+    : [variant('Ungerahmt', WOODCUT_PRICE_EUR), variant('Gerahmt (HALBE-Museumsrahmen)', WOODCUT_PRICE_FRAMED_EUR)];
+}
+
+// Ein einzelnes Kunstwerk (Werk-Detailseite) — angereichert um die vorhandenen Katalogdaten;
+// Holzschnitte tragen zusätzlich ihre Kauf-Angebote (offers).
 export function artworkJsonLd(opts: {
   origin: string;
   title: string;
@@ -47,6 +66,7 @@ export function artworkJsonLd(opts: {
   technique?: string;
   year?: string;
   category?: CategoryKey;
+  offers?: ReturnType<typeof woodcutOffers>;
 }) {
   const j: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -59,6 +79,7 @@ export function artworkJsonLd(opts: {
   if (opts.technique) j.artMedium = opts.technique;
   if (opts.year) j.dateCreated = opts.year;
   if (opts.category && ARTFORM[opts.category]) j.artform = ARTFORM[opts.category];
+  if (opts.offers) j.offers = opts.offers;
   return j;
 }
 

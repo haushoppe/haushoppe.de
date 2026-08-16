@@ -7,7 +7,8 @@ import { getCollection, render } from 'astro:content';
 import { getImage } from 'astro:assets';
 import { galleryItems, type Art } from '../../lib/artworks';
 import { ordinalData } from '../../lib/ordinals';
-import { artworkJsonLd, breadcrumbJsonLd } from '../../lib/seo';
+import { artworkJsonLd, breadcrumbJsonLd, woodcutOffers } from '../../lib/seo';
+import { isWoodcut } from '../../lib/pricing';
 import { catSlug, catName } from '../../lib/categories';
 import { smartQuotes } from '../../lib/text';
 import { LANG, SELF_ORIGIN } from '../../lib/lang';
@@ -94,6 +95,8 @@ const artJsonLd = artworkJsonLd({
   technique: side.technique,
   year: art.data.year,
   category: cat,
+  // Holzschnitte sind online kaufbar -> Kauf-Angebote (ungerahmt/gerahmt) mit ins JSON-LD.
+  offers: isWoodcut(cat) ? woodcutOffers(LANG, `${SELF_ORIGIN}/portfolio/${side.slug}/`) : undefined,
 });
 const jsonLd = [artJsonLd, breadcrumb];
 ---
