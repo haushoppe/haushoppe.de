@@ -93,7 +93,7 @@ function customerHtml(o, seller, lang) {
   if (lang === 'en') {
     return `<div style="font-family:Arial,Helvetica,sans-serif;color:#222;max-width:620px">
 <h2 style="margin:0 0 .4em">Thank you for your order</h2>
-<p>This confirms that we have <strong>received</strong> your order at HAUS HOPPE - ITS. <strong>A contract of sale is concluded only upon shipment of the goods.</strong></p>
+<p>This confirms that we have <strong>received</strong> your order at HAUS HOPPE – Galerie für Bildende Kunst. <strong>A contract of sale is concluded only upon shipment of the goods.</strong></p>
 <h3 style="margin:1.2em 0 .4em">Order details</h3>
 <table style="border-collapse:collapse;font-size:14px">
 ${row('Item', o.item)}${row('Price', `${o.amount} (incl. 7% VAT, free shipping)`)}${row('Order no.', o.orderId)}${row('Payment ref.', o.captureId)}${row('Date', o.date)}
@@ -108,7 +108,7 @@ ${row('Item', o.item)}${row('Price', `${o.amount} (incl. 7% VAT, free shipping)`
   }
   return `<div style="font-family:Arial,Helvetica,sans-serif;color:#222;max-width:620px">
 <h2 style="margin:0 0 .4em">Vielen Dank für Ihre Bestellung</h2>
-<p>Dies ist die Bestätigung über den <strong>Eingang</strong> Ihrer Bestellung bei HAUS HOPPE - ITS. <strong>Ein Kaufvertrag kommt erst mit dem Versand der Ware zustande.</strong></p>
+<p>Dies ist die Bestätigung über den <strong>Eingang</strong> Ihrer Bestellung bei HAUS HOPPE – Galerie für Bildende Kunst. <strong>Ein Kaufvertrag kommt erst mit dem Versand der Ware zustande.</strong></p>
 <h3 style="margin:1.2em 0 .4em">Bestelldaten</h3>
 <table style="border-collapse:collapse;font-size:14px">
 ${row('Werk', o.item)}${row('Preis', `${o.amount} (inkl. 7 % MwSt, versandkostenfrei)`)}${row('Bestellnummer', o.orderId)}${row('Zahlungsreferenz', o.captureId)}${row('Datum', o.date)}
@@ -152,7 +152,7 @@ async function sendResend(env, msg) {
 // gibt {sent,skipped,error} zur optionalen Protokollierung zurück.
 export async function sendOrderEmails(env, data, lang) {
   if (!env.RESEND_API_KEY) return { skipped: 'no RESEND_API_KEY' };
-  const from = env.MAIL_FROM || 'HAUS HOPPE - ITS <team@haushoppe.de>';
+  const from = env.MAIL_FROM || 'HAUS HOPPE – Galerie für Bildende Kunst <team@haushoppe.de>';
   const merchant = env.MAIL_TO || 'team@haushoppe.de';
   const seller = {
     name: 'Olaf Hoppe',
@@ -184,8 +184,8 @@ export async function sendOrderEmails(env, data, lang) {
         reply_to: merchant,
         subject:
           lang === 'en'
-            ? `Your order at HAUS HOPPE - ITS (${o.item})`
-            : `Ihre Bestellung bei HAUS HOPPE - ITS (${o.item})`,
+            ? `Your order at HAUS HOPPE – Galerie für Bildende Kunst (${o.item})`
+            : `Ihre Bestellung bei HAUS HOPPE – Galerie für Bildende Kunst (${o.item})`,
         html: customerHtml(o, seller, lang),
       });
     } catch (e) {

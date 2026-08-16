@@ -19,7 +19,7 @@ async function sendResend(env, msg) {
 
 const SELLER = {
   name: 'Olaf Hoppe',
-  brand: 'HAUS HOPPE - ITS',
+  brand: 'HAUS HOPPE – Galerie für Bildende Kunst',
   addr: 'Zum Breitling 12, 23974 Boiensdorf OT Stove',
   email: 'team@haushoppe.de',
 };
@@ -69,7 +69,7 @@ ${r('Eingang', `${o.receivedAt} (${o.iso})`)}${r('Name', o.name)}${r('Bestellnum
 // angenommen wurden — die Kopie an team@haushoppe.de ist die dauerhafte Ablage des Widerrufs.
 export async function sendWithdrawalEmails(env, o, lang) {
   if (!env.RESEND_API_KEY) return { skipped: 'no RESEND_API_KEY' };
-  const from = env.MAIL_FROM || 'HAUS HOPPE - ITS <team@haushoppe.de>';
+  const from = env.MAIL_FROM || 'HAUS HOPPE – Galerie für Bildende Kunst <team@haushoppe.de>';
   const merchant = env.MAIL_TO || 'team@haushoppe.de';
   const results = {};
   try {

@@ -59,7 +59,7 @@ export async function onRequestPost({ request, env }) {
           },
         ],
         application_context: {
-          brand_name: 'HAUS HOPPE - ITS',
+          brand_name: 'HAUS HOPPE – Galerie für Bildende Kunst',
           locale: lang === 'en' ? 'en-US' : 'de-DE',
           shipping_preference: 'GET_FROM_FILE',
           user_action: 'PAY_NOW',
