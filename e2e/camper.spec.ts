@@ -16,10 +16,10 @@ test('Hero, Slideshow, Bullets, Feuer-Hinweis', async ({ page }, info) => {
   await expect(cta).toContainText(s.camper.cta);
   await expect(cta).toHaveAttribute('href', '#anrufen');
 
-  const ss = page.getByTestId('slideshow');
+  const ss = page.getByTestId('slideshow').first();
   await expect(ss).toBeVisible();
-  await expect(page.getByTestId('slideshow-dot')).toHaveCount(8);
-  await expect(page.getByTestId('slideshow-caption').first()).toContainText(t.firstCaption);
+  await expect(ss.getByTestId('slideshow-dot')).toHaveCount(8);
+  await expect(ss.getByTestId('slideshow-caption').first()).toContainText(t.firstCaption);
   await expect(ss.getByTestId('carousel-arrow')).toHaveCount(2);
 
   await expect(page.getByRole('listitem').filter({ hasText: t.rastplatz }).locator('strong')).toHaveText(t.rastplatz);
@@ -45,19 +45,30 @@ test('Beide Telefonnummern als tel:-Links (Click-to-Call)', async ({ page }, inf
 
 test('Slideshow: „weiter"-Pfeil schaltet deterministisch zum nächsten Motiv', async ({ page }, info) => {
   await page.goto(site(info).camper.path);
-  const dots = page.getByTestId('slideshow-dot');
+  const ss = page.getByTestId('slideshow').first();
+  const dots = ss.getByTestId('slideshow-dot');
   await expect(dots.nth(0)).toHaveAttribute('aria-current', 'true');
-  await page.getByTestId('slideshow').getByTestId('carousel-arrow').last().click(); // next
+  await ss.getByTestId('carousel-arrow').last().click(); // next
   await expect(dots.nth(1)).toHaveAttribute('aria-current', 'true');
   await expect(dots.nth(0)).toHaveAttribute('aria-current', 'false');
 });
 
 test('Slideshow startet von allein (interval-basiert)', async ({ page }, info) => {
   await page.goto(site(info).camper.path);
-  const interval = Number(await page.getByTestId('slideshow').getAttribute('data-interval')) || 4500;
-  const dots = page.getByTestId('slideshow-dot');
+  const ss = page.getByTestId('slideshow').first();
+  const interval = Number(await ss.getAttribute('data-interval')) || 4500;
+  const dots = ss.getByTestId('slideshow-dot');
   await expect(dots.nth(0)).toHaveAttribute('aria-current', 'true');
   await expect(dots.nth(1)).toHaveAttribute('aria-current', 'true', { timeout: interval + 3000 });
+});
+
+test('Hofladen-Abschnitt mit eigener Slideshow', async ({ page }, info) => {
+  await page.goto(site(info).camper.path);
+  const heading = langOf(info) === 'en' ? 'The farm shop' : 'Der Hofladen';
+  await expect(page.getByRole('heading', { name: heading })).toBeVisible();
+  const shop = page.getByTestId('slideshow').nth(1);
+  await expect(shop).toBeVisible();
+  await expect(shop.getByTestId('slideshow-dot')).toHaveCount(3);
 });
 
 test('Keine Gedankenstriche im Camper-Inhalt', async ({ page }, info) => {
