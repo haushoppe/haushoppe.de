@@ -1,6 +1,6 @@
 ---
 // Header: Logo zentriert, darunter die
-// Navigation als 700-px-Leiste mit schwarzen Linien oben/unten, Sprach-Flagge
+// Navigation als zentrierte Leiste mit schwarzen Linien oben/unten, Sprach-Flagge
 // + Such-Icon rechts, mobil als Hamburger. Aktiver Menüpunkt + Sprach-Pendant server-seitig.
 import { nav as navData, logo } from '../data/site';
 import { OTHER_ORIGIN } from '../lib/lang';
@@ -102,13 +102,15 @@ const homeHref = '/';
     height: auto;
     max-width: 100%;
   }
-  /* Nav-Leiste: zentriert, schwarze Linien oben+unten (wie live). */
+  /* Nav-Leiste: zentriert, schwarze Linien oben+unten. Breite so bemessen, dass die
+     deutschen Labels (das längste Wort ist „Kunst Erwerben") plus Flagge und Lupe auch
+     mit dem breiteren sans-serif-Fallback auf Linux einzeilig bleiben. */
   .mainnav {
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
     margin-bottom: 20px;
     width: 100%;
-    max-width: 780px;
+    max-width: 820px;
   }
   .mainnav__list {
     display: flex;
@@ -131,9 +133,9 @@ const homeHref = '/';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* 12px (statt 16) horizontal: mit dem 7. Menüpunkt („Camping") passt die Zeile sonst
-       nicht in die 700px-Nav-Leiste (bräche in eine zweite Zeile um). */
-    padding: 0 12px;
+    /* Straffe horizontale Abstände, damit alle Menüpunkte samt Flagge und Lupe einzeilig
+       in die Nav-Leiste passen. */
+    padding: 0 8px;
     font-weight: 400;
     color: #000;
     line-height: 1.2;
@@ -223,13 +225,6 @@ const homeHref = '/';
   /* Hamburger nur mobil */
   .mainnav__burger {
     display: none;
-  }
-  /* Tablet-Klemmbereich: Menü-Innenabstände straffen, damit die 7 Punkte + Flagge + Lupe
-     einzeilig in die ~780px-Leiste passen, statt Flagge/Lupe in eine zweite Zeile umzubrechen. */
-  @media (min-width: 721px) and (max-width: 820px) {
-    .mainnav__link {
-      padding: 0 8px;
-    }
   }
   /* Mobil: Logo links, Burger rechts (eine Zeile), Menü als Dropdown. */
   @media (max-width: 720px) {
