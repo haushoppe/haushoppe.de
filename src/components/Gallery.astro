@@ -44,7 +44,7 @@ const hlData = await Promise.all(
       getImage({ src: it.image, format: 'avif', width: 1000 }),
       getImage({ src: it.image, format: 'webp', width: 1000 }),
     ]);
-    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), intro: it.intro, w: it.w, h: it.h, a: a.src, p: p.src, b: it.buyable };
+    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), intro: it.intro, w: it.w, h: it.h, n: it.number, a: a.src, p: p.src, b: it.buyable };
   }),
 );
 ---
@@ -69,6 +69,10 @@ const hlData = await Promise.all(
               <source srcset={d.p} type="image/webp" />
               <img src={d.p} width={d.w} height={d.h} alt="" loading="eager" fetchpriority="high" />
             </picture>
+            <span class="gallery__overlay">
+              <span class="gallery__title">{d.t}</span>
+              {d.n && <span class="gallery__number">{d.n}</span>}
+            </span>
           </a>
           <div class="gallery__highlight-body">
             <h2 class="gallery__highlight-title">{d.t}</h2>
@@ -179,10 +183,6 @@ const hlData = await Promise.all(
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease-in-out;
-  }
-  .gallery__highlight:hover .gallery__highlight-media img {
-    transform: scale(1.03);
   }
   .gallery__highlight-title {
     font-family: var(--serif);
@@ -290,7 +290,8 @@ const hlData = await Promise.all(
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
   }
-  .gallery__item:hover .gallery__overlay {
+  .gallery__item:hover .gallery__overlay,
+  .gallery__highlight:hover .gallery__overlay {
     opacity: 1;
   }
   .gallery__overlay > * {
@@ -298,11 +299,13 @@ const hlData = await Promise.all(
     transform: translateY(10px);
     transition: opacity 0.25s ease, transform 0.25s ease;
   }
-  .gallery__item:hover .gallery__overlay > * {
+  .gallery__item:hover .gallery__overlay > *,
+  .gallery__highlight:hover .gallery__overlay > * {
     opacity: 1;
     transform: none;
   }
-  .gallery__item:hover .gallery__number {
+  .gallery__item:hover .gallery__number,
+  .gallery__highlight:hover .gallery__number {
     transition-delay: 0.07s;
   }
   .gallery__title {
