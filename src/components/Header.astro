@@ -48,10 +48,9 @@ const homeHref = '/';
                 href={it.href}
                 class:list={['mainnav__link', it.href === activePath && 'is-active']}
                 aria-current={it.href === activePath ? 'page' : undefined}
-                data-text={it.label}
                 data-testid="nav-link"
               >
-                <span class="mainnav__label">{it.label}{it.badge && <span class="mainnav__badge" data-testid="nav-badge">{it.badge}</span>}</span>
+                <span class="mainnav__label"><span class="mainnav__text" data-text={it.label}>{it.label}</span>{it.badge && <span class="mainnav__badge" data-testid="nav-badge">{it.badge}</span>}</span>
               </a>
             </li>
           ))
@@ -110,7 +109,7 @@ const homeHref = '/';
     border-bottom: 1px solid var(--rule);
     margin-bottom: 20px;
     width: 100%;
-    max-width: 820px;
+    max-width: 880px;
   }
   .mainnav__list {
     display: flex;
@@ -133,9 +132,8 @@ const homeHref = '/';
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Straffe horizontale Abstände, damit alle Menüpunkte samt Flagge und Lupe einzeilig
-       in die Nav-Leiste passen. */
-    padding: 0 8px;
+    /* Etwas Luft je Menüpunkt; die Leiste ist breit genug, dass alles einzeilig bleibt. */
+    padding: 0 12px;
     font-weight: 400;
     color: #000;
     line-height: 1.2;
@@ -164,7 +162,12 @@ const homeHref = '/';
   /* Kein Verrutschen der Nav beim Fettschalten des aktiven Punkts: eine unsichtbare, fett
      gesetzte Kopie des Labels reserviert immer die Bold-Breite (height:0 → belegt keinen Platz,
      ändert nur die Mindestbreite). */
-  .mainnav__link::after {
+  .mainnav__text {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .mainnav__text::after {
     content: attr(data-text);
     height: 0;
     overflow: hidden;
@@ -225,6 +228,12 @@ const homeHref = '/';
   /* Hamburger nur mobil */
   .mainnav__burger {
     display: none;
+  }
+  /* Tablet-Klemmbereich: Innenabstände straffen, damit alles einzeilig in die Leiste passt. */
+  @media (min-width: 721px) and (max-width: 820px) {
+    .mainnav__link {
+      padding: 0 8px;
+    }
   }
   /* Mobil: Logo links, Burger rechts (eine Zeile), Menü als Dropdown. */
   @media (max-width: 720px) {

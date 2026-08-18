@@ -32,3 +32,14 @@ test('Navigation bleibt einzeilig', async ({ page }, info) => {
     .evaluateAll((els) => new Set(els.map((e) => Math.round(e.getBoundingClientRect().top))).size);
   expect(rows).toBe(1);
 });
+
+test('Aktiver Menüpunkt (auch mit Badge) verschiebt die Navi nicht', async ({ page }, info) => {
+  const s = site(info);
+  const lefts = async (path: string) => {
+    await page.goto(path);
+    return page.getByTestId('nav-link').evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().left)));
+  };
+  const home = await lefts(s.routes.home);
+  const camper = await lefts(s.camper.path); // Camping aktiv (fett, mit NEU-Badge)
+  expect(camper).toEqual(home);
+});
