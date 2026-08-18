@@ -272,9 +272,12 @@ const t =
     letter-spacing: 0.02em;
     color: #6a6a6a;
   }
-  /* Reserviert etwas Höhe, damit beim Nachladen der Buttons nichts springt. */
+  /* Reserviert etwas Höhe, damit beim Nachladen der Buttons nichts springt. Eigener Stacking-Context
+     (isolation): der von PayPal im iframe gesetzte hohe z-index bleibt darin gefangen und kann den
+     sticky Header nicht mehr überdecken. Der Checkout-Popup hängt an <body> und bleibt frei oben. */
   .wc-buy__buttons {
     min-height: 3rem;
+    isolation: isolate;
   }
   /* Kleingedrucktes (Zahlung, Versandraum, Vertragsschluss) als EIN Absatz, eine Größe. */
   .wc-buy__fineprint {
