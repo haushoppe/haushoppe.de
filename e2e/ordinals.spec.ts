@@ -7,8 +7,9 @@ test('Ordinal-Detail: Bühne, iframe, Buy-Link, dunkles Theme, kein Preis/Anfrag
 
   const stage = page.getByTestId('ordinal-stage');
   await expect(stage).toBeVisible();
-  await expect(stage).toContainText('REVEALED');
-  await expect(stage.locator('iframe')).toHaveAttribute('src', /ordinals\.com|ordinalsbot/);
+  await expect(stage.locator('.ordinal-logo iframe')).toHaveAttribute('title', 'REVEALED');
+  await expect(stage).toContainText('Glitch Art');
+  await expect(stage.locator('.ordinal-frame iframe')).toHaveAttribute('src', /ordinals\.com|ordinalsbot/);
 
   const buy = page.getByTestId('ordinal-buy');
   await expect(buy).toHaveAttribute('href', /gamma\.io/);
