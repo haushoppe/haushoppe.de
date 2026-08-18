@@ -10,14 +10,14 @@ de:
   title: "Plovdiv"
   slug: "plovdiv"
   captionTitle: "Plovdiv"
-  technique: "Zeichnung"
+  technique: "Kohlezeichnung"
   dimensions: "?"
   edition: ""
 en:
   title: "Plovdiv"
   slug: "plovdiv"
   captionTitle: "Plovdiv"
-  technique: "Drawing"
+  technique: "Charcoal drawing"
   dimensions: ""
   edition: ""
 ---

@@ -10,14 +10,14 @@ de:
   title: "wintermärchen"
   slug: "wintermaerchen"
   captionTitle: "wintermärchen"
-  technique: "Zeichnung"
+  technique: "Buntstift"
   dimensions: "?"
   edition: ""
 en:
   title: "winter's tale"
   slug: "winter-s-tale"
   captionTitle: "winters tale"
-  technique: "Drawing"
+  technique: "Colored pencil"
   dimensions: ""
   edition: ""
 ---

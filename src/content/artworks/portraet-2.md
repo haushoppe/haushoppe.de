@@ -10,14 +10,14 @@ de:
   title: "porträt 2"
   slug: "portraet-2"
   captionTitle: "porträt 2"
-  technique: ""
+  technique: "Bleistift"
   dimensions: "?"
   edition: ""
 en:
   title: "portrait 2"
   slug: "portrait-2"
   captionTitle: "portrait 2"
-  technique: ""
+  technique: "Pencil"
   dimensions: ""
   edition: ""
 ---

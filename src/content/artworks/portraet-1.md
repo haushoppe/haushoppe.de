@@ -10,14 +10,14 @@ de:
   title: "porträt 1"
   slug: "portraet-1"
   captionTitle: "porträt 1"
-  technique: ""
+  technique: "Bleistift"
   dimensions: "?"
   edition: ""
 en:
   title: "portrait 1"
   slug: "portrait-1"
   captionTitle: "portrait 1"
-  technique: ""
+  technique: "Pencil"
   dimensions: ""
   edition: ""
 ---
