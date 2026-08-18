@@ -24,7 +24,10 @@
 
     const place = (isLast) => {
       if (!row.length) return;
-      const rowH = isLast ? Math.min(targetH, (W - gap * (row.length - 1)) / aspectSum) : (W - gap * (row.length - 1)) / aspectSum;
+      // Letzte Reihe: auf volle Breite strecken wie die anderen, damit die Zeile ausgefüllt ist.
+      // Deckel bei 2x targetH, damit einzelne wenige Restbilder nicht absurd groß werden.
+      const full = (W - gap * (row.length - 1)) / aspectSum;
+      const rowH = isLast ? Math.min(targetH * 2, full) : full;
       let x = 0;
       for (const el of row) {
         const w = parseFloat(el.dataset.w), h = parseFloat(el.dataset.h);
