@@ -23,8 +23,8 @@ const allLabel = LANG === 'de' ? 'Alle' : 'All';
 const cats = await galleryCategories(LANG);
 const allItems = await galleryItems(LANG);
 const items = allItems.filter((it) => it.categorySlugs.includes(cat.slug));
-// „Angeber"-Video nur auf der Kategorie Digitale Kunst (DE) / Digital Art (EN).
-const showGlitchVideo = cat.slug === 'digitale-kunst' || cat.slug === 'digital-art';
+// Digitale Kunst (DE) / Digital Art (EN): eigene REVEALED-Collection-Seite, dunkles Theme + Logo + „Angeber"-Video.
+const isDigitalArt = cat.slug === 'digitale-kunst' || cat.slug === 'digital-art';
 const description =
   LANG === 'de'
     ? `${cat.name} von Olaf Hoppe. HAUS HOPPE, Galerie für Bildende Kunst.`
@@ -40,7 +40,7 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={cat.name} description={description} jsonLd={jsonLd}>
-  <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={allItems.length} />
-  {showGlitchVideo && <GlitchArtBanner lang={LANG} />}
+<BaseLayout title={cat.name} description={description} jsonLd={jsonLd} inverted={isDigitalArt}>
+  <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={allItems.length} dark={isDigitalArt} />
+  {isDigitalArt && <GlitchArtBanner lang={LANG} />}
 </BaseLayout>

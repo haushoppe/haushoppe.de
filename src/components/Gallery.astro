@@ -16,8 +16,9 @@ interface Props {
   activeCat?: string; // '*' = Alle, sonst Kategorie-Slug
   heading?: string; // Seiten-h1 (SR-only) — Heading-Hierarchie/SEO ohne visuelle Änderung
   total?: number; // Gesamtzahl aller Werke — als Zahl am „Alle"-Button
+  dark?: boolean; // dunkles Theme + REVEALED-Logo (nur Kategorie Digitale Kunst)
 }
-const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading, total } = Astro.props;
+const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading, total, dark = false } = Astro.props;
 // Marker „online kaufbar" + Highlight-CTA „Weiterlesen" pro Sprache (Sprache = Galerie-Wurzel).
 const buyLabel = base === '/artwork' ? 'buy online' : 'online kaufen';
 const moreLabel = base === '/artwork' ? 'Read more' : 'Weiterlesen';
@@ -49,7 +50,7 @@ const hlData = await Promise.all(
 );
 ---
 
-<div class="gallery" data-gallery data-gap="15" data-row-height="200" data-batch="36" data-pagefind-ignore>
+<div class:list={['gallery', dark && 'gallery--dark']} data-gallery data-gap="15" data-row-height="200" data-batch="36" data-pagefind-ignore>
   {heading && <h1 class="visually-hidden">{heading}</h1>}
   <nav class="gallery__filter" aria-label={allLabel}>
     <a href={`${base}/`} class:list={['gallery__filter-btn', activeCat === '*' && 'is-active']} aria-current={activeCat === '*' ? 'page' : undefined} data-testid="gallery-filter">{allLabel} {typeof total === 'number' && <span class="gallery__filter-count">{total}</span>}</a>
@@ -57,6 +58,12 @@ const hlData = await Promise.all(
       <a href={`${base}/${c.slug}/`} class:list={['gallery__filter-btn', activeCat === c.slug && 'is-active']} aria-current={activeCat === c.slug ? 'page' : undefined} data-testid="gallery-filter">{c.name} <span class="gallery__filter-count">{c.count}</span></a>
     ))}
   </nav>
+
+  {dark && (
+    <div class="gallery__logo" aria-hidden="true">
+      <iframe src="https://ordinals.com/content/d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0" title="REVEALED" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+  )}
 
   {hlData.length > 0 && (
     <div class="gallery__highlights">
@@ -158,6 +165,32 @@ const hlData = await Promise.all(
     font-size: 0.6em;
     vertical-align: super;
     margin-left: 0.3em;
+  }
+  /* REVEALED-Collection-Logo (animierte On-Chain-Inschrift) über den Thumbnails, nur dunkle Kategorie. */
+  .gallery__logo {
+    width: min(360px, 70%);
+    aspect-ratio: 4 / 1;
+    margin: 0 auto 1.75rem;
+  }
+  .gallery__logo iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #000;
+  }
+  /* Dunkle Kategorie (Digitale Kunst): Filter-Reiter hell auf Schwarz. */
+  .gallery--dark .gallery__filter-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #cfcfcf;
+  }
+  .gallery--dark .gallery__filter-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+  }
+  .gallery--dark .gallery__filter-btn.is-active {
+    background: #f4f4f4;
+    color: #000;
   }
   /* ── Highlight-Kachel: volle Breite oben, Bild links, Intro + „Weiterlesen" rechts. Liegt
      außerhalb von .gallery__grid, wird also nicht vom Justified-Layout angefasst. ──────────── */
