@@ -57,18 +57,20 @@ const embed = (id: string) =>
               aria-label={`${t.play}: ${v.title}`}
               aria-current={i === 0 ? 'true' : undefined}
             >
-              <img
-                src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
-                alt={v.title}
-                width="480"
-                height="360"
-                loading="lazy"
-                decoding="async"
-              />
-              <span class="vg__play" aria-hidden="true" />
-              <span class="vg__badge">{t.nowPlaying}</span>
+              <span class="vg__thumb-media">
+                <img
+                  src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
+                  alt={v.title}
+                  width="480"
+                  height="360"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="vg__play" aria-hidden="true" />
+                <span class="vg__badge">{t.nowPlaying}</span>
+              </span>
+              <span class="vg__slide-title">{v.title}</span>
             </button>
-            <p class="vg__slide-title">{v.title}</p>
           </li>
         ))
       }
@@ -223,16 +225,24 @@ const embed = (id: string) =>
   }
   .vg__thumb {
     display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .vg__thumb-media {
+    display: block;
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    padding: 0;
-    border: 0;
     overflow: hidden;
-    cursor: pointer;
     background: #000;
   }
-  .vg__thumb img {
+  .vg__thumb-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -380,13 +390,15 @@ const embed = (id: string) =>
     .vg__slide {
       flex: none;
       width: 100%;
+      scroll-snap-align: start;
+      padding: 0.35rem;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+    .vg__thumb {
       display: grid;
       grid-template-columns: 148px 1fr;
       gap: 0.7rem;
       align-items: center;
-      scroll-snap-align: start;
-      padding: 0.35rem;
-      transition: background 0.15s, box-shadow 0.15s;
     }
     .vg__slide:hover {
       background: rgba(0, 0, 0, 0.05);

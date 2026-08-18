@@ -33,3 +33,11 @@ test('Thumbnail-Klick wechselt Video und löst KEINEN Seiten-Scroll aus', async 
   expect(await page.evaluate(() => (window as unknown as { __sc: boolean }).__sc), 'Video-Wechsel darf nicht scrollen').toBe(false);
   await expect(page.locator('[data-testid="video-thumb"][aria-current="true"]')).toHaveCount(1);
 });
+
+test('Klick auf den Titel (nicht nur das Thumbnail) wählt das Video', async ({ page }, info) => {
+  await page.goto(site(info).routes.videos);
+  const title = page.locator('.vg__slide-title').nth(2);
+  await title.scrollIntoViewIfNeeded();
+  await title.click();
+  await expect(page.getByTestId('video-thumb').nth(2)).toHaveAttribute('aria-current', 'true');
+});
