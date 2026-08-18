@@ -185,7 +185,7 @@ const hlData = await Promise.all(
     object-fit: cover;
     transition: transform 0.3s ease-in-out;
   }
-  .gallery__highlight:hover .gallery__highlight-media img {
+  .gallery__highlight-media:hover img {
     transform: scale(1.05);
   }
   .gallery__highlight-title {
@@ -295,7 +295,7 @@ const hlData = await Promise.all(
     transition: opacity 0.2s ease-in-out;
   }
   .gallery__item:hover .gallery__overlay,
-  .gallery__highlight:hover .gallery__overlay {
+  .gallery__highlight-media:hover .gallery__overlay {
     opacity: 1;
   }
   .gallery__overlay > * {
@@ -304,12 +304,12 @@ const hlData = await Promise.all(
     transition: opacity 0.25s ease, transform 0.25s ease;
   }
   .gallery__item:hover .gallery__overlay > *,
-  .gallery__highlight:hover .gallery__overlay > * {
+  .gallery__highlight-media:hover .gallery__overlay > * {
     opacity: 1;
     transform: none;
   }
   .gallery__item:hover .gallery__number,
-  .gallery__highlight:hover .gallery__number {
+  .gallery__highlight-media:hover .gallery__number {
     transition-delay: 0.07s;
   }
   .gallery__title {
