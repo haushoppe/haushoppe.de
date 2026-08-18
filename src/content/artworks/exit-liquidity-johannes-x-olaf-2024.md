@@ -7,14 +7,14 @@ order: 318
 category: digital-art
 image: "../../artwork-originals/2024/01/exit_liquidity.png"
 de:
-  title: "\"EXIT LIQUIDITY\" (Johannes x Olaf) 2024"
+  title: "\"EXIT LIQUIDITY\" (Johannes x Olaf)"
   slug: "exit-liquidity-johannes-x-olaf-2024"
   captionTitle: "EXIT LIQUIDITY (Johannes x Olaf)"
   technique: ""
   dimensions: ""
   edition: ""
 en:
-  title: "\"EXIT LIQUIDITY\" (Johannes x Olaf) 2024"
+  title: "\"EXIT LIQUIDITY\" (Johannes x Olaf)"
   slug: "exit-liquidity-johannes-x-olaf-2024"
   captionTitle: "EXIT LIQUIDITY (Johannes x Olaf)"
   technique: ""

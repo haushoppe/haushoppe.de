@@ -7,14 +7,14 @@ order: 320
 category: digital-art
 image: "../../artwork-originals/2024/01/the_cabal.png"
 de:
-  title: "„THE CABAL\" (Johannes x Olaf) 2024"
+  title: "„THE CABAL\" (Johannes x Olaf)"
   slug: "the-cabal-johannes-x-olaf-2024"
   captionTitle: "THE CABAL (Johannes x Olaf)"
   technique: ""
   dimensions: ""
   edition: ""
 en:
-  title: "\"THE CABAL\" (Johannes x Olaf) 2024"
+  title: "\"THE CABAL\" (Johannes x Olaf)"
   slug: "the-cabal-johannes-x-olaf-2024"
   captionTitle: "THE CABAL (Johannes x Olaf)"
   technique: ""

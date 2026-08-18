@@ -7,14 +7,14 @@ order: 319
 category: digital-art
 image: "../../artwork-originals/2024/01/broke.png"
 de:
-  title: "\"BROKE\" (Johannes x Olaf) 2024"
+  title: "\"BROKE\" (Johannes x Olaf)"
   slug: "broke-johannes-x-olaf-2024"
   captionTitle: "BROKE (Johannes x Olaf)"
   technique: ""
   dimensions: ""
   edition: ""
 en:
-  title: "\"BROKE\" (Johannes x Olaf) 2024"
+  title: "\"BROKE\" (Johannes x Olaf)"
   slug: "broke-johannes-x-olaf-2024"
   captionTitle: "BROKE (Johannes x Olaf)"
   technique: ""

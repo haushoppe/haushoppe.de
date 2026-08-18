@@ -7,14 +7,14 @@ order: 321
 category: digital-art
 image: "../../artwork-originals/2024/01/legends.png"
 de:
-  title: "\"LEGENDS\" (Johannes x Olaf) 2024"
+  title: "\"LEGENDS\" (Johannes x Olaf)"
   slug: "legends-johannes-x-olaf-2024"
   captionTitle: "LEGENDS (Johannes x Olaf)"
   technique: ""
   dimensions: ""
   edition: ""
 en:
-  title: "\"LEGENDS\" (Johannes x Olaf) 2024"
+  title: "\"LEGENDS\" (Johannes x Olaf)"
   slug: "legends-johannes-x-olaf-2024"
   captionTitle: "LEGENDS (Johannes x Olaf)"
   technique: ""

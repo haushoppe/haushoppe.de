@@ -7,14 +7,14 @@ order: 315
 category: digital-art
 image: "../../artwork-originals/2025/11/grinding.avif"
 de:
-  title: "„GRINDING\" (Johannes x Olaf) 2024"
+  title: "„GRINDING\" (Johannes x Olaf)"
   slug: "grinding-johannes-x-olaf-2024"
   captionTitle: "GRINDING (Johannes x Olaf)"
   technique: ""
   dimensions: ""
   edition: ""
 en:
-  title: "\"GRINDING\" (Johannes x Olaf) 2024"
+  title: "\"GRINDING\" (Johannes x Olaf)"
   slug: "grinding-johannes-x-olaf-2024"
   captionTitle: "GRINDING (Johannes x Olaf)"
   technique: ""
