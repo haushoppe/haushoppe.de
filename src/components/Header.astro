@@ -148,7 +148,9 @@ const homeHref = '/';
   .mainnav__badge {
     display: inline-block;
     margin-left: 0.4em;
-    padding: 0.12em 0.45em;
+    /* oben etwas mehr als unten: „NEU" sind nur Versalien (keine Unterlängen), sonst sitzt
+       der Text optisch zu hoch. */
+    padding: 0.24em 0.45em 0.16em;
     font-size: var(--fs-3xs);
     font-weight: 700;
     line-height: 1.35;
