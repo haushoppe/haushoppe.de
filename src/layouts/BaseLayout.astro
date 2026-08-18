@@ -244,6 +244,10 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
   body.theme-invert .mainnav__search {
     color: #f4f4f4; /* auch der aktive „Werke"-Punkt hell (sonst schwarz auf schwarz) */
   }
+  /* NEU-Pill: dunkle Schrift auf dem grauen Badge, damit sie auf dem dunklen Header wirkt. */
+  body.theme-invert .mainnav__badge {
+    color: #000;
+  }
   /* Flagge NICHT anfassen — behält Originalfarben. */
   @media (max-width: 720px) {
     body.theme-invert .site-header__inner {
