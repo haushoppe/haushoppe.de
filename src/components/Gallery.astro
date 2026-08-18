@@ -183,6 +183,10 @@ const hlData = await Promise.all(
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+  .gallery__highlight:hover .gallery__highlight-media img {
+    transform: scale(1.05);
   }
   .gallery__highlight-title {
     font-family: var(--serif);
@@ -286,7 +290,7 @@ const hlData = await Promise.all(
     padding: 1.5em;
     text-align: center;
     color: #fff;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
   }
