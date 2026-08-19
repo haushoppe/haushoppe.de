@@ -194,18 +194,28 @@ const hlData = await Promise.all(
     vertical-align: super;
     margin-left: 0.3em;
   }
-  /* REVEALED-Collection-Logo (animierte On-Chain-Inschrift) über den Thumbnails, nur dunkle Kategorie. */
+  /* REVEALED-Collection-Logo (animierte On-Chain-Inschrift) über den Thumbnails, nur dunkle Kategorie.
+     Das Band hat dieselbe Höhe wie der Kategorie-Hero (CategoryHero: 15rem, mobil 13rem, gleiche
+     Margin), damit die Thumbnails auf gleicher Linie starten wie hinter dem Hero. Die 4:1-Inschrift
+     steht darin zentriert und so groß wie möglich (bei 60rem füllt sie die Bandhöhe exakt). */
   .gallery__logo {
-    width: min(420px, 70%);
-    aspect-ratio: 4 / 1;
-    margin: 0 auto 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 15rem;
+    margin: 0 auto 1.75rem;
   }
   .gallery__logo iframe {
-    width: 100%;
-    height: 100%;
+    width: min(100%, 60rem);
+    aspect-ratio: 4 / 1;
     border: 0;
     display: block;
     background: #000;
+  }
+  @media (max-width: 720px) {
+    .gallery__logo {
+      min-height: 13rem;
+    }
   }
   /* Dunkle Kategorie (Digitale Kunst): Filter-Reiter hell auf Schwarz. */
   .gallery--dark .gallery__filter-btn {
