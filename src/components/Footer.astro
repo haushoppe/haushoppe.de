@@ -31,7 +31,7 @@ const footerPages = (await getCollection('pages'))
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
   .map((p) => ({ href: `/${p.data.path}/`, label: p.data.navLabel || p.data.title }));
 
-// Monochrome Inline-SVG-Icons (currentColor), à la haushoppe-its — kein farbiger Kreis mehr.
+// Monochrome Inline-SVG-Icons (currentColor): erben die Textfarbe und liegen ruhig im dunklen Footer.
 const icons: Record<string, string> = {
   Instagram:
     '<rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/>',
@@ -122,7 +122,7 @@ const domain = lang === 'en' ? 'haushoppe.art' : 'haushoppe.de';
     font-size: var(--fs-2xs);
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.66);
   }
   .site-footer__col a {
     color: rgba(255, 255, 255, 0.82);
@@ -172,7 +172,7 @@ const domain = lang === 'en' ? 'haushoppe.art' : 'haushoppe.de';
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 0.4rem 1.5rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.66);
     font-size: var(--fs-xs);
   }
 </style>

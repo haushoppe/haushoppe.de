@@ -264,16 +264,26 @@ a:hover {
    Punkt dunkler. Einmal definiert, damit die Optik nicht je Karussell neu erfunden wird. Die
    Positionierung/den Container (Flex-Reihe) trägt jeweils der Kontext. */
 .carousel-dot {
-  width: 9px;
-  height: 9px;
+  /* Tap-Ziel 24x24 (WCAG 2.5.8); der sichtbare 9px-Punkt sitzt zentriert im Pseudo. */
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-dot::before {
+  content: '';
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--ink);
   opacity: 0.25;
-  cursor: pointer;
   transition: opacity 0.15s;
 }
-.carousel-dot[aria-current='true'] {
+.carousel-dot[aria-current='true']::before {
   opacity: 0.75;
 }

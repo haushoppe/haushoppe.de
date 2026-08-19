@@ -87,7 +87,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     <link rel="preload" href={merriweather400} as="font" type="font/woff2" crossorigin />
     <title>{pageTitle}</title>
     <meta name="description" content={metaDesc} />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content={inverted ? '#000000' : '#ffffff'} />
     <link rel="canonical" href={canonical} />
     {dePath && <link rel="alternate" hreflang="de" href={DE_ORIGIN + dePath} />}
     {enPath && <link rel="alternate" hreflang="en" href={EN_ORIGIN + enPath} />}
@@ -255,9 +255,9 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
     }
     /* .site-header davor: Astro scoped den Burger als Nachfahren-Selektor mit höherer
        Spezifität — sonst bleibt der Balken schwarz-auf-schwarz. */
-    body.theme-invert .site-header .mainnav__burger span,
-    body.theme-invert .site-header .mainnav__burger span::before,
-    body.theme-invert .site-header .mainnav__burger span::after {
+    body.theme-invert .site-header .mainnav__burger-icon,
+    body.theme-invert .site-header .mainnav__burger-icon::before,
+    body.theme-invert .site-header .mainnav__burger-icon::after {
       background: #f4f4f4;
     }
     body.theme-invert .mainnav__list {

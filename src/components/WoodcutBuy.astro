@@ -127,7 +127,8 @@ const t =
     // Server-Config holen (Client-ID + sandbox/live). Fehlt sie (keine Functions/kein Key),
     // bleibt die Box ohne Buttons — der E-Mail-CTA darunter übernimmt. Ist das SDK schon geladen
     // (Rückkehr per View Transition), direkt rendern statt es erneut einzuhängen.
-    fetch('/api/paypal/config')
+    function boot() {
+      fetch('/api/paypal/config')
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (cfg) {
         if (!cfg || !cfg.enabled || !cfg.clientId) return;
@@ -147,6 +148,20 @@ const t =
         document.head.appendChild(sdk);
       })
       .catch(function () {});
+    }
+
+    // Das PayPal-SDK (~44 KiB) erst laden, wenn die Kaufbox in Sichtweite kommt: Besucher, die nie
+    // dorthin scrollen, holen es gar nicht. rootMargin startet es kurz vorher.
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(function (entries) {
+        for (let i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) { io.disconnect(); boot(); return; }
+        }
+      }, { rootMargin: '400px 0px' });
+      io.observe(section);
+    } else {
+      boot();
+    }
 
     function renderButtons() {
       if (!window.paypal || !window.paypal.Buttons) return;

@@ -35,7 +35,7 @@ const { content } = Astro.props;
       {content.featured.intro && <p class="home-featured__intro">{content.featured.intro}</p>}
       {content.featured.ctaText && content.featured.href && (
         <a class="home-featured__cta btn btn--dark" href={content.featured.href}>
-          {content.featured.ctaText}
+          {content.featured.ctaText}<span class="visually-hidden"> {content.featured.alt}</span>
         </a>
       )}
     </figure>

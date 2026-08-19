@@ -29,6 +29,7 @@ const altUrl = OTHER_ORIGIN + ((await altOf(path)) || '/');
 const flag = lang === 'en' ? 'de' : 'en';
 const flagLabel = lang === 'en' ? 'Zur deutschen Seite wechseln' : 'Switch to the English site';
 const searchLabel = lang === 'en' ? 'Search' : 'Suchen';
+const menuLabel = lang === 'en' ? 'Menu' : 'Menü';
 const homeHref = '/';
 ---
 
@@ -39,7 +40,7 @@ const homeHref = '/';
     </a>
     <nav class="mainnav" aria-label={lang === 'en' ? 'Main menu' : 'Hauptmenü'}>
       <input type="checkbox" id="navtoggle" class="mainnav__toggle" hidden />
-      <label for="navtoggle" class="mainnav__burger" aria-label="Menü" data-testid="nav-burger"><span></span></label>
+      <label for="navtoggle" class="mainnav__burger" data-testid="nav-burger"><span class="visually-hidden">{menuLabel}</span><span class="mainnav__burger-icon"></span></label>
       <ul class="mainnav__list">
         {
           items.map((it) => (
@@ -79,7 +80,7 @@ const homeHref = '/';
 
 <style>
   .site-header {
-    /* Luft oben wie im Original (vor der Logo-Vergrößerung). */
+    /* Luft über dem Logo. */
     padding-top: clamp(1.25rem, 3vw, 2rem);
   }
   .site-header__inner {
@@ -276,24 +277,24 @@ const homeHref = '/';
       height: 44px;
       cursor: pointer;
     }
-    .mainnav__burger span {
+    .mainnav__burger-icon {
       position: relative;
     }
-    .mainnav__burger span,
-    .mainnav__burger span::before,
-    .mainnav__burger span::after {
+    .mainnav__burger-icon,
+    .mainnav__burger-icon::before,
+    .mainnav__burger-icon::after {
       content: '';
       display: block;
       width: 26px;
       height: 2px;
       background: #000;
     }
-    .mainnav__burger span::before {
+    .mainnav__burger-icon::before {
       position: absolute;
       top: -8px;
       left: 0;
     }
-    .mainnav__burger span::after {
+    .mainnav__burger-icon::after {
       position: absolute;
       top: 8px;
       left: 0;

@@ -5,7 +5,7 @@
 // kein SPA-Zustand; mit ClientRouter als sanfter Übergang. Das Galerie-Skript (src/scripts/gallery.js,
 // via Astro gebündelt) ist reine Veredelung: Justified-Layout + Infinite Scroll (blendet die zunächst
 // versteckten Kacheln beim Scrollen ein).
-// Beim Build werden je Werk die AVIF/WebP-URLs (feste Höhe 480) vorberechnet.
+// Beim Build werden je Werk responsive AVIF/WebP-Sätze (Höhen 240+480 im Grid, 560+1000 im Highlight) vorberechnet.
 import { getImage } from 'astro:assets';
 import type { GalleryItem, FilterCat } from '../lib/artworks';
 interface Props {
@@ -22,6 +22,9 @@ const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading, total, d
 // Marker „online kaufbar" + Highlight-CTA „Weiterlesen" pro Sprache (Sprache = Galerie-Wurzel).
 const buyLabel = base === '/artwork' ? 'buy online' : 'online kaufen';
 const moreLabel = base === '/artwork' ? 'Read more' : 'Weiterlesen';
+// Responsive Bildbreiten: Grid-Kacheln sind ~200px (Justified/No-JS-Raster), die Highlight-Kachel läuft mobil voll, sonst bis ~700px.
+const GRID_SIZES = '(max-width: 700px) 45vw, 240px';
+const HL_SIZES = '(max-width: 720px) 100vw, 700px';
 
 // Highlights nehmen oben die volle Breite ein (eigene Kachel), getrennt vom Justified-Grid —
 // gallery.js fasst nur .gallery__grid an, die Highlight-Kacheln bleiben statisch stehen.
@@ -31,21 +34,27 @@ const gridItems = items.filter((it) => !it.highlight);
 // Grid-Kacheln mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
 const data = await Promise.all(
   gridItems.map(async (it) => {
-    const [a, p] = await Promise.all([
+    const [a2, a4, p2, p4] = await Promise.all([
+      getImage({ src: it.image, format: 'avif', height: 240 }),
       getImage({ src: it.image, format: 'avif', height: 480 }),
+      getImage({ src: it.image, format: 'webp', height: 240 }),
       getImage({ src: it.image, format: 'webp', height: 480 }),
     ]);
-    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), w: it.w, h: it.h, n: it.number, a: a.src, p: p.src, b: it.buyable };
+    const w2 = Math.round((240 * it.w) / it.h);
+    const w4 = Math.round((480 * it.w) / it.h);
+    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), w: it.w, h: it.h, n: it.number, avif: `${a2.src} ${w2}w, ${a4.src} ${w4}w`, webp: `${p2.src} ${w2}w, ${p4.src} ${w4}w`, p: p4.src, b: it.buyable };
   }),
 );
 // Highlight-Kacheln mit größerem Bild (breiter dargestellt).
 const hlData = await Promise.all(
   highlightItems.map(async (it) => {
-    const [a, p] = await Promise.all([
+    const [a5, a10, p5, p10] = await Promise.all([
+      getImage({ src: it.image, format: 'avif', width: 560 }),
       getImage({ src: it.image, format: 'avif', width: 1000 }),
+      getImage({ src: it.image, format: 'webp', width: 560 }),
       getImage({ src: it.image, format: 'webp', width: 1000 }),
     ]);
-    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), intro: it.intro, w: it.w, h: it.h, n: it.number, a: a.src, p: p.src, b: it.buyable };
+    return { u: it.detailUrl, t: it.title, c: it.categorySlugs.join(' '), intro: it.intro, w: it.w, h: it.h, n: it.number, avif: `${a5.src} 560w, ${a10.src} 1000w`, webp: `${p5.src} 560w, ${p10.src} 1000w`, p: p10.src, b: it.buyable };
   }),
 );
 ---
@@ -69,12 +78,12 @@ const hlData = await Promise.all(
     <div class="gallery__highlights">
       {hlData.map((d) => (
         <article class="gallery__highlight" data-testid="gallery-item" data-cats={d.c}>
-          <a href={d.u} class="gallery__highlight-media" aria-label={d.t}>
+          <a href={d.u} class="gallery__highlight-media">
             {d.b && <span class="gallery__buy" data-testid="gallery-buy">{buyLabel}</span>}
             <picture>
-              <source srcset={d.a} type="image/avif" />
-              <source srcset={d.p} type="image/webp" />
-              <img src={d.p} width={d.w} height={d.h} alt="" loading="eager" fetchpriority="high" />
+              <source srcset={d.avif} sizes={HL_SIZES} type="image/avif" />
+              <source srcset={d.webp} sizes={HL_SIZES} type="image/webp" />
+              <img src={d.p} width={d.w} height={d.h} alt="" loading="eager" fetchpriority="high" sizes={HL_SIZES} />
             </picture>
             <span class="gallery__overlay">
               <span class="gallery__title">{d.t}</span>
@@ -84,7 +93,7 @@ const hlData = await Promise.all(
           <div class="gallery__highlight-body">
             <h2 class="gallery__highlight-title">{d.t}</h2>
             {d.intro && <p class="gallery__highlight-intro">{d.intro}</p>}
-            <a href={d.u} class="gallery__highlight-cta btn btn--dark">{moreLabel}</a>
+            <a href={d.u} class="gallery__highlight-cta btn btn--dark">{moreLabel}<span class="visually-hidden"> {d.t}</span></a>
           </div>
         </article>
       ))}
@@ -98,11 +107,11 @@ const hlData = await Promise.all(
     {data.map((d, i) => (
       <article class="gallery__item" data-testid="gallery-item" data-cats={d.c} data-w={d.w} data-h={d.h}>
         {d.b && <span class="gallery__buy" data-testid="gallery-buy">{buyLabel}</span>}
-        <a href={d.u} class="gallery__link" aria-label={d.t}>
+        <a href={d.u} class="gallery__link">
           <picture class="gallery__thumb">
-            <source srcset={d.a} type="image/avif" />
-            <source srcset={d.p} type="image/webp" />
-            <img src={d.p} width={d.w} height={d.h} alt="" loading={i < 8 ? 'eager' : 'lazy'} fetchpriority={i < 4 ? 'high' : undefined} />
+            <source srcset={d.avif} sizes={GRID_SIZES} type="image/avif" />
+            <source srcset={d.webp} sizes={GRID_SIZES} type="image/webp" />
+            <img src={d.p} width={d.w} height={d.h} alt="" loading={i < 8 ? 'eager' : 'lazy'} sizes={GRID_SIZES} />
           </picture>
           <span class="gallery__overlay">
             <span class="gallery__title">{d.t}</span>
@@ -252,7 +261,7 @@ const hlData = await Promise.all(
   /* Progressive Enhancement: OHNE JS ein einfaches, sofort sichtbares Raster — die serverseitig
      gerenderte erste Charge steht so IMMER im Bild, unabhängig von View-Transition-Timing oder
      Browser. Sobald gallery.js gelaufen ist (.is-ready), wird auf das absolute Justified-Layout
-     umgeschaltet. Kein opacity:0-Gate mehr, das die Galerie bei fehlendem JS leer ließ. */
+     umgeschaltet. */
   .gallery__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
