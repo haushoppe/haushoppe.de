@@ -539,6 +539,8 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
   .ordinal-caption {
     margin: clamp(1.75rem, 4vw, 2.5rem) auto 0;
     max-width: 560px;
+    /* dezente Credit-Zeile: so klein wie der Eyebrow. */
+    font-size: var(--fs-2xs);
     color: #b4b4b4;
     line-height: 1.6;
   }
@@ -546,8 +548,8 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
      helle Farbe + der Abstand. Hover invertiert auf hell. */
   .ordinal-buy {
     margin-top: 1.5rem;
-    /* gleiche kleine Größe wie der Eyebrow: eine Klein-Stufe statt zwei. */
-    font-size: var(--fs-2xs);
+    /* so groß wie die übrigen CTAs (überschreibt das kleinere --fs-xs von .btn--outline). */
+    font-size: var(--fs-md);
     color: #f4f4f4;
   }
   .ordinal-buy:hover,
