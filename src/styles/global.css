@@ -304,3 +304,20 @@ a:hover {
     animation: heroVideoFade 1s ease both;
   }
 }
+
+/* Textumbruch-Feinschliff (Progressive Enhancement; Browser ohne Support brechen normal um):
+   Fließtext bekommt kein einzelnes Wort mehr auf die letzte Zeile (pretty), Überschriften
+   ausgewogene Zeilenlängen (balance). Kurze Display-Zitate setzen balance gezielt selbst. */
+p,
+li,
+figcaption,
+blockquote,
+dd {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
