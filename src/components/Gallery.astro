@@ -22,6 +22,8 @@ const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading, total, d
 // Marker „online kaufbar" + Highlight-CTA „Weiterlesen" pro Sprache (Sprache = Galerie-Wurzel).
 const buyLabel = base === '/artwork' ? 'buy online' : 'online kaufen';
 const moreLabel = base === '/artwork' ? 'Read more' : 'Weiterlesen';
+// Eyebrow unter dem REVEALED-Logo (nur dunkle Kategorie), Wortlaut wie auf den Detailseiten.
+const revealedEyebrow = base === '/artwork' ? 'Bitcoin Ordinals · Glitch Art · Johannes × Olaf' : 'Bitcoin-Ordinals · Glitch Art · Johannes × Olaf';
 // Responsive Bildbreiten: Grid-Kacheln sind ~200px (Justified/No-JS-Raster), die Highlight-Kachel läuft mobil voll, sonst bis ~700px.
 const GRID_SIZES = '(max-width: 700px) 45vw, 240px';
 const HL_SIZES = '(max-width: 720px) 100vw, 700px';
@@ -72,7 +74,10 @@ const hlData = await Promise.all(
 
   {dark && (
     <div class="gallery__logo" aria-hidden="true">
-      <iframe src="https://ordinals.com/content/d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0" title="REVEALED" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin"></iframe>
+      <div class="gallery__logo-mark">
+        <iframe src="https://ordinals.com/content/d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0" title="REVEALED" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin"></iframe>
+      </div>
+      <p class="gallery__logo-eyebrow">{revealedEyebrow}</p>
     </div>
   )}
 
@@ -200,17 +205,33 @@ const hlData = await Promise.all(
      steht darin zentriert und so groß wie möglich (bei 60rem füllt sie die Bandhöhe exakt). */
   .gallery__logo {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.9rem;
     min-height: 15rem;
     margin: 0 auto 1.75rem;
   }
-  .gallery__logo iframe {
-    width: min(100%, 60rem);
+  .gallery__logo-mark {
+    width: min(480px, 82%);
     aspect-ratio: 4 / 1;
+  }
+  .gallery__logo-mark iframe {
+    width: 100%;
+    height: 100%;
     border: 0;
     display: block;
     background: #000;
+  }
+  /* Eyebrow unter der Wortmarke, im Stil der Detailseiten (ordinal-eyebrow). */
+  .gallery__logo-eyebrow {
+    margin: 0;
+    font-size: var(--fs-2xs);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #b4b4b4;
+    text-align: center;
+    text-wrap: balance;
   }
   @media (max-width: 720px) {
     .gallery__logo {
