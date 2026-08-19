@@ -1,0 +1,22 @@
+---
+// Gemälde-Hero: Atelier-Loop (Olaf malt an der großen Leinwand) mit Spruch. Reines Zitatband.
+import CategoryHero from './CategoryHero.astro';
+import clip from '../assets/gemaelde/gemaelde-clip.mp4';
+import poster from '../assets/gemaelde/gemaelde-poster.jpg';
+interface Props {
+  lang: 'de' | 'en';
+}
+const { lang } = Astro.props;
+const quote =
+  lang === 'en'
+    ? 'As far back as I can remember, I have done nothing but paint.'
+    : 'Soweit ich denken kann, habe ich nichts anderes gemacht als gemalt.';
+---
+
+<CategoryHero
+  clip={clip}
+  poster={poster}
+  quote={quote}
+  objectPosition="center 45%"
+  testid="painting-hero"
+/>
