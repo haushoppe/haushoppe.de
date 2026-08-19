@@ -206,4 +206,13 @@ const jsonLd = [artJsonLd, breadcrumb];
   :global(body.theme-invert) .art-nav__link {
     color: #f4f4f4;
   }
+  /* Dunkle Seiten: Pfeile/Label vom dunklen #666 auf den gedämpften Ton heben (lesbar auf Schwarz,
+     ein Grauton weniger), Nachbar-Titel serifenlos wie der Ordinal-Titel. */
+  :global(body.theme-invert) .art-nav__arrow,
+  :global(body.theme-invert) .art-nav__cap {
+    color: #b4b4b4;
+  }
+  :global(body.theme-invert) .art-nav__title {
+    font-family: var(--sans);
+  }
 </style>
