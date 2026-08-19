@@ -147,8 +147,23 @@ const hlData = await Promise.all(
     gap: 10px;
     margin: 0 auto 1.75rem;
   }
+  /* Ab Desktop-Breite gleich lange Reiter: eine Zeile mit gleich breiten Spalten (minmax(0, 1fr)
+     hebt die min-content-Untergrenze auf), gedeckelt auf die Breite des längsten Labels. Darunter
+     bleibt der umbrechende Chip-Fluss, damit lange Labels auf schmalen Viewports nicht überlaufen. */
+  @media (min-width: 900px) {
+    .gallery__filter {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      max-width: 52rem;
+    }
+    .gallery__filter-btn {
+      white-space: nowrap;
+    }
+  }
   .gallery__filter-btn {
     display: block;
+    text-align: center;
     border: 0;
     cursor: pointer;
     background: #f7f7f7;
