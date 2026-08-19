@@ -229,6 +229,9 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
      in Originalfarben — nur Logo/Navi/Suche werden hell. */
   body.theme-invert {
     background: #000;
+    /* Zeilen-Trenner der offenen Mobilnavi hell (Custom Property vererbt an die von Header
+       gerenderten Menüzeilen, unabhängig vom Style-Scoping). */
+    --nav-divider: rgba(255, 255, 255, 0.18);
   }
   body.theme-invert .site-header {
     background: #000;

@@ -239,16 +239,20 @@ const hlData = await Promise.all(
     }
   }
   /* Dunkle Kategorie (Digitale Kunst): Filter-Reiter hell auf Schwarz. */
+  /* Auf Schwarz braucht der Chip einen sichtbaren Rand, sonst verschwimmt er mit dem Hintergrund. */
   .gallery--dark .gallery__filter-btn {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     color: #cfcfcf;
   }
   .gallery--dark .gallery__filter-btn:hover {
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.45);
     color: #fff;
   }
   .gallery--dark .gallery__filter-btn.is-active {
     background: #f4f4f4;
+    border-color: #f4f4f4;
     color: #000;
   }
   /* ── Highlight-Kachel: volle Breite oben, Bild links, Intro + „Weiterlesen" rechts. Liegt
