@@ -1,9 +1,9 @@
 ---
-// „Angeber"-Banner oben auf der Kategorie „Digitale Kunst": kurzer Loop-Clip von der Ausstellung
-// der Glitch-Art durch die Bitcoin Art Society in Hongkong (Bitcoin Conf Asia / Bitcoin Summit /
-// Runes Asia 2025). Stummes Autoplay + Loop; falls der Browser das Autoplay verweigert (Standbild
-// sonst wie ein Bild), erscheint ein Play-Button. Ein zweiter Button schaltet den Ton dazu. Bei
-// prefers-reduced-motion kein Autoplay, sondern native Steuerung.
+// Banner oben auf der Kategorie „Digitale Kunst": kurzer, stummer Loop-Clip von der
+// Ausstellung der Glitch-Art durch die Bitcoin Art Society in Hongkong (Bitcoin Conf Asia /
+// Bitcoin Summit / Runes Asia 2025). Der Clip hat KEINE Tonspur, dadurch spielt ihn jeder Browser
+// bedingungslos an (Chrome blockiert nur Autoplay mit Ton). Ein Play-Button erscheint nur, falls
+// das Video doch einmal steht (z. B. bei prefers-reduced-motion).
 interface Props {
   lang?: 'de' | 'en';
 }
@@ -16,8 +16,6 @@ const t =
     ? {
         label: 'Our glitch art exhibited in Hong Kong',
         play: 'Play video',
-        soundOn: 'Sound on',
-        soundOff: 'Sound off',
         capA: 'In 2025 our glitch art travelled to Hong Kong. The ',
         credit: 'Bitcoin Art Society',
         capB: ' showed it at Bitcoin Conf Asia, Bitcoin Summit and Runes Asia. Digital art, too, looks best on a real wall. Exhibitions end, the blockchain preserves forever.',
@@ -25,8 +23,6 @@ const t =
     : {
         label: 'Unsere Glitch-Art, ausgestellt in Hongkong',
         play: 'Video abspielen',
-        soundOn: 'Ton an',
-        soundOff: 'Ton aus',
         capA: '2025 reiste unsere Glitch-Art nach Hongkong. Die ',
         credit: 'Bitcoin Art Society',
         capB: ' zeigte sie auf der Bitcoin Conf Asia, dem Bitcoin Summit und Runes Asia. Auch Digitale Kunst wirkt am besten auf einer echten Wand. Ausstellungen enden, die Blockchain bewahrt für immer.',
@@ -39,55 +35,41 @@ const t =
     <button type="button" class="gav__play" data-gav-play aria-label={t.play} hidden>
       <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg>
     </button>
-    <button type="button" class="gav__sound" data-gav-sound aria-pressed="false">{t.soundOn}</button>
   </div>
   <figcaption class="gav__caption">
     {t.capA}<a href={creditHref} target="_blank" rel="noopener nofollow">{t.credit}</a>{t.capB}
   </figcaption>
 </figure>
 
-<script define:vars={{ soundOn: t.soundOn, soundOff: t.soundOff }}>
+<script>
   (function () {
-    const fig = document.querySelector('.gav[data-testid="glitch-video"]');
-    if (!fig) return;
-    const v = fig.querySelector('.gav__video');
-    const btn = fig.querySelector('[data-gav-sound]');
-    const playBtn = fig.querySelector('[data-gav-play]');
-    // Reduce-Motion: nicht automatisch abspielen, stattdessen native Steuerung.
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      v.removeAttribute('autoplay');
-      v.controls = true;
-      try { v.pause(); } catch (e) {}
-      if (btn) btn.hidden = true;
-      if (playBtn) playBtn.hidden = true;
-      return;
-    }
-    // Play-Button spiegelt den Zustand: sichtbar wenn das Video steht, weg sobald es läuft.
-    function sync() { if (playBtn) playBtn.hidden = !v.paused; }
-    v.addEventListener('play', sync);
-    v.addEventListener('pause', sync);
-    sync();
-    if (playBtn) {
-      playBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        v.play().catch(function () {});
+    function setup() {
+      const fig = document.querySelector('.gav[data-testid="glitch-video"]');
+      if (!fig || fig.dataset.gavReady) return;
+      fig.dataset.gavReady = '1';
+      const v = fig.querySelector('.gav__video');
+      const playBtn = fig.querySelector('[data-gav-play]');
+      // Reduce-Motion: nicht automatisch abspielen, stattdessen native Steuerung.
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        v.removeAttribute('autoplay');
+        v.controls = true;
+        try { v.pause(); } catch (e) {}
+        if (playBtn) playBtn.hidden = true;
+        return;
+      }
+      // Play-Button spiegelt den Zustand: sichtbar wenn das Video steht, weg sobald es läuft.
+      function sync() { if (playBtn) playBtn.hidden = !v.paused; }
+      v.addEventListener('play', sync);
+      v.addEventListener('pause', sync);
+      sync();
+      // Klick (Play-Button oder Clip) startet das Video, falls es steht.
+      fig.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;
+        if (v.paused) v.play().catch(function () {});
       });
     }
-    function toggleSound() {
-      v.muted = !v.muted;
-      if (!v.muted) v.play().catch(function () {});
-      if (btn) {
-        btn.textContent = v.muted ? soundOn : soundOff;
-        btn.setAttribute('aria-pressed', v.muted ? 'false' : 'true');
-      }
-    }
-    // Klick auf den Clip: steht er, wird abgespielt; läuft er, wird der Ton umgeschaltet. Der
-    // Ton-Button und der Credit-Link behalten ihr eigenes Verhalten; der Play-Button ebenso.
-    fig.addEventListener('click', function (e) {
-      if (e.target.closest('a') || e.target.closest('[data-gav-play]')) return;
-      if (e.target.closest('[data-gav-sound]')) { toggleSound(); return; }
-      if (v.paused) { v.play().catch(function () {}); } else { toggleSound(); }
-    });
+    setup();
+    document.addEventListener('astro:page-load', setup);
   })();
 </script>
 
@@ -137,27 +119,6 @@ const t =
   .gav__play:hover,
   .gav__play:focus-visible {
     background: rgba(0, 0, 0, 0.75);
-  }
-  /* Entstummen-Button unten rechts, dezent über dem Clip. */
-  .gav__sound {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    font: inherit;
-    font-size: var(--fs-2xs);
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.42em 0.85em;
-    cursor: pointer;
-  }
-  .gav__sound:hover,
-  .gav__sound:focus-visible {
-    background: rgba(0, 0, 0, 0.82);
   }
   .gav__caption {
     cursor: pointer;

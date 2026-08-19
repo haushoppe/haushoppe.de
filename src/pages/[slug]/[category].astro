@@ -24,7 +24,7 @@ const allLabel = LANG === 'de' ? 'Alle' : 'All';
 const cats = await galleryCategories(LANG);
 const allItems = await galleryItems(LANG);
 const items = allItems.filter((it) => it.categorySlugs.includes(cat.slug));
-// Digitale Kunst (DE) / Digital Art (EN): eigene REVEALED-Collection-Seite, dunkles Theme + Logo + „Angeber"-Video.
+// Digitale Kunst (DE) / Digital Art (EN): eigene REVEALED-Collection-Seite, dunkles Theme + Logo + Ausstellungs-Video.
 const isDigitalArt = cat.slug === 'digitale-kunst' || cat.slug === 'digital-art';
 // Holzschnitte: breiter Druckmaschinen-Hero (Atlantis 4) zwischen Filter und Kacheln.
 const isWoodcut = cat.slug === 'holzschnitte' || cat.slug === 'woodcuts';
