@@ -140,19 +140,19 @@ const hlData = await Promise.all(
     padding-inline: 15px;
   }
   /* Kategorie-Filter */
+  /* Gleich große Reiter: mobil als 2×2-Mosaik (zwei gleich breite Spalten), ab Desktop-Breite eine
+     Zeile mit vier gleich breiten Spalten. minmax(0, 1fr) hält die Spalten exakt gleich breit und
+     verhindert Seiten-Überlauf durch lange Einzelwörter. */
   .gallery__filter {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 10px;
+    max-width: 30rem;
     margin: 0 auto 1.75rem;
   }
-  /* Ab Desktop-Breite gleich lange Reiter: eine Zeile mit gleich breiten Spalten (minmax(0, 1fr)
-     hebt die min-content-Untergrenze auf), gedeckelt auf die Breite des längsten Labels. Darunter
-     bleibt der umbrechende Chip-Fluss, damit lange Labels auf schmalen Viewports nicht überlaufen. */
   @media (min-width: 900px) {
     .gallery__filter {
-      display: grid;
+      grid-template-columns: none;
       grid-auto-flow: column;
       grid-auto-columns: minmax(0, 1fr);
       max-width: 52rem;
