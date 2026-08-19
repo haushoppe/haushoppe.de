@@ -1,0 +1,130 @@
+---
+// Schmales Hero-Band der Holzschnitt-Kategorieseite (zwischen Filter und Kacheln), gebaut wie der
+// „Mein letzter Holzschnitt"-Hero der Detailseite: schwarze Bühne, Werkstatt-Loop links full-bleed,
+// rechte Kante weich nach Schwarz, Spruch rechts in weißer Serife. Klickt aufs Werk (Atlantis 4).
+import clip from '../assets/atlantis-4/lebenswerk-clip.mp4';
+import poster from '../assets/atlantis-4/lebenswerk-poster.jpg';
+interface Props {
+  lang: 'de' | 'en';
+  href: string;
+}
+const { lang, href } = Astro.props;
+const t =
+  lang === 'en'
+    ? { quote: 'A legacy in ten colours.', more: 'View Atlantis 4' }
+    : { quote: 'Ein Vermächtnis in zehn Farben.', more: 'Atlantis 4 ansehen' };
+---
+
+<a class="wc-hero" href={href} data-testid="woodcut-hero">
+  <span class="wc-hero__media">
+    <video class="wc-hero__video" src={clip} autoplay muted loop playsinline preload="metadata" poster={poster.src} aria-hidden="true"></video>
+    <img class="wc-hero__still" src={poster.src} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+  </span>
+  <span class="wc-hero__quote">{t.quote}</span>
+  <span class="visually-hidden">{t.more}</span>
+</a>
+
+<script is:inline>
+  (function () {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    function arm() {
+      document.querySelectorAll('.wc-hero__video:not([data-armed])').forEach(function (v) {
+        v.setAttribute('data-armed', '1');
+        new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { v.play().catch(function () {}); obs.disconnect(); }
+          });
+        }, { threshold: 0.2 }).observe(v);
+      });
+    }
+    arm();
+    if (!window.__wcHeroArm) {
+      window.__wcHeroArm = true;
+      document.addEventListener('astro:page-load', arm);
+    }
+  })();
+</script>
+
+<style>
+  .wc-hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 22rem;
+    margin: 0 auto 1.75rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background: #030303;
+    color: #fff;
+    overflow: hidden;
+    text-decoration: none;
+  }
+  .wc-hero__media {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 62%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .wc-hero__video,
+  .wc-hero__still {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .wc-hero__still {
+    display: none;
+  }
+  /* Rechte Videokante weich nach Schwarz, damit der Spruch frei steht. */
+  .wc-hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, transparent 42%, rgba(3, 3, 3, 0.72) 78%, #030303 100%);
+  }
+  .wc-hero__quote {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    max-width: 38%;
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    line-height: 1.25;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .wc-hero:hover .wc-hero__video,
+  .wc-hero:hover .wc-hero__still {
+    transform: scale(1.03);
+  }
+  @media (max-width: 720px) {
+    .wc-hero {
+      min-height: 19rem;
+      align-items: flex-end;
+      justify-content: flex-start;
+    }
+    .wc-hero__media {
+      width: 100%;
+    }
+    .wc-hero__media::after {
+      background: linear-gradient(180deg, rgba(3, 3, 3, 0.3) 0%, rgba(3, 3, 3, 0.8) 100%);
+    }
+    .wc-hero__quote {
+      max-width: 100%;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wc-hero__video {
+      display: none;
+    }
+    .wc-hero__still {
+      display: block;
+    }
+    .wc-hero:hover .wc-hero__still {
+      transform: none;
+    }
+  }
+</style>

@@ -68,6 +68,8 @@ const hlData = await Promise.all(
     ))}
   </nav>
 
+  <slot name="hero" />
+
   {dark && (
     <div class="gallery__logo" aria-hidden="true">
       <iframe src="https://ordinals.com/content/d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0" title="REVEALED" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin"></iframe>

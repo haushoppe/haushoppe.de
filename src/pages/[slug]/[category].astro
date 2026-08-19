@@ -5,6 +5,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Gallery from '../../components/Gallery.astro';
 import GlitchArtBanner from '../../components/GlitchArtBanner.astro';
+import WoodcutHero from '../../components/WoodcutHero.astro';
 import { galleryItems, galleryCategories } from '../../lib/artworks';
 import { breadcrumbJsonLd, itemListJsonLd } from '../../lib/seo';
 import { LANG, SELF_ORIGIN } from '../../lib/lang';
@@ -25,6 +26,9 @@ const allItems = await galleryItems(LANG);
 const items = allItems.filter((it) => it.categorySlugs.includes(cat.slug));
 // Digitale Kunst (DE) / Digital Art (EN): eigene REVEALED-Collection-Seite, dunkles Theme + Logo + „Angeber"-Video.
 const isDigitalArt = cat.slug === 'digitale-kunst' || cat.slug === 'digital-art';
+// Holzschnitte: breiter Druckmaschinen-Hero (Atlantis 4) zwischen Filter und Kacheln.
+const isWoodcut = cat.slug === 'holzschnitte' || cat.slug === 'woodcuts';
+const atlantis4 = items.find((it) => /atlantis-4/.test(it.detailUrl));
 const description =
   LANG === 'de'
     ? `${cat.name} von Olaf Hoppe. HAUS HOPPE, Galerie für Bildende Kunst.`
@@ -41,6 +45,8 @@ const jsonLd = [
 ---
 
 <BaseLayout title={cat.name} description={description} jsonLd={jsonLd} inverted={isDigitalArt}>
-  <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={allItems.length} dark={isDigitalArt} />
+  <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={allItems.length} dark={isDigitalArt}>
+    {isWoodcut && atlantis4 && <WoodcutHero slot="hero" lang={LANG} href={atlantis4.detailUrl} />}
+  </Gallery>
   {isDigitalArt && <GlitchArtBanner lang={LANG} />}
 </BaseLayout>
