@@ -194,6 +194,11 @@ const hlData = await Promise.all(
     color: #fff;
     cursor: default;
   }
+  /* Sichtbarer Tastatur-Fokus (Material-State); currentColor passt sich hell/dunkel an. */
+  .gallery__filter-btn:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
   .gallery__filter-count {
     font-size: 0.6em;
     vertical-align: super;
@@ -229,7 +234,7 @@ const hlData = await Promise.all(
     font-size: var(--fs-2xs);
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #b4b4b4;
+    color: var(--on-dark-med, #b4b4b4);
     text-align: center;
     text-wrap: balance;
   }
@@ -243,7 +248,7 @@ const hlData = await Promise.all(
      liegt als hellere Ebene über dem schwarzen Hintergrund, der aktive Chip am höchsten (fast weiß). */
   .gallery--dark .gallery__filter-btn {
     background: rgba(255, 255, 255, 0.18);
-    color: #e4e4e4;
+    color: var(--on-dark-high);
   }
   .gallery--dark .gallery__filter-btn:hover {
     background: rgba(255, 255, 255, 0.28);

@@ -229,8 +229,11 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
      in Originalfarben — nur Logo/Navi/Suche werden hell. */
   body.theme-invert {
     background: #000;
-    /* Zeilen-Trenner der offenen Mobilnavi hell (Custom Property vererbt an die von Header
-       gerenderten Menüzeilen, unabhängig vom Style-Scoping). */
+    /* Material-Dark-Tokens (vererben über Style-Scope-Grenzen an Header/Gallery/ArtworkBody):
+       Text als Emphasis-Stufen über Deckkraft statt fester Grautöne. */
+    --on-dark-high: rgba(255, 255, 255, 0.87); /* Titel, Navi, Chip-Text */
+    --on-dark-med: rgba(255, 255, 255, 0.6); /* Eyebrow, Caption, Credits */
+    /* Zeilen-Trenner der offenen Mobilnavi hell (sonst schwarz auf schwarzem Panel = unsichtbar). */
     --nav-divider: rgba(255, 255, 255, 0.18);
   }
   body.theme-invert .site-header {
@@ -246,7 +249,7 @@ const jsonLdItems = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [gall
   body.theme-invert .mainnav__link:hover,
   body.theme-invert .mainnav__link.is-active,
   body.theme-invert .mainnav__search {
-    color: #f4f4f4; /* auch der aktive „Werke"-Punkt hell (sonst schwarz auf schwarz) */
+    color: var(--on-dark-high); /* auch der aktive „Werke"-Punkt hell (sonst schwarz auf schwarz) */
   }
   /* NEU-Pill: dunkle Schrift auf dem grauen Badge, damit sie auf dem dunklen Header wirkt. */
   body.theme-invert .mainnav__badge {
