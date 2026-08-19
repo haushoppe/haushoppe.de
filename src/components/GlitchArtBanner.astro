@@ -32,9 +32,7 @@ const t =
 <figure class="gav" data-testid="glitch-video">
   <div class="gav__frame">
     <video class="gav__video" src={src} poster={poster} autoplay muted loop playsinline preload="metadata" aria-label={t.label}></video>
-    <button type="button" class="gav__play" data-gav-play aria-label={t.play} hidden>
-      <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg>
-    </button>
+    <button type="button" class="gav__play" data-gav-play aria-label={t.play} hidden></button>
   </div>
   <figcaption class="gav__caption">
     {t.capA}<a href={creditHref} target="_blank" rel="noopener nofollow">{t.credit}</a>{t.capB}
@@ -93,32 +91,35 @@ const t =
     object-fit: cover;
     display: block;
   }
-  /* Play-Button: mittig, erscheint nur wenn das Video steht (macht klar: es ist ein Video). */
+  /* Play-Button im YouTube-Stil (wie die yt-facade der Seite): Rechteck, weißes Dreieck, rot beim
+     Hovern. Erscheint nur, wenn das Video steht. */
   .gav__play {
     position: absolute;
-    top: 50%;
     left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 72px;
-    height: 72px;
+    width: 68px;
+    height: 48px;
     padding: 0;
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
+    border: 0;
+    background: rgba(0, 0, 0, 0.75);
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: background 0.2s;
   }
-  .gav__play svg {
-    margin-left: 3px; /* Dreieck optisch zentrieren */
+  .gav__play::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-40%, -50%);
+    border-style: solid;
+    border-width: 11px 0 11px 19px;
+    border-color: transparent transparent transparent #fff;
   }
   .gav__play:hover,
   .gav__play:focus-visible {
-    background: rgba(0, 0, 0, 0.75);
+    background: #f00;
   }
   .gav__caption {
     cursor: pointer;
