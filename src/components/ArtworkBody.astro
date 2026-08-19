@@ -465,7 +465,8 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
   }
   /* Animierte REVEALED-Wortmarke (On-Chain-Inschrift) als Collection-Marke oben auf der Bühne. */
   .ordinal-logo {
-    width: min(340px, 72%);
+    /* Gleiche Größe wie die Wortmarke auf den Kategorieseiten (Gallery: .gallery__logo-mark). */
+    width: min(480px, 82%);
     aspect-ratio: 4 / 1;
     margin: 0 auto 1.1rem;
   }
