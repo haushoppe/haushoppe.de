@@ -239,20 +239,18 @@ const hlData = await Promise.all(
     }
   }
   /* Dunkle Kategorie (Digitale Kunst): Filter-Reiter hell auf Schwarz. */
-  /* Auf Schwarz braucht der Chip einen sichtbaren Rand, sonst verschwimmt er mit dem Hintergrund. */
+  /* Material-Dark-Prinzip: „Höhe" entsteht über eine hellere Fläche, nicht über Ränder. Der Chip
+     liegt als hellere Ebene über dem schwarzen Hintergrund, der aktive Chip am höchsten (fast weiß). */
   .gallery--dark .gallery__filter-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #cfcfcf;
+    background: rgba(255, 255, 255, 0.18);
+    color: #e4e4e4;
   }
   .gallery--dark .gallery__filter-btn:hover {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.28);
     color: #fff;
   }
   .gallery--dark .gallery__filter-btn.is-active {
     background: #f4f4f4;
-    border-color: #f4f4f4;
     color: #000;
   }
   /* ── Highlight-Kachel: volle Breite oben, Bild links, Intro + „Weiterlesen" rechts. Liegt
