@@ -208,33 +208,6 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
       document.addEventListener('astro:page-load', reveal);
     }
   })();
-
-  // Finale-Hero-Video (unterhalb der Falz): stummes Autoplay startet nativ nur, wenn das Video beim
-  // Laden sichtbar ist. Da der Hero weit unten sitzt, stößt ein IntersectionObserver das Abspielen an,
-  // sobald er ins Bild scrollt (auf iOS erlaubt, weil stumm + playsinline). Reduce-Motion: nichts
-  // erzwingen, dann greift das Standbild aus dem CSS.
-  (function () {
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (!('IntersectionObserver' in window)) return;
-    function arm() {
-      var vids = document.querySelectorAll('.finale-hero__video:not([data-autoplay-armed])');
-      if (!vids.length) return;
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) e.target.play().catch(function () {});
-        });
-      }, { threshold: 0.25 });
-      vids.forEach(function (v) {
-        v.setAttribute('data-autoplay-armed', '1');
-        io.observe(v);
-      });
-    }
-    arm();
-    if (!window.__finaleArm) {
-      window.__finaleArm = true;
-      document.addEventListener('astro:page-load', arm);
-    }
-  })();
 </script>
 
 <style is:global>

@@ -131,6 +131,10 @@ Olaf malt Motive manchmal **zweimal** (gleicher oder fast gleicher Titel, z. B. 
 
 ---
 
+## 🎬 Technik-Regel: kein Vertrauen aufs Browser-Autoplay (VERBINDLICH)
+
+Wir verlassen uns NIE auf das Autoplay des Browsers. Jedes `<video autoplay>` wird zusätzlich per JavaScript angestoßen: `src/scripts/hero-autoplay.js` (global in `BaseLayout.astro` gebündelt) ruft für jedes `<video autoplay>` beim Sichtbarwerden (IntersectionObserver) und sofort `play()` auf, stumm und `playsinline`. Ein neues Autoplay-Video braucht deshalb nur die Attribute `autoplay muted loop playsinline` und ein `poster`, kein eigenes Skript. Grund: Browser (besonders iOS/Safari, Stromsparmodus, Preload-Caches) starten stummes Autoplay nicht zuverlässig.
+
 ## 📎 Bilder & Dateien einfügen — über Google Drive
 
 **Ein in den Chat eingefügtes/„gepastetes" Bild kannst du NICHT committen** — es kommt nur als Bildinhalt an (du siehst es), nicht als Datei mit Bytes. **Bild- und Dateiaustausch läuft deshalb über den geteilten Google-Drive-Ordner:**
