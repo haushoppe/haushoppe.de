@@ -81,6 +81,7 @@ export async function galleryCategories(lang: Lang): Promise<FilterCat[]> {
     map.set(a.data.category, (map.get(a.data.category) ?? 0) + 1);
   }
   return [...map.entries()]
+    .filter(([key]) => CATEGORY_ORDER.includes(key))
     .sort((a, b) => CATEGORY_ORDER.indexOf(a[0]) - CATEGORY_ORDER.indexOf(b[0]))
     .map(([key, count]) => ({ slug: catSlug(key, lang), name: catName(key, lang), count }));
 }
