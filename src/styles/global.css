@@ -287,3 +287,20 @@ a:hover {
 .carousel-dot[aria-current='true']::before {
   opacity: 0.75;
 }
+
+/* Hero-Videos sanft einblenden (~1s), damit sie nicht hart erscheinen — beim Laden UND nach jeder
+   View-Transition (frisches Element, Animation läuft neu). Trifft alle Autoplay-Hero-Videos
+   (Startseite, Holzschnitte, Finale, Glitch-Banner). Reduce-Motion: kein Fade. */
+@keyframes heroVideoFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  video[autoplay] {
+    animation: heroVideoFade 1s ease both;
+  }
+}
