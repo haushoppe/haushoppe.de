@@ -15,6 +15,9 @@ export const CATEGORIES: Record<CategoryKey, { de: CatLocale; en: CatLocale }> =
 
 export const CATEGORY_KEYS = Object.keys(CATEGORIES) as CategoryKey[];
 
+// Reihenfolge der Filter-Reiter (Alle steht davor): Gemälde, Holzschnitte, Digitale Kunst, Zeichnungen.
+export const CATEGORY_ORDER: CategoryKey[] = ['paintings', 'woodcuts', 'digital-art', 'drawings'];
+
 // DE-/EN-Slug -> kanonischer Schlüssel.
 export function keyByDeSlug(slug: string): CategoryKey | undefined {
   return CATEGORY_KEYS.find((k) => CATEGORIES[k].de.slug === slug);

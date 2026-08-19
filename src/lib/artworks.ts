@@ -2,7 +2,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import type { ImageMetadata } from 'astro';
 import { smartQuotes } from './text';
 import { isWoodcut } from './pricing';
-import { catSlug, catName, type CategoryKey } from './categories';
+import { catSlug, catName, CATEGORY_ORDER, type CategoryKey } from './categories';
 
 type Lang = 'de' | 'en';
 export type Art = CollectionEntry<'artworks'>;
@@ -81,6 +81,6 @@ export async function galleryCategories(lang: Lang): Promise<FilterCat[]> {
     map.set(a.data.category, (map.get(a.data.category) ?? 0) + 1);
   }
   return [...map.entries()]
-    .map(([key, count]) => ({ slug: catSlug(key, lang), name: catName(key, lang), count }))
-    .sort((a, b) => a.name.localeCompare(b.name, lang === 'en' ? 'en' : 'de'));
+    .sort((a, b) => CATEGORY_ORDER.indexOf(a[0]) - CATEGORY_ORDER.indexOf(b[0]))
+    .map(([key, count]) => ({ slug: catSlug(key, lang), name: catName(key, lang), count }));
 }
