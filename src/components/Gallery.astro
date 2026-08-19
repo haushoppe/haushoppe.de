@@ -150,7 +150,8 @@ const hlData = await Promise.all(
     border: 0;
     cursor: pointer;
     background: #f7f7f7;
-    color: #6c7781;
+    /* dunkler Blaugrau: AA-Kontrast auf #f7f7f7 (war #6c7781, 4.26:1). */
+    color: #565f67;
     padding: 0.7em 1.3em;
     font-family: inherit;
     font-size: 0.9em;
@@ -166,7 +167,8 @@ const hlData = await Promise.all(
     color: #4b4b4b;
   }
   .gallery__filter-btn.is-active {
-    background: #c0c0c0;
+    /* gefüllter dunkler Chip = klarer „aktiv"-Zustand mit hohem Kontrast (war #fff auf #c0c0c0, 1.81:1). */
+    background: var(--ink, #1a1a1a);
     color: #fff;
     cursor: default;
   }
