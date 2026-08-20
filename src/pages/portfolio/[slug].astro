@@ -85,7 +85,7 @@ const breadcrumb = breadcrumbJsonLd([
 
 // Social-Preview (das Werk als Bild) + angereichertes VisualArtwork-JSON-LD. Jedes Werk mit
 // Detailseite hat ein Bild (auch Ordinals: ihr Galerie-Thumbnail), also für alle erzeugen.
-const og = await getImage({ src: image, format: 'jpeg', width: 1200 });
+const og = await getImage({ src: image, format: 'jpeg', width: 1200, height: 630, fit: 'cover', position: 'center' });
 const ogImage = og.src;
 const artJsonLd = artworkJsonLd({
   origin: SELF_ORIGIN,

@@ -9,7 +9,7 @@ const meta =
     : { title: 'Videos', description: 'Videos about Olaf Hoppe and HAUS HOPPE. Woodcut, painting and more.' };
 ---
 
-<BaseLayout title={meta.title} description={meta.description} layout="boxed">
+<BaseLayout title={meta.title} description={meta.description} layout="boxed" image={`/og/videos-${LANG}.jpg`}>
   <h1 class="visually-hidden">Videos</h1>
   <VideosGallery lang={LANG} />
 </BaseLayout>

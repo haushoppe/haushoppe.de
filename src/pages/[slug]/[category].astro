@@ -31,6 +31,9 @@ const isDigitalArt = cat.slug === 'digitale-kunst' || cat.slug === 'digital-art'
 const isWoodcut = cat.slug === 'holzschnitte' || cat.slug === 'woodcuts';
 // Gemälde: Atelier-Hero (Olaf malt) mit Spruch zwischen Filter und Kacheln.
 const isPainting = cat.slug === 'gemaelde' || cat.slug === 'paintings';
+// Social-Preview: gebaute Hero-Header-Karte je Kategorie (Poster + Spruch), sonst Marken-Default.
+const ogCard = isPainting ? 'gemaelde' : isWoodcut ? 'holzschnitte' : isDigitalArt ? 'digitale-kunst' : null;
+const ogImage = ogCard ? `/og/${ogCard}-${LANG}.jpg` : undefined;
 const description =
   LANG === 'de'
     ? `${cat.name} von Olaf Hoppe. HAUS HOPPE, Galerie für Bildende Kunst.`
@@ -46,7 +49,7 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={cat.name} description={description} jsonLd={jsonLd} inverted={isDigitalArt}>
+<BaseLayout title={cat.name} description={description} jsonLd={jsonLd} inverted={isDigitalArt} image={ogImage}>
   <Gallery items={items} cats={cats} allLabel={allLabel} base={base} activeCat={cat.slug} heading={cat.name} total={allItems.length} dark={isDigitalArt}>
     {isWoodcut && <WoodcutHero slot="hero" lang={LANG} />}
     {isPainting && <PaintingHero slot="hero" lang={LANG} />}

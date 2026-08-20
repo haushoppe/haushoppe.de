@@ -3,8 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
 import HomeHero from '../components/HomeHero.astro';
 import { loadPage } from '../lib/pages';
-import { getImage } from 'astro:assets';
-import { contentImage } from '../lib/content-images';
 import { LANG } from '../lib/lang';
 
 // Startseite: Struktur (Video, Werk, Signatur) aus dem MDX-Frontmatter, Intro-Prosa aus dem
@@ -15,9 +13,8 @@ const { entry, Content, data: fm } = await loadPage('home');
 for (const req of ['video', 'h1', 'welcome', 'signature', 'featured']) {
   if (!fm[req]) throw new Error(`${entry.id}.mdx: Frontmatter-Feld „${req}“ fehlt (Pflicht auf der Startseite).`);
 }
-// Das Featured-Werk als Social-Preview (statt der generischen Marken-Karte).
-const featImg = fm.featured?.image ? contentImage(fm.featured.image) : undefined;
-const ogImage = featImg ? (await getImage({ src: featImg, format: 'jpeg', width: 1200 })).src : undefined;
+// Social-Preview: gebaute Hero-Header-Karte (Atelier-Poster + Spruch).
+const ogImage = `/og/home-${LANG}.jpg`;
 ---
 
 <BaseLayout title={fm.title} description={fm.description} image={ogImage}>

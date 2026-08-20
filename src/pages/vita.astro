@@ -12,7 +12,7 @@ import { LANG, SELF_ORIGIN } from '../lib/lang';
 const { Content, data: fm } = await loadPage('vita');
 // Hero-Bild als Social-Preview (statt der generischen Marken-Karte).
 const heroImg = fm.hero?.name ? bannerImage(fm.hero.name) : undefined;
-const ogImage = heroImg ? (await getImage({ src: heroImg, format: 'jpeg', width: 1200 })).src : undefined;
+const ogImage = heroImg ? (await getImage({ src: heroImg, format: 'jpeg', width: 1200, height: 630, fit: 'cover', position: 'center' })).src : undefined;
 // Vita ist die kanonische Künstler-Seite: hier die volle Person-Entität (Olaf Hoppe) ausgeben.
 const jsonLd = personJsonLd(SELF_ORIGIN, LANG);
 ---
