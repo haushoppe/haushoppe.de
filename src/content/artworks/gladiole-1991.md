@@ -12,12 +12,12 @@ de:
   captionTitle: "Gladiole"
   technique: "Original Farbholzschnitt von 8 Druckplatten"
   dimensions: "Motiv 44 cm × 30 cm, Papierformat 67 cm × 52 cm"
-  edition: "Auflage xxx- Exemplare auf Torinoko-Papier."
+  edition: "Auflage 15 Exemplare auf Torinoko-Papier."
 en:
   title: "\"Gladiolus\" 1991"
   slug: "gladiolus-1991"
   captionTitle: "Gladiolus"
-  technique: "Original woodblock print from 8 plates edition xxx-"
+  technique: "Original color woodcut from 8 printing plates"
   dimensions: "motif 44 cm × 30 cm, paper size 67 cm × 52 cm"
-  edition: "copies on Torinoko paper."
+  edition: "Edition of 15 copies on Torinoko paper."
 ---

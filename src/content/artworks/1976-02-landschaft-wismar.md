@@ -1,7 +1,7 @@
 ---
 artist: "Olaf Hoppe"
 year: "1976"
-number: "1976-03"
+number: "1976-03-Z"
 date: "1976-02-14 13:10:00"
 order: 2
 category: drawings
