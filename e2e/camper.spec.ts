@@ -18,7 +18,7 @@ test('Hero, Slideshow, Bullets, Feuer-Hinweis', async ({ page }, info) => {
 
   const ss = page.getByTestId('slideshow').first();
   await expect(ss).toBeVisible();
-  await expect(ss.getByTestId('slideshow-dot')).toHaveCount(8);
+  await expect(ss.getByTestId('slideshow-dot')).toHaveCount(12);
   await expect(ss.getByTestId('slideshow-caption').first()).toContainText(t.firstCaption);
   await expect(ss.getByTestId('carousel-arrow')).toHaveCount(2);
 
@@ -68,7 +68,7 @@ test('Hofladen-Abschnitt mit eigener Slideshow', async ({ page }, info) => {
   await expect(page.getByRole('heading', { name: heading })).toBeVisible();
   const shop = page.getByTestId('slideshow').nth(1);
   await expect(shop).toBeVisible();
-  await expect(shop.getByTestId('slideshow-dot')).toHaveCount(3);
+  await expect(shop.getByTestId('slideshow-dot')).toHaveCount(4);
 });
 
 test('Keine Gedankenstriche im Camper-Inhalt', async ({ page }, info) => {
