@@ -1,5 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { site, langOf } from './helpers/site';
+import { readFileSync } from 'node:fs';
+
+// Erwartete Slide-Zahlen je Slideshow direkt aus dem Camping-MDX ableiten (nicht hart kodieren),
+// damit Inhaltsänderungen den Test nicht brechen. Zusätzlich prüft der Test, dass es > 1 ist.
+function slideCounts(lang: 'de' | 'en'): number[] {
+  const mdx = readFileSync(new URL(`../src/content/pages/camping-${lang}.mdx`, import.meta.url), 'utf8');
+  const counts: number[] = [];
+  const re = /slides=\{\[([\s\S]*?)\]\}/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(mdx))) counts.push((m[1].match(/\bsrc:/g) || []).length);
+  return counts;
+}
 
 const TXT = {
   de: { firstCaption: 'Der Hof aus der Luft', rastplatz: 'Rastplatz', landstrom: 'Landstrom und Trinkwasser', grauwasser: 'Grauwasser', fire: 'sehr leicht entzündlich' },
@@ -16,9 +28,11 @@ test('Hero, Slideshow, Bullets, Feuer-Hinweis', async ({ page }, info) => {
   await expect(cta).toContainText(s.camper.cta);
   await expect(cta).toHaveAttribute('href', '#anrufen');
 
+  const counts = slideCounts(langOf(info));
+  expect(counts[0]).toBeGreaterThan(1);
   const ss = page.getByTestId('slideshow').first();
   await expect(ss).toBeVisible();
-  await expect(ss.getByTestId('slideshow-dot')).toHaveCount(12);
+  await expect(ss.getByTestId('slideshow-dot')).toHaveCount(counts[0]);
   await expect(ss.getByTestId('slideshow-caption').first()).toContainText(t.firstCaption);
   await expect(ss.getByTestId('carousel-arrow')).toHaveCount(2);
 
@@ -68,7 +82,9 @@ test('Hofladen-Abschnitt mit eigener Slideshow', async ({ page }, info) => {
   await expect(page.getByRole('heading', { name: heading })).toBeVisible();
   const shop = page.getByTestId('slideshow').nth(1);
   await expect(shop).toBeVisible();
-  await expect(shop.getByTestId('slideshow-dot')).toHaveCount(4);
+  const counts = slideCounts(langOf(info));
+  expect(counts[1]).toBeGreaterThan(1);
+  await expect(shop.getByTestId('slideshow-dot')).toHaveCount(counts[1]);
 });
 
 test('Keine Gedankenstriche im Camper-Inhalt', async ({ page }, info) => {
