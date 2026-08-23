@@ -48,7 +48,7 @@ const { clip, poster, quote, objectPosition = 'center 70%', testid } = Astro.pro
     height: 100%;
     object-fit: cover;
     /* Bildausschnitt je Kategorie justierbar, damit das Motiv (Werkzeug/Leinwand) sichtbar bleibt. */
-    object-position: var(--cat-hero-pos, center 70%);
+    object-position: var(--cat-hero-pos);
     display: block;
   }
   .cat-hero__still {

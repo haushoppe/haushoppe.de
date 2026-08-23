@@ -2,6 +2,9 @@
 // (Gamma), beide als `ordinal`-Frontmatter am Werk.
 import type { CollectionEntry } from 'astro:content';
 
+// Eyebrow-Zeile der REVEALED-Collection (Detailseiten + Kategorie-Logo), sprachneutral.
+export const REVEALED_EYEBROW = 'Bitcoin Ordinals · Glitch Art · Johannes × Olaf';
+
 export interface Ordinal {
   iframe: string;
   buy: string | null;

@@ -9,6 +9,7 @@ import WoodcutHero from '../../components/WoodcutHero.astro';
 import PaintingHero from '../../components/PaintingHero.astro';
 import { galleryItems, galleryCategories } from '../../lib/artworks';
 import { breadcrumbJsonLd, itemListJsonLd } from '../../lib/seo';
+import { keyBySlug, catSlug } from '../../lib/categories';
 import { LANG, SELF_ORIGIN } from '../../lib/lang';
 
 export async function getStaticPaths() {
@@ -25,15 +26,17 @@ const allLabel = LANG === 'de' ? 'Alle' : 'All';
 const cats = await galleryCategories(LANG);
 const allItems = await galleryItems(LANG);
 const items = allItems.filter((it) => it.categorySlugs.includes(cat.slug));
-// Digitale Kunst (DE) / Digital Art (EN): eigene REVEALED-Collection-Seite, dunkles Theme + Logo + Ausstellungs-Video.
-const isDigitalArt = cat.slug === 'digitale-kunst' || cat.slug === 'digital-art';
+// Kanonischer Kategorie-Schlüssel als einzige Quelle (Slug-Wissen liegt in lib/categories);
+// getStaticPaths emittiert nur CATEGORY_ORDER, daher ist der Schlüssel hier stets definiert.
+const key = keyBySlug(cat.slug, LANG)!;
+// Digitale Kunst: eigene REVEALED-Collection-Seite, dunkles Theme + Logo + Ausstellungs-Video.
+const isDigitalArt = key === 'digital-art';
 // Holzschnitte: breiter Druckmaschinen-Hero (Atlantis 4) zwischen Filter und Kacheln.
-const isWoodcut = cat.slug === 'holzschnitte' || cat.slug === 'woodcuts';
+const isWoodcut = key === 'woodcuts';
 // Gemälde: Atelier-Hero (Olaf malt) mit Spruch zwischen Filter und Kacheln.
-const isPainting = cat.slug === 'gemaelde' || cat.slug === 'paintings';
-// Social-Preview: gebaute Hero-Header-Karte je Kategorie (Poster + Spruch), sonst Marken-Default.
-const ogCard = isPainting ? 'gemaelde' : isWoodcut ? 'holzschnitte' : isDigitalArt ? 'digitale-kunst' : null;
-const ogImage = ogCard ? `/og/${ogCard}-${LANG}.jpg` : undefined;
+const isPainting = key === 'paintings';
+// Social-Preview: gebaute Hero-Header-Karte je Kategorie (Poster + Spruch); die Karten heißen nach DE-Slug.
+const ogImage = `/og/${catSlug(key, 'de')}-${LANG}.jpg`;
 const description =
   LANG === 'de'
     ? `${cat.name} von Olaf Hoppe. HAUS HOPPE, Galerie für Bildende Kunst.`

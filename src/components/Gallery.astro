@@ -8,6 +8,7 @@
 // Beim Build werden je Werk responsive AVIF/WebP-Sätze (Höhen 240+480 im Grid, 560+1000 im Highlight) vorberechnet.
 import { getImage } from 'astro:assets';
 import type { GalleryItem, FilterCat } from '../lib/artworks';
+import { REVEALED_EYEBROW } from '../lib/ordinals';
 interface Props {
   items: GalleryItem[];
   cats: FilterCat[];
@@ -22,8 +23,6 @@ const { items, cats, allLabel = 'Alle', base, activeCat = '*', heading, total, d
 // Marker „online kaufbar" + Highlight-CTA „Weiterlesen" pro Sprache (Sprache = Galerie-Wurzel).
 const buyLabel = base === '/artwork' ? 'buy online' : 'online kaufen';
 const moreLabel = base === '/artwork' ? 'Read more' : 'Weiterlesen';
-// Eyebrow unter dem REVEALED-Logo (nur dunkle Kategorie), Wortlaut wie auf den Detailseiten.
-const revealedEyebrow = 'Bitcoin Ordinals · Glitch Art · Johannes × Olaf';
 // Responsive Bildbreiten: Grid-Kacheln sind ~200px (Justified/No-JS-Raster), die Highlight-Kachel läuft mobil voll, sonst bis ~700px.
 const GRID_SIZES = '(max-width: 700px) 45vw, 240px';
 const HL_SIZES = '(max-width: 720px) 100vw, 700px';
@@ -75,9 +74,9 @@ const hlData = await Promise.all(
   {dark && (
     <div class="gallery__logo" aria-hidden="true">
       <div class="gallery__logo-mark">
-        <iframe src="https://ordinals.com/content/d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0" title="REVEALED" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin"></iframe>
+        <iframe src="https://ordinals.com/content/d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0" title="REVEALED" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" allow="accelerometer; gyroscope" sandbox="allow-scripts allow-same-origin"></iframe>
       </div>
-      <p class="gallery__logo-eyebrow">{revealedEyebrow}</p>
+      <p class="gallery__logo-eyebrow">{REVEALED_EYEBROW}</p>
     </div>
   )}
 

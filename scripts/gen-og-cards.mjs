@@ -53,6 +53,7 @@ const cards = [
   { name: 'holzschnitte', poster: `${SITE}/src/assets/holzschnitte/schnitzen-poster.jpg`, de: 'Von Hand geschnitten, von Hand gedruckt.', en: 'Cut by hand, printed by hand.' },
   { name: 'digitale-kunst', poster: `${SITE}/public/media/glitch-hong-kong-2025.jpg`, de: 'Glitch-Art, für immer auf der Blockchain.', en: 'Glitch art, forever on the blockchain.' },
   { name: 'videos', poster: `${SITE}/src/assets/atlantis-4/lebenswerk-poster.jpg`, de: 'Filme rund um Olaf Hoppe.', en: 'Films around Olaf Hoppe.' },
+  { name: 'kontakt', poster: `${SITE}/src/assets/impressionen/garten-sommer.webp`, de: 'Nah an der Ostseeküste, zwischen Wismar und Rostock.', en: 'Near the Baltic coast, between Wismar and Rostock.' },
 ];
 
 for (const c of cards) {
@@ -60,9 +61,10 @@ for (const c of cards) {
   for (const lang of ['de', 'en']) {
     const svg = await satori(card(bg, WORD, SUB[lang], c[lang]), { width: 1200, height: 630, fonts });
     const png = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } }).render().asPng();
-    const file = `${OUT}/${c.name}-${lang}.png`;
-    fs.writeFileSync(file, png);
-    console.log('✓', file.replace(SITE, ''), (png.length / 1024).toFixed(0) + 'KB');
+    const jpg = await sharp(png).jpeg({ quality: 84, mozjpeg: true }).toBuffer();
+    const file = `${OUT}/${c.name}-${lang}.jpg`;
+    fs.writeFileSync(file, jpg);
+    console.log('✓', file.replace(SITE, ''), (jpg.length / 1024).toFixed(0) + 'KB');
   }
 }
 console.log('fertig:', cards.length * 2, 'Karten');

@@ -4,7 +4,7 @@
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
-import { ordinalData } from '../lib/ordinals';
+import { ordinalData, REVEALED_EYEBROW } from '../lib/ordinals';
 import ArtworkMeta from './ArtworkMeta.astro';
 import { contact } from '../data/site';
 import { SELF_ORIGIN } from '../lib/lang';
@@ -43,13 +43,13 @@ const meta = ord
 const t =
   lang === 'en'
     ? {
-        eyebrow: 'Bitcoin Ordinals · Glitch Art · Johannes × Olaf',
+        eyebrow: REVEALED_EYEBROW,
         line: 'Painted by Olaf, glitched by Johannes.',
         line2: 'Inscribed forever.',
         buy: 'Buy on gamma.io',
       }
     : {
-        eyebrow: 'Bitcoin Ordinals · Glitch Art · Johannes × Olaf',
+        eyebrow: REVEALED_EYEBROW,
         line: 'Gemalt von Olaf, geglitcht von Johannes.',
         line2: 'Für die Ewigkeit inscribed.',
         buy: 'Bei gamma.io kaufen',
