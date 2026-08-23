@@ -1,8 +1,10 @@
 ---
 // Kleine In-Content-Slideshow: überblendet automatisch, mit Bildunterschrift + Punkten.
 // Startet von allein; Pause bei Hover; respektiert prefers-reduced-motion (dann kein Autoplay,
-// Punkte funktionieren weiter). Bilder als astro:assets (AVIF/WebP, responsiv).
-import { Image } from 'astro:assets';
+// Punkte funktionieren weiter). Bilder als astro:assets (WebP, responsiv).
+// Lazy: nur das aktive und das nächste Bild werden geladen, die übrigen erst beim Aufblättern
+// (die Slides liegen gestapelt „im Viewport", daher greift natives loading="lazy" hier nicht).
+import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import CarouselArrow from './CarouselArrow.astro';
 
@@ -12,24 +14,46 @@ const { slides, interval = 4500, lang = 'de' } = Astro.props;
 const t = lang === 'en'
   ? { role: 'Image gallery', prev: 'Previous', next: 'Next', pick: (i: number, n: number) => `Image ${i} of ${n}` }
   : { role: 'Bildergalerie', prev: 'Zurück', next: 'Weiter', pick: (i: number, n: number) => `Bild ${i} von ${n}` };
+
+const SIZES = '(max-width: 860px) 92vw, 800px';
+const rendered = await Promise.all(
+  slides.map(async (s) => {
+    const img = await getImage({ src: s.src, widths: [480, 820, 1200], sizes: SIZES, format: 'webp' });
+    return { alt: s.alt, caption: s.caption, src: img.src, srcset: img.srcSet?.attribute ?? '', w: s.src.width, h: s.src.height };
+  }),
+);
 ---
 
 <div class="slideshow" data-slideshow data-testid="slideshow" data-interval={interval} aria-roledescription={t.role}>
   <div class="slideshow__frame">
-    {slides.map((s, i) => (
+    {rendered.map((r, i) => (
       <figure class="slideshow__slide" data-slide style={`opacity:${i === 0 ? 1 : 0}`} aria-hidden={i === 0 ? 'false' : 'true'}>
-        <Image src={s.src} alt={s.alt} widths={[480, 820, 1200]} sizes="(max-width: 860px) 92vw, 800px" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
-        {s.caption && <figcaption class="slideshow__caption" data-testid="slideshow-caption">{s.caption}</figcaption>}
+        <img
+          class="slideshow__img"
+          src={i === 0 ? r.src : undefined}
+          srcset={i === 0 ? r.srcset : undefined}
+          data-src={r.src}
+          data-srcset={r.srcset}
+          sizes={SIZES}
+          width={r.w}
+          height={r.h}
+          alt={r.alt}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          fetchpriority={i === 0 ? 'high' : undefined}
+          decoding="async"
+        />
+        {r.caption && <figcaption class="slideshow__caption" data-testid="slideshow-caption">{r.caption}</figcaption>}
       </figure>
     ))}
     {slides.length > 1 && <CarouselArrow dir="prev" class="slideshow__arrow slideshow__arrow--prev" label={t.prev} data-ss-prev />}
     {slides.length > 1 && <CarouselArrow dir="next" class="slideshow__arrow slideshow__arrow--next" label={t.next} data-ss-next />}
   </div>
   <div class="slideshow__dots">
-    {slides.map((_, i) => (
+    {rendered.map((_, i) => (
       <button type="button" class="carousel-dot" data-dot data-testid="slideshow-dot" aria-label={t.pick(i + 1, slides.length)} aria-current={i === 0 ? 'true' : 'false'} />
     ))}
   </div>
+  <div class="visually-hidden" aria-live="polite" data-ss-status></div>
 </div>
 
 <script>
@@ -39,24 +63,44 @@ const t = lang === 'en'
       (root as any).__ss = true;
       const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
       const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
+      const imgs = slides.map((s) => s.querySelector<HTMLImageElement>('img'));
+      const captions = slides.map((s) => s.querySelector<HTMLElement>('[data-testid="slideshow-caption"]')?.textContent ?? '');
+      const status = root.querySelector<HTMLElement>('[data-ss-status]');
       if (slides.length < 2) return;
       const interval = Number(root.dataset.interval) || 4500;
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       let idx = 0;
       let timer: number | undefined;
+      // Bild n bei Bedarf laden (aus data-src), einmalig.
+      function load(n: number) {
+        const im = imgs[(n + slides.length) % slides.length];
+        if (im && im.dataset.src) {
+          if (im.dataset.srcset) im.srcset = im.dataset.srcset;
+          im.src = im.dataset.src;
+          delete im.dataset.src;
+        }
+      }
       function show(n: number) {
         idx = (n + slides.length) % slides.length;
+        load(idx);
+        load(idx + 1); // nächstes Bild vorladen, damit die Überblendung sitzt
         slides.forEach((s, i) => {
           s.style.opacity = i === idx ? '1' : '0';
           s.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
         });
         dots.forEach((d, i) => d.setAttribute('aria-current', i === idx ? 'true' : 'false'));
+        if (status) status.textContent = (dots[idx].getAttribute('aria-label') || '') + (captions[idx] ? ': ' + captions[idx] : '');
       }
       function stop() { if (timer) { clearInterval(timer); timer = undefined; } }
       function start() { if (reduced) return; stop(); timer = window.setInterval(() => show(idx + 1), interval); }
       dots.forEach((d, i) => d.addEventListener('click', () => { show(i); start(); }));
       root.querySelector<HTMLElement>('[data-ss-prev]')?.addEventListener('click', () => { show(idx - 1); start(); });
       root.querySelector<HTMLElement>('[data-ss-next]')?.addEventListener('click', () => { show(idx + 1); start(); });
+      // Tastatur: Pfeil links/rechts blättert, wenn der Fokus in der Slideshow liegt.
+      root.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft') { show(idx - 1); start(); e.preventDefault(); }
+        else if (e.key === 'ArrowRight') { show(idx + 1); start(); e.preventDefault(); }
+      });
       // Touch-Swipe auf Mobil: horizontal wischen blättert vor/zurück (vertikal scrollt weiter).
       const frame = root.querySelector<HTMLElement>('.slideshow__frame') ?? root;
       let tx = 0;
@@ -99,7 +143,7 @@ const t = lang === 'en'
     margin: 0;
     transition: opacity 0.7s ease;
   }
-  .slideshow__slide :global(img) {
+  .slideshow__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
