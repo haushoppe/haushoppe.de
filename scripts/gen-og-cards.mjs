@@ -7,7 +7,7 @@ import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 
-const SITE = new URL('..', import.meta.url).pathname.replace(//$/, '');
+const SITE = new URL('..', import.meta.url).pathname.replace(/\/$/, '');
 const OUT = `${SITE}/public/og`;
 fs.mkdirSync(OUT, { recursive: true });
 

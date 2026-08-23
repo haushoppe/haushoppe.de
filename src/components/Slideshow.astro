@@ -57,6 +57,14 @@ const rendered = await Promise.all(
 </div>
 
 <script>
+  // Aktive Slideshow-Instanzen: bei View-Transitions (ClientRouter) müssen ihre Autoplay-Timer beim
+  // DOM-Swap gestoppt werden, sonst feuern sie auf abgehängtem DOM weiter (Timer-Leak). Jede Instanz
+  // registriert sich hier; stopAll räumt sie bei astro:before-swap ab, bevor das alte DOM verschwindet.
+  const roots = new Set<HTMLElement>();
+  function stopAll() {
+    roots.forEach((r) => (r as any).__ssStop?.());
+    roots.clear();
+  }
   function initSlideshows() {
     document.querySelectorAll<HTMLElement>('[data-slideshow]').forEach((root) => {
       if ((root as any).__ss) return;
@@ -114,6 +122,8 @@ const rendered = await Promise.all(
       }, { passive: true });
       root.addEventListener('mouseenter', stop);
       root.addEventListener('mouseleave', start);
+      (root as any).__ssStop = stop;
+      roots.add(root);
       show(0);
       start();
     });
@@ -121,6 +131,7 @@ const rendered = await Promise.all(
   if (!(window as any).__ssInit) {
     (window as any).__ssInit = true;
     document.addEventListener('astro:page-load', initSlideshows);
+    document.addEventListener('astro:before-swap', stopAll);
     initSlideshows();
   }
 </script>
