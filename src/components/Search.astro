@@ -99,12 +99,14 @@ const translations =
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !overlay.hidden) close();
     });
-    // Klick aufs Ergebnis-Bild führt zum Werk (wie der Titel-Link).
+    // Ganzes Ergebnis anklickbar (nicht nur Headline/Bild): ein Klick irgendwo im
+    // Ergebnis-Block führt zum Werk (Titel-Link). Echte Links (Titel, Sub-Ergebnisse)
+    // bleiben unberührt, damit Sprungmarken im Artikel weiter funktionieren.
     overlay.addEventListener('click', function (e) {
-      var thumb = e.target.closest('.pagefind-ui__result-thumb');
-      if (!thumb) return;
-      var result = thumb.closest('.pagefind-ui__result');
-      var link = result && result.querySelector('.pagefind-ui__result-link');
+      if (e.target.closest('a')) return;
+      var result = e.target.closest('.pagefind-ui__result');
+      if (!result) return;
+      var link = result.querySelector('.pagefind-ui__result-link');
       if (link) window.location.href = link.href;
     });
   })();
@@ -173,7 +175,7 @@ const translations =
   #pagefind-search .pagefind-ui__result-image {
     border-radius: 0;
   }
-  #pagefind-search .pagefind-ui__result-thumb {
+  #pagefind-search .pagefind-ui__result {
     cursor: pointer;
   }
   /* Dezentes statt grelles Highlight. */
