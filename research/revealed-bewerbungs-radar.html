@@ -1,0 +1,625 @@
+<title>REVEALED Bewerbungs-Radar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f2f2f6;
+    --surface: #ffffff;
+    --surface-2: #e9eaf0;
+    --ink: #16171d;
+    --ink-soft: #545862;
+    --ink-faint: #878c96;
+    --line: #e1e2e9;
+    --line-strong: #c9ccd5;
+    --accent: #cc0066;
+    --accent-2: #0090b0;
+    --ord: #b06d0f;
+    --nft: #6d54e0;
+    --dig: #0d8f83;
+    --res: #5b6270;
+    --ok: #1a8a4b;
+    --soon: #0e83b0;
+    --roll: #6d54e0;
+    --note: #9a6a12;
+    --warn: #c23a2b;
+    --shadow: 0 1px 2px rgba(20,20,30,.06), 0 8px 22px rgba(20,20,30,.05);
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    --disp: "Archivo", ui-sans-serif, system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c0d11;
+      --surface: #15161d;
+      --surface-2: #1e2029;
+      --ink: #e9eaf0;
+      --ink-soft: #a0a4ae;
+      --ink-faint: #6a6e79;
+      --line: #262932;
+      --line-strong: #383c47;
+      --accent: #ff4d9d;
+      --accent-2: #38c9e6;
+      --ord: #e6ab54;
+      --nft: #9d8cff;
+      --dig: #2dd4bf;
+      --res: #9aa2b2;
+      --ok: #38d07f;
+      --soon: #3fc3e6;
+      --roll: #9d8cff;
+      --note: #e6b45e;
+      --warn: #ff6b5a;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.34);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0d11;
+    --surface: #15161d;
+    --surface-2: #1e2029;
+    --ink: #e9eaf0;
+    --ink-soft: #a0a4ae;
+    --ink-faint: #6a6e79;
+    --line: #262932;
+    --line-strong: #383c47;
+    --accent: #ff4d9d;
+    --accent-2: #38c9e6;
+    --ord: #e6ab54;
+    --nft: #9d8cff;
+    --dig: #2dd4bf;
+    --res: #9aa2b2;
+    --ok: #38d07f;
+    --soon: #3fc3e6;
+    --roll: #9d8cff;
+    --note: #e6b45e;
+    --warn: #ff6b5a;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.34);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(1.1rem, 3.5vw, 2.6rem) clamp(1rem, 3.5vw, 2.2rem) 4rem; }
+  a { color: var(--accent); }
+
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+  .eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 .55rem; }
+  h1 { font-family: var(--disp); font-weight: 800; font-size: clamp(2rem, 5.4vw, 3.1rem); line-height: .98; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+  h1 .gl { color: var(--ink); text-shadow: .022em 0 var(--accent), -.022em 0 var(--accent-2); }
+  h1 .sub2 { color: var(--ink-soft); font-weight: 600; }
+  .lede { color: var(--ink-soft); font-size: 1rem; max-width: 62ch; margin: .9rem 0 0; }
+  .stamp { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-family: var(--mono); font-size: .74rem; color: var(--ink-faint); margin-top: 1rem; }
+  .stamp b { color: var(--ink-soft); font-weight: 600; }
+
+  .themebtn { flex: none; font-family: var(--mono); font-size: .74rem; background: var(--surface); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 999px; padding: .4rem .7rem; cursor: pointer; }
+  .themebtn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: .5rem .9rem; margin: 1.5rem 0 0; padding: .8rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; font-family: var(--mono); font-size: .72rem; color: var(--ink-soft); }
+  .legend .li { display: inline-flex; align-items: center; gap: .4rem; }
+  .dotp { width: .62rem; height: .62rem; border-radius: 3px; flex: none; }
+
+  .band { margin-top: 2.4rem; }
+  .band > h2 { font-family: var(--disp); font-weight: 700; font-size: 1.35rem; letter-spacing: -.005em; margin: 0 0 .2rem; display: flex; align-items: baseline; gap: .55rem; }
+  .band > h2 .n { font-family: var(--mono); font-size: .82rem; color: var(--ink-faint); font-weight: 500; }
+  .band > p { color: var(--ink-soft); margin: 0 0 1rem; font-size: .92rem; max-width: 66ch; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(228px, 1fr)); gap: .9rem; }
+  .tile { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.05rem 1.1rem; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }
+  .tile::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--accent); }
+  .tile .tname { font-family: var(--disp); font-weight: 700; font-size: 1.06rem; line-height: 1.12; margin: 0; }
+  .tile .torg { font-size: .82rem; color: var(--ink-faint); font-family: var(--mono); }
+  .tile .tbig { font-family: var(--mono); font-weight: 600; font-size: 1.15rem; color: var(--ink); letter-spacing: -.01em; }
+  .tile .tbig small { display: block; font-size: .72rem; font-weight: 400; color: var(--ink-faint); letter-spacing: 0; }
+  .tile .twhy { font-size: .84rem; color: var(--ink-soft); }
+  .tile a.tgo { margin-top: auto; font-family: var(--mono); font-size: .78rem; font-weight: 500; text-decoration: none; }
+  .tile a.tgo:hover { text-decoration: underline; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .45rem; margin: 2.6rem 0 .2rem; align-items: center; }
+  .filters .flabel { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); margin-right: .2rem; }
+  .chip { font-family: var(--mono); font-size: .76rem; font-weight: 500; background: var(--surface); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 999px; padding: .34rem .74rem; cursor: pointer; }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .ops { display: flex; flex-direction: column; gap: .7rem; }
+  .op { display: grid; grid-template-columns: 1fr 232px; gap: .4rem 1.4rem; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--tier, var(--line-strong)); border-radius: 12px; padding: .95rem 1.1rem 1rem; }
+  .op.hide { display: none; }
+  .op__toprow { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-bottom: .35rem; }
+  .op__name { font-family: var(--disp); font-weight: 600; font-size: 1.04rem; margin: 0; line-height: 1.2; }
+  .op__name .ty { font-family: var(--mono); font-weight: 400; font-size: .74rem; color: var(--ink-faint); }
+  .op__org { font-family: var(--mono); font-size: .75rem; color: var(--ink-faint); margin: .12rem 0 .4rem; }
+  .op__fit { font-size: .9rem; color: var(--ink-soft); margin: 0; max-width: 62ch; }
+  .op__aside { display: flex; flex-direction: column; gap: .3rem; align-items: flex-start; border-left: 1px solid var(--line); padding-left: 1.2rem; }
+  .op__frist { font-family: var(--mono); font-size: .78rem; }
+  .op__frist .k { color: var(--ink-faint); font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; display: block; }
+  .op__frist .v { color: var(--ink); font-weight: 600; }
+  .op__frist .v.cd { color: var(--accent); }
+  .op__link { font-family: var(--mono); font-size: .78rem; font-weight: 500; text-decoration: none; word-break: break-word; }
+  .op__link:hover { text-decoration: underline; }
+  .op__contact { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); word-break: break-word; }
+
+  .pill { font-family: var(--mono); font-size: .67rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: .2rem .5rem; border-radius: 999px; white-space: nowrap; }
+  .pill--ok   { color: var(--ok);   background: color-mix(in srgb, var(--ok) 15%, transparent); }
+  .pill--soon { color: var(--soon); background: color-mix(in srgb, var(--soon) 16%, transparent); }
+  .pill--roll { color: var(--roll); background: color-mix(in srgb, var(--roll) 15%, transparent); }
+  .pill--note { color: var(--note); background: color-mix(in srgb, var(--note) 17%, transparent); }
+
+  .effort { font-family: var(--mono); font-size: .66rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: .2rem .48rem; border-radius: 999px; white-space: nowrap; }
+  .effort--h { color: var(--ok);   background: color-mix(in srgb, var(--ok) 13%, transparent); }
+  .effort--d { color: var(--note); background: color-mix(in srgb, var(--note) 15%, transparent); }
+  .effort--m { color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); }
+
+  .vtag { font-family: var(--mono); font-size: .68rem; color: var(--ink-faint); margin-left: auto; }
+  .vtag.ok { color: var(--dig); }
+
+  .minor { font-size: .84rem; color: var(--ink-soft); font-family: var(--sans); padding: .7rem 1.1rem; border: 1px dashed var(--line-strong); border-radius: 12px; }
+  .minor b { color: var(--ink); font-weight: 600; }
+
+  footer { margin-top: 3rem; padding-top: 1.3rem; border-top: 1px solid var(--line); font-family: var(--mono); font-size: .74rem; color: var(--ink-faint); line-height: 1.7; }
+  footer b { color: var(--ink-soft); }
+  .ins { word-break: break-all; }
+
+  @media (max-width: 620px) {
+    .op { grid-template-columns: 1fr; }
+    .op__aside { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: .6rem; margin-top: .3rem; }
+    .top { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div>
+        <p class="eyebrow">Bitcoin Ordinals · Glitch Art · Johannes × Olaf</p>
+        <h1><span class="gl">REVEALED</span> <span class="sub2">Bewerbungs-Radar</span></h1>
+      </div>
+      <button class="themebtn" id="themebtn" type="button" aria-label="Hell/Dunkel umschalten">◐ Theme</button>
+    </div>
+    <p class="lede">Ausstellungen, Open Calls, Galerien und Preise, bei denen sich die REVEALED-Kollektion bewerben kann. Sortiert nach Priorität (Bitcoin Ordinals → NFT → digitale Kunst) und innerhalb jeder Gruppe nach Zeitaufwand: das „einreichen und fertig" steht oben, die zeitfressenden Residencies ganz unten.</p>
+    <div class="stamp">
+      <span><b>Stand</b> 4. September 2026</span>
+      <span><b>23</b> Möglichkeiten</span>
+      <span><b>~14</b> davon nur „Stunden" Aufwand</span>
+    </div>
+
+    <div class="legend" aria-label="Legende">
+      <span class="li"><span class="dotp" style="background:var(--ok)"></span>Offen jetzt</span>
+      <span class="li"><span class="dotp" style="background:var(--soon)"></span>Öffnet bald</span>
+      <span class="li"><span class="dotp" style="background:var(--roll)"></span>Rollierend</span>
+      <span class="li"><span class="dotp" style="background:var(--note)"></span>Vormerken (jährlich)</span>
+      <span class="li" style="margin-left:auto">⌚ Aufwand: <b>Stunden</b> (einreichen) · <b>Tage</b> (Dossier/Antrag) · <b>Monate</b> (Residency)</span>
+    </div>
+  </header>
+
+  <section class="band" aria-label="Zuerst">
+    <h2>Oben anfangen <span class="n">/ einreichen und fertig</span></h2>
+    <p>Zeitkritisch und geringer Aufwand: Werk existiert, keine Reise, keine Anwesenheit. Verifiziert.</p>
+    <div class="tiles">
+      <article class="tile">
+        <p class="tname">The Wrong Biennale</p>
+        <span class="torg">8. Edition · „Optimise Whatever"</span>
+        <span class="tbig" data-opens="2026-09-18">öffnet 18. Sept 2026<small>Ausstellung Nov 2027 – März 2028</small></span>
+        <span class="twhy">Gebührenfrei, online. Beitrag bei einem Pavilion einreichen. Bester thematischer Fit, ⌚ Stunden.</span>
+        <a class="tgo" href="https://thewrong.org" target="_blank" rel="noopener">thewrong.org ↗</a>
+      </article>
+      <article class="tile">
+        <p class="tname">Scarce City</p>
+        <span class="torg">Bitcoin-native Auktion</span>
+        <span class="tbig">jederzeit<small>rollierendes „Submit a Drop"</small></span>
+        <span class="twhy">Einzelne REVEALED-Stücke on-chain versteigern, 10 % auf digitale Goods. ⌚ Stunden.</span>
+        <a class="tgo" href="https://scarce.city/submissions" target="_blank" rel="noopener">scarce.city/submissions ↗</a>
+      </article>
+      <article class="tile">
+        <p class="tname">Gamma Partner Program</p>
+        <span class="torg">Ordinals-Plattform · hand-selected</span>
+        <span class="tbig" data-deadline="2026-11-15">15. Nov 2026<small>nächstes Quartalsfenster</small></span>
+        <span class="twhy">Hebel in physische Ordinals-Shows (Bitcoin Conference, Art-Basel-Woche). ⌚ Stunden.</span>
+        <a class="tgo" href="https://info.gamma.io/gamma-partner-program" target="_blank" rel="noopener">info.gamma.io ↗</a>
+      </article>
+    </div>
+  </section>
+
+  <div class="filters" role="group" aria-label="Filter">
+    <span class="flabel">Filter:</span>
+    <button class="chip" data-filter="all" aria-pressed="true">Alle</button>
+    <button class="chip" data-filter="ordinals" aria-pressed="false">₿ Ordinals</button>
+    <button class="chip" data-filter="nft" aria-pressed="false">NFT</button>
+    <button class="chip" data-filter="digital" aria-pressed="false">Digitale Kunst</button>
+    <button class="chip" data-filter="stunden" aria-pressed="false">⌚ Nur Stunden</button>
+  </div>
+
+  <!-- ORDINALS -->
+  <section class="band" data-section="ordinals">
+    <h2 style="--tier:var(--ord)"><span class="dotp" style="background:var(--ord);width:.7rem;height:.7rem;align-self:center"></span>Bitcoin Ordinals <span class="n">/ 5 · bester inhaltlicher Fit</span></h2>
+    <p>On-chain-nativ. Hier lebt REVEALED technisch: Auktion einzelner Stücke, kuratierte Drops und institutionelle Ausstellungs-Pitches. Alles ⌚ Stunden.</p>
+    <div class="ops">
+
+      <article class="op" data-tier="ordinals" data-effort="stunden" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--roll">Rollierend</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Scarce City <span class="ty">· Open Call (Formular)</span></h3>
+          <p class="op__org">Bitcoin-native Auktionshaus</p>
+          <p class="op__fit">„Submit a Drop" nimmt Bitcoin-NFTs/Inscriptions (Digital-Only-Goods, 10 % Gebühr). Bei Zuschlag Escrow der Inscription → nächster Drop. Ideal, um einzelne REVEALED-Werke an ein Bitcoin-Publikum zu versteigern.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">jederzeit</span></div>
+          <a class="op__link" href="https://scarce.city/submissions" target="_blank" rel="noopener">scarce.city/submissions ↗</a>
+          <span class="op__contact">plebsupport@scarce.city</span>
+        </div>
+      </article>
+
+      <article class="op" data-tier="ordinals" data-effort="stunden" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · 15.11.</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Gamma Partner Program <span class="ty">· Kurator / Plattform</span></h3>
+          <p class="op__org">Gamma.io — führende Ordinals-Plattform</p>
+          <p class="op__fit">Hand-selected. Quartalsfenster 15. Nov / 15. Feb / 15. Mai / 15. Aug. Partner-Artists: Priority-Placement bei Galerien & Konferenzen (Bitcoin Conference, Art-Basel-Woche), Prints, 1:1-Calls. Stärkster Hebel von on-chain in physische Shows.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Nächstes Fenster</span><span class="v cd" data-deadline="2026-11-15">15. Nov 2026</span></div>
+          <a class="op__link" href="https://info.gamma.io/gamma-partner-program" target="_blank" rel="noopener">info.gamma.io/gamma-partner-program ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="ordinals" data-effort="stunden" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--roll">Pitch / Proposal</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">BMAG — Bitcoin Museum &amp; Art Gallery <span class="ty">· Institution / Kurator</span></h3>
+          <p class="op__org">BTC Inc · Kunst-Direktor Dennis Koch · Nashville</p>
+          <p class="op__fit">Zeigt Inscriptions ausdrücklich; nimmt „proposals for artworks, exhibition partnerships". Starker Fit für REVEALEDs Kern (on-chain-Permanenz + Malerei-Herkunft). Konferenz-Galerie zur Bitcoin 2027 (Nashville, 15.–17. Juli 2027).</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">rollierend (Pitch)</span></div>
+          <a class="op__link" href="https://museum.b.tc/contact" target="_blank" rel="noopener">museum.b.tc/contact ↗</a>
+          <span class="op__contact">bmag@btcmedia.org</span>
+        </div>
+      </article>
+
+      <article class="op" data-tier="ordinals" data-effort="stunden" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--roll">Pitch / DM</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag">◇ Kontakt prüfen</span></div>
+          <h3 class="op__name">Bitcoin Art Society <span class="ty">· Kurator / Institution</span></h3>
+          <p class="op__org">Kunst nativ auf Bitcoin L1 · Residency-Programm</p>
+          <p class="op__fit">These „Kunst gehört dauerhaft auf Bitcoin" deckt sich exakt mit REVEALED. Deckt Code/Generative/Glitch ab, war 2026 bei NFC Lisbon präsent. Kein öffentliches Formular — per Contact/DM pitchen.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">rollierend (Pitch)</span></div>
+          <a class="op__link" href="https://www.bitcoinartsociety.com/" target="_blank" rel="noopener">bitcoinartsociety.com ↗</a>
+          <span class="op__contact">X: @BtcArtSociety</span>
+        </div>
+      </article>
+
+      <article class="op" data-tier="ordinals" data-effort="stunden" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--roll">Submissions offen</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Superchief Gallery <span class="ty">· Galerie / Submissions</span></h3>
+          <p class="op__org">Eröffnete die erste reine Ordinals-Galerie (SF)</p>
+          <p class="op__fit">Allgemeine Submissions laufen. Der aktuelle offene Call ist <em>Fotografie</em> (Frist 7. Sept 2026) — nicht Ordinals. Für REVEALED: aktiv eine digitale/Ordinals-Show per Mail pitchen.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">rollierend (Pitch)</span></div>
+          <a class="op__link" href="https://www.superchiefgallery.com/pages/superchief-submissions" target="_blank" rel="noopener">superchiefgallery.com ↗</a>
+          <span class="op__contact">superchiefsubmissions@gmail.com</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- NFT -->
+  <section class="band" data-section="nft">
+    <h2 style="--tier:var(--nft)"><span class="dotp" style="background:var(--nft);width:.7rem;height:.7rem;align-self:center"></span>NFT / Krypto-Kunst <span class="n">/ 7 · breiterer Kunstmarkt</span></h2>
+    <p>Technisch Ordinals, inhaltlich im größeren digitalen Kunstmarkt: Galerien mit Fine-Art-Bezug (schnell), plus Krypto-Kunst-Preise (Dossier).</p>
+    <div class="ops">
+
+      <article class="op" data-tier="nft" data-effort="stunden" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--roll">Pitch per Mail</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Expanded.Art <span class="ty">· Digital-/NFT-Galerie, Berlin</span></h3>
+          <p class="op__org">Johann König · Alexandrinenstr., 10969 Berlin</p>
+          <p class="op__fit">Kuratierte „Art of our time" mit Fine-Art-Bezug (z. B. Justin Aversano). Deutschsprachig, Brücke klassische Kunst ↔ NFT — REVEALEDs Malerei-Herkunft passt gut. Kuratierte Direktbewerbung per Mail.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">laufend (Pitch)</span></div>
+          <a class="op__link" href="https://www.expanded.art/pages/about" target="_blank" rel="noopener">expanded.art ↗</a>
+          <span class="op__contact">info@expanded.art</span>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-effort="stunden" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--roll">Kurator pitchen</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Verse <span class="ty">· kuratorgeführte Plattform</span></h3>
+          <p class="op__org">verse.works · Betreiber von „Right Click Save"</p>
+          <p class="op__fit">Hochwertige digitale/generative Editionen und 1/1. Kein öffentliches Formular — Weg führt über einen Pitch an die Kurator:innen bzw. das Team.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">laufend kuratiert</span></div>
+          <a class="op__link" href="https://verse.works/curators" target="_blank" rel="noopener">verse.works/curators ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-effort="stunden" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">objkt / Art on Tezos <span class="ty">· Community-Calls + Residency</span></h3>
+          <p class="op__org">Tezos-Ökosystem · objkt labs</p>
+          <p class="op__fit">Wiederkehrende Community-Open-Calls (Pop-ups, Front-Page-Showcases). <b>Achtung Chain-Mismatch:</b> Tezos, nicht Bitcoin — sinnvoll nur mit zusätzlichem Tezos-Mint. Sehr aktive Community.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">wechselnd</span></div>
+          <a class="op__link" href="https://labs.objkt.com" target="_blank" rel="noopener">labs.objkt.com ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-effort="tage" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · ~2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">ABS Digital Art Prize <span class="ty">· Preis + Ausstellung</span></h3>
+          <p class="op__org">im Rahmen des NFC Summit, Lissabon</p>
+          <p class="op__fit">Thema „SYSTEMS" nennt Blockchain-Registries ausdrücklich — sehr guter Fit. $10.000 + Ankauf, Jury u. a. Nina Roehrs. 2026er Runde (Frist 3. Mai) vorbei; 2027-Call auf dem Substack beobachten.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">2026 vorbei · 2027 folgt</span></div>
+          <a class="op__link" href="https://avantgarde.nonfungibleconference.com" target="_blank" rel="noopener">avantgarde.nonfungibleconference.com ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-effort="tage" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · ~2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">NFC Summit — Art Factory <span class="ty">· Festival + Open Call</span></h3>
+          <p class="op__org">Non-Fungible Conference, Lissabon</p>
+          <p class="op__fit">Vier-stöckiges Kunstprogramm (generativ, immersiv, on-chain). Großes europäisches Schaufenster. 2026er Ausstellungs-Call lief „bis Ende März" (vorbei); nächste Ausgabe ~2027 abwarten.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">Call ~Frühjahr</span></div>
+          <a class="op__link" href="https://www.nfcsummit.com" target="_blank" rel="noopener">nfcsummit.com ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-effort="tage" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Beobachten</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Feral File <span class="ty">· kuratierte Shows + Open Calls</span></h3>
+          <p class="op__org">Online-Selling-Exhibitions</p>
+          <p class="op__fit">Gruppen-Shows editionierter Werke, stark kuratorisch. Periodische Open Calls für Ausstellungs-Vorschläge. Aktuell kein aktiver Call (/open-calls leitet auf die Startseite). Über eine Kurator:in / Proposal.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">kein aktiver Call</span></div>
+          <a class="op__link" href="https://feralfile.com/exhibitions" target="_blank" rel="noopener">feralfile.com ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-effort="tage" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · Herbst</span><span class="effort effort--d">⌚ Tage</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">BitBasel <span class="ty">· Miami Art Week</span></h3>
+          <p class="op__org">Krypto-Kunst-Plattform, Miami</p>
+          <p class="op__fit">Kuratiert Krypto-Kunst rund um die Miami Art Week (30. Nov – 6. Dez 2026), Open Calls oft via HUG. Aktuell kein aktiver Call gefunden — Herbst-Call beobachten.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">Call ~Herbst</span></div>
+          <a class="op__link" href="https://www.bitbasel.miami/" target="_blank" rel="noopener">bitbasel.miami ↗</a>
+        </div>
+      </article>
+
+      <div class="minor" data-tier="nft" data-effort="tage">
+        <b>Niedrigerer Fit / geo-gebunden:</b> Vellum LA (Open Call nur für in LA ansässige Künstler:innen) · Bright Moments (einladungsbasiert, IRL-Mint, Zugang über Discord) · CADAF (Digital-Art-Messe — Domain löste beim Test nicht auf, evtl. ruhend; vor Aufwand Aktivität prüfen).
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DIGITAL -->
+  <section class="band" data-section="digital">
+    <h2 style="--tier:var(--dig)"><span class="dotp" style="background:var(--dig);width:.7rem;height:.7rem;align-self:center"></span>Digitale / neue Medienkunst <span class="n">/ 10 · breit gefasst</span></h2>
+    <p>Über NFT hinaus: Glitch- und New-Media-Festivals, Kunstpreise und — besonders zugänglich — deutsche/​europäische Förderung. The Wrong ist schnell; Preise und Anträge brauchen ein Dossier (Tage).</p>
+    <div class="ops">
+
+      <article class="op" data-tier="digital" data-effort="stunden" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--soon">Öffnet bald</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">The Wrong Biennale — 8. Edition <span class="ty">· Biennale / Open Call</span></h3>
+          <p class="op__org">„Optimise Whatever" · global, online</p>
+          <p class="op__fit">Gebührenfrei. Thema Systeme/Optimierung/„was dabei verschwindet" — ideal für Glitch/on-chain. Man reicht bei einer Pavilion-Kurator:in ein oder eröffnet selbst einen Pavilion. Ausstellung 1. Nov 2027 – 31. März 2028.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Bewerbung öffnet</span><span class="v cd" data-opens="2026-09-18">18. Sept 2026</span></div>
+          <a class="op__link" href="https://thewrong.org" target="_blank" rel="noopener">thewrong.org ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-effort="tage" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · ~Jan–Mai 2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Lumen Prize <span class="ty">· Kunstpreis (offene Einreichung)</span></h3>
+          <p class="op__org">Lumen Art Projects (UK), international</p>
+          <p class="op__fit">Kunst mit Technologie. Kategorie „Legacy Futures" (Zeit, Erinnerung, Technologie ↔ Kultur) trifft „klassische Malerei → digitale Transformation" ideal. Preisfonds $30.000. Runde 2026 (26.1.–27.5.) geschlossen.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">nächste ~Frühjahr 2027</span></div>
+          <a class="op__link" href="https://lumenprize.org" target="_blank" rel="noopener">lumenprize.org ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-effort="tage" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · ~Jan 2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Prix Ars Electronica <span class="ty">· Medienkunstpreis</span></h3>
+          <p class="op__org">Ars Electronica, Linz (AT)</p>
+          <p class="op__fit">Renommiertester Medienkunstpreis. Kategorie „New Animation Art" passt für geglitchte, algorithmische Bildarbeit. Golden Nica bis €10.000, kostenlos. Nächster Open Call laut Seite Januar 2027.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Open Call</span><span class="v">Januar 2027</span></div>
+          <a class="op__link" href="https://ars.electronica.art/prix/en/opencall/" target="_blank" rel="noopener">ars.electronica.art/prix ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-effort="tage" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · Herbst/Winter</span><span class="effort effort--d">⌚ Tage</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">EMAF Osnabrück <span class="ty">· Medienkunstfestival, Call for Entries</span></h3>
+          <p class="op__org">European Media Art Festival (DE)</p>
+          <p class="op__fit">Eines der wichtigsten Medienkunstfestivals Europas, gut erreichbar. Kategorien Film (experimentell), Installation, Expanded. Honorar für Ausgewählte. Einreichung typ. Herbst/Winter vor dem Frühjahrs-Festival.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">auf emaf.de prüfen</span></div>
+          <a class="op__link" href="https://www.emaf.de/" target="_blank" rel="noopener">emaf.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-effort="tage" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · ~Dez 2026</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">CURRENTS New Media <span class="ty">· Festival, Call for Entries</span></h3>
+          <p class="op__org">Santa Fe, New Mexico (US)</p>
+          <p class="op__fit">Experimental Single-Channel Video/Animation, Installation, AI-Collaboration — Glitch-Video passt gut. Festival 2027 bestätigt 11.–20. Juni 2027; Einreichungs-Frist erfahrungsgemäß Anfang Dezember 2026.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~Anfang Dez 2026</span></div>
+          <a class="op__link" href="https://currentsnewmedia.org/" target="_blank" rel="noopener">currentsnewmedia.org ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-effort="tage" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · ~15. Jan 2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">Künstlerstipendien MV <span class="ty">· Landesförderung</span></h3>
+          <p class="op__org">Land Mecklenburg-Vorpommern</p>
+          <p class="op__fit"><b>Lokal auf euch zugeschnitten:</b> bildende Kunst (digitale Arbeiten inklusive), Voraussetzung Wohnsitz + Wirkungskreis in M-V. Arbeitsstipendium bis €5.000. Frist erfahrungsgemäß Mitte Januar. (Aufenthaltsstipendium Ahrenshoop siehe „Residencies".)</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~15. Jan 2027</span></div>
+          <a class="op__link" href="https://www.regierung-mv.de/Landesregierung/wkm/Kultur/" target="_blank" rel="noopener">regierung-mv.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-effort="tage" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--note">Vormerken · ~Anfang 2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">Stiftung Kunstfonds <span class="ty">· Bundesförderung</span></h3>
+          <p class="op__org">Förderung bildende Kunst (bundesweit)</p>
+          <p class="op__fit">Freischaffende Künstler:innen/Duos. Das Programm „Werkverzeichnung" fördert sogar <b>digitale Werkverzeichnisse</b> — passend zu einer on-chain-Sammlung wie REVEALED. Fristen erfahrungsgemäß Januar / bis Ende Mai.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~Anfang 2027</span></div>
+          <a class="op__link" href="https://www.kunstfonds.de/foerderung/fuer-kuenstlerinnen/" target="_blank" rel="noopener">kunstfonds.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-effort="tage" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--roll">Rollierend · Reise</span><span class="effort effort--d">⌚ Tage</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">Culture Moves Europe <span class="ty">· EU-Mobilität</span></h3>
+          <p class="op__org">Creative Europe / Goethe-Institut</p>
+          <p class="op__fit">Reise-/Projektzuschuss in ein anderes Creative-Europe-Land, rollierende monatliche Auswahl. Nicht werkgebunden — ideal als Ergänzung, um zu einer Show/Residency (FILE, Currents, EMAP) zu reisen. Neuer Call ~Herbst 2026.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">rollierend (neuer Call Herbst)</span></div>
+          <a class="op__link" href="https://www.goethe.de/en/kul/foe/cmm.html" target="_blank" rel="noopener">goethe.de/culture-moves ↗</a>
+        </div>
+      </article>
+
+      <div class="minor" data-tier="digital" data-effort="tage">
+        <b>Laufend scannen (echte Glitch-/Medienkunst-Calls tauchen hier auf):</b>
+        <a href="https://www.curatorspace.com/opportunities" target="_blank" rel="noopener">CuratorSpace</a> (regelmäßig glitch-/error-thematische Ausstellungs-Calls) ·
+        <a href="https://www.e-flux.com/announcements/" target="_blank" rel="noopener">e-flux</a> (Filter „open call") ·
+        <a href="https://www.artrabbit.com/artist-opportunities" target="_blank" rel="noopener">ArtRabbit</a> ·
+        <a href="https://file.org.br/" target="_blank" rel="noopener">FILE São Paulo</a> (~Jan/Feb) ·
+        <b>S+T+ARTS Prize</b> (Ars Electronica/EU, 2×€20.000, ~Jan–Mrz 2027, Fit mittel).
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RESIDENCIES -->
+  <section class="band" data-section="residency">
+    <h2 style="--tier:var(--res)"><span class="dotp" style="background:var(--res);width:.7rem;height:.7rem;align-self:center"></span>Residencies <span class="n">/ Monate vor Ort — nur für NEUE Arbeit</span></h2>
+    <p>Bewusst ganz unten: eine Residency ist zum <em>Produzieren</em> da, nicht zum Ausstellen von REVEALED (das ja fertig ist). Man bekommt Geld, Werkstatt, Netzwerk und am Ende eine Ausstellung — bezahlt aber mit Wochen bis Monaten Anwesenheit. Nur sinnvoll, wenn ihr <b>etwas Neues</b> bauen wollt.</p>
+    <div class="ops">
+
+      <article class="op" data-tier="residency" data-effort="monate" style="--tier:var(--res)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="pill pill--ok">Offen jetzt</span><span class="effort effort--m">⌚ 2 Monate vor Ort</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">EMAP / EMARE — Residencies 2027 <span class="ty">· Residency + Förderung</span></h3>
+          <p class="op__org">European Media Art Platform (15 Häuser, u. a. Ars Electronica)</p>
+          <p class="op__fit"><b>Bewerbung nur als Duo/Kollektiv</b> — passt exakt zu Johannes × Olaf, und die Förderung ist stark (€6.000 Duo + €4.000 Budget + Reise/Unterkunft). <b>Aber:</b> „Two-month production residency at one of the EMAP host organisations" — also zwei Monate physisch vor Ort, für <em>neue</em> Produktion. Wenn das nicht reizt: überspringen, trotz der schönen Zahlen.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Deadline</span><span class="v cd" data-deadline="2026-11-06">6. Nov 2026, 14:00 CET</span></div>
+          <a class="op__link" href="https://call.emare.eu/" target="_blank" rel="noopener">call.emare.eu ↗</a>
+        </div>
+      </article>
+
+      <div class="minor" data-tier="residency" data-effort="monate">
+        <b>Weitere Residencies (alle Wochen/Monate vor Ort, wiederkehrend):</b>
+        Künstlerhaus Lukas, <b>Ahrenshoop</b> (Aufenthaltsstipendium des Landes M-V, direkt an der Ostsee) ·
+        <a href="https://zkm.de/en" target="_blank" rel="noopener">ZKM Hertzlab</a>, Karlsruhe (Rauschenberg / Sonic Experiments) ·
+        <a href="https://labs.objkt.com" target="_blank" rel="noopener">objkt labs</a> (Tezos-Residency) ·
+        <a href="https://on-the-move.org/" target="_blank" rel="noopener">On-the-Move</a> / <a href="https://www.transartists.org/en" target="_blank" rel="noopener">transartists</a> (Residency-Aggregatoren).
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Aufwand-Marker.</b> ⌚ <b>Stunden</b> = Werk existiert, einreichen/pitchen, keine Reise. ⌚ <b>Tage</b> = echtes Dossier/Antrag mit Statement und Portfolio. ⌚ <b>Monate</b> = Residency, physisch vor Ort. Der Marker zeigt die schwerste Zeitkosten-Stufe, nicht nur das Ausfüllen.</p>
+    <p><b>Methodik.</b> Drei parallele Recherchen (Ordinals · NFT · digitale Kunst), danach jede zeitkritische Angabe selbst auf der echten Seite verifiziert. <b>✓ Seite</b> = Status/Frist direkt auf der Original-Einreichseite gesehen. <b>◇ prüfen</b> = Frist stammt aus Suchergebnis/Erfahrung, vor der Bewerbung auf der verlinkten Seite bestätigen. Vergangene 2026-Fristen sind als jährlich wiederkehrend mit der nächsten erwarteten Runde vermerkt — kein Datum ist geraten.</p>
+    <p><b>Empfohlene Reihenfolge:</b> 1) Scarce City & The Wrong (Stunden, sofort/18. Sept). 2) Galerie-Pitches BMAG, Bitcoin Art Society, Expanded.Art (Stunden). 3) Gamma zum 15. Nov. 4) Für Anfang 2027 vormerken: Lumen, Prix Ars, ABS, MV-Stipendien, Kunstfonds (Tage). 5) EMAP nur, wenn ihr wirklich zwei Monate neue Arbeit produzieren wollt.</p>
+    <p class="ins">REVEALED — Wortmarken-Inscription d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0</p>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('themebtn');
+    try { var s = localStorage.getItem('revealed-theme'); if (s) root.setAttribute('data-theme', s); } catch (e) {}
+    btn && btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      var dark = cur ? cur === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('revealed-theme', next); } catch (e) {}
+    });
+
+    var now = new Date();
+    function days(iso) { return Math.ceil((new Date(iso + 'T00:00:00') - now) / 86400000); }
+    document.querySelectorAll('[data-deadline]').forEach(function (el) {
+      var d = days(el.getAttribute('data-deadline'));
+      if (isNaN(d) || el.querySelector('small')) return;
+      var t = d > 1 ? 'noch ' + d + ' Tage' : d === 1 ? 'morgen' : d === 0 ? 'heute' : 'abgelaufen';
+      var s = document.createElement('small'); s.textContent = t; el.appendChild(s);
+    });
+    document.querySelectorAll('[data-opens]').forEach(function (el) {
+      var d = days(el.getAttribute('data-opens'));
+      if (isNaN(d) || d < 0 || el.querySelector('small')) return;
+      var s = document.createElement('small'); s.textContent = d > 1 ? 'in ' + d + ' Tagen' : d === 1 ? 'morgen' : 'heute';
+      el.appendChild(s);
+    });
+
+    var chips = [].slice.call(document.querySelectorAll('.chip'));
+    var items = [].slice.call(document.querySelectorAll('[data-tier]'));
+    var sections = [].slice.call(document.querySelectorAll('[data-section]'));
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        var f = c.getAttribute('data-filter');
+        chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
+        items.forEach(function (it) {
+          var show = f === 'all'
+            || (f === 'stunden' ? it.getAttribute('data-effort') === 'stunden' : it.getAttribute('data-tier') === f);
+          it.classList.toggle('hide', !show);
+        });
+        sections.forEach(function (sec) {
+          var any = sec.querySelector('[data-tier]:not(.hide)');
+          sec.style.display = any ? '' : 'none';
+        });
+      });
+    });
+  })();
+</script>
