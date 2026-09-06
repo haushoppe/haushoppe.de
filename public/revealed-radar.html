@@ -1,0 +1,541 @@
+<title>REVEALED Bewerbungs-Radar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f2f2f6; --surface: #ffffff; --surface-2: #e9eaf0;
+    --ink: #16171d; --ink-soft: #545862; --ink-faint: #878c96;
+    --line: #e1e2e9; --line-strong: #c9ccd5;
+    --accent: #cc0066; --accent-2: #0090b0;
+    --ord: #b06d0f; --nft: #6d54e0; --dig: #0d8f83; --res: #5b6270;
+    --ok: #1a8a4b; --soon: #0e83b0; --roll: #6d54e0; --note: #9a6a12; --warn: #c23a2b;
+    --shadow: 0 1px 2px rgba(20,20,30,.06), 0 8px 22px rgba(20,20,30,.05);
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    --disp: "Archivo", ui-sans-serif, system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c0d11; --surface: #15161d; --surface-2: #1e2029;
+      --ink: #e9eaf0; --ink-soft: #a0a4ae; --ink-faint: #6a6e79;
+      --line: #262932; --line-strong: #383c47;
+      --accent: #ff4d9d; --accent-2: #38c9e6;
+      --ord: #e6ab54; --nft: #9d8cff; --dig: #2dd4bf; --res: #9aa2b2;
+      --ok: #38d07f; --soon: #3fc3e6; --roll: #9d8cff; --note: #e6b45e; --warn: #ff6b5a;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.34);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0d11; --surface: #15161d; --surface-2: #1e2029;
+    --ink: #e9eaf0; --ink-soft: #a0a4ae; --ink-faint: #6a6e79;
+    --line: #262932; --line-strong: #383c47;
+    --accent: #ff4d9d; --accent-2: #38c9e6;
+    --ord: #e6ab54; --nft: #9d8cff; --dig: #2dd4bf; --res: #9aa2b2;
+    --ok: #38d07f; --soon: #3fc3e6; --roll: #9d8cff; --note: #e6b45e; --warn: #ff6b5a;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.34);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(1.1rem, 3.5vw, 2.6rem) clamp(1rem, 3.5vw, 2.2rem) 4rem; }
+  a { color: var(--accent); }
+
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+  .eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 .55rem; }
+  h1 { font-family: var(--disp); font-weight: 800; font-size: clamp(2rem, 5.4vw, 3.1rem); line-height: .98; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+  h1 .gl { color: var(--ink); text-shadow: .022em 0 var(--accent), -.022em 0 var(--accent-2); }
+  h1 .sub2 { color: var(--ink-soft); font-weight: 600; }
+  .lede { color: var(--ink-soft); font-size: 1rem; max-width: 64ch; margin: .9rem 0 0; }
+  .stamp { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-family: var(--mono); font-size: .74rem; color: var(--ink-faint); margin-top: 1rem; }
+  .stamp b { color: var(--ink-soft); font-weight: 600; }
+  .stamp .sja { color: var(--ok); } .stamp .sbe { color: var(--note); } .stamp .sne { color: var(--warn); }
+
+  .themebtn { flex: none; font-family: var(--mono); font-size: .74rem; background: var(--surface); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 999px; padding: .4rem .7rem; cursor: pointer; }
+  .themebtn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: .5rem .9rem; margin: 1.5rem 0 0; padding: .8rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; font-family: var(--mono); font-size: .72rem; color: var(--ink-soft); }
+  .legend .li { display: inline-flex; align-items: center; gap: .4rem; }
+  .swatch { font-weight: 700; padding: .05rem .4rem; border-radius: 5px; }
+
+  .band { margin-top: 2.4rem; }
+  .band > h2 { font-family: var(--disp); font-weight: 700; font-size: 1.35rem; letter-spacing: -.005em; margin: 0 0 .2rem; display: flex; align-items: baseline; gap: .55rem; }
+  .band > h2 .n { font-family: var(--mono); font-size: .82rem; color: var(--ink-faint); font-weight: 500; }
+  .band > p { color: var(--ink-soft); margin: 0 0 1rem; font-size: .92rem; max-width: 68ch; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); gap: .9rem; }
+  .tile { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.05rem 1.1rem; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }
+  .tile::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--ok); }
+  .tile .tname { font-family: var(--disp); font-weight: 700; font-size: 1.06rem; line-height: 1.12; margin: 0; }
+  .tile .torg { font-size: .82rem; color: var(--ink-faint); font-family: var(--mono); }
+  .tile .tbig { font-family: var(--mono); font-weight: 600; font-size: 1.12rem; color: var(--ink); letter-spacing: -.01em; }
+  .tile .tbig small { display: block; font-size: .72rem; font-weight: 400; color: var(--ink-faint); letter-spacing: 0; }
+  .tile .twhy { font-size: .84rem; color: var(--ink-soft); }
+  .tile a.tgo { margin-top: auto; font-family: var(--mono); font-size: .78rem; font-weight: 500; text-decoration: none; }
+  .tile a.tgo:hover { text-decoration: underline; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .45rem; margin: 2.6rem 0 .2rem; align-items: center; }
+  .filters .flabel { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); margin-right: .2rem; }
+  .chip { font-family: var(--mono); font-size: .76rem; font-weight: 500; background: var(--surface); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 999px; padding: .34rem .74rem; cursor: pointer; }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .ops { display: flex; flex-direction: column; gap: .7rem; }
+  .op { display: grid; grid-template-columns: 1fr 232px; gap: .4rem 1.4rem; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--tier, var(--line-strong)); border-radius: 12px; padding: .95rem 1.1rem 1rem; }
+  .op.hide { display: none; }
+  .op__toprow { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-bottom: .35rem; }
+  .op__name { font-family: var(--disp); font-weight: 600; font-size: 1.04rem; margin: 0; line-height: 1.2; }
+  .op__name .ty { font-family: var(--mono); font-weight: 400; font-size: .74rem; color: var(--ink-faint); }
+  .op__org { font-family: var(--mono); font-size: .75rem; color: var(--ink-faint); margin: .12rem 0 .4rem; }
+  .op__fit { font-size: .9rem; color: var(--ink-soft); margin: 0; max-width: 64ch; }
+  .op__aside { display: flex; flex-direction: column; gap: .3rem; align-items: flex-start; border-left: 1px solid var(--line); padding-left: 1.2rem; }
+  .op__frist { font-family: var(--mono); font-size: .78rem; }
+  .op__frist .k { color: var(--ink-faint); font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; display: block; }
+  .op__frist .v { color: var(--ink); font-weight: 600; }
+  .op__frist .v.cd { color: var(--accent); }
+  .op__link { font-family: var(--mono); font-size: .78rem; font-weight: 500; text-decoration: none; word-break: break-word; }
+  .op__link:hover { text-decoration: underline; }
+  .op__contact { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); word-break: break-word; }
+
+  .verdict { font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .06em; padding: .2rem .5rem; border-radius: 6px; }
+  .verdict--ja { color: #fff; background: var(--ok); }
+  .verdict--bedingt { color: var(--note); background: color-mix(in srgb, var(--note) 18%, transparent); border: 1px solid color-mix(in srgb, var(--note) 40%, transparent); }
+  .verdict--nein { color: var(--warn); background: color-mix(in srgb, var(--warn) 13%, transparent); }
+
+  .pill { font-family: var(--mono); font-size: .66rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: .2rem .48rem; border-radius: 999px; white-space: nowrap; }
+  .pill--ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 15%, transparent); }
+  .pill--soon { color: var(--soon); background: color-mix(in srgb, var(--soon) 16%, transparent); }
+  .pill--roll { color: var(--roll); background: color-mix(in srgb, var(--roll) 15%, transparent); }
+  .pill--note { color: var(--note); background: color-mix(in srgb, var(--note) 17%, transparent); }
+
+  .effort { font-family: var(--mono); font-size: .64rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: .2rem .46rem; border-radius: 999px; white-space: nowrap; }
+  .effort--h { color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, transparent); }
+  .effort--d { color: var(--note); background: color-mix(in srgb, var(--note) 14%, transparent); }
+  .effort--m { color: var(--warn); background: color-mix(in srgb, var(--warn) 13%, transparent); }
+  .vtag { font-family: var(--mono); font-size: .68rem; color: var(--ink-faint); margin-left: auto; }
+  .vtag.ok { color: var(--dig); }
+
+  .note { font-size: .84rem; color: var(--ink-soft); font-family: var(--sans); padding: .7rem 1.1rem; border: 1px dashed var(--line-strong); border-radius: 12px; }
+  .note b { color: var(--ink); font-weight: 600; }
+
+  /* aussortiert */
+  .cut { display: grid; grid-template-columns: auto 1fr; gap: .2rem .8rem; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .6rem .9rem; align-items: baseline; }
+  .cut__n { font-family: var(--disp); font-weight: 600; font-size: .95rem; }
+  .cut__n a { text-decoration: none; }
+  .cut__r { grid-column: 2; font-size: .84rem; color: var(--ink-soft); }
+  .cut__tag { font-family: var(--mono); font-size: .64rem; font-weight: 700; letter-spacing: .05em; color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, transparent); padding: .15rem .4rem; border-radius: 5px; align-self: center; }
+  .cut__tag.dead { color: #fff; background: var(--warn); }
+
+  footer { margin-top: 3rem; padding-top: 1.3rem; border-top: 1px solid var(--line); font-family: var(--mono); font-size: .74rem; color: var(--ink-faint); line-height: 1.7; }
+  footer b { color: var(--ink-soft); }
+  .ins { word-break: break-all; }
+
+  @media (max-width: 620px) {
+    .op { grid-template-columns: 1fr; }
+    .op__aside { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: .6rem; margin-top: .3rem; }
+    .top { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div>
+        <p class="eyebrow">Bitcoin Ordinals · Glitch Art · Johannes × Olaf</p>
+        <h1><span class="gl">REVEALED</span> <span class="sub2">Bewerbungs-Radar</span></h1>
+      </div>
+      <button class="themebtn" id="themebtn" type="button" aria-label="Hell/Dunkel umschalten">◐ Theme</button>
+    </div>
+    <p class="lede">Wo sich die REVEALED-Kollektion bewerben kann. Jeder Eintrag wurde einzeln auf „lohnt sich?" geprüft und trägt ein Verdikt: <b>JA</b> (klarer Fit, machen), <b>BEDINGT</b> (passt mit Vorbehalt) oder liegt in „geprüft und aussortiert". Priorität: Bitcoin-nativ zuerst, dann breiterer Kunstmarkt, dann digitale Kunst/Förderung.</p>
+    <div class="stamp">
+      <span><b>Stand</b> 4. September 2026</span>
+      <span><b>6 Agenten</b> haben jeden Eintrag geprüft</span>
+      <span><b class="sja">6× JA</b> · <b class="sbe">11× bedingt</b> · <b class="sne">9× aussortiert</b></span>
+    </div>
+
+    <div class="legend" aria-label="Legende">
+      <span class="li"><span class="swatch" style="color:#fff;background:var(--ok)">JA</span> klarer Fit</span>
+      <span class="li"><span class="swatch verdict--bedingt">BEDINGT</span> mit Vorbehalt</span>
+      <span class="li"><span class="swatch verdict--nein">NEIN</span> aussortiert (mit Grund)</span>
+      <span class="li" style="margin-left:auto">⌚ Aufwand: Stunden · Tage · Monate &nbsp;·&nbsp; ✓ Seite = auf der echten Seite geprüft</span>
+    </div>
+  </header>
+
+  <section class="band" aria-label="Zuerst">
+    <h2>Zuerst dran <span class="n">/ klare JAs, wenig Aufwand</span></h2>
+    <p>Alle vier verifiziert, Bitcoin-nativ bzw. digital-art-nativ, ohne Reise oder Chain-Umweg.</p>
+    <div class="tiles">
+      <article class="tile">
+        <p class="tname">Scarce City</p>
+        <span class="torg">Bitcoin-native Auktion</span>
+        <span class="tbig">jederzeit<small>„Submit a Drop", 10 %</small></span>
+        <span class="twhy">Einzelne REVEALED-Stücke on-chain versteigern, Bitcoin-Publikum. Formular, remote.</span>
+        <a class="tgo" href="https://scarce.city/submissions" target="_blank" rel="noopener">scarce.city/submissions ↗</a>
+      </article>
+      <article class="tile">
+        <p class="tname">Bitcoin Museum (BMAG)</p>
+        <span class="torg">Institution · Dennis Koch · Nashville</span>
+        <span class="tbig">jederzeit<small>Proposal / BTC-Auktion</small></span>
+        <span class="twhy">Seriöse Bitcoin-Kunst-Institution, zeigt Inscriptions. Pitch per Mail, remote.</span>
+        <a class="tgo" href="https://museum.b.tc/contact" target="_blank" rel="noopener">museum.b.tc ↗</a>
+      </article>
+      <article class="tile">
+        <p class="tname">The Wrong Biennale</p>
+        <span class="torg">8. Edition · online, gratis</span>
+        <span class="tbig" data-opens="2026-09-18">öffnet 18. Sept 2026<small>Glitch-Thema, digital-nativ</small></span>
+        <span class="twhy">Gebührenfrei, online, fertiges Werk zeigen. Bester thematischer Fit.</span>
+        <a class="tgo" href="https://thewrong.org" target="_blank" rel="noopener">thewrong.org ↗</a>
+      </article>
+      <article class="tile">
+        <p class="tname">Gamma (Marktplatz)</p>
+        <span class="torg">Ordinals-Plattform</span>
+        <span class="tbig">jederzeit<small>selbst listen / inscriben</small></span>
+        <span class="twhy">Bitcoin-nativ, no-code. Partner-Programm optional (Fenster 15. Nov).</span>
+        <a class="tgo" href="https://ordinals.gamma.io" target="_blank" rel="noopener">gamma.io ↗</a>
+      </article>
+    </div>
+  </section>
+
+  <div class="filters" role="group" aria-label="Filter">
+    <span class="flabel">Filter:</span>
+    <button class="chip" data-filter="all" aria-pressed="true">Alle</button>
+    <button class="chip" data-filter="ja" aria-pressed="false">✅ Nur JA</button>
+    <button class="chip" data-filter="ordinals" aria-pressed="false">₿ Ordinals</button>
+    <button class="chip" data-filter="nft" aria-pressed="false">NFT</button>
+    <button class="chip" data-filter="digital" aria-pressed="false">Digitale Kunst</button>
+  </div>
+
+  <!-- ORDINALS -->
+  <section class="band" data-section="ordinals">
+    <h2 style="--tier:var(--ord)"><span class="swatch" style="background:var(--ord);color:#fff;font-size:.7rem">₿</span>Bitcoin Ordinals <span class="n">/ nativ — die realistischen Türen</span></h2>
+    <p>On-chain-nativ, kein Chain-Umweg. Hier lebt REVEALED technisch.</p>
+    <div class="ops">
+
+      <article class="op" data-tier="ordinals" data-verdict="ja" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--roll">Rollierend</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Scarce City <span class="ty">· Open Call (Formular)</span></h3>
+          <p class="op__org">Bitcoin-native Auktionshaus · aktiv 2026</p>
+          <p class="op__fit">„Submit a Drop" nimmt Bitcoin-NFTs/Inscriptions (10 % auf digitale Goods). Bei Zuschlag Escrow der Inscription. Perfekt, um einzelne REVEALED-Werke an ein Bitcoin-Publikum zu versteigern — minimaler Aufwand, remote.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">jederzeit</span></div>
+          <a class="op__link" href="https://scarce.city/submissions" target="_blank" rel="noopener">scarce.city/submissions ↗</a>
+          <span class="op__contact">plebsupport@scarce.city</span>
+        </div>
+      </article>
+
+      <article class="op" data-tier="ordinals" data-verdict="ja" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--roll">Pitch / Auktion</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">BMAG — Bitcoin Museum &amp; Art Gallery <span class="ty">· Institution</span></h3>
+          <p class="op__org">BTC Inc · Dennis Koch · Nashville, gegr. Jan 2026</p>
+          <p class="op__fit">Permanente, seriöse Bitcoin-Kunst-Institution mit BTC-Auktionsschiene, zeigt Inscriptions ausdrücklich. „Submit art for the permanent collection or for sale on the auction platform." Passt genau zu Fine-Art-Herkunft + on-chain, per Mail ohne Präsenz.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">rollierend (Pitch)</span></div>
+          <a class="op__link" href="https://museum.b.tc/contact" target="_blank" rel="noopener">museum.b.tc/contact ↗</a>
+          <span class="op__contact">bmag@btcmedia.org</span>
+        </div>
+      </article>
+
+      <article class="op" data-tier="ordinals" data-verdict="ja" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--roll">Marktplatz offen</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Gamma <span class="ty">· Marktplatz (+ Partner Program)</span></h3>
+          <p class="op__org">Gamma.io — führende Ordinals-Plattform</p>
+          <p class="op__fit">Der <b>Marktplatz</b> ist offen und no-code: REVEALED direkt inscriben / als Drop oder Auktion listen (JA). Das <b>Partner Program</b> ist invite-only mit Quartalsfenstern (15. Nov / Feb / Mai / Aug), bringt Kuration + Placement bei Galerien/Konferenzen — aber kein Self-Apply-Button (bedingt).</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Marktplatz</span><span class="v">jederzeit</span><span class="k" style="margin-top:.3rem">Partner-Fenster</span><span class="v cd" data-deadline="2026-11-15">15. Nov 2026</span></div>
+          <a class="op__link" href="https://ordinals.gamma.io" target="_blank" rel="noopener">ordinals.gamma.io ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="ordinals" data-verdict="bedingt" style="--tier:var(--ord)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--roll">Pitch / DM</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Bitcoin Art Society <span class="ty">· Kurator / Institution</span></h3>
+          <p class="op__org">Kunst nativ auf Bitcoin L1 · aktiv (NFC Lisbon 06/2026)</p>
+          <p class="op__fit">Thematisch ideal (Bitcoin-native, on-chain-Preservation). Aber kein offenes Formular: Zugang nur über Kurator-DM (@BtcArtSociety), der einzige klare Pfad ist die aufwändige Robert-Mallary-Residency. Sinnvoll als loser Kurator-Kontakt für eine Gruppenschau, nicht als schneller Verkaufskanal.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Zugang</span><span class="v">Kurator-DM</span></div>
+          <a class="op__link" href="https://www.bitcoinartsociety.com/" target="_blank" rel="noopener">bitcoinartsociety.com ↗</a>
+          <span class="op__contact">X: @BtcArtSociety</span>
+        </div>
+      </article>
+
+      <div class="note" data-tier="ordinals" data-verdict="bedingt">
+        <b>Weitere Bitcoin-native Spuren (selbst noch prüfen):</b> Gamma/Xverse fahren zu Bitcoin-Konferenzen wiederkehrende „Inscribing …"-Open-Calls, und Christie's hat bereits eine dynamische Ordinals-Auktion gemacht. Beides tauchte in der Recherche als Richtungshinweis auf, ist aber nicht als aktueller Call verifiziert.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NFT -->
+  <section class="band" data-section="nft">
+    <h2 style="--tier:var(--nft)"><span class="swatch" style="background:var(--nft);color:#fff;font-size:.7rem">◆</span>Breiterer Kunstmarkt <span class="n">/ chain-neutrale Kanäle</span></h2>
+    <p>Der NFT-Kunstmarkt schrumpft 2026 hart (u. a. fxhash-Aus), und die meisten Galerien leben auf Ethereum/Tezos. Übrig bleiben die <b>chain-neutralen</b> Kunst-/Event-Programme, die Bitcoin-Ordinals annehmen.</p>
+    <div class="ops">
+
+      <article class="op" data-tier="nft" data-verdict="bedingt" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--note">bester Prestige-Kanal · 2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">ABS Digital Art Prize <span class="ty">· Preis + Ausstellung (NFC Summit)</span></h3>
+          <p class="op__org">Arab Bank Switzerland · Lissabon · 2026 vergeben an Gretchen Andrew</p>
+          <p class="op__fit">Der seriöseste Kanal hier: offener Call, <b>chain-neutral</b> (Ordinals zulässig), $10.000 + Ankauf in die ABS-Sammlung, echtes Kunstumfeld. Haken: Thema „SYSTEMS" ist generativ/AI-lastig → REVEALED als „System/Glitch-Prozess" framen. 2026-Frist (3. Mai) vorbei → Ziel 2027-Zyklus.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">2026 vorbei · 2027 folgt</span></div>
+          <a class="op__link" href="https://avantgarde.nonfungibleconference.com" target="_blank" rel="noopener">avantgarde.nonfungibleconference.com ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-verdict="bedingt" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--note">Dec-2026-Woche</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">BitBasel <span class="ty">· Miami Art Week</span></h3>
+          <p class="op__org">Krypto-Kunst-Plattform, Miami · „Dec 2026 Art Week" angekündigt</p>
+          <p class="op__fit"><b>Bitcoin-freundlich</b> (kein Chain-Mismatch), wiederkehrend, historisch offener Artist-Call, gute Sichtbarkeit in der Kunstwoche. Aber: eher Exposure als kuratierter Verkauf, vager Marken-Pivot, und Miami-Reise. Open Call für Dez 2026 noch nicht veröffentlicht → beobachten.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">Call ~Herbst</span></div>
+          <a class="op__link" href="https://www.bitbasel.miami/" target="_blank" rel="noopener">bitbasel.miami ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-verdict="bedingt" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--roll">nur via Kurator</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Verse <span class="ty">· kuratorgeführte Plattform</span></h3>
+          <p class="op__org">verse.works · aktiv 2026 (fängt fxhash-Werke mit auf)</p>
+          <p class="op__fit">Hochwertig und aktiv, aber kein offener Antrag: Onboarding nur über gelistete Kurator:innen (u. a. Anika Meier, Vellum, VerticalCrypto). Und Minting ist <b>Ethereum-only</b> → für die Bitcoin-Ordinals ein Kompromiss. Nur sinnvoll, wenn ihr eine:n Kurator:in gewinnt.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Zugang</span><span class="v">Kurator pitchen</span></div>
+          <a class="op__link" href="https://verse.works/curators" target="_blank" rel="noopener">verse.works/curators ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="nft" data-verdict="bedingt" style="--tier:var(--nft)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--roll">nur via Kurator</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Feral File <span class="ty">· kuratierte Shows (generativ/computational)</span></h3>
+          <p class="op__org">Online-Selling-Exhibitions · sehr aktiv 2026</p>
+          <p class="op__fit">Das Genre passt jetzt: Feral File ist DIE Adresse für generative/computational Art, und REVEALED ist p5.js-generativ + vertont. Haken: Zugang nur über Kurator:in/Einladung (kein offener Call), Minting ETH/Tezos (Chain-Kompromiss), und man kuratiert meist neue themenbezogene Auftragsarbeiten. Realistisch nur über einen Kurator-Kontakt.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Zugang</span><span class="v">Kurator / Einladung</span></div>
+          <a class="op__link" href="https://feralfile.com/exhibitions" target="_blank" rel="noopener">feralfile.com ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- DIGITAL -->
+  <section class="band" data-section="digital">
+    <h2 style="--tier:var(--dig)"><span class="swatch" style="background:var(--dig);color:#fff;font-size:.7rem">▲</span>Digitale Kunst &amp; Förderung <span class="n">/ Festivals, Preise, Stipendien</span></h2>
+    <p>Glitch-/New-Media-Festivals, Preise und — besonders zugänglich — deutsche Förderung. REVEALED ist per p5.js <b>animiert, generativ (zufällige Dekonstruktion) und vertont</b> — passt damit direkt in die Video-/Animations-Kategorien (EMAF, CURRENTS, FILE, Prix Ars), und die Sound-Ebene öffnet zusätzlich Audiovisual-/Sound-Art-Schienen (z. B. Ars „Digital Musics & Sound Art").</p>
+    <div class="ops">
+
+      <article class="op" data-tier="digital" data-verdict="ja" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--soon">Öffnet 18.9.</span><span class="effort effort--h">⌚ Stunden</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">The Wrong Biennale — 8. Edition <span class="ty">· Biennale / Open Call</span></h3>
+          <p class="op__org">„Optimise Whatever" · global, online, gebührenfrei</p>
+          <p class="op__fit">Digital-art-nativ, dezentrale Online-Pavillons, kein Jury-Nadelöhr. Glitch/on-chain ist Kernrepertoire, fertiges Werk problemlos. Ausstellung 1. Nov 2027 – 31. März 2028.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Bewerbung öffnet</span><span class="v cd" data-opens="2026-09-18">18. Sept 2026</span></div>
+          <a class="op__link" href="https://thewrong.org" target="_blank" rel="noopener">thewrong.org ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-verdict="ja" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">Call ~Herbst 2026</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">EMAF Osnabrück <span class="ty">· Medienkunstfestival, Call for Entries</span></h3>
+          <p class="op__org">European Media Art Festival · 40. Ausgabe 21.–25. April 2027</p>
+          <p class="op__fit">Bester Festival-Fit: EU-Nähe (Osnabrück), <b>gebührenfrei</b>, ausgewählte Künstler:innen bekommen Honorar, Kategorie „Film" (experimentell) nimmt Glitch-Video, keine Premiere nötig (Bestandswerke OK), Einreichung ohne Reise. Call für 2027 noch nicht offen → jetzt beobachten.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">Call öffnet ~Herbst</span></div>
+          <a class="op__link" href="https://www.emaf.de/" target="_blank" rel="noopener">emaf.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-verdict="ja" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">Vormerken · ~15.1.2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">Künstlerstipendien MV <span class="ty">· Landesförderung</span></h3>
+          <p class="op__org">Land Mecklenburg-Vorpommern</p>
+          <p class="op__fit"><b>Lokal auf euch zugeschnitten:</b> bildende/digitale Kunst, Voraussetzung Wohnsitz + Wirkungskreis in M-V (erfüllt). Das <b>Arbeitsstipendium (bis €5.000) ist präsenzfrei</b> — nur die Aufenthaltsstipendien (Ahrenshoop) fordern Präsenz. Frist erfahrungsgemäß Mitte Januar (2026er war 15.1., nächste ~15.1.2027).</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~15. Jan 2027</span></div>
+          <a class="op__link" href="https://www.regierung-mv.de/Landesregierung/wkm/Kultur/" target="_blank" rel="noopener">regierung-mv.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-verdict="bedingt" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--note">~Jan–Mai 2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Lumen Prize <span class="ty">· Kunstpreis</span></h3>
+          <p class="op__org">Lumen Art Projects (UK)</p>
+          <p class="op__fit">Kategorie „Legacy Futures" (Zeit, Erinnerung, Technik ↔ Kultur) trifft „Malerei → digitale Transformation" ideal. Aber: 2026-Fenster geschlossen, <b>$45/Werk</b> Gebühr, renommiert und kompetitiv. Für den 2027-Call vormerken.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">nächste ~Frühjahr 2027</span></div>
+          <a class="op__link" href="https://lumenprize.org" target="_blank" rel="noopener">lumenprize.org ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-verdict="bedingt" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--note">~Jan 2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Prix Ars Electronica <span class="ty">· Medienkunstpreis</span></h3>
+          <p class="op__org">Ars Electronica, Linz (AT)</p>
+          <p class="op__fit">Da REVEALED animiert + generativ + vertont ist, passt jetzt <b>„New Animation Art"</b> (geglitchte, algorithmische Animation), und die Audio-Ebene sogar <b>„Digital Musics &amp; Sound Art"</b>. Renommiertester Medienkunstpreis, gebührenfrei, Goldene Nica bis €10.000. Haken: Weltspitze-Konkurrenz, und 2026 ist zu → nächster Open Call Januar 2027.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Open Call</span><span class="v">Januar 2027</span></div>
+          <a class="op__link" href="https://ars.electronica.art/prix/en/opencall/" target="_blank" rel="noopener">ars.electronica.art/prix ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-verdict="bedingt" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--ok">Call offen</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">CURRENTS New Media <span class="ty">· Festival, Call for Entries</span></h3>
+          <p class="op__org">Santa Fe (US) · Festival 11.–20. Juni 2027</p>
+          <p class="op__fit">Call ist <b>offen</b>, Kategorie „Experimental Single-Channel Video" (≤12 min) nimmt Glitch-Video ohne Reise. Aber: US (kein EU-Bonus), <b>~$25 Gebühr</b>, und der Festival-Fokus liegt auf Immersive/Installation, Video ist der kleinere Slot.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Deadline</span><span class="v cd" data-deadline="2026-12-08">8. Dez 2026</span></div>
+          <a class="op__link" href="https://currentsnewmedia.org/" target="_blank" rel="noopener">currentsnewmedia.org ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-verdict="bedingt" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--note">2027-Call abwarten</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">FILE São Paulo <span class="ty">· Kunst &amp; Technologie</span></h3>
+          <p class="op__org">Electronic Language Int. Festival · FILE 2026 läuft gerade</p>
+          <p class="op__fit">Exzellenter Fit: Kategorien Videoarte/Animação, <b>gebührenfrei</b>, bis zu 3 Projekte, Bestandswerke (letzte 3 Jahre) ausdrücklich OK, Screening ohne Reise. Aber: Brasilien (kein EU-Bonus), und der 2027-Call ist noch nicht offen.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">2027-Call ~Jahreswende</span></div>
+          <a class="op__link" href="https://file.org.br/" target="_blank" rel="noopener">file.org.br ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-tier="digital" data-verdict="bedingt" style="--tier:var(--dig)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--note">Umdeutung nötig · 2027</span><span class="effort effort--d">⌚ Tage</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Stiftung Kunstfonds <span class="ty">· Bundesförderung „Werkverzeichnung"</span></h3>
+          <p class="op__org">Förderung bildende Kunst (bundesweit)</p>
+          <p class="op__fit">Duos ausdrücklich zugelassen, präsenzfrei, €10.000–30.000 (10 % Eigenanteil). <b>Aber Zweck-Mismatch:</b> gefördert wird die digitale Werkverzeichnung eines Lebenswerks „von überregionaler Bedeutung", nicht das Zeigen von REVEALED. Passt nur, wenn ihr es als digitales Werkverzeichnis von Olafs Oeuvre umdeutet. Frist war 31.5.2026 → 2027.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~Anfang 2027</span></div>
+          <a class="op__link" href="https://www.kunstfonds.de/foerderung/fuer-kuenstlerinnen/" target="_blank" rel="noopener">kunstfonds.de ↗</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- RESIDENCY -->
+  <section class="band" data-section="residency">
+    <h2 style="--tier:var(--res)"><span class="swatch" style="background:var(--res);color:#fff;font-size:.7rem">⏱</span>Residency <span class="n">/ nur für NEUE Arbeit</span></h2>
+    <div class="ops">
+      <article class="op" data-tier="residency" data-verdict="bedingt" style="--tier:var(--res)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT → NEIN</span><span class="pill pill--ok">offen bis 6.11.</span><span class="effort effort--m">⌚ 2 Monate vor Ort</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">EMAP / EMARE — Residencies 2027 <span class="ty">· Residency + Förderung</span></h3>
+          <p class="op__org">European Media Art Platform (15 Häuser)</p>
+          <p class="op__fit"><b>Duo-Pflicht</b> passt (Johannes × Olaf), Geld stark (€6.000 Duo + €4.000 Budget + Reise/Unterkunft). <b>Aber Dealbreaker:</b> zweimonatige Präsenz-Produktionsresidency vor Ort, und gefördert wird <em>neue</em> Produktion, nicht das Zeigen des fertigen REVEALED. Nur, wenn ihr wirklich 2 Monate neu produzieren wollt.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Deadline</span><span class="v cd" data-deadline="2026-11-06">6. Nov 2026, 14:00 CET</span></div>
+          <a class="op__link" href="https://call.emare.eu/" target="_blank" rel="noopener">call.emare.eu ↗</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- AUSSORTIERT -->
+  <section class="band" data-section="aussortiert">
+    <h2><span class="swatch verdict--nein">NEIN</span>Geprüft und aussortiert <span class="n">/ mit Grund</span></h2>
+    <p>Transparenz: Diese wurden geprüft und fallen für REVEALED durch. Grund je Zeile.</p>
+    <div class="ops">
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag dead">TOT</span><span class="cut__n">fxhash</span><span class="cut__r">Plattform am 17.8.2026 geschlossen, Team seit Feb 2026 weg, $FXH −99,9 %, Website offline. Kein Kanal mehr.</span></div>
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag dead">TOT</span><span class="cut__n">CADAF</span><span class="cut__r">Domain cadaf.art löst nicht mehr auf (NXDOMAIN). Messe ruht/eingestellt.</span></div>
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n"><a href="https://objkt.com/" target="_blank" rel="noopener">objkt / Art on Tezos</a></span><span class="cut__r">Marktplatz lebt, aber <b>Tezos-only</b> → Chain-Mismatch für Bitcoin-Ordinals (nur als Tezos-Zweitedition). objkt-labs-Residency ruht (letzter Call Feb 2025, Seite © 2025).</span></div>
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n"><a href="https://www.expanded.art/" target="_blank" rel="noopener">Expanded.Art</a></span><span class="cut__r">Seite auf leeres Gerüst reduziert (About/Newsletter/Impressum, /collections 404) → dormant. Kein Open Call, Ethereum.</span></div>
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n"><a href="https://www.superchiefgallery.com/" target="_blank" rel="noopener">Superchief Gallery</a></span><span class="cut__r">Finanziell in Not (Presse 2025/26: „fights to stay open"), kein Bitcoin-Kanal, physisch/Foto-lastig.</span></div>
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n"><a href="https://ars.electronica.art/starts-prize/" target="_blank" rel="noopener">S+T+ARTS Prize</a></span><span class="cut__r">Fokus Wissenschaft/Technik-Innovation, deckt eine fertige Glitch-Serie inhaltlich schlecht ab. 2026 zu.</span></div>
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n"><a href="https://www.goethe.de/en/kul/foe/cmm.html" target="_blank" rel="noopener">Culture Moves Europe</a></span><span class="cut__r">Aktuell kein offener Call; zudem Mobilitäts-/Reiseformat mit Auslandspartner, kein Ausstellungsformat.</span></div>
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n"><a href="https://www.vellumla.com/vellum-la-artist-open-call" target="_blank" rel="noopener">Vellum LA</a></span><span class="cut__r">Open Call nur für in LA ansässige Künstler:innen, Verkauf via SuperRare/Ethereum, aktuell geschlossen. Dreifacher Ausschluss.</span></div>
+      <div class="cut" data-tier="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n"><a href="https://www.brightmoments.io/artist-in-residence" target="_blank" rel="noopener">Bright Moments</a></span><span class="cut__r">Nur Einladung + IRL-Mint-Zwang + generativer ETH-Fokus; Programm wirkt ruhend (CryptoCitizens-Zyklus 2024 beendet).</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Methodik.</b> Am 4. September 2026 hat je ein Rechercheur jeden Eintrag einzeln auf „lohnt sich für REVEALED?" geprüft (lebt es, kommt man rein, rote Flaggen), Belege verifiziert. <b>✓ Seite</b> = Status/Frist direkt auf der Original-Einreichseite gesehen; <b>◇ prüfen</b> = aus Erfahrung/Suche, vor der Bewerbung selbst bestätigen. Kein Datum ist geraten. fxhash-Aus als Primärquelle bestätigt (offizieller fxhash-Post 17.8.2026 + Right Click Save).</p>
+    <p><b>Empfohlene Reihenfolge:</b> 1) Scarce City &amp; BMAG (jederzeit, Bitcoin-nativ, remote). 2) The Wrong am 18.9. 3) Gamma-Marktplatz jederzeit. 4) EMAF-Call ~Herbst 2026 + MV-Arbeitsstipendium ~15.1.2027. 5) BEDINGT vormerken: ABS-Prize 2027, Lumen 2027, Prix Ars (Jan 2027, jetzt passend da animiert + vertont), CURRENTS (Frist 8.12.2026). EMAP nur, wenn 2 Monate Neu-Produktion gewollt.</p>
+    <p class="ins">REVEALED — Wortmarken-Inscription d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0</p>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('themebtn');
+    try { var s = localStorage.getItem('revealed-theme'); if (s) root.setAttribute('data-theme', s); } catch (e) {}
+    btn && btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      var dark = cur ? cur === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('revealed-theme', next); } catch (e) {}
+    });
+
+    var now = new Date();
+    function days(iso) { return Math.ceil((new Date(iso + 'T00:00:00') - now) / 86400000); }
+    document.querySelectorAll('[data-deadline]').forEach(function (el) {
+      var d = days(el.getAttribute('data-deadline'));
+      if (isNaN(d) || el.querySelector('small')) return;
+      var t = d > 1 ? 'noch ' + d + ' Tage' : d === 1 ? 'morgen' : d === 0 ? 'heute' : 'abgelaufen';
+      var s = document.createElement('small'); s.textContent = t; el.appendChild(s);
+    });
+    document.querySelectorAll('[data-opens]').forEach(function (el) {
+      var d = days(el.getAttribute('data-opens'));
+      if (isNaN(d) || d < 0 || el.querySelector('small')) return;
+      var s = document.createElement('small'); s.textContent = d > 1 ? 'in ' + d + ' Tagen' : d === 1 ? 'morgen' : 'heute';
+      el.appendChild(s);
+    });
+
+    var chips = [].slice.call(document.querySelectorAll('.chip'));
+    var items = [].slice.call(document.querySelectorAll('[data-tier]'));
+    var sections = [].slice.call(document.querySelectorAll('[data-section]'));
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        var f = c.getAttribute('data-filter');
+        chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
+        items.forEach(function (it) {
+          var show = f === 'all'
+            || (f === 'ja' ? it.getAttribute('data-verdict') === 'ja' : it.getAttribute('data-tier') === f);
+          it.classList.toggle('hide', !show);
+        });
+        sections.forEach(function (sec) {
+          var any = sec.querySelector('[data-tier]:not(.hide)');
+          sec.style.display = any ? '' : 'none';
+        });
+      });
+    });
+  })();
+</script>
