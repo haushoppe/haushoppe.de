@@ -400,6 +400,28 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
       display: block;
     }
   }
+  /* O-Ton-Blockzitat aus dem Film „Der letzte Schnitt": schlicht, Serife, linke Kante. */
+  .art-extra .werk-zitat {
+    margin: 2rem 0;
+    padding: 0.15rem 0 0.15rem 1.4rem;
+    border-left: 3px solid var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .art-extra .werk-zitat p {
+    margin: 0;
+  }
+  .art-extra .werk-zitat cite {
+    display: block;
+    margin-top: 0.7rem;
+    font-style: normal;
+    font-size: var(--fs-sm);
+    letter-spacing: 0.03em;
+    color: var(--muted);
+  }
   /* Doku-Reihe: die sechs Film-Teile als kompaktes, 2-spaltiges Vorschau-Raster
      (statt sechs voll breiter Player). Mobil einspaltig. */
   .art-extra .doku-reihe {
