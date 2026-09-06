@@ -400,8 +400,8 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
       display: block;
     }
   }
-  /* Doku-Reihe: die fünf Film-Teile als kompaktes, 2-spaltiges Vorschau-Raster
-     (statt fünf voll breiter Player). Mobil einspaltig. */
+  /* Doku-Reihe: die sechs Film-Teile als kompaktes, 2-spaltiges Vorschau-Raster
+     (statt sechs voll breiter Player). Mobil einspaltig. */
   .art-extra .doku-reihe {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -410,31 +410,6 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
   }
   .art-extra .doku-reihe .yt-facade {
     margin: 0;
-  }
-  /* „Demnächst"-Platzhalter (Teil 6) im gleichen 16:9-Format wie die Video-Facades. */
-  .art-extra .doku-reihe .doku-soon {
-    aspect-ratio: 16 / 9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    background: #eeeeee;
-    border: 1px dashed #c4c4c4;
-    text-align: center;
-  }
-  .art-extra .doku-reihe .doku-soon__nr {
-    font-size: var(--fs-md);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #6a6a6a;
-  }
-  .art-extra .doku-reihe .doku-soon__txt {
-    font-size: var(--fs-xs);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    /* AA-Kontrast auf #eeeeee (war #9a9a9a, 2.42:1). */
-    color: #626262;
   }
   @media (max-width: 560px) {
     .art-extra .doku-reihe {
