@@ -433,6 +433,12 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
   .art-extra .doku-reihe .yt-facade {
     margin: 0;
   }
+  /* Absatz direkt unter dem Raster (Einordnung der Gesamtfassung) bekommt den
+     gleichen Abstand nach oben wie die übrigen Blöcke; .art-extra p trägt nur
+     margin-bottom. */
+  .art-extra .doku-reihe + p {
+    margin-top: 1.25rem;
+  }
   @media (max-width: 560px) {
     .art-extra .doku-reihe {
       grid-template-columns: 1fr;
