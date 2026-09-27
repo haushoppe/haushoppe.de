@@ -1,3 +1,7 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
 <title>Frechen-Bewerbung Olaf Hoppe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,108 +103,107 @@
   footer { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: var(--mono); font-size: .73rem; color: var(--ink-faint); line-height: 1.7; }
   @media (max-width: 560px) { .top { flex-direction: column; } .work dl { grid-template-columns: 1fr; } }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  .field { display: grid; grid-template-columns: 12rem 1fr auto; gap: .3rem .9rem; align-items: start; padding: .65rem 0; border-top: 1px solid var(--line); }
+  .field:first-of-type { border-top: 0; }
+  .field .k { font-family: var(--mono); font-size: .74rem; color: var(--ink-soft); padding-top: .15rem; }
+  .field .k .req { color: var(--accent); }
+  .field .k .lim { display: block; color: var(--ink-faint); font-size: .66rem; margin-top: .15rem; }
+  .field .v { font-size: .95rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .field .v.empty { color: var(--note); font-family: var(--mono); font-size: .82rem; }
+  .cbtn { font-family: var(--mono); font-size: .7rem; background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 7px; padding: .3rem .6rem; cursor: pointer; white-space: nowrap; }
+  .cbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .cbtn.done { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .cbtn:focus-visible, .themebtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .4rem 1.1rem; box-shadow: var(--shadow); }
+  .file { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
+  .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
+  @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
+
+  .field { display: grid; grid-template-columns: 12rem 1fr auto; gap: .3rem .9rem; align-items: start; padding: .65rem 0; border-top: 1px solid var(--line); }
+  .field:first-of-type { border-top: 0; }
+  .field .k { font-family: var(--mono); font-size: .74rem; color: var(--ink-soft); padding-top: .15rem; }
+  .field .k .req { color: var(--accent); }
+  .field .k .lim { display: block; color: var(--ink-faint); font-size: .66rem; margin-top: .15rem; }
+  .field .v { font-size: .95rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .field .v.empty { color: var(--note); font-family: var(--mono); font-size: .82rem; }
+  .cbtn { font-family: var(--mono); font-size: .7rem; background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 7px; padding: .3rem .6rem; cursor: pointer; white-space: nowrap; }
+  .cbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .cbtn.done { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .cbtn:focus-visible, .themebtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .4rem 1.1rem; box-shadow: var(--shadow); }
+  .file { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
+  .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
+  @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
+
+  .field { display: grid; grid-template-columns: 12rem 1fr auto; gap: .3rem .9rem; align-items: start; padding: .65rem 0; border-top: 1px solid var(--line); }
+  .field:first-of-type { border-top: 0; }
+  .field .k { font-family: var(--mono); font-size: .74rem; color: var(--ink-soft); padding-top: .15rem; }
+  .field .k .req { color: var(--accent); }
+  .field .k .lim { display: block; color: var(--ink-faint); font-size: .66rem; margin-top: .15rem; }
+  .field .v { font-size: .95rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .field .v.empty { color: var(--note); font-family: var(--mono); font-size: .82rem; }
+  .cbtn { font-family: var(--mono); font-size: .7rem; background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 7px; padding: .3rem .6rem; cursor: pointer; white-space: nowrap; }
+  .cbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .cbtn.done { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .cbtn:focus-visible, .themebtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .4rem 1.1rem; box-shadow: var(--shadow); }
+  .file { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
+  .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
+  @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
 </style>
 
 <div class="wrap">
   <header>
     <div class="top">
       <div>
-        <p class="eyebrow">XXI. Internationale Grafik-Triennale Frechen 2027 · Bewerbung</p>
-        <h1><span class="a">Olaf Hoppe</span> — Frechen 2027</h1>
+        <p class="eyebrow">XXI. Internationale Grafik-Triennale Frechen 2027 · Ausfüllhilfe</p>
+        <h1><span class="a">Olaf Hoppe</span> · Frechen 2027</h1>
       </div>
       <button class="themebtn" id="themebtn" type="button" aria-label="Hell/Dunkel umschalten">◐ Theme</button>
     </div>
-    <p class="lede">Einreichfertige Mappe für Deutschlands größten Wettbewerb für künstlerische Druckgrafik. Holzschnitt ist ausdrücklich zugelassen — Olafs Metier. Alles Gesicherte ist eingetragen, Lücken sind markiert, die Texte sind zum Kopieren.</p>
-    <div class="countdown">
-      <span class="lbl">Online-Anmeldung endet</span>
-      <span class="big" id="cd" data-deadline="2026-09-29">29. September 2026</span>
-    </div>
+    <p class="lede">Jedes Feld des Online-Formulars in derselben Reihenfolge, fertig zum Kopieren. Formularfelder, Frist und Bedingungen am 27.09.2026 live auf kunstverein-frechen.de und im Formular geprüft; Werkdaten und Preis von haushoppe.de, CV aus Olafs Vita.</p>
+    <div class="countdown"><span class="big" id="cd">Einsendeschluss 29. September 2026</span><span class="lbl">Online-Datenübermittlung</span></div>
   </header>
 
-  <h2><span class="num">1</span>Auf einen Blick</h2>
-  <p class="sub">Direkt von der Ausschreibung (kunstverein-frechen.de) verifiziert.</p>
-  <div class="facts">
-    <div class="fact"><div class="k">Online-Frist</div><div class="v"><b>29. Sept 2026</b></div></div>
-    <div class="fact"><div class="k">Originale einsenden</div><div class="v">bis 12. Jan 2027</div></div>
-    <div class="fact"><div class="k">Anzahl Arbeiten</div><div class="v">bis zu <b>4</b>, nummeriert</div></div>
-    <div class="fact"><div class="k">Entstehungsjahr</div><div class="v"><b>2023 oder später</b></div></div>
-    <div class="fact"><div class="k">Max. Größe</div><div class="v">Länge + Breite &lt; 250 cm</div></div>
-    <div class="fact"><div class="k">Techniken</div><div class="v">Holzschnitt u. a. ✓</div></div>
-    <div class="fact"><div class="k">Gebühr</div><div class="v">40 € (Jurierung)</div></div>
-    <div class="fact"><div class="k">Verkaufsprovision</div><div class="v">30 %</div></div>
-    <div class="fact"><div class="k">Rahmung</div><div class="v">gestellt bis 90 × 120 cm</div></div>
-    <div class="fact"><div class="k">Bilddaten</div><div class="v">≥ 300 dpi je Arbeit</div></div>
-    <div class="fact"><div class="k">Zugelassen</div><div class="v">Profis, keine Altersgrenze</div></div>
-    <div class="fact"><div class="k">Ausstellung</div><div class="v">18. Juni – 11. Juli 2027</div></div>
-  </div>
+  <h2><span class="num">1</span> Formular öffnen</h2>
+  <p class="sub">Oben rechts im Formular auf <b>DE</b> stellen, dann Feld für Feld übernehmen. Ein Formular, eine Seite, am Ende „Senden“. Keine Zahlung online: die 40 € Gebühr fallen erst in Runde 2 an (Zulassungsjury mit den Originalen).</p>
+  <p><a href="https://forms.kdvz.nrw/form/alias/1/form_1919">forms.kdvz.nrw/form/alias/1/form_1919</a> · <a href="https://kunstverein-frechen.de/call-for-entries-xxi-grafik-triennale-2027/">Ausschreibung</a></p>
 
-  <h2><span class="num">2</span>Die Einreichung: Atlantis 4</h2>
-  <p class="sub">Ein Blatt, kompromisslos stark. „Bis zu 4" heißt auch: eins genügt, und bei einem Druckgrafik-Wettbewerb schlägt ein Meisterblatt vier Lückenfüller. Frechen verlangt: Name · Titel · Jahr (2023+) · Technik · Maße · Preis.</p>
+  <h2><span class="num">2</span> Persönliche Daten</h2>
+  <p class="sub">Adresse und Telefon aus dem Impressum von haushoppe.de.</p>
+  <div class="panel"><div class="field"><div class="k">Vorname <span class="req">*</span></div><div class="v">Olaf</div><button class="cbtn" type="button" data-copy="Olaf">Kopieren</button></div><div class="field"><div class="k">Nachname <span class="req">*</span></div><div class="v">Hoppe</div><button class="cbtn" type="button" data-copy="Hoppe">Kopieren</button></div><div class="field"><div class="k">Ort <span class="req">*</span></div><div class="v">Boiensdorf OT Stove</div><button class="cbtn" type="button" data-copy="Boiensdorf OT Stove">Kopieren</button></div><div class="field"><div class="k">PLZ <span class="req">*</span></div><div class="v">23974</div><button class="cbtn" type="button" data-copy="23974">Kopieren</button></div><div class="field"><div class="k">Adresse <span class="req">*</span></div><div class="v">Zum Breitling 12</div><button class="cbtn" type="button" data-copy="Zum Breitling 12">Kopieren</button></div><div class="field"><div class="k">Nationalität <span class="req">*</span></div><div class="v">deutsch</div><button class="cbtn" type="button" data-copy="deutsch">Kopieren</button></div><div class="field"><div class="k">Telefon <span class="req">*</span></div><div class="v">+49 38427 64315</div><button class="cbtn" type="button" data-copy="+49 38427 64315">Kopieren</button></div><div class="field"><div class="k">E-Mail <span class="req">*</span></div><div class="v">team@haushoppe.de</div><button class="cbtn" type="button" data-copy="team@haushoppe.de">Kopieren</button></div><div class="field"><div class="k">Homepage</div><div class="v">https://haushoppe.de</div><button class="cbtn" type="button" data-copy="https://haushoppe.de">Kopieren</button></div></div>
 
-  <div class="work">
-    <div class="work__h"><span class="work__n">Nr. 1</span><span class="work__t">Atlantis 4 (Element Feuer)</span><span class="work__tag ok">2026 · passt</span></div>
-    <dl>
-      <dt>Künstler</dt><dd>Olaf Hoppe</dd>
-      <dt>Jahr</dt><dd>2026</dd>
-      <dt>Technik</dt><dd>Original-Farbholzschnitt von 10 Holzstöcken</dd>
-      <dt>Maße</dt><dd>Motiv 37 × 37 cm, Blattformat 50 × 52 cm <span style="color:var(--ink-faint)">(L+B = 102 cm ✓)</span></dd>
-      <dt>Auflage</dt><dd><span class="fill">[Auflage + Nummerierung eintragen]</span></dd>
-      <dt>Preis</dt><dd><span class="fill">[Preis festlegen, 30 % Provision einkalkulieren]</span></dd>
-    </dl>
-    <p class="work__note"><b>Warum als Einzel-Einreichung:</b> Atlantis 4 vollendet den vierteiligen Atlantis-Zyklus, an dem Olaf über zwölf Jahre gearbeitet hat (2014–2026). Zehn Holzstöcke, zehn Monate Arbeit, ein 160 Mio. Jahre alter Ammonit als „Element Feuer". Technische Meisterschaft, die eine Grafik-Jury sofort liest, und laut Olaf sein bestes Werk.</p>
-  </div>
+  <h2><span class="num">3</span> Künstlerischer Werdegang</h2>
+  <p class="sub">Aus Olafs Vita, auf die Zeichenlimits des Formulars gekürzt.</p>
+  <div class="panel"><div class="field"><div class="k">Ausbildung / Studium <span class="req">*</span><span class="lim">424/500 Zeichen</span></div><div class="v">1971-1978 Förderklasse für Bildende Kunst am Konservatorium Rostock bei Waldemar Krämer. 1980-1985 Studium an der Kunsthochschule Berlin-Weißensee, Sektion Malerei/Grafik, bei Prof. Dieter Gantz und Heinrich Tessmer. 1985 Diplom, Mentoren Prof. Walter Womacka und Prof. Dieter Gantz. Seit 1985 freischaffender Maler und Grafiker, seit 1988 in Stove bei Wismar. Mitglied im Berufsverband Bildender Künstlerinnen und Künstler.</div><button class="cbtn" type="button" data-copy="1971-1978 Förderklasse für Bildende Kunst am Konservatorium Rostock bei Waldemar Krämer. 1980-1985 Studium an der Kunsthochschule Berlin-Weißensee, Sektion Malerei/Grafik, bei Prof. Dieter Gantz und Heinrich Tessmer. 1985 Diplom, Mentoren Prof. Walter Womacka und Prof. Dieter Gantz. Seit 1985 freischaffender Maler und Grafiker, seit 1988 in Stove bei Wismar. Mitglied im Berufsverband Bildender Künstlerinnen und Künstler.">Kopieren</button></div><div class="field"><div class="k">Bisherige Ausstellungen <span class="req">*</span><span class="lim">578/600 Zeichen</span></div><div class="v">Auswahl: 2024 „250 Druckgrafiken für Caspar David Friedrich“, Greifswald (1. Preis); 2023 Landesweite Kunstschau des Künstlerbundes MV; 2023 und 2020 Kunstverein zu Rostock; 2023 und 2020 Welt-Erbe-Haus Wismar; 2019 Tag der Druckkunst (EA); 2016 Kunsthalle Wittenhagen; 2014 INS BLAUE, 24. Kunstschau BBK; 1998 Kunstverein Rostock (EA); 1993 Galerie Emul Konst, Karlshamn, Schweden (EA); 1992 Druckgrafischer Wettbewerb, Neubrandenburg; 1991 Internationaler Senefelder-Preis, Offenbach am Main; 1988 Internationale Biennale der Malerei, Košice; 1987 Staatliches Museum Schwerin.</div><button class="cbtn" type="button" data-copy="Auswahl: 2024 „250 Druckgrafiken für Caspar David Friedrich“, Greifswald (1. Preis); 2023 Landesweite Kunstschau des Künstlerbundes MV; 2023 und 2020 Kunstverein zu Rostock; 2023 und 2020 Welt-Erbe-Haus Wismar; 2019 Tag der Druckkunst (EA); 2016 Kunsthalle Wittenhagen; 2014 INS BLAUE, 24. Kunstschau BBK; 1998 Kunstverein Rostock (EA); 1993 Galerie Emul Konst, Karlshamn, Schweden (EA); 1992 Druckgrafischer Wettbewerb, Neubrandenburg; 1991 Internationaler Senefelder-Preis, Offenbach am Main; 1988 Internationale Biennale der Malerei, Košice; 1987 Staatliches Museum Schwerin.">Kopieren</button></div><div class="field"><div class="k">Stipendien, Preise, Auszeichnungen <span class="req">*</span><span class="lim">286/300 Zeichen</span></div><div class="v">2024 1. Preis im bundesweiten Wettbewerb „250 Druckgrafiken für Caspar David Friedrich“, Greifswald. 1987 Anerkennungspreis Aquarell, Cesis-87, Lettland. Werke u. a. im Kupferstichkabinett Berlin, in der Kunstsammlung der Deutschen Bundesbank und im Kulturhistorischen Museum Stralsund.</div><button class="cbtn" type="button" data-copy="2024 1. Preis im bundesweiten Wettbewerb „250 Druckgrafiken für Caspar David Friedrich“, Greifswald. 1987 Anerkennungspreis Aquarell, Cesis-87, Lettland. Werke u. a. im Kupferstichkabinett Berlin, in der Kunstsammlung der Deutschen Bundesbank und im Kulturhistorischen Museum Stralsund.">Kopieren</button></div></div>
 
-  <div class="ask" style="margin-top:.4rem">
-    <p style="margin:0"><b>Warum nur dieses eine Blatt?</b> Frechen bewertet jede Arbeit nach ihrem Entstehungsjahr (2023+). Die älteren Atlantis-Blätter (Wasser und Erde 2014, Luft 2017) und „Die geschlossene Tür" (2015, CDF-Preisträger) fallen damit raus. Der Zyklus zählt trotzdem, nämlich als Erzählung: Atlantis 4 als Krönung einer über ein Jahrzehnt gewachsenen Serie (im Statement unten verankert).</p>
-  </div>
+  <h2><span class="num">4</span> Eingereichte Arbeit</h2>
+  <p class="sub">Nur „Atlantis 4“: Die Ausschreibung verlangt Arbeiten aus 2023 oder später, alle anderen Holzschnitte sind älter. Preis ungerahmt, weil Originale ungerahmt eingesandt werden und Frechen selbst rahmt; bei Verkauf behält der Kunstverein 30 %.</p>
+  <div class="panel"><div class="field"><div class="k">Wie viele Arbeiten? <span class="req">*</span></div><div class="v">1</div><button class="cbtn" type="button" data-copy="1">Kopieren</button></div><div class="field"><div class="k">Titel <span class="req">*</span></div><div class="v">Atlantis 4 (Element Feuer)</div><button class="cbtn" type="button" data-copy="Atlantis 4 (Element Feuer)">Kopieren</button></div><div class="field"><div class="k">Jahr <span class="req">*</span></div><div class="v">2026</div><button class="cbtn" type="button" data-copy="2026">Kopieren</button></div><div class="field"><div class="k">Technik <span class="req">*</span></div><div class="v">Original Farbholzschnitt von 10 Holzstöcken auf Büttenpapier</div><button class="cbtn" type="button" data-copy="Original Farbholzschnitt von 10 Holzstöcken auf Büttenpapier">Kopieren</button></div><div class="field"><div class="k">Zusätzliche Hinweise<span class="lim">458/1000 Zeichen</span></div><div class="v">Mit diesem Blatt schließe ich meinen vierteiligen Atlantis-Zyklus über die vier Elemente (Wasser und Erde 2014, Luft 2017, Feuer 2026). Grundform ist ein 160 Millionen Jahre alter Ammonit. Zehn Holzstöcke, jeder trägt eine einzige Farbe; von einer Masterplatte übertragen, mit über hundert Stechbeiteln geschnitten und Schicht um Schicht auf einer eigens umgebauten Buchdruckmaschine gedruckt. Zehn Monate Arbeit an diesem Blatt. Nummeriert und handsigniert.</div><button class="cbtn" type="button" data-copy="Mit diesem Blatt schließe ich meinen vierteiligen Atlantis-Zyklus über die vier Elemente (Wasser und Erde 2014, Luft 2017, Feuer 2026). Grundform ist ein 160 Millionen Jahre alter Ammonit. Zehn Holzstöcke, jeder trägt eine einzige Farbe; von einer Masterplatte übertragen, mit über hundert Stechbeiteln geschnitten und Schicht um Schicht auf einer eigens umgebauten Buchdruckmaschine gedruckt. Zehn Monate Arbeit an diesem Blatt. Nummeriert und handsigniert.">Kopieren</button></div><div class="field"><div class="k">Bildmaß (H x B in cm)</div><div class="v">37 x 37</div><button class="cbtn" type="button" data-copy="37 x 37">Kopieren</button></div><div class="field"><div class="k">Papiermaß (H x B in cm)</div><div class="v">50 x 52</div><button class="cbtn" type="button" data-copy="50 x 52">Kopieren</button></div><div class="field"><div class="k">Auflage</div><div class="v">230</div><button class="cbtn" type="button" data-copy="230">Kopieren</button></div><div class="field"><div class="k">davon lieferbar</div><div class="v empty">leer lassen oder von Olaf</div><span></span></div><div class="field"><div class="k">Verkaufspreis</div><div class="v">785 €</div><button class="cbtn" type="button" data-copy="785 €">Kopieren</button></div></div>
 
-  <h2><span class="num">3</span>Kurzvita <span class="num" style="color:var(--ink-faint)">zum Kopieren</span></h2>
-  <p class="sub">Auf die Druckgrafik zugespitzt — genau das, was diese Jury überzeugt. Alle Angaben aus Olafs Vita.</p>
-  <div class="copy">
-    <div class="copy__lbl">Kurzbiografie</div>
-    <p>Olaf Hoppe, geboren 1959 in Rostock, studierte 1980–1985 Malerei und Grafik an der Kunsthochschule Berlin-Weißensee (Diplom bei Walter Womacka und Dieter Gantz) und arbeitet seit 1985 freischaffend, seit 1988 in Stove bei Wismar.</p>
-    <p>Sein Herzstück ist der mehrfarbige Holzschnitt: Blätter aus bis zu dreizehn von Hand geschnittenen und einzeln gedruckten Holzstöcken, auf Bütten, nummeriert und handsigniert. Ausgezeichnet u. a. mit dem Internationalen Senefelder-Preis (Offenbach, 1991) und 2024 als 1. Preisträger des bundesweiten Wettbewerbs „250 Druckgrafiken für Caspar David Friedrich" (Greifswald).</p>
-    <p>Werke in öffentlichen Sammlungen, darunter das Kupferstichkabinett Berlin (Preußischer Kulturbesitz), die Kunstsammlung der Deutschen Bundesbank und das Kulturhistorische Museum Stralsund. Vertreten u. a. durch die Galerie Klaus Gerrit Friese (Stuttgart) und ARTES (Hannover). Mitglied im Berufsverband Bildender Künstler.</p>
-  </div>
+  <h2><span class="num">5</span> Datei hochladen</h2>
+  <p class="sub">Limit 20 MB. Die Datei erfüllt bereits die Katalog-Anforderung aus Runde 2 (mind. 300 dpi bei mind. 21 cm langer Seite).</p>
+  <div class="panel"><div class="field"><div class="k">Datei hochladen <span class="req">*</span></div><div class="v file"><code>~/Shots/frechen-2027/01_Olaf-Hoppe_Atlantis-4-Element-Feuer_2026.jpg</code><span>JPEG, 3208 × 2977 px, 5,5 MB, sRGB, 300 dpi (388 dpi bei 21 cm)</span></div><span></span></div></div>
 
-  <h2><span class="num">4</span>Künstlerstatement <span class="num" style="color:var(--ink-faint)">zum Kopieren</span></h2>
-  <p class="sub">Kurz, konkret, materialnah — falls das Formular ein Statement erlaubt.</p>
-  <div class="copy copy--serif">
-    <div class="copy__lbl">Statement</div>
-    <p>Ich denke in Schichten. Ein mehrfarbiger Holzschnitt entsteht bei mir aus zehn bis dreizehn Holzstöcken, die nacheinander von Hand geschnitten und Farbe für Farbe gedruckt werden, bis das Bild seine Tiefe hat. Mit „Atlantis 4 (Element Feuer)" vollende ich meinen vierteiligen Atlantis-Zyklus: ein 160 Millionen Jahre alter Ammonit wird zum Element Feuer, zehn Monate Arbeit, zehn Druckstöcke. Der Holzschnitt ist für mich kein Reproduktionsverfahren, sondern eine langsame, körperliche Form des Denkens in Zeit und Material.</p>
-  </div>
+  <h2><span class="num">6</span> Vor dem Absenden klären</h2>
+  <div class="ask"><ul>
+    <li><b>davon lieferbar:</b> optionales Feld. Wie viele der 230 Exemplare sind noch verfügbar? Sonst leer lassen.</li>
+    <li><b>Papiermaß:</b> Formular fragt H x B. Website nennt „50 cm × 52 cm“ ohne Ausrichtung; eingetragen ist 50 x 52. Bitte kurz bestätigen.</li>
+    <li><b>Senefelder-Preis 1991:</b> steht in der Vita als Ausstellungsbeteiligung (AB), deshalb unter „Ausstellungen“ und nicht als Auszeichnung. Falls Olaf den Preis gewonnen hat, gehört er ins Feld „Preise“.</li>
+  </ul></div>
 
-  <h2><span class="num">5</span>Bild- &amp; Datencheck je Arbeit</h2>
-  <ul class="check">
-    <li><b>Foto/Scan ≥ 300 dpi</b> in Reproqualität (für den Katalog), sauber freigestellt</li>
-    <li><b>Titel</b> und <b>Entstehungsjahr</b> (muss 2023 oder später sein)</li>
-    <li><b>Technik</b> präzise (z. B. „Original-Farbholzschnitt von 10 Holzstöcken")</li>
-    <li><b>Maße</b> in cm, Summe Länge + Breite &lt; 250 cm</li>
-    <li><b>Preis</b> in € (Frechen behält 30 % Provision — im Preis mitdenken)</li>
-    <li><b>Dateiname</b> sauber, passend zu den Angaben</li>
-  </ul>
-
-  <h2><span class="num">6</span>Ablauf &amp; Termine</h2>
+  <h2><span class="num">7</span> Danach</h2>
   <ol class="steps">
-    <li><span class="d">jetzt – 29.09.2026</span> · Online-Anmeldung auf <a href="https://kunstverein-frechen.de/call-for-entries-xxi-grafik-triennale-2027/" target="_blank" rel="noopener">kunstverein-frechen.de</a>: Bilddatei + Werkdaten hochladen, 40 € Gebühr zahlen.</li>
-    <li><span class="d">Herbst/Winter 2026</span> · Interne Vorjury wählt anhand der Digital-Einreichungen aus. Bei Auswahl: Nachricht vom Kunstverein.</li>
-    <li><span class="d">bis 12.01.2027</span> · Originale einsenden (Eingang beim Kunstverein zu Frechen e.V., Postfach 1507, 50205 Frechen). Fach-Jury wählt an den Originalen die Ausstellung aus.</li>
-    <li><span class="d">18.06. – 11.07.2027</span> · Ausstellung im Stadtsaal Frechen; Rahmung bis 90 × 120 cm wird gestellt, größere Blätter hängen ungerahmt. Preise 3.000 / 2.000 / 1.500 €.</li>
+    <li><span class="d">Herbst/Winter 2026</span><br>Interne Vorjury sichtet die Online-Bewerbungen; ausgewählte Künstler werden eingeladen.</li>
+    <li><span class="d">bis 12.01.2027</span><br>Original ungerahmt einsenden (Eingang zählt): Kunstverein zu Frechen e.V., Postfach 1507, 50205 Frechen. Beilegen: CD mit den Bilddaten (die Datei oben reicht). 40 € Gebühr.</li>
+    <li><span class="d">18.06. bis 11.07.2027</span><br>Ausstellung im Stadtsaal Frechen, zweisprachiger Katalog. Preise 3.000 / 2.000 / 1.500 €, Publikumspreis 200 €.</li>
   </ol>
 
-  <h2><span class="num">7</span>Von Olaf / dir bestätigen</h2>
-  <div class="ask">
-    <ul>
-      <li><b>Preis für „Atlantis 4"</b> festlegen (Frechen verlangt eine Preisangabe; 30 % Provision einkalkulieren).</li>
-      <li><b>Auflage &amp; Nummerierung</b> von „Atlantis 4" (im Katalog noch offen).</li>
-      <li><b>300-dpi-Scan/Foto</b> des Blatts in Reproqualität (fürs Formular und den Katalog).</li>
-      <li><b>Wer reicht ein</b> (Olaf selbst / du in seinem Namen) und zahlt die 40 €?</li>
-    </ul>
-  </div>
-
-  <footer>
-    <p>Alle Frechen-Bedingungen am 4.9.2026 direkt auf kunstverein-frechen.de verifiziert. Werkdaten aus Olafs Katalog (haushoppe.de), Vita-Angaben aus der offiziellen Vita. Eingereicht wird nur „Atlantis 4" (2026), das einzige Blatt, das die 2023+-Regel erfüllt. Preis, Auflage und der 300-dpi-Scan sind von Olaf zu ergänzen. Nichts davon ist geraten.</p>
-  </footer>
+  <footer>Quellen: Ausschreibung und Formular live geprüft am 27.09.2026 · Werkdaten und Preis: haushoppe.de · CV: Vita auf haushoppe.de · Adresse: Impressum</footer>
 </div>
 
 <script>
@@ -217,7 +220,16 @@
     var el = document.getElementById('cd');
     if (el) {
       var d = Math.ceil((new Date('2026-09-29T23:59:00') - new Date()) / 86400000);
-      if (!isNaN(d) && d >= 0) { var s = document.createElement('span'); s.className = 'lbl'; s.textContent = ' · noch ' + d + ' Tage'; el.after(s); }
+      if (!isNaN(d) && d >= 0) { var s2 = document.createElement('span'); s2.className = 'lbl'; s2.textContent = 'noch ' + d + (d === 1 ? ' Tag' : ' Tage'); el.after(s2); }
     }
+    document.querySelectorAll('.cbtn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.getAttribute('data-copy');
+        var ok = function () { b.textContent = 'Kopiert'; b.classList.add('done'); setTimeout(function () { b.textContent = 'Kopieren'; b.classList.remove('done'); }, 1400); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, function () { fallback(t); ok(); });
+        else { fallback(t); ok(); }
+      });
+    });
+    function fallback(t) { var ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove(); }
   })();
 </script>
