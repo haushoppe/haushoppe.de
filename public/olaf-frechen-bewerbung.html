@@ -307,6 +307,23 @@
   .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
   .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
   @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
+
+  .field { display: grid; grid-template-columns: 12rem 1fr auto; gap: .3rem .9rem; align-items: start; padding: .65rem 0; border-top: 1px solid var(--line); }
+  .field:first-of-type { border-top: 0; }
+  .field .k { font-family: var(--mono); font-size: .74rem; color: var(--ink-soft); padding-top: .15rem; }
+  .field .k .req { color: var(--accent); }
+  .field .k .lim { display: block; color: var(--ink-faint); font-size: .66rem; margin-top: .15rem; }
+  .field .v { font-size: .95rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .field .v.empty { color: var(--note); font-family: var(--mono); font-size: .82rem; }
+  .cbtn { font-family: var(--mono); font-size: .7rem; background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 7px; padding: .3rem .6rem; cursor: pointer; white-space: nowrap; }
+  .cbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .cbtn.done { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .cbtn:focus-visible, .themebtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .4rem 1.1rem; box-shadow: var(--shadow); }
+  .file { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
+  .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
+  @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
 </style>
 
 <div class="wrap">
@@ -336,19 +353,19 @@
 
   <h2><span class="num">4</span> Eingereichte Arbeit</h2>
   <p class="sub">Nur „Atlantis 4“: Die Ausschreibung verlangt Arbeiten aus 2023 oder später, alle anderen Holzschnitte sind älter. Preis ungerahmt, weil Originale ungerahmt eingesandt werden und Frechen selbst rahmt; bei Verkauf behält der Kunstverein 30 %.</p>
-  <div class="panel"><div class="field"><div class="k">Wie viele Arbeiten? <span class="req">*</span></div><div class="v">1</div><button class="cbtn" type="button" data-copy="1">Kopieren</button></div><div class="field"><div class="k">Titel <span class="req">*</span></div><div class="v">Atlantis 4 (Element Feuer)</div><button class="cbtn" type="button" data-copy="Atlantis 4 (Element Feuer)">Kopieren</button></div><div class="field"><div class="k">Jahr <span class="req">*</span></div><div class="v">2026</div><button class="cbtn" type="button" data-copy="2026">Kopieren</button></div><div class="field"><div class="k">Technik <span class="req">*</span></div><div class="v">Original Farbholzschnitt von 10 Holzstöcken auf Büttenpapier</div><button class="cbtn" type="button" data-copy="Original Farbholzschnitt von 10 Holzstöcken auf Büttenpapier">Kopieren</button></div><div class="field"><div class="k">Zusätzliche Hinweise<span class="lim">987/1000 Zeichen</span></div><div class="v">Zehn Holzstöcke, zehn Farben, passgenau übereinandergesetzt: eine Präzision ohne Spielraum. Von einer Masterplatte übertrage ich die Zeichnung millimetergenau auf jeden Stock, schneide mit über hundert Stechbeiteln und drucke Farbe um Farbe, bis das Blatt strahlt. Zehn Monate für ein einziges Blatt.
+  <div class="panel"><div class="field"><div class="k">Wie viele Arbeiten? <span class="req">*</span></div><div class="v">1</div><button class="cbtn" type="button" data-copy="1">Kopieren</button></div><div class="field"><div class="k">Titel <span class="req">*</span></div><div class="v">Atlantis 4 (Element Feuer)</div><button class="cbtn" type="button" data-copy="Atlantis 4 (Element Feuer)">Kopieren</button></div><div class="field"><div class="k">Jahr <span class="req">*</span></div><div class="v">2026</div><button class="cbtn" type="button" data-copy="2026">Kopieren</button></div><div class="field"><div class="k">Technik <span class="req">*</span></div><div class="v">Original Farbholzschnitt von 10 Holzstöcken auf Büttenpapier</div><button class="cbtn" type="button" data-copy="Original Farbholzschnitt von 10 Holzstöcken auf Büttenpapier">Kopieren</button></div><div class="field"><div class="k">Zusätzliche Hinweise<span class="lim">973/1000 Zeichen</span></div><div class="v">Zehn Holzstöcke, zehn Farben, passgenau übereinandergesetzt: eine Präzision ohne Spielraum. Von einer Masterplatte übertrage ich die Zeichnung millimetergenau auf jeden Stock, schneide mit über hundert Stechbeiteln und drucke Farbe um Farbe, bis das Blatt strahlt. Zehn Monate für ein einziges Blatt.
 
 Über dreißig Jahre hat mich die Frage begleitet, wie sich Malerei in Holz übersetzen lässt. Atlantis 4 ist meine Antwort: Der Holzschnitt übertrifft das Gemälde an Klarheit und Leuchtkraft.
 
 Mit diesem Blatt vollende ich nach zwölf Jahren meinen Atlantis-Zyklus, und aller Voraussicht nach ist es mein letzter Holzschnitt. Ich lege die Stechbeitel aus der Hand, auf dem Höhepunkt einer Tradition, die ich perfektioniert habe. Ein solches Meisterwerk entsteht nie wieder.
 
-Ein Fernsehteam von Wismar TV hat die Arbeit über Monate dokumentiert, vom ersten Schnitt bis zum letzten Druck: „Der letzte Schnitt“, in sechs Teilen: https://haushoppe.de/portfolio/atlantis-4-element-feuer-2026/</div><button class="cbtn" type="button" data-copy="Zehn Holzstöcke, zehn Farben, passgenau übereinandergesetzt: eine Präzision ohne Spielraum. Von einer Masterplatte übertrage ich die Zeichnung millimetergenau auf jeden Stock, schneide mit über hundert Stechbeiteln und drucke Farbe um Farbe, bis das Blatt strahlt. Zehn Monate für ein einziges Blatt.
+Ein Fernsehteam hat die Arbeit über Monate dokumentiert, vom ersten Schnitt bis zum letzten Druck: „Der letzte Schnitt“, in sechs Teilen: https://haushoppe.de/portfolio/atlantis-4-element-feuer-2026/</div><button class="cbtn" type="button" data-copy="Zehn Holzstöcke, zehn Farben, passgenau übereinandergesetzt: eine Präzision ohne Spielraum. Von einer Masterplatte übertrage ich die Zeichnung millimetergenau auf jeden Stock, schneide mit über hundert Stechbeiteln und drucke Farbe um Farbe, bis das Blatt strahlt. Zehn Monate für ein einziges Blatt.
 
 Über dreißig Jahre hat mich die Frage begleitet, wie sich Malerei in Holz übersetzen lässt. Atlantis 4 ist meine Antwort: Der Holzschnitt übertrifft das Gemälde an Klarheit und Leuchtkraft.
 
 Mit diesem Blatt vollende ich nach zwölf Jahren meinen Atlantis-Zyklus, und aller Voraussicht nach ist es mein letzter Holzschnitt. Ich lege die Stechbeitel aus der Hand, auf dem Höhepunkt einer Tradition, die ich perfektioniert habe. Ein solches Meisterwerk entsteht nie wieder.
 
-Ein Fernsehteam von Wismar TV hat die Arbeit über Monate dokumentiert, vom ersten Schnitt bis zum letzten Druck: „Der letzte Schnitt“, in sechs Teilen: https://haushoppe.de/portfolio/atlantis-4-element-feuer-2026/">Kopieren</button></div><div class="field"><div class="k">Bildmaß (H x B in cm)</div><div class="v">37 x 37</div><button class="cbtn" type="button" data-copy="37 x 37">Kopieren</button></div><div class="field"><div class="k">Papiermaß (H x B in cm)</div><div class="v">50 x 52</div><button class="cbtn" type="button" data-copy="50 x 52">Kopieren</button></div><div class="field"><div class="k">Auflage</div><div class="v">230</div><button class="cbtn" type="button" data-copy="230">Kopieren</button></div><div class="field"><div class="k">davon lieferbar</div><div class="v">100</div><button class="cbtn" type="button" data-copy="100">Kopieren</button></div><div class="field"><div class="k">Verkaufspreis</div><div class="v">785 €</div><button class="cbtn" type="button" data-copy="785 €">Kopieren</button></div></div>
+Ein Fernsehteam hat die Arbeit über Monate dokumentiert, vom ersten Schnitt bis zum letzten Druck: „Der letzte Schnitt“, in sechs Teilen: https://haushoppe.de/portfolio/atlantis-4-element-feuer-2026/">Kopieren</button></div><div class="field"><div class="k">Bildmaß (H x B in cm)</div><div class="v">37 x 37</div><button class="cbtn" type="button" data-copy="37 x 37">Kopieren</button></div><div class="field"><div class="k">Papiermaß (H x B in cm)</div><div class="v">50 x 52</div><button class="cbtn" type="button" data-copy="50 x 52">Kopieren</button></div><div class="field"><div class="k">Auflage</div><div class="v">230</div><button class="cbtn" type="button" data-copy="230">Kopieren</button></div><div class="field"><div class="k">davon lieferbar</div><div class="v">100</div><button class="cbtn" type="button" data-copy="100">Kopieren</button></div><div class="field"><div class="k">Verkaufspreis</div><div class="v">785 €</div><button class="cbtn" type="button" data-copy="785 €">Kopieren</button></div></div>
 
   <h2><span class="num">5</span> Datei hochladen</h2>
   <p class="sub">Limit 20 MB. Die Datei erfüllt bereits die Katalog-Anforderung aus Runde 2 (mind. 300 dpi bei mind. 21 cm langer Seite).</p>
