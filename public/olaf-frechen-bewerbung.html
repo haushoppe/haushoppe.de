@@ -205,6 +205,23 @@
   .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
   .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
   @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
+
+  .field { display: grid; grid-template-columns: 12rem 1fr auto; gap: .3rem .9rem; align-items: start; padding: .65rem 0; border-top: 1px solid var(--line); }
+  .field:first-of-type { border-top: 0; }
+  .field .k { font-family: var(--mono); font-size: .74rem; color: var(--ink-soft); padding-top: .15rem; }
+  .field .k .req { color: var(--accent); }
+  .field .k .lim { display: block; color: var(--ink-faint); font-size: .66rem; margin-top: .15rem; }
+  .field .v { font-size: .95rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .field .v.empty { color: var(--note); font-family: var(--mono); font-size: .82rem; }
+  .cbtn { font-family: var(--mono); font-size: .7rem; background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 7px; padding: .3rem .6rem; cursor: pointer; white-space: nowrap; }
+  .cbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .cbtn.done { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .cbtn:focus-visible, .themebtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .4rem 1.1rem; box-shadow: var(--shadow); }
+  .file { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
+  .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
+  @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
 </style>
 
 <div class="wrap">
@@ -226,7 +243,7 @@
 
   <h2><span class="num">2</span> Persönliche Daten</h2>
   <p class="sub">Adresse und Telefon aus dem Impressum von haushoppe.de.</p>
-  <div class="panel"><div class="field"><div class="k">Vorname <span class="req">*</span></div><div class="v">Olaf</div><button class="cbtn" type="button" data-copy="Olaf">Kopieren</button></div><div class="field"><div class="k">Nachname <span class="req">*</span></div><div class="v">Hoppe</div><button class="cbtn" type="button" data-copy="Hoppe">Kopieren</button></div><div class="field"><div class="k">Ort <span class="req">*</span></div><div class="v">Boiensdorf OT Stove</div><button class="cbtn" type="button" data-copy="Boiensdorf OT Stove">Kopieren</button></div><div class="field"><div class="k">PLZ <span class="req">*</span></div><div class="v">23974</div><button class="cbtn" type="button" data-copy="23974">Kopieren</button></div><div class="field"><div class="k">Adresse <span class="req">*</span></div><div class="v">Zum Breitling 12</div><button class="cbtn" type="button" data-copy="Zum Breitling 12">Kopieren</button></div><div class="field"><div class="k">Nationalität <span class="req">*</span></div><div class="v">deutsch</div><button class="cbtn" type="button" data-copy="deutsch">Kopieren</button></div><div class="field"><div class="k">Telefon <span class="req">*</span></div><div class="v">+49 38427 64315</div><button class="cbtn" type="button" data-copy="+49 38427 64315">Kopieren</button></div><div class="field"><div class="k">E-Mail <span class="req">*</span></div><div class="v">team@haushoppe.de</div><button class="cbtn" type="button" data-copy="team@haushoppe.de">Kopieren</button></div><div class="field"><div class="k">Homepage</div><div class="v">https://haushoppe.de</div><button class="cbtn" type="button" data-copy="https://haushoppe.de">Kopieren</button></div></div>
+  <div class="panel"><div class="field"><div class="k">Vorname <span class="req">*</span></div><div class="v">Olaf</div><button class="cbtn" type="button" data-copy="Olaf">Kopieren</button></div><div class="field"><div class="k">Nachname <span class="req">*</span></div><div class="v">Hoppe</div><button class="cbtn" type="button" data-copy="Hoppe">Kopieren</button></div><div class="field"><div class="k">Ort <span class="req">*</span></div><div class="v">Boiensdorf OT Stove</div><button class="cbtn" type="button" data-copy="Boiensdorf OT Stove">Kopieren</button></div><div class="field"><div class="k">PLZ <span class="req">*</span></div><div class="v">23974</div><button class="cbtn" type="button" data-copy="23974">Kopieren</button></div><div class="field"><div class="k">Adresse <span class="req">*</span></div><div class="v">Zum Breitling 12</div><button class="cbtn" type="button" data-copy="Zum Breitling 12">Kopieren</button></div><div class="field"><div class="k">Nationalität <span class="req">*</span></div><div class="v">deutsch</div><button class="cbtn" type="button" data-copy="deutsch">Kopieren</button></div><div class="field"><div class="k">Telefon <span class="req">*</span></div><div class="v">+49 38427 64315</div><button class="cbtn" type="button" data-copy="+49 38427 64315">Kopieren</button></div><div class="field"><div class="k">E-Mail <span class="req">*</span></div><div class="v">team@haushoppe.de</div><button class="cbtn" type="button" data-copy="team@haushoppe.de">Kopieren</button></div><div class="field"><div class="k">Homepage</div><div class="v">https://haushoppe.de/portfolio/atlantis-4-element-feuer-2026/</div><button class="cbtn" type="button" data-copy="https://haushoppe.de/portfolio/atlantis-4-element-feuer-2026/">Kopieren</button></div></div>
 
   <h2><span class="num">3</span> Künstlerischer Werdegang</h2>
   <p class="sub">Aus Olafs Vita, auf die Zeichenlimits des Formulars gekürzt.</p>
