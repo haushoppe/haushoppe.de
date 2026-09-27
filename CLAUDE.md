@@ -73,6 +73,13 @@ Weicht ein Werkdatum (Jahr, Nummer, Titel) von einer anderen Quelle ab (Signatur
 ### ⛔ Gleicher Titel ≠ gleiches Werk — niemals Einträge zusammenlegen
 Olaf malt Motive manchmal **zweimal** (gleicher oder fast gleicher Titel, z. B. eine spätere überarbeitete Fassung). Das sind **eigenständige Werke** mit eigenem Eintrag im Werkverzeichnis. **Niemals** zwei Werk-Einträge zusammenlegen oder einen als „Duplikat" löschen, nur weil Titel/Jahr übereinstimmen — im Zweifel Johannes/Olaf fragen. (Echte Versehen wie doppelt vergebene Werk-Nummern sind davon getrennt zu klären; das Werk selbst bleibt immer bestehen.)
 
+### 📏 Maße: immer Höhe × Breite (Olafs Konvention)
+Olaf gibt Maße **immer als Höhe × Breite** an, die erste Zahl ist die Höhe. Ein Querformat steht also mit der kleineren Zahl vorne („Motiv 30 cm × 51 cm“), ein Hochformat mit der größeren („Motiv 44 cm × 30 cm“). Papier- bzw. Blattformat folgen derselben Reihenfolge und derselben Ausrichtung wie das Motiv („Motiv 30 cm × 44 cm, Papierformat 50 cm × 60 cm“). Belegt über den Abgleich der Seitenverhältnisse aller Archivbilder mit den Maßangaben: alle Holzschnitte und die große Mehrheit der Gemälde folgen dieser Regel.
+
+- Schreibweise: `"H cm × B cm"`, mit dem Zeichen `×` und „cm“ an jeder Zahl, in `de:` und `en:` identisch.
+- Wer Maße an Dritte weitergibt (Wettbewerbe, Galerien, Formulare mit „H x B“), übernimmt die Reihenfolge unverändert.
+- Einige Gemälde widersprechen der Regel (Seitenverhältnis des Bildes passt nur zu Breite × Höhe, z. B. die „Actually“-Serie). Solche Fälle **nicht eigenmächtig umdrehen**, sondern in den Sammel-Issue [#5](https://github.com/haushoppe/haushoppe.de/issues/5) eintragen (siehe oben).
+
 > **Auftrag an dich (Assistent):** Fällt dir auf, dass ein Werk nur in **schwacher Auflösung** vorliegt, **ermutige den Nutzer aktiv**, eine bessere Aufnahme des physischen Werks nachzureichen — das Original hängt ja bei Olaf. Nicht drängen, aber freundlich darauf hinweisen, dass sich das Archiv jederzeit verbessern lässt.
 
 ---
@@ -232,10 +239,10 @@ Jedes Werk ist eine Datei unter `src/content/artworks/` — der Dateiname ist de
      technique: "Acrylic on canvas"
      dimensions: "?"
    ```
-3. Ersetze bei `dimensions` das `"?"` durch das echte Maß — **Breite × Höhe** mit dem Zeichen `×` — in **beiden** Blöcken (`de:` und `en:`):
+3. Ersetze bei `dimensions` das `"?"` durch das echte Maß — **Höhe × Breite** (siehe „📏 Maße“), mit dem Zeichen `×` und „cm“ an jeder Zahl — in **beiden** Blöcken (`de:` und `en:`):
    ```diff
    -     dimensions: "?"
-   +     dimensions: "90 × 120 cm"
+   +     dimensions: "120 cm × 90 cm"
    ```
 4. Fertig. `npm run check`.
 
@@ -286,6 +293,7 @@ Ein Werk = **eine** Datei (beide Sprachen im selben File) + **ein** Master-Bild 
      edition: ""
    ---
    ```
+   - **`dimensions`** immer **Höhe × Breite** (siehe „📏 Maße“).
    - **`number`** ist Pflicht (`YYYY-MM-…`). Monat unbekannt → `YYYY-??`.
    - **Holzschnitte** (Nummer endet auf `-HZ` **oder** Technik enthält „Holzschnitt") werden automatisch für 785 € direkt kaufbar. Soll ein Werk nur „anfragbar" sein, keine `-HZ`-Nummer und keine Holzschnitt-Technik verwenden.
    - `image:` zeigt **relativ** auf die Master-Datei aus Schritt 1.
