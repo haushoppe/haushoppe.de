@@ -273,6 +273,23 @@
   .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
   .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
   @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
+
+  .field { display: grid; grid-template-columns: 12rem 1fr auto; gap: .3rem .9rem; align-items: start; padding: .65rem 0; border-top: 1px solid var(--line); }
+  .field:first-of-type { border-top: 0; }
+  .field .k { font-family: var(--mono); font-size: .74rem; color: var(--ink-soft); padding-top: .15rem; }
+  .field .k .req { color: var(--accent); }
+  .field .k .lim { display: block; color: var(--ink-faint); font-size: .66rem; margin-top: .15rem; }
+  .field .v { font-size: .95rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .field .v.empty { color: var(--note); font-family: var(--mono); font-size: .82rem; }
+  .cbtn { font-family: var(--mono); font-size: .7rem; background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 7px; padding: .3rem .6rem; cursor: pointer; white-space: nowrap; }
+  .cbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .cbtn.done { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .cbtn:focus-visible, .themebtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .4rem 1.1rem; box-shadow: var(--shadow); }
+  .file { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .file img { width: 120px; height: auto; border-radius: 6px; border: 1px solid var(--line); }
+  .file code { font-family: var(--mono); font-size: .8rem; overflow-wrap: anywhere; }
+  @media (max-width: 640px) { .field { grid-template-columns: 1fr auto; } .field .k { grid-column: 1 / -1; } }
 </style>
 
 <div class="wrap">
@@ -314,17 +331,16 @@ Mehr als dreißig Jahre habe ich darüber nachgedacht, wie ich die Malerei aufs 
 
 Es vollendet nach zwölf Jahren meinen Atlantis-Zyklus der vier Elemente. Und es ist aller Voraussicht nach mein letzter Holzschnitt. Ich lege die Stechbeitel aus der Hand, auf dem Höhepunkt einer Tradition, die ich perfektioniert habe. Ein solches Meisterwerk entsteht nie wieder.
 
-Wie es entstanden ist, hat Wismar TV in sechs Teilen gefilmt: https://haushoppe.de/portfolio/atlantis-4-element-feuer-2026/">Kopieren</button></div><div class="field"><div class="k">Bildmaß (H x B in cm)</div><div class="v">37 x 37</div><button class="cbtn" type="button" data-copy="37 x 37">Kopieren</button></div><div class="field"><div class="k">Papiermaß (H x B in cm)</div><div class="v">50 x 52</div><button class="cbtn" type="button" data-copy="50 x 52">Kopieren</button></div><div class="field"><div class="k">Auflage</div><div class="v">230</div><button class="cbtn" type="button" data-copy="230">Kopieren</button></div><div class="field"><div class="k">davon lieferbar</div><div class="v empty">leer lassen oder von Olaf</div><span></span></div><div class="field"><div class="k">Verkaufspreis</div><div class="v">785 €</div><button class="cbtn" type="button" data-copy="785 €">Kopieren</button></div></div>
+Wie es entstanden ist, hat Wismar TV in sechs Teilen gefilmt: https://haushoppe.de/portfolio/atlantis-4-element-feuer-2026/">Kopieren</button></div><div class="field"><div class="k">Bildmaß (H x B in cm)</div><div class="v">37 x 37</div><button class="cbtn" type="button" data-copy="37 x 37">Kopieren</button></div><div class="field"><div class="k">Papiermaß (H x B in cm)</div><div class="v">50 x 52</div><button class="cbtn" type="button" data-copy="50 x 52">Kopieren</button></div><div class="field"><div class="k">Auflage</div><div class="v">230</div><button class="cbtn" type="button" data-copy="230">Kopieren</button></div><div class="field"><div class="k">davon lieferbar</div><div class="v">100</div><button class="cbtn" type="button" data-copy="100">Kopieren</button></div><div class="field"><div class="k">Verkaufspreis</div><div class="v">785 €</div><button class="cbtn" type="button" data-copy="785 €">Kopieren</button></div></div>
 
   <h2><span class="num">5</span> Datei hochladen</h2>
   <p class="sub">Limit 20 MB. Die Datei erfüllt bereits die Katalog-Anforderung aus Runde 2 (mind. 300 dpi bei mind. 21 cm langer Seite).</p>
   <div class="panel"><div class="field"><div class="k">Datei hochladen <span class="req">*</span></div><div class="v file"><code>~/Shots/frechen-2027/01_Olaf-Hoppe_Atlantis-4-Element-Feuer_2026.jpg</code><span>JPEG, 3208 × 2977 px, 5,5 MB, sRGB, 300 dpi (388 dpi bei 21 cm)</span></div><span></span></div></div>
 
-  <h2><span class="num">6</span> Vor dem Absenden klären</h2>
+  <h2><span class="num">6</span> Bewusst so entschieden</h2>
   <div class="ask"><ul>
-    <li><b>davon lieferbar:</b> optionales Feld. Wie viele der 230 Exemplare sind noch verfügbar? Sonst leer lassen.</li>
-    <li><b>Papiermaß:</b> Formular fragt H x B. Website nennt „50 cm × 52 cm“ ohne Ausrichtung; eingetragen ist 50 x 52. Bitte kurz bestätigen.</li>
-    <li><b>Senefelder-Preis 1991:</b> steht in der Vita als Ausstellungsbeteiligung (AB), deshalb unter „Ausstellungen“ und nicht als Auszeichnung. Falls Olaf den Preis gewonnen hat, gehört er ins Feld „Preise“.</li>
+    <li><b>Maße:</b> Höhe × Breite, Olafs Konvention (über den ganzen Werkkatalog geprüft). Das Blatt ist 50 cm hoch und 52 cm breit.</li>
+    <li><b>Senefelder-Preis 1991:</b> steht unter „Ausstellungen“, so wie in Olafs Vita (Teilnahme). Bei den Preisen steht der belegte 1. Preis Greifswald 2024 vorne.</li>
   </ul></div>
 
   <h2><span class="num">7</span> Danach</h2>
