@@ -73,6 +73,13 @@ Weicht ein Werkdatum (Jahr, Nummer, Titel) von einer anderen Quelle ab (Signatur
 ### ⛔ Gleicher Titel ≠ gleiches Werk — niemals Einträge zusammenlegen
 Olaf malt Motive manchmal **zweimal** (gleicher oder fast gleicher Titel, z. B. eine spätere überarbeitete Fassung). Das sind **eigenständige Werke** mit eigenem Eintrag im Werkverzeichnis. **Niemals** zwei Werk-Einträge zusammenlegen oder einen als „Duplikat" löschen, nur weil Titel/Jahr übereinstimmen — im Zweifel Johannes/Olaf fragen. (Echte Versehen wie doppelt vergebene Werk-Nummern sind davon getrennt zu klären; das Werk selbst bleibt immer bestehen.)
 
+### 📏 Maße: immer Höhe × Breite (Olafs Konvention)
+Olaf gibt Maße **immer als Höhe × Breite** an, die erste Zahl ist die Höhe. Ein Querformat steht also mit der kleineren Zahl vorne („Motiv 30 cm × 51 cm“), ein Hochformat mit der größeren („Motiv 44 cm × 30 cm“). Papier- bzw. Blattformat folgen derselben Reihenfolge und derselben Ausrichtung wie das Motiv („Motiv 30 cm × 44 cm, Papierformat 50 cm × 60 cm“). Belegt über den Abgleich der Seitenverhältnisse aller Archivbilder mit den Maßangaben: alle Holzschnitte und die große Mehrheit der Gemälde folgen dieser Regel.
+
+- Schreibweise: `"H cm × B cm"`, mit dem Zeichen `×` und „cm“ an jeder Zahl, in `de:` und `en:` identisch.
+- Wer Maße an Dritte weitergibt (Wettbewerbe, Galerien, Formulare mit „H x B“), übernimmt die Reihenfolge unverändert.
+- Einige Gemälde widersprechen der Regel (Seitenverhältnis des Bildes passt nur zu Breite × Höhe, z. B. die „Actually“-Serie). Solche Fälle **nicht eigenmächtig umdrehen**, sondern in den Sammel-Issue [#5](https://github.com/haushoppe/haushoppe.de/issues/5) eintragen (siehe oben).
+
 > **Auftrag an dich (Assistent):** Fällt dir auf, dass ein Werk nur in **schwacher Auflösung** vorliegt, **ermutige den Nutzer aktiv**, eine bessere Aufnahme des physischen Werks nachzureichen — das Original hängt ja bei Olaf. Nicht drängen, aber freundlich darauf hinweisen, dass sich das Archiv jederzeit verbessern lässt.
 
 ---
@@ -232,10 +239,10 @@ Jedes Werk ist eine Datei unter `src/content/artworks/` — der Dateiname ist de
      technique: "Acrylic on canvas"
      dimensions: "?"
    ```
-3. Ersetze bei `dimensions` das `"?"` durch das echte Maß — **Breite × Höhe** mit dem Zeichen `×` — in **beiden** Blöcken (`de:` und `en:`):
+3. Ersetze bei `dimensions` das `"?"` durch das echte Maß — **Höhe × Breite** (siehe „📏 Maße“), mit dem Zeichen `×` und „cm“ an jeder Zahl — in **beiden** Blöcken (`de:` und `en:`):
    ```diff
    -     dimensions: "?"
-   +     dimensions: "90 × 120 cm"
+   +     dimensions: "120 cm × 90 cm"
    ```
 4. Fertig. `npm run check`.
 
@@ -265,7 +272,7 @@ Ein Werk = **eine** Datei (beide Sprachen im selben File) + **ein** Master-Bild 
    ---
    artist: "Olaf Hoppe"
    year: "2026"
-   number: "2026-01-A"        # PFLICHT: YYYY-MM-… ; steuert die Galerie-Sortierung (neueste zuerst)
+   number: "2026-01-A"        # PFLICHT: Jahr-laufende Nummer-Technik; steuert die Galerie-Sortierung (neueste zuerst)
    date: "2026-06-01 12:00:00"
    order: 0
    category: paintings        # paintings | woodcuts | drawings | digital-art
@@ -286,7 +293,8 @@ Ein Werk = **eine** Datei (beide Sprachen im selben File) + **ein** Master-Bild 
      edition: ""
    ---
    ```
-   - **`number`** ist Pflicht (`YYYY-MM-…`). Monat unbekannt → `YYYY-??`.
+   - **`dimensions`** immer **Höhe × Breite** (siehe „📏 Maße“).
+   - **`number`** ist Pflicht: **Jahr, dann Olafs laufende Nummer innerhalb des Jahres, dann das Technik-Kürzel** (z. B. `2026-01-HZ`). Die mittlere Zahl ist **kein Monat**, Olaf nummeriert pro Jahr einfach durch: Holzschnitte (`HZ`) in einer eigenen Reihe, alle anderen Techniken gemeinsam (1994: `01-A` bis `12-A`, dann `13-MT`; daneben `01-HZ` bis `03-HZ`). Ist die Nummer unbekannt: Olaf fragen (Sammel-Issue [#5](https://github.com/haushoppe/haushoppe.de/issues/5)), keine erfinden.
    - **Holzschnitte** (Nummer endet auf `-HZ` **oder** Technik enthält „Holzschnitt") werden automatisch für 785 € direkt kaufbar. Soll ein Werk nur „anfragbar" sein, keine `-HZ`-Nummer und keine Holzschnitt-Technik verwenden.
    - `image:` zeigt **relativ** auf die Master-Datei aus Schritt 1.
 3. `npm run check` + `npm run build` → grün.
@@ -330,7 +338,7 @@ npm run build:de   # baut die deutsche Seite (findet Tippfehler/kaputtes Markdow
   - „*MDX-Seite vita-en.mdx fehlt*" → englische Datei anlegen/ergänzen.
   - „*Werk … : fehlt EN-Übersetzung*" → im `en:`-Block der Werk-Datei die fehlenden Felder ergänzen (Titel, Slug, Technik, Maße).
   - „*Werk … : kein Bild*" → das Werk-Bild fehlt im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv").
-  - „*Werk … : keine Nummer*" → **jedes** Werk braucht eine **Nummer** `YYYY-MM-…` (z. B. `2025-01-A`) — sie ist die **letzte Zeile** der Bildunterschrift im `content` und steuert Sortierung + Anzeige in der Galerie. **Pflichtfeld** — ohne Nummer bricht der Build ab. Ist der Monat unbekannt, `YYYY-??` schreiben (ehrlicher Platzhalter).
+  - „*Werk … : keine Nummer*" → **jedes** Werk braucht eine **Nummer** `Jahr-laufende Nummer-Technik` (z. B. `2025-01-A`) — sie ist die **letzte Zeile** der Bildunterschrift im `content` und steuert Sortierung + Anzeige in der Galerie. **Pflichtfeld** — ohne Nummer bricht der Build ab. Ist die Nummer unbekannt: Olaf fragen (Sammel-Issue #5), keine erfinden.
 - **`npm run build:de` bricht ab?** Meist ein Markdown-/JSON-Fehler (fehlendes Komma, kaputte Klammer) in der gerade geänderten Datei. Fehlermeldung lesen, Datei korrigieren.
 
 Die **CI** (GitHub Actions) macht dieselben Prüfungen automatisch bei jedem PR. Ist der grüne Haken da, passt's; ist er rot, sagt der Log genau, was fehlt — dann nachbessern und erneut committen.
