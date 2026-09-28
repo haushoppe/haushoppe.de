@@ -33,6 +33,7 @@ test('Gewährleistungsseite im Footer verlinkt und mit Mitteilung', async ({ pag
   const text = page.locator('main').getByTestId('guarantee-notice-text');
   await expect(text).toContainText(en ? 'Minimum two-year legal guarantee protection' : 'Mindestens zwei Jahre gesetzliche Gewährleistung');
   await expect(text).toContainText(en ? 'not less than one year' : 'jedoch nicht weniger als ein Jahr');
+  await expect(text).toContainText(en ? 'Provide proof of purchase' : 'Legen Sie einen Kaufnachweis vor');
   await expect(text).toContainText('GARAN');
 });
 
