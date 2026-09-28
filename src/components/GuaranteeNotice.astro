@@ -1,0 +1,57 @@
+---
+// Harmonisierte EU-Mitteilung zum gesetzlichen Gewährleistungsrecht (Art. 22a RL 2011/83/EU,
+// Durchführungsverordnung (EU) 2025/1960, Pflicht seit 27.09.2026): hervorgehoben und vor der
+// Bestellung. Die SVG-Dateien stammen unverändert aus dem Paket der Europäischen Kommission;
+// Anhang I der DVO: „Keines der Elemente der harmonisierten Mitteilung ist editierbar". Also nie
+// nachzeichnen, beschneiden oder umfärben. Online ist nur die Farbfassung zulässig. Der QR-Code
+// ist auf dem eigenen Gerät nicht scanbar, deshalb steht sein Ziel zusätzlich als Link darunter
+// (Kommissions-Leitfaden, Abschnitt 2.3). Die Sprachfassung folgt der Sprache der Seite.
+interface Props {
+  lang?: 'de' | 'en';
+}
+const { lang = 'de' } = Astro.props;
+const t =
+  lang === 'en'
+    ? {
+        src: '/eu-guarantee-en.svg',
+        alt: 'EU notice “Legal guarantee”: minimum two-year legal guarantee protection for goods sold in the European Union. Sellers are liable for any lack of conformity which existed when the goods were delivered and are required to offer free repair or free replacement, in some cases a price reduction or full reimbursement. If you receive non-conforming goods: contact the seller and provide proof of purchase. More information: europa.eu/youreurope/guarantees',
+        caption: 'Official EU notice on the legal guarantee. More about your rights:',
+        href: 'https://europa.eu/youreurope/guarantees',
+        link: 'europa.eu/youreurope/guarantees',
+      }
+    : {
+        src: '/eu-gewaehrleistung-de.svg',
+        alt: 'EU-Mitteilung „Gesetzliche Gewährleistung“: Mindestens zwei Jahre gesetzliche Gewährleistung der Vertragsmäßigkeit für Waren, die in der Europäischen Union verkauft werden. Verkäufer haften für jede Vertragswidrigkeit, die bei der Lieferung bestand, und müssen kostenlose Nachbesserung oder Ersatzlieferung anbieten, in bestimmten Fällen Preisminderung oder Erstattung des Kaufpreises. Bei vertragswidriger Ware: dem Verkäufer das Problem melden und einen Kaufnachweis vorlegen. Weitere Informationen: europa.eu/youreurope/garantien',
+        caption: 'Offizielle EU-Mitteilung zum gesetzlichen Gewährleistungsrecht. Mehr zu Ihren Rechten:',
+        href: 'https://europa.eu/youreurope/garantien',
+        link: 'europa.eu/youreurope/garantien',
+      };
+---
+
+<figure class="eu-notice" data-testid="guarantee-notice">
+  <img src={t.src} width="595" height="842" alt={t.alt} loading="lazy" decoding="async" />
+  <figcaption>
+    {t.caption} <a href={t.href} target="_blank" rel="noopener">{t.link}</a>
+  </figcaption>
+</figure>
+
+<style>
+  .eu-notice {
+    margin: 0;
+  }
+  /* Die Originaldatei hat keinen eigenen Hintergrund (transparente A4-Fläche); Weiß ist eine der
+     vorgeschriebenen Label-Farben. Eine Hairline grenzt das Blatt von der Seite ab. */
+  .eu-notice img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #fff;
+    border: 1px solid var(--rule, #ddd);
+  }
+  .eu-notice figcaption {
+    margin-top: 0.4rem;
+    font-size: var(--fs-xs, 0.8rem);
+    line-height: 1.45;
+    color: var(--muted, #555);
+  }
+</style>

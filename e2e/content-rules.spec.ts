@@ -33,6 +33,7 @@ const LEGAL_PAGES = [
   { de: '/agb/', en: '/terms/' },
   { de: '/widerruf/', en: '/right-of-withdrawal/' },
   { de: '/widerruf-erklaeren/', en: '/withdraw/' },
+  { de: '/gewaehrleistung/', en: '/legal-guarantee/' },
 ];
 for (const pair of LEGAL_PAGES) {
   test(`Legal-Seite ohne Gedankenstrich: ${pair.de}`, async ({ page }, info) => {

@@ -4,13 +4,19 @@
 // über zwei Auswahl-Karten; die gewählte Variante geht als Schlüssel an create-order, der Server
 // setzt den Betrag aus seiner Preistabelle (keine Preis-Manipulation vom Client möglich).
 // Rendert PayPal Smart Buttons über die Cloudflare-Functions — der API-Key bleibt geschützt.
-// „Möglichst wenig Klicks": PayPal erhebt die Lieferadresse selbst (GET_FROM_FILE), Zahlung +
-// Adresse landen im PayPal-Konto (keine Bestätigungsmail).
+// PayPal erhebt die Lieferadresse selbst (GET_FROM_FILE), Zahlung + Adresse landen im PayPal-Konto.
+//
+// Button-Lösung (§ 312j Abs. 3, 4 BGB): Die Bestellung gibt ausschließlich der eigene Button
+// „Zahlungspflichtig bestellen" ab. Der PayPal-Button gibt nur die Zahlung frei (SDK mit
+// commit=false, PayPal beschriftet seinen Abschluss dann mit „Weiter"); abgebucht wird erst mit dem
+// eigenen Button. Ohne diese Beschriftung käme mit Verbrauchern kein wirksamer Vertrag zustande.
+// Davor steht die EU-Mitteilung zur gesetzlichen Gewährleistung (DVO (EU) 2025/1960).
 //
 // Graceful Degradation: Ohne konfigurierte Functions/Keys (z. B. lokaler `astro preview`, e2e-
 // Server) liefert /api/paypal/config kein enabled -> die Buttons erscheinen nicht, der darunter
 // liegende E-Mail-CTA bleibt der Kaufweg. Die Box selbst wird immer server-seitig gerendert.
 import { woodcutPrice } from '../lib/pricing';
+import GuaranteeNotice from './GuaranteeNotice.astro';
 
 interface Props {
   slug: string;
@@ -23,17 +29,22 @@ const t =
   lang === 'en'
     ? {
         heading: 'Buy this woodcut',
-        note: 'incl. 7% VAT · free shipping',
+        note: 'incl. 7% VAT · free shipping · delivery within 7 days',
         legend: 'Choose your version',
         unframed: 'Unframed',
         unframedDesc: 'The woodcut, numbered and hand-signed',
         framed: 'Framed',
         framedDesc: 'The woodcut, numbered and hand-signed. High-quality HALBE® frame: aluminium magnetic frame, museum glass, acid-free passe-partout. Ready to hang.',
         dachNote: 'Shipping currently only within Germany, Austria and Switzerland.',
+        chNote: 'For deliveries to Switzerland, import charges (import VAT, possibly customs duties) may be payable by the recipient.',
         dach: 'Shipping is currently only available within Germany, Austria and Switzerland. Nothing has been charged.',
         secure: 'Secure payment via PayPal or card. PayPal shares your shipping address with us.',
         // Rechtlich zentral: Vertragsschluss erst mit Versand (die Bestätigung ist keine Annahme).
         contract: 'The contract of sale is concluded only upon shipment of the goods.',
+        confirmIntro: 'Payment approved. Nothing has been charged yet. Your order:',
+        order: 'Order with obligation to pay',
+        cancel: 'Cancel or change version',
+        declined: 'This payment method was declined. Nothing has been charged. Please choose another payment method via PayPal.',
         thanks: 'Thank you! We have received your order. You will get a confirmation by email.',
         failed: 'Payment could not be completed. Please try again or enquire by email.',
         withdrawal: 'Right of withdrawal',
@@ -45,16 +56,21 @@ const t =
       }
     : {
         heading: 'Diesen Holzschnitt kaufen',
-        note: 'inkl. 7 % MwSt · versandkostenfrei',
+        note: 'inkl. 7 % MwSt · versandkostenfrei · Lieferung innerhalb von 7 Tagen',
         legend: 'Ausführung wählen',
         unframed: 'Ungerahmt',
         unframedDesc: 'Der Holzschnitt, nummeriert und handsigniert',
         framed: 'Gerahmt',
         framedDesc: 'Der Holzschnitt, nummeriert und handsigniert. Hochwertiger Rahmen von HALBE®: Alu-Magnetrahmen, Museumsglas, säurefreies Passepartout. Fertig zum Aufhängen.',
         dachNote: 'Versand aktuell nur innerhalb von Deutschland, Österreich und der Schweiz.',
+        chNote: 'Bei Lieferung in die Schweiz können Einfuhrabgaben (Einfuhrumsatzsteuer, gegebenenfalls Zoll) anfallen, die der Empfänger trägt.',
         dach: 'Der Versand ist aktuell nur innerhalb von Deutschland, Österreich und der Schweiz möglich. Es wurde nichts abgebucht.',
         secure: 'Sichere Zahlung mit PayPal oder Karte. PayPal übermittelt uns Ihre Lieferadresse.',
         contract: 'Der Kaufvertrag kommt erst mit dem Versand der Ware zustande.',
+        confirmIntro: 'Zahlung freigegeben. Es wurde noch nichts abgebucht. Ihre Bestellung:',
+        order: 'Zahlungspflichtig bestellen',
+        cancel: 'Abbrechen oder Ausführung ändern',
+        declined: 'Die Zahlungsart wurde abgelehnt. Es wurde nichts abgebucht. Bitte wählen Sie über PayPal eine andere Zahlungsart.',
         thanks: 'Vielen Dank! Ihre Bestellung ist bei uns eingegangen. Sie erhalten eine Bestätigung per E-Mail.',
         failed: 'Die Zahlung konnte nicht abgeschlossen werden. Bitte erneut versuchen oder per E-Mail anfragen.',
         withdrawal: 'Widerrufsrecht',
@@ -94,8 +110,17 @@ const t =
     </fieldset>
     <p class="wc-buy__note">{t.note}</p>
   </div>
+  <div class="wc-buy__notice">
+    <GuaranteeNotice lang={lang} />
+  </div>
   <div class="wc-buy__buttons" data-testid="paypal-buttons"></div>
-  <p class="wc-buy__fineprint">{t.secure} {t.dachNote} {t.contract}</p>
+  <div class="wc-buy__confirm" data-testid="paypal-confirm" hidden>
+    <p class="wc-buy__confirm-intro">{t.confirmIntro}</p>
+    <p class="wc-buy__summary" data-testid="paypal-summary"></p>
+    <button type="button" class="btn btn--dark wc-buy__order" data-testid="paypal-order">{t.order}</button>
+    <button type="button" class="wc-buy__cancel" data-testid="paypal-cancel">{t.cancel}</button>
+  </div>
+  <p class="wc-buy__fineprint">{t.secure} {t.dachNote} {t.chNote} {t.contract}</p>
   <p class="wc-buy__links">
     <a href={t.hrefWithdrawal}>{t.withdrawal}</a> · <a href={t.hrefTerms}>{t.terms}</a> · <a href={t.hrefPrivacy}>{t.privacy}</a>
   </p>
@@ -105,7 +130,7 @@ const t =
 {/* data-astro-rerun: der ClientRouter dedupliziert Inline-Skripte über den Textinhalt — ohne das
     Attribut liefe das Skript beim erneuten Besuch derselben Werk-Seite (View Transition) nicht
     und die Kaufbox bliebe ohne Buttons. */}
-<script define:vars={{ slug, lang, title, thanksMsg: t.thanks, failedMsg: t.failed, dachMsg: t.dach }} data-astro-rerun>
+<script define:vars={{ slug, lang, title, thanksMsg: t.thanks, failedMsg: t.failed, dachMsg: t.dach, declinedMsg: t.declined, noteText: t.note }} data-astro-rerun>
   (function () {
     let section = null;
     try {
@@ -116,6 +141,11 @@ const t =
     if (!section) section = document.querySelector('.wc-buy');
     if (!section) return;
     const mount = section.querySelector('.wc-buy__buttons');
+    const confirmEl = section.querySelector('.wc-buy__confirm');
+    const summaryEl = section.querySelector('.wc-buy__summary');
+    const orderBtn = section.querySelector('.wc-buy__order');
+    const cancelBtn = section.querySelector('.wc-buy__cancel');
+    const radios = section.querySelectorAll('.wc-buy__variant-input');
     const statusEl = section.querySelector('.wc-buy__status');
     const showStatus = function (msg, ok) {
       statusEl.textContent = msg;
@@ -140,6 +170,9 @@ const t =
           'client-id': cfg.clientId,
           currency: cfg.currency || 'EUR',
           intent: 'capture',
+          // Nur Freigabe: PayPal beschriftet seinen Abschluss mit „Weiter" statt „Jetzt bezahlen",
+          // die Bestellung gibt danach der eigene Button ab (Button-Lösung, siehe Kopfkommentar).
+          commit: 'false',
           components: 'buttons',
         });
         const sdk = document.createElement('script');
@@ -163,6 +196,56 @@ const t =
       boot();
     }
 
+    // Freigegebene PayPal-Bestellung. Solange sie offen ist, ist die Ausführung gesperrt, weil der
+    // Betrag der Freigabe feststeht.
+    let approvedId = null;
+    function setApproved(on) {
+      mount.hidden = on;
+      confirmEl.hidden = !on;
+      orderBtn.disabled = false;
+      for (let i = 0; i < radios.length; i++) radios[i].disabled = on;
+      if (on) {
+        const sel = section.querySelector('.wc-buy__variant-input:checked');
+        const card = sel ? sel.closest('.wc-buy__variant') : null;
+        const name = card ? card.querySelector('.wc-buy__variant-name').textContent : '';
+        const price = card ? card.querySelector('.wc-buy__variant-price').textContent : '';
+        const q = lang === 'en' ? ['“', '”'] : ['„', '“'];
+        summaryEl.textContent = q[0] + title + q[1] + ', ' + name + ': ' + price + ' (' + noteText + ')';
+        statusEl.hidden = true;
+      } else {
+        approvedId = null;
+      }
+    }
+    cancelBtn.addEventListener('click', function () { setApproved(false); });
+    orderBtn.addEventListener('click', function () {
+      if (!approvedId) return;
+      orderBtn.disabled = true;
+      fetch('/api/paypal/capture-order', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ orderID: approvedId, lang: lang }),
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          // COMPLETED ODER PENDING (z. B. eCheck) = Bestellung aufgegeben -> Danke.
+          if (d && (d.status === 'COMPLETED' || d.status === 'PENDING')) {
+            confirmEl.hidden = true;
+            mount.hidden = true;
+            showStatus(thanksMsg, true);
+            return;
+          }
+          // Nichts abgebucht: zurück zur Auswahl, damit ein neuer Versuch möglich ist.
+          setApproved(false);
+          if (d && d.error === 'instrument_declined') showStatus(declinedMsg, false);
+          else if (d && d.error === 'shipping_country') showStatus(dachMsg, false);
+          else showStatus(failedMsg, false);
+        })
+        .catch(function () {
+          setApproved(false);
+          showStatus(failedMsg, false);
+        });
+    });
+
     function renderButtons() {
       if (!window.paypal || !window.paypal.Buttons) return;
       if (mount.childElementCount) return; // schon gerendert (doppelter Aufruf)
@@ -184,29 +267,10 @@ const t =
                 return d.id;
               });
           },
-          onApprove: function (data, actions) {
-            return fetch('/api/paypal/capture-order', {
-              method: 'POST',
-              headers: { 'content-type': 'application/json' },
-              body: JSON.stringify({ orderID: data.orderID, lang: lang }),
-            })
-              .then(function (r) { return r.json(); })
-              .then(function (d) {
-                // COMPLETED ODER PENDING (z. B. eCheck) = Bestellung aufgegeben -> Danke.
-                if (d && (d.status === 'COMPLETED' || d.status === 'PENDING')) {
-                  mount.hidden = true;
-                  showStatus(thanksMsg, true);
-                } else if (d && d.error === 'instrument_declined' && actions && actions.restart) {
-                  // Zahlungsmittel abgelehnt: PayPal-Fenster erneut öffnen, Käufer wählt eine
-                  // andere Zahlungsart (offizieller PayPal-Vertrag für diesen Fall).
-                  return actions.restart();
-                } else if (d && d.error === 'shipping_country') {
-                  showStatus(dachMsg, false);
-                } else {
-                  showStatus(failedMsg, false);
-                }
-              })
-              .catch(function () { showStatus(failedMsg, false); });
+          onApprove: function (data) {
+            // Zahlung freigegeben, noch NICHT abgebucht: Zusammenfassung + eigener Bestellbutton.
+            approvedId = data.orderID;
+            setApproved(true);
           },
           onError: function () { showStatus(failedMsg, false); },
         })
@@ -295,6 +359,40 @@ const t =
     isolation: isolate;
   }
   /* Kleingedrucktes (Zahlung, Versandraum, Vertragsschluss) als EIN Absatz, eine Größe. */
+  .wc-buy__notice {
+    margin: 0 0 1rem;
+    text-align: left;
+  }
+  .wc-buy__confirm {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0 0 0.6rem;
+    text-align: left;
+  }
+  .wc-buy__confirm-intro,
+  .wc-buy__summary {
+    margin: 0;
+  }
+  .wc-buy__summary {
+    font-weight: 600;
+  }
+  .wc-buy__order {
+    width: 100%;
+  }
+  .wc-buy__cancel {
+    justify-self: center;
+    padding: 0.2rem;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: var(--fs-xs, 0.8rem);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .wc-buy__variant-input:disabled + .wc-buy__variant-body {
+    opacity: 0.55;
+  }
   .wc-buy__fineprint {
     margin: 0.9rem 0 0;
     font-size: var(--fs-xs);

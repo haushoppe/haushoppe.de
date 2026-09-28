@@ -5,7 +5,7 @@ import { WOODCUT_PRICES_EUR, CURRENCY, paypalBase, accessToken, json } from './_
 // Slug/Titel/Sprache/Varianten-Schlüssel zur Kennzeichnung. Die Ausführung (ungerahmt/gerahmt)
 // steht im Bestell-Label, damit sie in PayPal-Konto UND Bestell-Mails eindeutig sichtbar ist.
 // shipping_preference=GET_FROM_FILE -> PayPal erhebt die Lieferadresse; sie landet mit der
-// Zahlung im PayPal-Konto (keine Bestätigungsmail nötig).
+// Zahlung im PayPal-Konto.
 export async function onRequestPost({ request, env }) {
   let body = {};
   try {
@@ -62,7 +62,9 @@ export async function onRequestPost({ request, env }) {
           brand_name: 'HAUS HOPPE – Galerie für Bildende Kunst',
           locale: lang === 'en' ? 'en-US' : 'de-DE',
           shipping_preference: 'GET_FROM_FILE',
-          user_action: 'PAY_NOW',
+          // Nur Freigabe im PayPal-Fenster („Weiter"); die Bestellung gibt danach der eigene Button
+          // „Zahlungspflichtig bestellen" ab (§ 312j BGB), erst dann bucht capture-order ab.
+          user_action: 'CONTINUE',
         },
       }),
     });
