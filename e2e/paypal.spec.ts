@@ -21,27 +21,6 @@ test('Holzschnitt: Kaufbox (785 € / 1.000 € gerahmt) + Buttons-Mount + E-Mai
   await expect(page.getByTestId('inquire-link')).toHaveCount(1);
 });
 
-// EU-Mitteilung zur gesetzlichen Gewährleistung (DVO (EU) 2025/1960): in der Kaufbox VOR den
-// Buttons, in der Sprache der Seite, die Grafik wirklich geladen (nicht nur ein leerer Rahmen)
-// und das QR-Ziel zusätzlich als Link.
-test('Holzschnitt: EU-Gewährleistungs-Mitteilung vor den Buttons', async ({ page }, info) => {
-  const s = site(info);
-  const en = langOf(info) === 'en';
-  await page.goto(`/portfolio/${s.work.woodcut}/`);
-  const notice = page.getByTestId('paypal-buy').getByTestId('guarantee-notice');
-  await notice.scrollIntoViewIfNeeded();
-  const img = notice.locator('img');
-  await expect(img).toHaveAttribute('src', en ? '/eu-guarantee-en.svg' : '/eu-gewaehrleistung-de.svg');
-  await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
-  await expect(notice.locator('a')).toHaveAttribute(
-    'href',
-    en ? 'https://europa.eu/youreurope/guarantees' : 'https://europa.eu/youreurope/garantien',
-  );
-  const noticeBox = await notice.boundingBox();
-  const buttonsBox = await page.getByTestId('paypal-buttons').boundingBox();
-  expect(noticeBox!.y).toBeLessThan(buttonsBox!.y);
-});
-
 test('Gewährleistungsseite im Footer verlinkt und mit Mitteilung', async ({ page }, info) => {
   const en = langOf(info) === 'en';
   const path = en ? '/legal-guarantee/' : '/gewaehrleistung/';
@@ -90,11 +69,25 @@ test('Button-Lösung: PayPal gibt nur frei, erst „Zahlungspflichtig bestellen"
   await expect(order).toBeHidden();
   await expect(order).toHaveText(en ? 'Order with obligation to pay' : 'Zahlungspflichtig bestellen');
 
+  const notice = buy.getByTestId('guarantee-notice');
+  await expect(notice).toBeHidden();
   await fake.click();
   await expect(order).toBeVisible();
   await expect(page.getByTestId('paypal-summary')).toContainText('785 €');
   await expect(buy.locator('.wc-buy__variant-input').first()).toBeDisabled();
   expect(captures).toBe(0);
+
+  // EU-Gewährleistungs-Mitteilung (Art. 246a § 1 Abs. 1 Nr. 11 EGBGB) in der Kassen-Stufe: als
+  // vollständige Grafik (nicht hinter einem Link), geladen, vor dem Bestellbutton, QR-Ziel als Link.
+  await expect(notice).toBeVisible();
+  const img = notice.locator('img');
+  await expect(img).toHaveAttribute('src', en ? '/eu-guarantee-en.svg' : '/eu-gewaehrleistung-de.svg');
+  await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
+  await expect(notice.getByRole('link')).toHaveAttribute(
+    'href',
+    en ? 'https://europa.eu/youreurope/guarantees' : 'https://europa.eu/youreurope/garantien',
+  );
+  expect((await notice.boundingBox())!.y).toBeLessThan((await order.boundingBox())!.y);
 
   await order.click();
   await expect(page.getByTestId('paypal-status')).toBeVisible();

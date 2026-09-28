@@ -10,7 +10,11 @@
 // „Zahlungspflichtig bestellen" ab. Der PayPal-Button gibt nur die Zahlung frei (SDK mit
 // commit=false, PayPal beschriftet seinen Abschluss dann mit „Weiter"); abgebucht wird erst mit dem
 // eigenen Button. Ohne diese Beschriftung käme mit Verbrauchern kein wirksamer Vertrag zustande.
-// Davor steht die EU-Mitteilung zur gesetzlichen Gewährleistung (DVO (EU) 2025/1960).
+// In dieser Kassen-Stufe, unmittelbar vor dem Button, steht die EU-Mitteilung zur gesetzlichen
+// Gewährleistung als vollständige Grafik (Art. 246a § 1 Abs. 1 Nr. 11 EGBGB, „in hervorgehobener
+// Weise"; Gestaltung DVO (EU) 2025/1960). Bewusst nicht hinter einem Link: Die DVO erlaubt die
+// verschachtelte Anzeige nur für das GARAN-Label (Erwägungsgrund 14), nicht für die Mitteilung.
+// Die Box wird dafür breiter, damit der Text der Grafik lesbar bleibt.
 //
 // Graceful Degradation: Ohne konfigurierte Functions/Keys (z. B. lokaler `astro preview`, e2e-
 // Server) liefert /api/paypal/config kein enabled -> die Buttons erscheinen nicht, der darunter
@@ -110,13 +114,13 @@ const t =
     </fieldset>
     <p class="wc-buy__note">{t.note}</p>
   </div>
-  <div class="wc-buy__notice">
-    <GuaranteeNotice lang={lang} />
-  </div>
   <div class="wc-buy__buttons" data-testid="paypal-buttons"></div>
   <div class="wc-buy__confirm" data-testid="paypal-confirm" hidden>
     <p class="wc-buy__confirm-intro">{t.confirmIntro}</p>
     <p class="wc-buy__summary" data-testid="paypal-summary"></p>
+    <div class="wc-buy__guarantee">
+      <GuaranteeNotice lang={lang} />
+    </div>
     <button type="button" class="btn btn--dark wc-buy__order" data-testid="paypal-order">{t.order}</button>
     <button type="button" class="wc-buy__cancel" data-testid="paypal-cancel">{t.cancel}</button>
   </div>
@@ -200,6 +204,7 @@ const t =
     // Betrag der Freigabe feststeht.
     let approvedId = null;
     function setApproved(on) {
+      section.classList.toggle('is-checkout', on);
       mount.hidden = on;
       confirmEl.hidden = !on;
       orderBtn.disabled = false;
@@ -217,6 +222,7 @@ const t =
       }
     }
     cancelBtn.addEventListener('click', function () { setApproved(false); });
+
     orderBtn.addEventListener('click', function () {
       if (!approvedId) return;
       orderBtn.disabled = true;
@@ -359,9 +365,12 @@ const t =
     isolation: isolate;
   }
   /* Kleingedrucktes (Zahlung, Versandraum, Vertragsschluss) als EIN Absatz, eine Größe. */
-  .wc-buy__notice {
-    margin: 0 0 1rem;
-    text-align: left;
+  /* Kassen-Stufe: breiter, damit die EU-Mitteilung (A4-Grafik) lesbar groß erscheint. */
+  .wc-buy.is-checkout {
+    max-width: 640px;
+  }
+  .wc-buy__guarantee {
+    margin: 0.4rem 0;
   }
   .wc-buy__confirm {
     display: grid;
