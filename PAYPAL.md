@@ -1,9 +1,32 @@
 # PayPal-Direktkauf für Holzschnitte
 
-Alle 30 Holzschnitte lassen sich direkt kaufen: **785 EUR, versandkostenfrei**. Auf der Werk-
-Detailseite erscheint eine Kaufbox mit PayPal Smart Buttons. Der Kunde zahlt mit PayPal oder Karte,
-PayPal erhebt dabei die **Lieferadresse** selbst. Zahlung + Adresse landen im PayPal-Konto von Olaf,
-darum ist (vorerst) **keine Bestätigungsmail** nötig.
+Alle Holzschnitte lassen sich direkt kaufen: **785 EUR ungerahmt, 1.000 EUR gerahmt, versandkostenfrei**
+innerhalb Deutschlands, Lieferung innerhalb von 7 Tagen. Online bestellbar nur mit Lieferadresse in
+Deutschland (`SHIP_COUNTRIES` in `functions/api/paypal/_paypal.js`); für andere Länder verweist die
+Kaufbox auf eine Anfrage per E-Mail an team@haushoppe.de. Auf der Werk-Detailseite erscheint eine Kaufbox
+mit PayPal Smart Buttons. Der Kunde zahlt mit PayPal oder Karte, PayPal erhebt dabei die
+**Lieferadresse** selbst. Zahlung + Adresse landen im PayPal-Konto von Olaf, dazu gehen Bestell-Mails
+an Kunde und Olaf (siehe unten).
+
+## Bestellablauf (Button-Lösung, § 312j BGB)
+
+Zweistufig, weil die Bestellschaltfläche nach § 312j Abs. 3 BGB „zahlungspflichtig bestellen" (oder
+eindeutig gleichbedeutend) heißen muss und PayPal diese Beschriftung nicht zulässt. Fehlt sie, kommt
+mit Verbrauchern kein Vertrag zustande (Abs. 4; BGH, 09.10.2025, I ZR 159/24).
+
+1. Der PayPal-Button gibt nur die Zahlung frei: SDK mit `commit=false`, Order mit
+   `user_action: CONTINUE`. PayPal beschriftet seinen Abschluss dadurch mit „Weiter".
+2. `check-order` prüft das von PayPal erhobene Lieferland. Liegt es nicht in `SHIP_COUNTRIES`,
+   erscheint sofort der Hinweis auf die E-Mail-Anfrage, es gibt keine Kassen-Stufe.
+3. Zurück in der Kaufbox: Zusammenfassung (Werk, Ausführung, Preis, Hinweise) und der eigene Button
+   **„Zahlungspflichtig bestellen"**. Die Ausführung ist ab der Freigabe gesperrt, „Abbrechen oder
+   Ausführung ändern" setzt zurück.
+4. Erst dieser Button ruft `capture-order` auf, prüft das Lieferland erneut und bucht ab.
+
+Die E2E (`e2e/paypal.spec.ts`) ersetzt das SDK durch eine Attrappe und prüft genau diese
+Reihenfolge: kein Bestellbutton vor der Freigabe, keine Abbuchung durch die Freigabe.
+
+**Regel:** Die Kaufbox nie wieder so bauen, dass der PayPal-Button selbst abbucht.
 
 ## Architektur
 
@@ -102,10 +125,27 @@ Der Versand läuft über `waitUntil` im Hintergrund und kann die Zahlung nie sch
 
 ## Rechtstexte
 
-Footer-Seiten (DE + EN) unter `src/content/pages/`: `impressum`, `datenschutz`, `agb`, `widerruf`
-(EN: `imprint`, `privacy`, `terms`, `right-of-withdrawal`). Aus haushoppe-its übernommen und auf
+Footer-Seiten (DE + EN) unter `src/content/pages/`: `impressum`, `datenschutz`, `agb`, `widerruf`,
+`gewaehrleistung` (EN: `imprint`, `privacy`, `terms`, `right-of-withdrawal`, `legal-guarantee`),
+dazu die Widerrufsfunktion `widerruf-erklaeren` / `withdraw` (§ 356a BGB). Aus haushoppe-its übernommen und auf
 Olaf/haushoppe.de angepasst; Datenschutz um **PayPal** und **Resend** erweitert. Der Vertrag kommt
 laut Seite + AGB + E-Mail **erst mit Versand** zustande (Eingangsbestätigung ist keine Annahme).
+
+**EU-Gewährleistungs-Mitteilung** (Art. 246a § 1 Abs. 1 Nr. 11 EGBGB, Gestaltung DVO (EU) 2025/1960,
+Pflicht seit 27.09.2026): Komponente `src/components/GuaranteeNotice.astro`, als vollständige Grafik
+in der Kassen-Stufe vor „Zahlungspflichtig bestellen" (nicht hinter einem Link: die DVO erlaubt das
+Verschachteln nur für das GARAN-Label, Erwägungsgrund 14), auf der Gewährleistungsseite,
+verlinkt in AGB Ziff. 9 und in der Kunden-Mail. Die Dateien `public/eu-gewaehrleistung-de.svg` und
+`public/eu-guarantee-en.svg` stammen **unverändert** aus dem SVG-Paket der Kommission
+(<https://commission.europa.eu/publications/practical-guidelines-and-high-resolution-vector-files-eu-notice-and-label-product-guarantees_en>)
+und dürfen nicht verändert werden (Anhang I der DVO). Der eigene Text drumherum beschreibt die
+Gewährleistung neutral als geltendes Recht, nie als Leistung von Olaf (UWG Anhang Nr. 10a).
+
+**Produktsicherheitsverordnung (EU) 2023/988 gilt nicht** für die Holzschnitte: Sie nimmt
+„Antiquitäten" aus (Art. 2 Abs. 2 Buchst. i), darunter nach Art. 3 Nr. 28 Kunstwerke; Erwägungsgrund 18
+verweist zur Abgrenzung auf Anhang IX der RL 2006/112/EG, der „Originalstiche, -schnitte und
+-steindrucke" aus vom Künstler handgearbeiteten Platten in begrenzter Zahl ausdrücklich nennt.
+Grenzfall ohne abschließende Prüfung: die gerahmte Ausführung (HALBE-Rahmen mit Glas).
 
 **Noch zu prüfen:**
 
