@@ -28,6 +28,8 @@ for (const f of readdirSync(artDir)) {
   }
   if (d?.hidden && d[LANG]?.slug) hiddenPaths.add(`/portfolio/${d[LANG].slug}/`);
 }
+// Versteckte Testseite für den Kaufablauf (src/pages/testkauf.astro, noindex).
+hiddenPaths.add('/testkauf/');
 
 export default defineConfig({
   site: LANG === 'en' ? 'https://haushoppe.art' : 'https://haushoppe.de',

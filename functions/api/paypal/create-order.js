@@ -1,4 +1,4 @@
-import { WOODCUT_PRICES_EUR, CURRENCY, paypalBase, accessToken, json } from './_paypal.js';
+import { WOODCUT_PRICES_EUR, CURRENCY, TEST_PRODUCT, paypalBase, accessToken, json } from './_paypal.js';
 
 // Legt eine PayPal-Bestellung für EINEN Holzschnitt an. Der Betrag wird server-seitig aus
 // WOODCUT_PRICES_EUR gewählt (keine Preis-Manipulation vom Client möglich); der Client liefert nur
@@ -13,11 +13,13 @@ export async function onRequestPost({ request, env }) {
   } catch {
     // leerer/kaputter Body -> Standardwerte
   }
-  const slug = typeof body.slug === 'string' ? body.slug.slice(0, 120) : '';
-  const rawTitle = typeof body.title === 'string' ? body.title.trim() : '';
   const lang = body.lang === 'en' ? 'en' : 'de';
+  const isTest = body.variant === 'test';
   const variant = body.variant === 'framed' ? 'framed' : 'unframed';
-  const price = WOODCUT_PRICES_EUR[variant];
+  // Testprodukt: Kennung, Preis und Bezeichnung setzt der Server, nichts davon kommt vom Client.
+  const slug = isTest ? TEST_PRODUCT.id : typeof body.slug === 'string' ? body.slug.slice(0, 120) : '';
+  const rawTitle = typeof body.title === 'string' ? body.title.trim() : '';
+  const price = isTest ? TEST_PRODUCT.price : WOODCUT_PRICES_EUR[variant];
   const name = rawTitle || slug || (lang === 'en' ? 'Woodcut' : 'Holzschnitt');
   const variantLabel =
     lang === 'en'
@@ -27,7 +29,11 @@ export async function onRequestPost({ request, env }) {
       : variant === 'framed'
         ? 'gerahmt (HALBE-Museumsrahmen)'
         : 'ungerahmt';
-  const label = `${lang === 'en' ? 'Woodcut' : 'Holzschnitt'}: ${name} · ${variantLabel}`.slice(0, 127);
+  const label = isTest
+    ? lang === 'en'
+      ? 'Test order, will not be shipped'
+      : 'Testbestellung, wird nicht versendet'
+    : `${lang === 'en' ? 'Woodcut' : 'Holzschnitt'}: ${name} · ${variantLabel}`.slice(0, 127);
 
   try {
     const token = await accessToken(env);

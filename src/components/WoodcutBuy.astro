@@ -26,8 +26,11 @@ interface Props {
   slug: string;
   lang?: 'de' | 'en';
   title?: string;
+  // Testmodus für die versteckte Seite /testkauf/: eine einzige Variante „Testprodukt" zu 0,01 €.
+  // Preis und Bezeichnung setzt der Server (TEST_PRODUCT in functions/api/paypal/_paypal.js).
+  test?: boolean;
 }
-const { slug, lang = 'de', title = '' } = Astro.props;
+const { slug, lang = 'de', title = '', test = false } = Astro.props;
 const price = woodcutPrice(lang);
 const t =
   lang === 'en'
@@ -89,6 +92,18 @@ const t =
   <div class="wc-buy__pricing" data-testid="artwork-price">
     <fieldset class="wc-buy__variants">
       <legend class="visually-hidden">{t.legend}</legend>
+      {test ? (
+      <label class="wc-buy__variant">
+        <input class="wc-buy__variant-input" type="radio" name={`wc-variant-${slug}`} value="test" checked />
+        <span class="wc-buy__variant-body">
+          <span class="wc-buy__variant-head">
+            <span class="wc-buy__variant-name">{lang === 'en' ? 'Test product' : 'Testprodukt'}</span>
+            <span class="wc-buy__variant-price">{lang === 'en' ? '0.01 €' : '0,01 €'}</span>
+          </span>
+          <span class="wc-buy__variant-desc">{lang === 'en' ? 'Test order to check the purchase flow. Will not be shipped.' : 'Testbestellung zum Prüfen des Kaufablaufs. Wird nicht versendet.'}</span>
+        </span>
+      </label>
+      ) : (<>
       <label class="wc-buy__variant">
         <input class="wc-buy__variant-input" type="radio" name={`wc-variant-${slug}`} value="unframed" checked />
         <span class="wc-buy__variant-body">
@@ -109,6 +124,7 @@ const t =
           <span class="wc-buy__variant-desc">{t.framedDesc}</span>
         </span>
       </label>
+      </>)}
     </fieldset>
     <p class="wc-buy__note">{t.note}</p>
   </div>
