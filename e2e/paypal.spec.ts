@@ -29,6 +29,11 @@ test('Gewährleistungsseite im Footer verlinkt und mit Mitteilung', async ({ pag
   await expect(page.locator(`footer a[href="${path}"]`)).toHaveCount(1);
   await page.goto(path);
   await expect(page.locator('main').getByTestId('guarantee-notice')).toHaveCount(1);
+  // Die Grafik ist in Pfaden gesetzt: der vollständige Wortlaut steht als Text für Screenreader daneben.
+  const text = page.locator('main').getByTestId('guarantee-notice-text');
+  await expect(text).toContainText(en ? 'Minimum two-year legal guarantee protection' : 'Mindestens zwei Jahre gesetzliche Gewährleistung');
+  await expect(text).toContainText(en ? 'not less than one year' : 'jedoch nicht weniger als ein Jahr');
+  await expect(text).toContainText('GARAN');
 });
 
 // Button-Lösung (§ 312j Abs. 3, 4 BGB): Das PayPal-SDK wird durch eine Attrappe ersetzt, die beim
