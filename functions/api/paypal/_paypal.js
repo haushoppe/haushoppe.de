@@ -12,6 +12,12 @@ import prices from '../../../src/data/woodcut-prices.json';
 export const WOODCUT_PRICES_EUR = { unframed: prices.unframed.toFixed(2), framed: prices.framed.toFixed(2) };
 export const CURRENCY = 'EUR';
 
+// Testprodukt der versteckten Seite /testkauf/ zum Durchspielen des echten PayPal-Wegs. Der
+// 1-Cent-Preis ist fest an diese Kennung gebunden: create-order setzt Kennung und Bezeichnung
+// selbst, capture-order akzeptiert 0.01 nur für genau diese Kennung. So lässt sich kein Werk zum
+// Testpreis kaufen.
+export const TEST_PRODUCT = { id: 'testkauf', price: '0.01' };
+
 // Lieferländer für Online-Bestellungen. Alle anderen Länder laufen über eine Anfrage per E-Mail.
 export const SHIP_COUNTRIES = ['DE'];
 

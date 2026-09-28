@@ -134,3 +134,31 @@ test('Lieferadresse außerhalb Deutschlands: Hinweis auf E-Mail-Anfrage, keine K
   await expect(page.getByTestId('paypal-order')).toBeHidden();
   expect(captures).toBe(0);
 });
+
+// Versteckte Testseite für den echten PayPal-Weg: noindex, ein Testprodukt zu 0,01 €, die Kaufbox
+// schickt die Variante „test" (Preis und Bezeichnung setzt der Server, siehe TEST_PRODUCT).
+test('Testkauf-Seite: versteckt, 1-Cent-Testprodukt', async ({ page }, info) => {
+  const en = langOf(info) === 'en';
+  let createBody: Record<string, unknown> = {};
+  await page.route('**/api/paypal/config', (r) =>
+    r.fulfill({ json: { enabled: true, clientId: 'test-client', currency: 'EUR', env: 'sandbox' } }),
+  );
+  await page.route('https://www.paypal.com/sdk/js**', (r) =>
+    r.fulfill({ contentType: 'application/javascript', body: FAKE_SDK }),
+  );
+  await page.route('**/api/paypal/create-order', (r) => {
+    createBody = r.request().postDataJSON();
+    return r.fulfill({ json: { id: 'TESTORDER3' } });
+  });
+  await page.route('**/api/paypal/check-order', (r) => r.fulfill({ json: { country: 'DE', allowed: true } }));
+
+  await page.goto('/testkauf/');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+  const buy = page.getByTestId('paypal-buy');
+  await expect(buy).toContainText(en ? '0.01 €' : '0,01 €');
+  await expect(buy).not.toContainText('785');
+  await buy.scrollIntoViewIfNeeded();
+  await page.getByTestId('fake-paypal').click();
+  await expect(page.getByTestId('paypal-order')).toBeVisible();
+  expect(createBody.variant).toBe('test');
+});

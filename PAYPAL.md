@@ -47,6 +47,16 @@ Das **Secret verlässt nie den Server.** Der Client kennt nur die (öffentliche)
 `site/`, darum hängt Wrangler dasselbe `functions/` an **beide** Cloudflare-Projekte
 (`haushoppe-de` **und** `haushoppe-art`). Es ist nichts an den Deploy-Skripten zu ändern.
 
+## Testkauf (echter PayPal-Weg für 1 Cent)
+
+Versteckte Seite **`/testkauf/`** (haushoppe.de und haushoppe.art): dieselbe Kaufbox mit einer
+einzigen Variante „Testprodukt" zu **0,01 €**, wird nicht versendet. Nicht verlinkt, `noindex`, nicht
+in Sitemap und Suche. Der Cent-Preis ist serverseitig fest an die Kennung `testkauf` gebunden
+(`TEST_PRODUCT` in `functions/api/paypal/_paypal.js`): create-order setzt Kennung und Bezeichnung
+selbst, capture-order akzeptiert 0.01 nur für diese Kennung. Kein Werk lässt sich zum Testpreis
+kaufen. Die Bestell-Mails tragen die Bezeichnung „Testbestellung, wird nicht versendet". Testkäufe
+danach in PayPal erstatten.
+
 ## Einmal einzurichten (Olaf)
 
 ### 1. PayPal-REST-App anlegen

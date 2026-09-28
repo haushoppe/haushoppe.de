@@ -1,0 +1,24 @@
+---
+// Versteckte Testseite für den echten PayPal-Weg: ein Testprodukt zu 0,01 €, das nicht versendet
+// wird. Nur per Direkt-URL erreichbar: nicht in Navigation, Galerie oder Suche (noindex, kein
+// data-pagefind-body), aus der sitemap.xml ausgeschlossen (astro.config.mjs). Der Cent-Preis ist
+// serverseitig fest an das Testprodukt gebunden (TEST_PRODUCT in functions/api/paypal/_paypal.js).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WoodcutBuy from '../components/WoodcutBuy.astro';
+import { LANG } from '../lib/lang';
+
+const lang = LANG;
+const title = lang === 'en' ? 'Test purchase' : 'Testkauf';
+---
+
+<BaseLayout title={title} lang={lang} layout="boxed" noindex>
+  <div>
+    <h1>{title}</h1>
+    <p>
+      {lang === 'en'
+        ? 'Internal test page for the purchase flow. The test product costs 0.01 € and will not be shipped.'
+        : 'Interne Testseite für den Kaufablauf. Das Testprodukt kostet 0,01 € und wird nicht versendet.'}
+    </p>
+    <WoodcutBuy slug="testkauf" lang={lang} title={title} test />
+  </div>
+</BaseLayout>

@@ -1,4 +1,4 @@
-import { WOODCUT_PRICES_EUR, CURRENCY, SHIP_COUNTRIES, paypalBase, accessToken, json } from './_paypal.js';
+import { WOODCUT_PRICES_EUR, CURRENCY, SHIP_COUNTRIES, TEST_PRODUCT, paypalBase, accessToken, json } from './_paypal.js';
 import { sendOrderEmails } from './_email.js';
 
 // Bucht eine zuvor angelegte Bestellung final ab. Danach liegen Zahlung UND Lieferadresse im
@@ -34,9 +34,13 @@ export async function onRequestPost({ request, env, waitUntil }) {
     // Die PayPal-Client-ID ist öffentlich — ohne diese Prüfung könnte ein manipulierter Client eine
     // beliebig billige Order anlegen lassen und hier abbuchen + bestätigen lassen.
     const amount = pu.amount || {};
+    // Der Testpreis gilt ausschließlich für die Kennung des Testprodukts.
+    const isTest = pu.custom_id === TEST_PRODUCT.id;
     const priceOk =
       amount.currency_code === CURRENCY &&
-      Object.values(WOODCUT_PRICES_EUR).indexOf(String(amount.value)) !== -1;
+      (isTest
+        ? String(amount.value) === TEST_PRODUCT.price
+        : Object.values(WOODCUT_PRICES_EUR).indexOf(String(amount.value)) !== -1);
     if (!priceOk) return json({ error: 'bad_amount' }, 422);
 
     const country = ((pu.shipping || {}).address || {}).country_code;
