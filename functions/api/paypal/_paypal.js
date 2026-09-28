@@ -12,6 +12,9 @@ import prices from '../../../src/data/woodcut-prices.json';
 export const WOODCUT_PRICES_EUR = { unframed: prices.unframed.toFixed(2), framed: prices.framed.toFixed(2) };
 export const CURRENCY = 'EUR';
 
+// Lieferländer für Online-Bestellungen. Alle anderen Länder laufen über eine Anfrage per E-Mail.
+export const SHIP_COUNTRIES = ['DE'];
+
 export function paypalBase(env) {
   return (env.PAYPAL_ENV || 'sandbox') === 'live'
     ? 'https://api-m.paypal.com'

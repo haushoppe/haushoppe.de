@@ -14,8 +14,9 @@ test('Holzschnitt: Kaufbox (785 € / 1.000 € gerahmt) + Buttons-Mount + E-Mai
   await expect(buy).toContainText('785 €');
   await expect(buy).toContainText(langOf(info) === 'en' ? '1,000 €' : '1.000 €');
   await expect(buy).toContainText(
-    langOf(info) === 'en' ? 'Germany, Austria and Switzerland' : 'Deutschland, Österreich und der Schweiz',
+    langOf(info) === 'en' ? 'free shipping within Germany' : 'versandkostenfrei innerhalb Deutschlands',
   );
+  await expect(buy).toContainText('team@haushoppe.de');
   await expect(buy).toContainText(langOf(info) === 'en' ? 'delivery within 7 days' : 'Lieferung innerhalb von 7 Tagen');
   await expect(page.getByTestId('paypal-buttons')).toHaveCount(1);
   await expect(page.getByTestId('inquire-link')).toHaveCount(1);
@@ -53,6 +54,7 @@ test('Button-Lösung: PayPal gibt nur frei, erst „Zahlungspflichtig bestellen"
     return r.fulfill({ contentType: 'application/javascript', body: FAKE_SDK });
   });
   await page.route('**/api/paypal/create-order', (r) => r.fulfill({ json: { id: 'TESTORDER1' } }));
+  await page.route('**/api/paypal/check-order', (r) => r.fulfill({ json: { country: 'DE', allowed: true } }));
   await page.route('**/api/paypal/capture-order', (r) => {
     captures++;
     return r.fulfill({ json: { id: 'TESTORDER1', status: 'COMPLETED' } });
@@ -99,4 +101,30 @@ test('Kein Holzschnitt (Aquarell 1167): keine Kaufbox, aber E-Mail-CTA', async (
   await page.goto(`/portfolio/${s.work.aquarell}/`);
   await expect(page.getByTestId('paypal-buy')).toHaveCount(0);
   await expect(page.getByTestId('inquire-link')).toHaveCount(1);
+});
+
+test('Lieferadresse außerhalb Deutschlands: Hinweis auf E-Mail-Anfrage, keine Kassen-Stufe', async ({ page }, info) => {
+  const s = site(info);
+  let captures = 0;
+  await page.route('**/api/paypal/config', (r) =>
+    r.fulfill({ json: { enabled: true, clientId: 'test-client', currency: 'EUR', env: 'sandbox' } }),
+  );
+  await page.route('https://www.paypal.com/sdk/js**', (r) =>
+    r.fulfill({ contentType: 'application/javascript', body: FAKE_SDK }),
+  );
+  await page.route('**/api/paypal/create-order', (r) => r.fulfill({ json: { id: 'TESTORDER2' } }));
+  await page.route('**/api/paypal/check-order', (r) => r.fulfill({ json: { country: 'AT', allowed: false } }));
+  await page.route('**/api/paypal/capture-order', (r) => {
+    captures++;
+    return r.fulfill({ json: { error: 'shipping_country' } });
+  });
+
+  await page.goto(`/portfolio/${s.work.woodcut}/`);
+  await page.getByTestId('paypal-buy').scrollIntoViewIfNeeded();
+  await page.getByTestId('fake-paypal').click();
+  const status = page.getByTestId('paypal-status');
+  await expect(status).toBeVisible();
+  await expect(status).toContainText('team@haushoppe.de');
+  await expect(page.getByTestId('paypal-order')).toBeHidden();
+  expect(captures).toBe(0);
 });

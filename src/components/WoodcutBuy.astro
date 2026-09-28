@@ -33,15 +33,14 @@ const t =
   lang === 'en'
     ? {
         heading: 'Buy this woodcut',
-        note: 'incl. 7% VAT · free shipping · delivery within 7 days',
+        note: 'incl. 7% VAT · free shipping within Germany · delivery within 7 days',
         legend: 'Choose your version',
         unframed: 'Unframed',
         unframedDesc: 'The woodcut, numbered and hand-signed',
         framed: 'Framed',
         framedDesc: 'The woodcut, numbered and hand-signed. High-quality HALBE® frame: aluminium magnetic frame, museum glass, acid-free passe-partout. Ready to hang.',
-        dachNote: 'Shipping currently only within Germany, Austria and Switzerland.',
-        chNote: 'For deliveries to Switzerland, import charges (import VAT, possibly customs duties) may be payable by the recipient.',
-        dach: 'Shipping is currently only available within Germany, Austria and Switzerland. Nothing has been charged.',
+        dachNote: 'Online orders currently ship to addresses in Germany only. For other countries, please email us at team@haushoppe.de.',
+        dach: 'We can currently only ship online orders to addresses in Germany. Nothing has been charged. For delivery to another country, please email us at team@haushoppe.de.',
         secure: 'Secure payment via PayPal or card. PayPal shares your shipping address with us.',
         // Rechtlich zentral: Vertragsschluss erst mit Versand (die Bestätigung ist keine Annahme).
         contract: 'The contract of sale is concluded only upon shipment of the goods.',
@@ -60,15 +59,14 @@ const t =
       }
     : {
         heading: 'Diesen Holzschnitt kaufen',
-        note: 'inkl. 7 % MwSt · versandkostenfrei · Lieferung innerhalb von 7 Tagen',
+        note: 'inkl. 7 % MwSt · versandkostenfrei innerhalb Deutschlands · Lieferung innerhalb von 7 Tagen',
         legend: 'Ausführung wählen',
         unframed: 'Ungerahmt',
         unframedDesc: 'Der Holzschnitt, nummeriert und handsigniert',
         framed: 'Gerahmt',
         framedDesc: 'Der Holzschnitt, nummeriert und handsigniert. Hochwertiger Rahmen von HALBE®: Alu-Magnetrahmen, Museumsglas, säurefreies Passepartout. Fertig zum Aufhängen.',
-        dachNote: 'Versand aktuell nur innerhalb von Deutschland, Österreich und der Schweiz.',
-        chNote: 'Bei Lieferung in die Schweiz können Einfuhrabgaben (Einfuhrumsatzsteuer, gegebenenfalls Zoll) anfallen, die der Empfänger trägt.',
-        dach: 'Der Versand ist aktuell nur innerhalb von Deutschland, Österreich und der Schweiz möglich. Es wurde nichts abgebucht.',
+        dachNote: 'Online-Bestellung derzeit nur mit Lieferadresse in Deutschland. Für andere Länder schreiben Sie uns bitte an team@haushoppe.de.',
+        dach: 'Online-Bestellungen können wir derzeit nur an Lieferadressen in Deutschland versenden. Es wurde nichts abgebucht. Für eine Lieferung in ein anderes Land schreiben Sie uns bitte an team@haushoppe.de.',
         secure: 'Sichere Zahlung mit PayPal oder Karte. PayPal übermittelt uns Ihre Lieferadresse.',
         contract: 'Der Kaufvertrag kommt erst mit dem Versand der Ware zustande.',
         confirmIntro: 'Zahlung freigegeben. Es wurde noch nichts abgebucht. Ihre Bestellung:',
@@ -124,7 +122,7 @@ const t =
     <button type="button" class="btn btn--dark wc-buy__order" data-testid="paypal-order">{t.order}</button>
     <button type="button" class="wc-buy__cancel" data-testid="paypal-cancel">{t.cancel}</button>
   </div>
-  <p class="wc-buy__fineprint">{t.secure} {t.dachNote} {t.chNote} {t.contract}</p>
+  <p class="wc-buy__fineprint">{t.secure} {t.dachNote} {t.contract}</p>
   <p class="wc-buy__links">
     <a href={t.hrefWithdrawal}>{t.withdrawal}</a> · <a href={t.hrefTerms}>{t.terms}</a> · <a href={t.hrefPrivacy}>{t.privacy}</a>
   </p>
@@ -274,9 +272,24 @@ const t =
               });
           },
           onApprove: function (data) {
-            // Zahlung freigegeben, noch NICHT abgebucht: Zusammenfassung + eigener Bestellbutton.
-            approvedId = data.orderID;
-            setApproved(true);
+            // Zahlung freigegeben, noch NICHT abgebucht. Erst das Lieferland prüfen, dann die
+            // Kassen-Stufe (Zusammenfassung + eigener Bestellbutton). Scheitert die Prüfung technisch,
+            // geht es trotzdem weiter: capture-order prüft das Land vor der Abbuchung erneut.
+            return fetch('/api/paypal/check-order', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ orderID: data.orderID }),
+            })
+              .then(function (r) { return r.json(); })
+              .catch(function () { return null; })
+              .then(function (d) {
+                if (d && d.country && d.allowed === false) {
+                  showStatus(dachMsg, false);
+                  return;
+                }
+                approvedId = data.orderID;
+                setApproved(true);
+              });
           },
           onError: function () { showStatus(failedMsg, false); },
         })

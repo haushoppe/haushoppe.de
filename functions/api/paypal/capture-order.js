@@ -1,4 +1,4 @@
-import { WOODCUT_PRICES_EUR, CURRENCY, paypalBase, accessToken, json } from './_paypal.js';
+import { WOODCUT_PRICES_EUR, CURRENCY, SHIP_COUNTRIES, paypalBase, accessToken, json } from './_paypal.js';
 import { sendOrderEmails } from './_email.js';
 
 // Bucht eine zuvor angelegte Bestellung final ab. Danach liegen Zahlung UND Lieferadresse im
@@ -19,13 +19,13 @@ export async function onRequestPost({ request, env, waitUntil }) {
   try {
     const token = await accessToken(env);
 
-    // Vorerst nur DACH: die von PayPal erhobene Lieferadresse VOR der Abbuchung prüfen. Ist das
-    // Land nicht DE/AT/CH, wird NICHT abgebucht (keine Belastung) und der Client zeigt einen Hinweis.
+    // Die von PayPal erhobene Lieferadresse VOR der Abbuchung prüfen. Liegt sie nicht in einem
+    // Lieferland (SHIP_COUNTRIES), wird NICHT abgebucht und der Client verweist auf die E-Mail-Anfrage.
     const ordRes = await fetch(`${paypalBase(env)}/v2/checkout/orders/${orderID}`, {
       headers: { authorization: `Bearer ${token}` },
     });
     // Schlägt der Lookup fehl (Token abgelaufen, 5xx, Rate-Limit), retrybar melden — NICHT als
-    // Lieferland-Ablehnung, sonst bekäme ein legitimer Käufer fälschlich die DACH-Meldung.
+    // Lieferland-Ablehnung, sonst bekäme ein legitimer Käufer fälschlich die Lieferland-Meldung.
     if (!ordRes.ok) return json({ error: 'order_lookup_failed' }, 502);
     const ord = await ordRes.json();
     const pu = (ord.purchase_units || [])[0] || {};
@@ -40,7 +40,7 @@ export async function onRequestPost({ request, env, waitUntil }) {
     if (!priceOk) return json({ error: 'bad_amount' }, 422);
 
     const country = ((pu.shipping || {}).address || {}).country_code;
-    if (!country || ['DE', 'AT', 'CH'].indexOf(country) === -1) {
+    if (!country || SHIP_COUNTRIES.indexOf(country) === -1) {
       return json({ error: 'shipping_country', country: country || null }, 422);
     }
 
