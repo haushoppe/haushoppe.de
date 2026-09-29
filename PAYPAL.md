@@ -135,8 +135,8 @@ Der Versand läuft über `waitUntil` im Hintergrund und kann die Zahlung nie sch
 
 ## Rechtstexte
 
-Footer-Seiten (DE + EN) unter `src/content/pages/`: `impressum`, `datenschutz`, `agb`, `widerruf`,
-`gewaehrleistung` (EN: `imprint`, `privacy`, `terms`, `right-of-withdrawal`, `legal-guarantee`),
+Footer-Seiten (DE + EN) unter `src/content/pages/`: `impressum`, `datenschutz`, `agb`, `widerruf`
+(EN: `imprint`, `privacy`, `terms`, `right-of-withdrawal`),
 dazu die Widerrufsfunktion `widerruf-erklaeren` / `withdraw` (§ 356a BGB). Aus haushoppe-its übernommen und auf
 Olaf/haushoppe.de angepasst; Datenschutz um **PayPal** und **Resend** erweitert. Der Vertrag kommt
 laut Seite + AGB + E-Mail **erst mit Versand** zustande (Eingangsbestätigung ist keine Annahme).
@@ -144,12 +144,13 @@ laut Seite + AGB + E-Mail **erst mit Versand** zustande (Eingangsbestätigung is
 **EU-Gewährleistungs-Mitteilung** (Art. 246a § 1 Abs. 1 Nr. 11 EGBGB, Gestaltung DVO (EU) 2025/1960,
 Pflicht seit 27.09.2026): Komponente `src/components/GuaranteeNotice.astro`, als vollständige Grafik
 in der Kassen-Stufe vor „Zahlungspflichtig bestellen" (nicht hinter einem Link: die DVO erlaubt das
-Verschachteln nur für das GARAN-Label, Erwägungsgrund 14), auf der Gewährleistungsseite,
-verlinkt in AGB Ziff. 9 und in der Kunden-Mail. Die Dateien `public/eu-gewaehrleistung-de.svg` und
-`public/eu-guarantee-en.svg` stammen **unverändert** aus dem SVG-Paket der Kommission
+Verschachteln nur für das GARAN-Label, Erwägungsgrund 14). Die Dateien `public/eu-gewaehrleistung-de.svg`
+und `public/eu-guarantee-en.svg` stammen **unverändert** aus dem SVG-Paket der Kommission
 (<https://commission.europa.eu/publications/practical-guidelines-and-high-resolution-vector-files-eu-notice-and-label-product-guarantees_en>)
-und dürfen nicht verändert werden (Anhang I der DVO). Der eigene Text drumherum beschreibt die
-Gewährleistung neutral als geltendes Recht, nie als Leistung von Olaf (UWG Anhang Nr. 10a).
+und dürfen nicht verändert werden (Anhang I der DVO). Sichtbar sind nur die Grafik und das QR-Ziel
+als Link; der vollständige Wortlaut steht daneben nur für Screenreader. **Regel:** Den Inhalt der
+Mitteilung nirgends in eigenen Worten wiedergeben oder zusammenfassen (keine eigene Seite, keine
+Umschreibung in AGB oder Mail), und die Grafik nicht klickbar machen.
 
 **Produktsicherheitsverordnung (EU) 2023/988 gilt nicht** für die Holzschnitte: Sie nimmt
 „Antiquitäten" aus (Art. 2 Abs. 2 Buchst. i), darunter nach Art. 3 Nr. 28 Kunstwerke; Erwägungsgrund 18

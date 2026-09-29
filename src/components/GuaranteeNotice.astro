@@ -14,19 +14,22 @@ const { lang = 'de' } = Astro.props;
 // nur einen kurzen Alt-Text; direkt dahinter steht der vollständige Wortlaut der Mitteilung als
 // Text, sichtbar nur für Screenreader (.visually-hidden). Kein aria-describedby, sonst würde der Text
 // doppelt vorgelesen. Der Wortlaut ist aus der jeweiligen Kommissionsdatei übernommen.
+// Bewusst KEINE sichtbare eigene Umschreibung oder Zusammenfassung der Mitteilung, weder hier noch
+// anderswo auf der Site: Eine eigene Darstellung weicht zwangsläufig von der amtlichen ab. Sichtbar
+// sind nur die unveränderte Grafik und das QR-Ziel als Link. Die Grafik selbst ist nicht klickbar:
+// Mobil füllt sie fast den Bildschirm, ein versehentlicher Tipp beim Scrollen würde den
+// Bestellvorgang verlassen.
 const t =
   lang === 'en'
     ? {
         src: '/eu-guarantee-en.svg',
         alt: 'EU notice: Legal guarantee',
-        caption: 'Official EU notice on the legal guarantee. More about your rights:',
         href: 'https://europa.eu/youreurope/guarantees',
         link: 'europa.eu/youreurope/guarantees',
       }
     : {
         src: '/eu-gewaehrleistung-de.svg',
         alt: 'EU-Mitteilung: Gesetzliche Gewährleistung',
-        caption: 'Offizielle EU-Mitteilung zum gesetzlichen Gewährleistungsrecht. Mehr zu Ihren Rechten:',
         href: 'https://europa.eu/youreurope/garantien',
         link: 'europa.eu/youreurope/garantien',
       };
@@ -86,7 +89,7 @@ const t =
     )
   }
   <figcaption>
-    {t.caption} <a href={t.href} target="_blank" rel="noopener">{t.link}</a>
+    <a href={t.href} target="_blank" rel="noopener">{t.link}</a>
   </figcaption>
 </figure>
 
