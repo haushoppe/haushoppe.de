@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "build": "npm run data && npm run check && npm run build:de && npm run build:art",
     "data": "npm run videos",
-    "check": "node scripts/check-i18n.mjs",
+    "check": "node scripts/check-i18n.mjs && node scripts/check-eu-notice.mjs",
     "build:de": "SITE_LANG=de astro build && node scripts/prune-unreferenced-images.mjs dist-de && pagefind --site dist-de",
     "build:art": "SITE_LANG=en astro build && node scripts/gen-en-redirects.mjs dist-art && node scripts/prune-unreferenced-images.mjs dist-art && pagefind --site dist-art",
     "deploy": "npm run build && npm run deploy:de && npm run deploy:art",
