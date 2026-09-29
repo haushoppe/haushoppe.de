@@ -22,21 +22,6 @@ test('Holzschnitt: Kaufbox (785 € / 1.000 € gerahmt) + Buttons-Mount + E-Mai
   await expect(page.getByTestId('inquire-link')).toHaveCount(1);
 });
 
-test('Gewährleistungsseite im Footer verlinkt und mit Mitteilung', async ({ page }, info) => {
-  const en = langOf(info) === 'en';
-  const path = en ? '/legal-guarantee/' : '/gewaehrleistung/';
-  await page.goto('/');
-  await expect(page.locator(`footer a[href="${path}"]`)).toHaveCount(1);
-  await page.goto(path);
-  await expect(page.locator('main').getByTestId('guarantee-notice')).toHaveCount(1);
-  // Die Grafik ist in Pfaden gesetzt: der vollständige Wortlaut steht als Text für Screenreader daneben.
-  const text = page.locator('main').getByTestId('guarantee-notice-text');
-  await expect(text).toContainText(en ? 'Minimum two-year legal guarantee protection' : 'Mindestens zwei Jahre gesetzliche Gewährleistung');
-  await expect(text).toContainText(en ? 'not less than one year' : 'jedoch nicht weniger als ein Jahr');
-  await expect(text).toContainText(en ? 'Provide proof of purchase' : 'Legen Sie einen Kaufnachweis vor');
-  await expect(text).toContainText('GARAN');
-});
-
 // Button-Lösung (§ 312j Abs. 3, 4 BGB): Das PayPal-SDK wird durch eine Attrappe ersetzt, die beim
 // Klick createOrder + onApprove aufruft wie das echte SDK. Geprüft wird: SDK mit commit=false,
 // vor der Freigabe kein Bestellbutton, die Freigabe bucht NICHT ab, erst der eigene Button
@@ -96,6 +81,15 @@ test('Button-Lösung: PayPal gibt nur frei, erst „Zahlungspflichtig bestellen"
     en ? 'https://europa.eu/youreurope/guarantees' : 'https://europa.eu/youreurope/garantien',
   );
   expect((await notice.boundingBox())!.y).toBeLessThan((await order.boundingBox())!.y);
+  // Keine sichtbare eigene Umschreibung: die Bildunterschrift ist nur der QR-Link. Die Grafik ist in
+  // Pfaden gesetzt, der vollständige Wortlaut steht als Text für Screenreader daneben.
+  await expect(notice.locator('figcaption')).toHaveText(en ? 'europa.eu/youreurope/guarantees' : 'europa.eu/youreurope/garantien');
+  await expect(notice.locator('img').locator('xpath=ancestor::a')).toHaveCount(0);
+  const text = notice.getByTestId('guarantee-notice-text');
+  await expect(text).toContainText(en ? 'Minimum two-year legal guarantee protection' : 'Mindestens zwei Jahre gesetzliche Gewährleistung');
+  await expect(text).toContainText(en ? 'not less than one year' : 'jedoch nicht weniger als ein Jahr');
+  await expect(text).toContainText(en ? 'Provide proof of purchase' : 'Legen Sie einen Kaufnachweis vor');
+  await expect(text).toContainText('GARAN');
 
   await order.click();
   await expect(page.getByTestId('paypal-status')).toBeVisible();
