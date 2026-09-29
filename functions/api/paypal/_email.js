@@ -8,6 +8,18 @@ import { WOODCUT_PRICES_EUR } from './_paypal.js';
 
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
+// EU-Mitteilung zur gesetzlichen Gewährleistung als Anhang der Kunden-Mail (§ 312f Abs. 2 BGB:
+// Die Bestätigung muss die Angaben nach Art. 246a EGBGB enthalten, seit 27.09.2026 auch Nr. 11).
+// Anhang ist das offizielle PDF der Kommission, byte-identisch (Paket „Harmonised notice in 24
+// languages"): echter, getaggter Text mit Sprachangabe, also für Screenreader lesbar, und als
+// Anhang ein dauerhafter Datenträger. Nie neu exportieren oder komprimieren; beide Seiten (Farbe,
+// Schwarz-Weiß) bleiben. Die Prüfsummen sichert scripts/check-eu-notice.mjs. Resend holt die Datei
+// über die URL; sie liegt in public/ und ist auf beiden Domains erreichbar, aber nirgends verlinkt.
+const EU_NOTICE_PDF = {
+  de: { path: 'https://haushoppe.de/eu-mitteilung-gesetzliche-gewaehrleistung.pdf', filename: 'EU-Mitteilung-Gesetzliche-Gewaehrleistung.pdf' },
+  en: { path: 'https://haushoppe.art/eu-notice-legal-guarantee.pdf', filename: 'EU-Notice-Legal-Guarantee.pdf' },
+};
+
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
@@ -103,6 +115,7 @@ ${row('Item', o.item)}${row('Price', `${o.amount} (incl. 7% VAT, free shipping)`
 <h3 style="margin:1.5em 0 .4em">Right of withdrawal</h3>
 <p>You have the right to withdraw from this contract within 14 days without giving any reason. The withdrawal period is 14 days from the day on which you (or a third party named by you, who is not the carrier) take possession of the goods. To exercise your right of withdrawal, you must inform us (${esc(seller.name)}, ${esc(seller.street)}, ${esc(seller.city)}, email: ${esc(seller.email)}, phone: ${esc(seller.phone)}) of your decision by a clear statement (e.g. a letter sent by post or an email). To meet the withdrawal deadline, it is sufficient to send your communication before the withdrawal period has expired. If you withdraw, we will reimburse all payments received from you, including delivery costs (except for extra costs arising from your choice of a delivery type other than the cheapest standard delivery offered by us), without undue delay and within 14 days. You bear the direct cost of returning the goods.</p>
 <p style="font-size:13px">You can also declare your withdrawal directly online: <a href="https://haushoppe.art/withdraw/">haushoppe.art/withdraw</a>.</p>
+<p style="font-size:13px">The EU notice on the legal guarantee is attached.</p>
 <p style="color:#555;font-size:13px">Questions? Just reply to this email or write to ${esc(seller.email)}.</p>
 </div>`;
   }
@@ -117,6 +130,7 @@ ${row('Werk', o.item)}${row('Preis', `${o.amount} (inkl. 7 % MwSt, versandkosten
 <p style="font-size:14px">${addr}</p>
 ${widerruf(seller)}
 <p style="font-size:13px">Sie können Ihren Widerruf auch direkt online erklären: <a href="https://haushoppe.de/widerruf-erklaeren/">haushoppe.de/widerruf-erklaeren</a>.</p>
+<p style="font-size:13px">Die EU-Mitteilung zur gesetzlichen Gewährleistung finden Sie im Anhang.</p>
 <p style="color:#555;font-size:13px">Fragen? Antworten Sie einfach auf diese E-Mail oder schreiben Sie an ${esc(seller.email)}.</p>
 </div>`;
 }
@@ -187,6 +201,7 @@ export async function sendOrderEmails(env, data, lang) {
             ? `Your order at HAUS HOPPE – Galerie für Bildende Kunst (${o.item})`
             : `Ihre Bestellung bei HAUS HOPPE – Galerie für Bildende Kunst (${o.item})`,
         html: customerHtml(o, seller, lang),
+        attachments: [{ ...EU_NOTICE_PDF[lang === 'en' ? 'en' : 'de'] }],
       });
     } catch (e) {
       results.customerError = String((e && e.message) || e);
