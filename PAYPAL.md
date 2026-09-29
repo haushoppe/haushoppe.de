@@ -122,8 +122,9 @@ Nach erfolgreicher Zahlung verschickt `capture-order.js` über `_email.js` zwei 
   Bestätigung muss die Angaben nach Art. 246a EGBGB enthalten, seit 27.09.2026 auch Nr. 11). Da die
   Mail vor Vertragsschluss (Versand) rausgeht, erfüllt sie das als dauerhafter Datenträger. Das PDF
   hat getaggten Text mit Sprachangabe, ist also für Screenreader lesbar. Prüfsummen sichert
-  `scripts/check-eu-notice.mjs` in `npm run check`. Offen (nicht geprüft): ob das PDF die RGB-Vorgabe
-  von Anhang I Erl. 5 erfüllt.
+  `scripts/check-eu-notice.mjs` in `npm run check`. Entschieden (Johannes, 29.09.2026): Das offizielle
+  PDF bleibt unverändert; ob es die RGB-Vorgabe von Anhang I Erl. 5 erfüllt, wird nicht weiter
+  verfolgt.
 - **an Olaf** (`team@haushoppe.de`): dieselbe Bestellung mit Käufer, Adresse und Zahlungsreferenz.
 
 Der Versand läuft über `waitUntil` im Hintergrund und kann die Zahlung nie scheitern lassen. Ohne
