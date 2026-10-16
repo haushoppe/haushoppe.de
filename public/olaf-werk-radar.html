@@ -1,0 +1,535 @@
+<title>Olaf Hoppe Werk-Radar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ece8de; --surface: #f8f6f0; --surface-2: #e6e1d4;
+    --ink: #241f1a; --ink-soft: #5a5249; --ink-faint: #8a8175;
+    --line: #ddd7c9; --line-strong: #c6bfae;
+    --accent: #c5341f; --accent-2: #1f6b6b;
+    --holz: #c5341f; --foerd: #2c5aa0; --preis: #a5741a; --ausst: #4a7c3f; --res: #6b6255;
+    --ok: #2e7d32; --soon: #1f6b8c; --note: #a5741a; --warn: #b23a2b;
+    --shadow: 0 1px 2px rgba(60,50,30,.07), 0 8px 22px rgba(60,50,30,.06);
+    --sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+    --disp: "Fraunces", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a1613; --surface: #232019; --surface-2: #2d2820;
+      --ink: #efe9dd; --ink-soft: #b3aa99; --ink-faint: #7d7568;
+      --line: #322c22; --line-strong: #453e30;
+      --accent: #e8583f; --accent-2: #3fb0a8;
+      --holz: #e8583f; --foerd: #6b9bd8; --preis: #d6a94e; --ausst: #7cb86a; --res: #a89e8c;
+      --ok: #5bbf5f; --soon: #4fb0d4; --note: #d6a94e; --warn: #e8674f;
+      --shadow: 0 1px 2px rgba(0,0,0,.42), 0 10px 26px rgba(0,0,0,.36);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a1613; --surface: #232019; --surface-2: #2d2820;
+    --ink: #efe9dd; --ink-soft: #b3aa99; --ink-faint: #7d7568;
+    --line: #322c22; --line-strong: #453e30;
+    --accent: #e8583f; --accent-2: #3fb0a8;
+    --holz: #e8583f; --foerd: #6b9bd8; --preis: #d6a94e; --ausst: #7cb86a; --res: #a89e8c;
+    --ok: #5bbf5f; --soon: #4fb0d4; --note: #d6a94e; --warn: #e8674f;
+    --shadow: 0 1px 2px rgba(0,0,0,.42), 0 10px 26px rgba(0,0,0,.36);
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(1.1rem, 3.5vw, 2.6rem) clamp(1rem, 3.5vw, 2.2rem) 4rem; }
+  a { color: var(--accent); }
+
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+  .eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 .55rem; }
+  h1 { font-family: var(--disp); font-weight: 600; font-size: clamp(2.1rem, 5.4vw, 3.2rem); line-height: 1; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+  h1 .a { color: var(--accent); }
+  .lede { color: var(--ink-soft); font-size: 1rem; max-width: 66ch; margin: .9rem 0 0; }
+  .stamp { display: flex; flex-wrap: wrap; gap: .4rem .9rem; font-family: var(--mono); font-size: .74rem; color: var(--ink-faint); margin-top: 1rem; }
+  .stamp b { color: var(--ink-soft); font-weight: 600; }
+  .stamp .sja { color: var(--ok); } .stamp .sbe { color: var(--note); } .stamp .sne { color: var(--warn); }
+
+  .themebtn { flex: none; font-family: var(--mono); font-size: .74rem; background: var(--surface); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 999px; padding: .4rem .7rem; cursor: pointer; }
+  .themebtn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: .5rem .9rem; margin: 1.5rem 0 0; padding: .8rem 1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; font-family: var(--mono); font-size: .72rem; color: var(--ink-soft); }
+  .legend .li { display: inline-flex; align-items: center; gap: .4rem; }
+  .swatch { font-weight: 700; padding: .05rem .4rem; border-radius: 5px; }
+
+  .band { margin-top: 2.4rem; }
+  .band > h2 { font-family: var(--disp); font-weight: 600; font-size: 1.5rem; letter-spacing: -.005em; margin: 0 0 .2rem; display: flex; align-items: baseline; gap: .55rem; }
+  .band > h2 .n { font-family: var(--mono); font-size: .8rem; color: var(--ink-faint); font-weight: 400; }
+  .band > p { color: var(--ink-soft); margin: 0 0 1rem; font-size: .92rem; max-width: 68ch; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(224px, 1fr)); gap: .9rem; }
+  .tile { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.05rem 1.1rem; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: .5rem; overflow: hidden; }
+  .tile::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--accent); }
+  .tile.urgent::before { background: var(--warn); }
+  .tile .tname { font-family: var(--disp); font-weight: 600; font-size: 1.1rem; line-height: 1.08; margin: 0; }
+  .tile .torg { font-size: .82rem; color: var(--ink-faint); font-family: var(--mono); }
+  .tile .tbig { font-family: var(--mono); font-weight: 600; font-size: 1.12rem; color: var(--ink); letter-spacing: -.01em; }
+  .tile .tbig small { display: block; font-size: .72rem; font-weight: 400; color: var(--ink-faint); letter-spacing: 0; }
+  .tile .tbig.hot { color: var(--warn); }
+  .tile .twhy { font-size: .84rem; color: var(--ink-soft); }
+  .tile a.tgo { margin-top: auto; font-family: var(--mono); font-size: .78rem; font-weight: 500; text-decoration: none; }
+  .tile a.tgo:hover { text-decoration: underline; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: .45rem; margin: 2.6rem 0 .2rem; align-items: center; }
+  .filters .flabel { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); margin-right: .2rem; }
+  .chip { font-family: var(--mono); font-size: .76rem; font-weight: 500; background: var(--surface); color: var(--ink-soft); border: 1px solid var(--line-strong); border-radius: 999px; padding: .34rem .74rem; cursor: pointer; }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .ops { display: flex; flex-direction: column; gap: .7rem; }
+  .op { display: grid; grid-template-columns: 1fr 236px; gap: .4rem 1.4rem; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--cat, var(--line-strong)); border-radius: 12px; padding: .95rem 1.1rem 1rem; }
+  .op.hide { display: none; }
+  .op__toprow { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-bottom: .35rem; }
+  .op__name { font-family: var(--disp); font-weight: 600; font-size: 1.12rem; margin: 0; line-height: 1.15; }
+  .op__name .ty { font-family: var(--mono); font-weight: 400; font-size: .74rem; color: var(--ink-faint); }
+  .op__org { font-family: var(--mono); font-size: .75rem; color: var(--ink-faint); margin: .12rem 0 .4rem; }
+  .op__fit { font-size: .9rem; color: var(--ink-soft); margin: 0; max-width: 64ch; }
+  .op__aside { display: flex; flex-direction: column; gap: .3rem; align-items: flex-start; border-left: 1px solid var(--line); padding-left: 1.2rem; }
+  .op__frist { font-family: var(--mono); font-size: .78rem; }
+  .op__frist .k { color: var(--ink-faint); font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; display: block; }
+  .op__frist .v { color: var(--ink); font-weight: 600; }
+  .op__frist .v.cd { color: var(--accent); }
+  .op__frist .v.hot { color: var(--warn); }
+  .op__link { font-family: var(--mono); font-size: .77rem; font-weight: 500; text-decoration: none; word-break: break-word; }
+  .op__link:hover { text-decoration: underline; }
+  .op__contact { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); word-break: break-word; }
+
+  .verdict { font-family: var(--mono); font-size: .7rem; font-weight: 700; letter-spacing: .06em; padding: .2rem .5rem; border-radius: 6px; }
+  .verdict--ja { color: #fff; background: var(--ok); }
+  .verdict--bedingt { color: var(--note); background: color-mix(in srgb, var(--note) 18%, transparent); border: 1px solid color-mix(in srgb, var(--note) 40%, transparent); }
+  .verdict--nein { color: var(--warn); background: color-mix(in srgb, var(--warn) 13%, transparent); }
+
+  .pill { font-family: var(--mono); font-size: .66rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: .2rem .48rem; border-radius: 999px; white-space: nowrap; }
+  .pill--ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 15%, transparent); }
+  .pill--soon { color: var(--soon); background: color-mix(in srgb, var(--soon) 16%, transparent); }
+  .pill--note { color: var(--note); background: color-mix(in srgb, var(--note) 18%, transparent); }
+  .vtag { font-family: var(--mono); font-size: .68rem; color: var(--ink-faint); margin-left: auto; }
+  .vtag.ok { color: var(--ausst); }
+
+  .note { font-size: .86rem; color: var(--ink-soft); font-family: var(--sans); padding: .75rem 1.1rem; border: 1px dashed var(--line-strong); border-radius: 12px; line-height: 1.7; }
+  .note b { color: var(--ink); font-weight: 600; }
+  .note .vb { font-family: var(--mono); font-size: .64rem; font-weight: 700; color: var(--note); }
+
+  .cut { display: grid; grid-template-columns: auto 1fr; gap: .2rem .8rem; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .6rem .9rem; align-items: baseline; }
+  .cut__n { font-family: var(--disp); font-weight: 600; font-size: 1rem; }
+  .cut__n a { text-decoration: none; }
+  .cut__r { grid-column: 2; font-size: .84rem; color: var(--ink-soft); }
+  .cut__tag { font-family: var(--mono); font-size: .64rem; font-weight: 700; letter-spacing: .05em; color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, transparent); padding: .15rem .4rem; border-radius: 5px; align-self: center; }
+
+  footer { margin-top: 3rem; padding-top: 1.3rem; border-top: 1px solid var(--line); font-family: var(--mono); font-size: .74rem; color: var(--ink-faint); line-height: 1.7; }
+  footer b { color: var(--ink-soft); }
+
+  @media (max-width: 620px) {
+    .op { grid-template-columns: 1fr; }
+    .op__aside { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: .6rem; margin-top: .3rem; }
+    .top { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div>
+        <p class="eyebrow">Maler · mehrfarbiger Holzschnitt · Mecklenburg-Vorpommern</p>
+        <h1><span class="a">Olaf Hoppe</span> Werk-Radar</h1>
+      </div>
+      <button class="themebtn" id="themebtn" type="button" aria-label="Hell/Dunkel umschalten">◐ Theme</button>
+    </div>
+    <p class="lede">Förderungen, Preise, Ausstellungen und Druckgrafik-Calls für Olafs <b>physisches Lebenswerk</b> (Gemälde + Holzschnitte). Jeder Eintrag einzeln geprüft, mit Verdikt <b>JA</b> / <b>BEDINGT</b> / aussortiert und Frist. Der Auslöser: die Kunstfonds-<b>Werkverzeichnung</b> ist für lebende Künstler:innen mit großem Oeuvre — also direkt für Olaf.</p>
+    <div class="stamp">
+      <span><b>Stand</b> 4. September 2026</span>
+      <span><b>5 Agenten</b> haben geprüft</span>
+      <span><b class="sja">viele JA</b> · <b class="sbe">bedingt</b> · <b class="sne">aussortiert</b></span>
+    </div>
+
+    <div class="legend" aria-label="Legende">
+      <span class="li"><span class="swatch" style="color:#fff;background:var(--ok)">JA</span> klarer Fit</span>
+      <span class="li"><span class="swatch verdict--bedingt">BEDINGT</span> mit Vorbehalt</span>
+      <span class="li"><span class="swatch verdict--nein">NEIN</span> aussortiert (mit Grund)</span>
+      <span class="li" style="margin-left:auto">✓ Seite = auf der echten Seite geprüft · ◇ prüfen = Frist noch verifizieren</span>
+    </div>
+  </header>
+
+  <!-- FRISTENKALENDER -->
+  <section class="band" aria-label="Fristen">
+    <h2>Fristenkalender <span class="n">/ was zuerst dran ist</span></h2>
+    <p>Die datierten Chancen in zeitlicher Reihenfolge. Frechen ist unmittelbar.</p>
+    <div class="tiles">
+      <article class="tile urgent">
+        <p class="tname">Grafik-Triennale Frechen</p>
+        <span class="torg">größter DE-Druckgrafik-Wettbewerb</span>
+        <span class="tbig hot" data-deadline="2026-09-29">29. Sept 2026<small>Online-Anmeldung, Holzschnitt ideal</small></span>
+        <span class="twhy">Sofort einreichen: Holzschnitt ausdrücklich zugelassen, bis 4 Arbeiten, 40 € Gebühr.</span>
+        <a class="tgo" href="https://kunstverein-frechen.de/call-for-entries-xxi-grafik-triennale-2027/" target="_blank" rel="noopener">kunstverein-frechen.de ↗</a>
+      </article>
+      <article class="tile">
+        <p class="tname">NordArt 2027</p>
+        <span class="torg">Büdelsdorf · Bewerbung gratis</span>
+        <span class="tbig" data-deadline="2026-10-31">31. Okt 2026<small>Malerei + Grafik, weltweit</small></span>
+        <span class="twhy">Große Jahresausstellung, kostenlose Bewerbung, hohe Sichtbarkeit (kompetitiv).</span>
+        <a class="tgo" href="https://www.nordart.de/en/artists/application-2027" target="_blank" rel="noopener">nordart.de ↗</a>
+      </article>
+      <article class="tile">
+        <p class="tname">Grafikbörse Borken (39.)</p>
+        <span class="torg">deutsch-niederl. Grafikmesse</span>
+        <span class="tbig" data-deadline="2026-11-30">30. Nov 2026<small>Holzschnitt Kernprogramm</small></span>
+        <span class="twhy">Verkaufsmesse für Druckgrafik, Einzelkünstler dürfen sich bewerben.</span>
+        <a class="tgo" href="https://en.grafikboerse.eu/application/" target="_blank" rel="noopener">grafikboerse.eu ↗</a>
+      </article>
+      <article class="tile">
+        <p class="tname">Kunstfonds-Januar</p>
+        <span class="torg">Bund, ohne Altersgrenze</span>
+        <span class="tbig" data-deadline="2027-01-15">~15. Jan 2027<small>Stipendium · Publikation · Werkverzeichnung</small></span>
+        <span class="twhy">Drei Programme mit Januar-Frist: Arbeitsstipendium 18k, Monografie 24k, Werkverzeichnis 10–30k.</span>
+        <a class="tgo" href="https://www.kunstfonds.de/foerderung/fuer-kuenstlerinnen/" target="_blank" rel="noopener">kunstfonds.de ↗</a>
+      </article>
+    </div>
+  </section>
+
+  <div class="filters" role="group" aria-label="Filter">
+    <span class="flabel">Filter:</span>
+    <button class="chip" data-filter="all" aria-pressed="true">Alle</button>
+    <button class="chip" data-filter="ja" aria-pressed="false">✅ Nur JA</button>
+    <button class="chip" data-filter="holz" aria-pressed="false">Druckgrafik</button>
+    <button class="chip" data-filter="foerd" aria-pressed="false">Förderung</button>
+    <button class="chip" data-filter="preis" aria-pressed="false">Preise</button>
+    <button class="chip" data-filter="ausst" aria-pressed="false">Ausstellungen</button>
+  </div>
+
+  <!-- HOLZSCHNITT -->
+  <section class="band" data-section="holz">
+    <h2 style="--cat:var(--holz)"><span class="swatch" style="background:var(--holz);color:#fff;font-size:.7rem">▨</span>Holzschnitt &amp; Druckgrafik <span class="n">/ Olafs Spezialgebiet</span></h2>
+    <p>Hier ist der Fit am stärksten: Triennalen, Fachvereinigungen und Grafikmessen, die Holzschnitt ausdrücklich nehmen.</p>
+    <div class="ops">
+
+      <article class="op" data-cat="holz" data-verdict="ja" style="--cat:var(--holz)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--ok">Call offen</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Grafik-Triennale Frechen 2027 <span class="ty">· jurierter Druckgrafik-Wettbewerb</span></h3>
+          <p class="op__org">Kunstverein Frechen · größter DE-Wettbewerb für künstlerische Druckgrafik</p>
+          <p class="op__fit">Holzschnitt explizit zugelassen. Online-Einreichung bis 29.9.2026, Originale bis 12.1.2027, bis 4 Arbeiten (ab 2023), 40 € Gebühr. Preise 3.000/2.000/1.500 €, Ausstellung Sommer 2027. <b>Die dringendste, perfekt passende Aktion.</b></p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v hot" data-deadline="2026-09-29">29. Sept 2026</span></div>
+          <a class="op__link" href="https://kunstverein-frechen.de/call-for-entries-xxi-grafik-triennale-2027/" target="_blank" rel="noopener">kunstverein-frechen.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="holz" data-verdict="ja" style="--cat:var(--holz)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--soon">Call ~ab Sept 2026</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Triennale Grenchen 2027 (CH) <span class="ty">· Triennale für Hochdruck/Holzschnitt</span></h3>
+          <p class="op__org">Kunsthaus Grenchen · spezialisierteste Holzschnitt-Triennale im dt. Sprachraum</p>
+          <p class="op__fit">Rein für xylografische Druckgrafik — idealer Fit. Ausstellung 15.10.–7.11.2027. Die Seite sagt „Please be patient until September 2026" → Call/Details werden gerade jetzt erwartet, engmaschig beobachten.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">Call ~jetzt erwartet</span></div>
+          <a class="op__link" href="https://triennale.ch/" target="_blank" rel="noopener">triennale.ch ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="holz" data-verdict="ja" style="--cat:var(--holz)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">Kontakt / Mitgliedschaft</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">XYLON Deutschland e.V. <span class="ty">· Holzschneider-Vereinigung + Triennale</span></h3>
+          <p class="op__org">eine der größten Holzschnitt-Vereinigungen weltweit</p>
+          <p class="op__fit">Die fachliche Heimat für einen mehrfarbigen Holzschneider. Teilnahme an den Triennalen läuft über Mitgliedschaft/Gast-Vorschlag (kein offener Publikums-Call). <b>Jetzt Kontakt aufnehmen</b>, um für den nächsten Turnus ins Verfahren zu kommen. (Aktuelle Triennale „Hochdruck NOW" Reutlingen bis 31.1.2027.)</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Zugang</span><span class="v">Mitgliedschaft/Vorschlag</span></div>
+          <a class="op__link" href="http://www.xylondeutschland.de/" target="_blank" rel="noopener">xylondeutschland.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="holz" data-verdict="ja" style="--cat:var(--holz)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">Frist 30.11.</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Grafikbörse Borken (39.) <span class="ty">· deutsch-niederländische Grafikmesse</span></h3>
+          <p class="op__org">Verkaufsmesse für originale Druckgrafik (seit 1988)</p>
+          <p class="op__fit">Alle Drucktechniken inkl. Holzschnitt ausdrücklich zugelassen. <b>Einzelkünstler dürfen sich direkt bewerben</b> (Jury-Auswahl), Frist jährlich 30.11. → nächste Runde 30.11.2026. Standgebühr aus der Bewerbungs-PDF holen.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v cd" data-deadline="2026-11-30">30. Nov 2026</span></div>
+          <a class="op__link" href="https://en.grafikboerse.eu/application/" target="_blank" rel="noopener">grafikboerse.eu ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="holz" data-verdict="ja" style="--cat:var(--holz)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA · 2027</span><span class="pill pill--note">Call ~Anfang 2027</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Lessedra World Art Print (Sofia) <span class="ty">· jährliche Mini-Print-Ausstellung</span></h3>
+          <p class="op__org">Lessedra Gallery, Sofia (BG)</p>
+          <p class="op__fit">Verlässlicher, niedrigschwelliger Jahres-Call, „any type of printmaking" (Holzschnitt ok), Kleinformat (max. 29×23 cm), bis 3 Arbeiten, 50 € Gebühr. 2026-Frist (31.3.) vorbei → nächster Call ~Anfang 2027 vormerken.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~Anfang 2027</span></div>
+          <a class="op__link" href="https://www.lessedra.com/entry.php?d=conditions" target="_blank" rel="noopener">lessedra.com ↗</a>
+        </div>
+      </article>
+
+      <div class="note" data-cat="holz" data-verdict="bedingt">
+        <b>Auch geprüft — international, beobachten (Call-Modus/Frist prüfen):</b><br>
+        <span class="vb">BEDINGT</span> <b>XYLON International</b> (Dachverband, Nichtmitglieder traditionell zugelassen, kein datierter Call — über die dt. Sektion ansteuern) ·
+        <span class="vb">BEDINGT</span> <b>Awagami Miniature Print (JP)</b> (Holzschnitt willkommen, aber Pflicht Druck auf Washi + A4; 2027-Edition) ·
+        <span class="vb">BEDINGT</span> <b>MTG Kraków</b> (älteste Print-Triennale Europas, derzeit kein aktiver Call) ·
+        <span class="vb">BEDINGT</span> <b>Guanlan (CN)</b> (2025 nur Nominierung; Modus 2027 prüfen) ·
+        <span class="vb">BEDINGT</span> <b>Taiwan Int. Print Biennial</b> (2026 zu, nächster ~2028) ·
+        <span class="vb">◇</span> Bitola (MK) und Global Print/Douro (PT) nur per Direktkontakt.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FÖRDERUNG -->
+  <section class="band" data-section="foerd">
+    <h2 style="--cat:var(--foerd)"><span class="swatch" style="background:var(--foerd);color:#fff;font-size:.7rem">€</span>Förderung &amp; Werkverzeichnis <span class="n">/ Bund, Land, ohne Altersgrenze</span></h2>
+    <p>Die Kunstfonds-Programme sind das Herzstück: keine Altersgrenze, Künstler beantragt selbst. Die 2026-Runden sind zu, die nächste Frist ist jeweils ~15. Januar 2027.</p>
+    <div class="ops">
+
+      <article class="op" data-cat="foerd" data-verdict="ja" style="--cat:var(--foerd)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">~Anfang 2027</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Kunstfonds — Werkverzeichnung <span class="ty">· digitale Werkverzeichnung des Oeuvres</span></h3>
+          <p class="op__org">Stiftung Kunstfonds (Bund) · <b>der Auslöser dieser Liste</b></p>
+          <p class="op__fit">Ausdrücklich für <b>lebende Künstler:innen, die ihr eigenes Werk</b> digital verzeichnen. 10.000–30.000 €, 10 % Eigenanteil. Bedingung: 20+ Jahre freischaffend + 20+ Jahre Wohnsitz Deutschland (Olaf erfüllt das). Hürde: die Jury muss „überregionale Bedeutung" bejahen → Unterlagen dazu vorbereiten. 2026 war 1.2.–31.5., nächste Runde ~Anfang 2027.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~Anfang 2027</span></div>
+          <a class="op__link" href="https://www.kunstfonds.de/foerderung/fuer-kuenstlerinnen/kunstfonds-werkzeichnung/bewerbung-und-vergabe" target="_blank" rel="noopener">kunstfonds.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="foerd" data-verdict="ja" style="--cat:var(--foerd)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">~15. Jan 2027</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Kunstfonds — Publikation <span class="ty">· Monografie / Werkkatalog</span></h3>
+          <p class="op__org">Stiftung Kunstfonds (Bund)</p>
+          <p class="op__fit">Bester Weg, eine <b>Monografie</b> zu finanzieren: bis 24.000 € (10 % Eigenanteil), keine Altersgrenze, Künstler beantragt selbst, Publikation (auch) auf Deutsch. Frist jährlich 15.1. → 2027-Runde vorbereiten.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v cd" data-deadline="2027-01-15">~15. Jan 2027</span></div>
+          <a class="op__link" href="https://www.kunstfonds.de/foerderung/kunstfonds-publikation/bewerbung-und-vergabe" target="_blank" rel="noopener">kunstfonds.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="foerd" data-verdict="ja" style="--cat:var(--foerd)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">~15. Jan 2027</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Kunstfonds — Stipendium <span class="ty">· Arbeits-/Existenzstipendium</span></h3>
+          <p class="op__org">Stiftung Kunstfonds (Bund)</p>
+          <p class="op__fit"><b>18.000 € für 6 Monate</b>, „jeden Alters" (keine Altersgrenze, direkt auf der Seite), freischaffend im Hauptberuf, Wohnsitz Deutschland. Ausschluss nur, wenn in den letzten 15 Jahren schon erhalten. Frist jährlich 15.1.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v cd" data-deadline="2027-01-15">~15. Jan 2027</span></div>
+          <a class="op__link" href="https://www.kunstfonds.de/foerderung/fuer-kuenstlerinnen/kunstfonds-stipendium/bewerbung-und-vergabe" target="_blank" rel="noopener">kunstfonds.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="foerd" data-verdict="ja" style="--cat:var(--foerd)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">~15. Jan 2027</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">Künstlerstipendien MV <span class="ty">· Landesförderung</span></h3>
+          <p class="op__org">Land Mecklenburg-Vorpommern</p>
+          <p class="op__fit">Bildende Kunst, Wohnsitz + Wirkungskreis MV (erfüllt), keine Altersgrenze. Arbeitsstipendium bis 5.000 € ist präsenzfrei. Kleinere Summen, aber solide und lokal. Frist jährlich ~15.1.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~15. Jan 2027</span></div>
+          <a class="op__link" href="https://www.kultur-mv.de/kultur-politik/stipendien.html" target="_blank" rel="noopener">kultur-mv.de ↗</a>
+        </div>
+      </article>
+
+      <div class="note" data-cat="foerd" data-verdict="bedingt">
+        <b>Auch geprüft — ergänzend / Kofinanzierung:</b><br>
+        <span class="vb">BEDINGT</span> <b>Kunstfonds SoloProjekt</b> (Produktionsförderung 5.000–30.000 €, keine Altersgrenze, aktueller Termin unbestätigt) ·
+        <span class="vb">BEDINGT</span> <b>VG Bild-Kunst</b> (Mitgliedschaft = Tantiemen unbedingt sinnvoll; Projektförderung BG I läuft 2026/27 wieder an) ·
+        <span class="vb">BEDINGT</span> <b>Ostdeutsche Sparkassenstiftung</b> (deckt MV, natürliche Personen, Fristen 10.1./10.7., Katalog als Projekt + Sparkassen-Votum vorab) ·
+        <span class="vb">BEDINGT</span> <b>Künstlerarchiv Brauweiler (Kunstfonds)</b> (Vorlass zu Lebzeiten, physische Bewahrung, laufend, kein Geld — nachlass@kunstfonds.de) ·
+        <span class="vb">BEDINGT</span> <b>Projektförderung Land MV</b> (Katalog als Projekt bis 50k möglich — Servicecenter Kultur beraten lassen).
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PREISE -->
+  <section class="band" data-section="preis">
+    <h2 style="--cat:var(--preis)"><span class="swatch" style="background:var(--preis);color:#fff;font-size:.7rem">★</span>Preise <span class="n">/ Malerei &amp; Lebenswerk, ohne Altersgrenze</span></h2>
+    <p>Die passenden Malerei-Preise laufen im Januar-Zyklus; die Lebenswerk-Ehrenpreise gehen nur über Nominierung durch Dritte.</p>
+    <div class="ops">
+
+      <article class="op" data-cat="preis" data-verdict="ja" style="--cat:var(--preis)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">~Jan 2027</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Kunstpreis Sparkasse Karlsruhe <span class="ty">· jurierter Kunstpreis + Ausstellung</span></h3>
+          <p class="op__org">Kulturstiftung der Sparkasse Karlsruhe · bundesweit/international</p>
+          <p class="op__fit">Malerei ausdrücklich zugelassen (auch Druckgrafik), <b>„keine Altersbegrenzung"</b> (wörtlich), keine Regionalbindung, keine Gebühr. Preise 5.000/3.000/2.000 €. Ein verkäufliches Werk (max. 2 m²). Registrierung jährlich Mitte Januar → 2026 zu, nächste ~Jan 2027.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">~Mitte Jan 2027</span></div>
+          <a class="op__link" href="https://kunstpreis.sparkassenstiftungen-ka.de/" target="_blank" rel="noopener">kunstpreis.sparkassenstiftungen-ka.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="preis" data-verdict="ja" style="--cat:var(--preis)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA · Termin verpasst</span><span class="pill pill--note">nächste Runde</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Rostocker Kunstpreis <span class="ty">· regionaler Kunstpreis + Ausstellung</span></h3>
+          <p class="op__org">Kunsthalle Rostock · 10.000 €</p>
+          <p class="op__fit">Idealer Zuschnitt: MV-Bezug + 2026 explizit <b>Malerei</b>, keine Altersgrenze. Aber: Frist war 31.8.2026, um wenige Tage verpasst. Als wiederkehrender Preis für die nächste Runde vormerken (Genre rotiert — prüfen, ob wieder Malerei/Grafik).</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v">2026 vorbei · nächste Runde</span></div>
+          <a class="op__link" href="https://www.kunsthallerostock.de/de/aktuelles/news/ausschreibung-rostocker-kunstpreis-2026" target="_blank" rel="noopener">kunsthallerostock.de ↗</a>
+        </div>
+      </article>
+
+      <div class="note" data-cat="preis" data-verdict="bedingt">
+        <b>Lebenswerk / Ehrenpreise — nur über Nominierung durch Dritte (Olaf kann sich nicht selbst bewerben):</b><br>
+        <span class="vb">BEDINGT</span> <b>Landeskulturpreis MV</b> (Hauptpreis 10.000 €, „Gesamtschaffen/Lebenswerk", Vorschlag durch Vereine/Institutionen, Frist ~März) ·
+        <span class="vb">BEDINGT</span> <b>Käthe-Kollwitz-Preis</b> (Akademie der Künste, 12.000 € fürs Gesamtwerk, nur Nominierung durch die Sektion, sehr selektiv).<br>
+        <b>Jetzt offen, aber Fit fraglich:</b> <span class="vb">BEDINGT</span> <b>Kunst- und Kulturpreis Schwerin</b> (Frist 30.9.2026, Selbstbewerbung möglich) — nur sinnvoll, wenn ein klarer <b>Schwerin-Bezug</b> herstellbar ist, sonst NEIN.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AUSSTELLUNGEN -->
+  <section class="band" data-section="ausst">
+    <h2 style="--cat:var(--ausst)"><span class="swatch" style="background:var(--ausst);color:#fff;font-size:.7rem">▤</span>Ausstellungen &amp; Ankauf <span class="n">/ Kunstvereine, Land MV, eigene Galerie</span></h2>
+    <p>Der strukturell wichtigste Dauerzugang ist die Mitgliedschaft im Künstlerbund MV. Regionale Häuser gehen über Direktkontakt.</p>
+    <div class="ops">
+
+      <article class="op" data-cat="ausst" data-verdict="ja" style="--cat:var(--ausst)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">Aufnahme ~Frühjahr 2027</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">BBK / Künstlerbund MV <span class="ty">· Mitgliedschaft + Landeskunstschau</span></h3>
+          <p class="op__org">Landesverband bildender Künstler:innen MV</p>
+          <p class="op__fit"><b>Der wichtigste dauerhafte Zugang</b> für einen etablierten MV-Künstler: Aufnahme über Jury (professionelle Praxis — erfüllt Olaf mühelos), danach Teilnahme an der jährlichen Landeskunstschau. Aufnahme-Einsendung war 30.4.2026 → nächste Runde ~Frühjahr 2027 vorbereiten (20-seitige PDF + Lebenslauf).</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Aufnahme</span><span class="v">~Frühjahr 2027</span></div>
+          <a class="op__link" href="https://www.bbk-mv.de/mitglied-werden.html" target="_blank" rel="noopener">bbk-mv.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="ausst" data-verdict="ja" style="--cat:var(--ausst)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">über Kontakt/Sichtbarkeit</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">Kunstankauf des Landes MV <span class="ty">· öffentlicher Ankauf / Landessammlung</span></h3>
+          <p class="op__org">~52.000 €/Jahr · Sammlung ~3.500 Werke</p>
+          <p class="op__fit">Kauft Werke von Künstler:innen mit enger MV-Verbindung (Olaf: genau die Zielgruppe). <b>Keine Bewerbung</b> — eine Kunstkommission wählt direkt in den Ateliers. Hebel: Sichtbarkeit + Kontakt zum Ministerium (Marthe Ruhnau, Kuenstlerstipendium@wkm.mv-regierung.de).</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Zugang</span><span class="v">Atelierbesuch (Kontakt)</span></div>
+          <a class="op__link" href="https://www.regierung-mv.de/Landesregierung/wkm/Kultur/Kunstsammlung-des-Landes/" target="_blank" rel="noopener">regierung-mv.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="ausst" data-verdict="ja" style="--cat:var(--ausst)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--ja">JA</span><span class="pill pill--note">jährlich Pfingsten</span><span class="vtag">◇ prüfen</span></div>
+          <h3 class="op__name">KunstOffen MV <span class="ty">· Offene Ateliers</span></h3>
+          <p class="op__org">landesweit, ~1.000 Künstler:innen · Tourismusverband MV</p>
+          <p class="op__fit">Niedrigste Hürde: Olaf öffnet <b>HAUS HOPPE als eigenen Standort</b> für Besucher aus ganz Deutschland (Pfingsten). Ideal zur Werk-/Katalog-Präsentation. Anmeldeweg/Frist für 2027 über die regionalen Ansprechpartner klären.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Termin</span><span class="v">Pfingsten (jährlich)</span></div>
+          <a class="op__link" href="https://www.kultur-mv.de/kunst-kultur/bildende-kunst/kunst-offen-2026.html" target="_blank" rel="noopener">kultur-mv.de ↗</a>
+        </div>
+      </article>
+
+      <article class="op" data-cat="ausst" data-verdict="bedingt" style="--cat:var(--ausst)">
+        <div class="op__main">
+          <div class="op__toprow"><span class="verdict verdict--bedingt">BEDINGT</span><span class="pill pill--note">Frist 31.10.</span><span class="vtag ok">✓ Seite</span></div>
+          <h3 class="op__name">NordArt 2027 <span class="ty">· große internationale Jahresausstellung</span></h3>
+          <p class="op__org">Kunstwerk Carlshütte, Büdelsdorf (SH)</p>
+          <p class="op__fit">Bewerbung <b>kostenlos</b>, Einzelkünstler weltweit, Malerei + Grafik zugelassen, hohe Sichtbarkeit. Aber sehr kompetitiv (~200 aus ~3.000). Risikofrei mitnehmen. Frist 31.10.2026 für 2027.</p>
+        </div>
+        <div class="op__aside">
+          <div class="op__frist"><span class="k">Frist</span><span class="v cd" data-deadline="2026-10-31">31. Okt 2026</span></div>
+          <a class="op__link" href="https://www.nordart.de/en/artists/application-2027" target="_blank" rel="noopener">nordart.de ↗</a>
+        </div>
+      </article>
+
+      <div class="note" data-cat="ausst" data-verdict="bedingt">
+        <b>Auch geprüft — regional, über Direktkontakt/Kurator:</b><br>
+        <span class="vb">BEDINGT→JA</span> <b>Kunstverein Wiligrad</b> (Lübstorf, geografisch ideal zwischen Wismar &amp; Schwerin, Ausstellungsvorschlag per Kontakt) ·
+        <span class="vb">BEDINGT</span> <b>Kunstverein zu Rostock</b> (nimmt Vorschläge nach Erstkontakt an — info@kunstverein-rostock.de) ·
+        <span class="vb">BEDINGT</span> <b>KUNST HEUTE MV</b> (dezentrales Landesformat, Teilnahme per Kontakt) ·
+        <span class="vb">BEDINGT</span> <b>Affordable Art Fair Hamburg</b> (nur als eigene Galerie HAUS HOPPE, nicht als Einzelkünstler) ·
+        <span class="vb">BEDINGT</span> <b>Kunstsammlung Neubrandenburg</b> / <b>Kunstmuseum Ahrenshoop</b> / <b>Schloss Plüschow</b> (kuratiert bzw. residency-artig — Kurator-Kontakt).
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AUSSORTIERT -->
+  <section class="band" data-section="aussortiert">
+    <h2><span class="swatch verdict--nein">NEIN</span>Geprüft und aussortiert <span class="n">/ mit Grund</span></h2>
+    <p>Transparenz: geprüft und für Olaf nicht passend.</p>
+    <div class="ops">
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">GWK-Förderpreis</span><span class="cut__r">Altersgrenze max. 35 Jahre + nur Westfalen-Lippe. Reiner Nachwuchspreis.</span></div>
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">Eb-Dietzsch-Kunstpreis</span><span class="cut__r">„für junge Künstler am Anfang ihrer Laufbahn" — Nachwuchspreis.</span></div>
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">GVL</span><span class="cut__r">Verwertungsgesellschaft für Musik/Schauspiel — falsche Sparte für einen Maler.</span></div>
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">Artothek „Die Beginen" (Rostock)</span><span class="cut__r">Frauenkulturverein, Kunst von und für Frauen. Für Olaf nicht offen (der relevante Ankaufweg ist die Landessammlung).</span></div>
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">BBK Schleswig-Holstein Landesschau</span><span class="cut__r">Nur für BBK-SH-Mitglieder — falscher Landesverband. Olafs Pendant ist die BBK-MV-Kunstschau.</span></div>
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">Kunstverein München, Jahresgaben</span><span class="cut__r">Open Call nur für Künstler:innen mit München-Bezug.</span></div>
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">Kulturstiftung der Länder</span><span class="cut__r">Fördert Museen/Institutionen beim Ankauf, nicht einzelne Künstler. (Deren DIZK-Datenbank ist aber ein gutes Recherchetool.)</span></div>
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">Staatl. Museum Schwerin · Pommersches Landesmuseum</span><span class="cut__r">Rein kuratiert, historisch/heritage-fokussiert, keine offene Bewerbung für lebende Künstler.</span></div>
+      <div class="cut" data-cat="aussortiert" data-verdict="nein"><span class="cut__tag">NEIN</span><span class="cut__n">Rostock Kreativ</span><span class="cut__r">Plattform ausdrücklich für Amateure — für einen etablierten Profi nicht passend.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Methodik.</b> Am 4. September 2026 hat je ein Rechercheur ein Cluster geprüft (Werkverzeichnis/Nachlass · Holzschnitt/Druckgrafik · Malerei-Preise/Stipendien · Museen/Kunstvereine · Publikation/Ankauf), Belege verifiziert. <b>✓ Seite</b> = auf der echten Seite gesehen; <b>◇ prüfen</b> = aus Suche/Erfahrung, vor der Bewerbung selbst bestätigen. Kein Datum ist geraten; wo eine Frist unbekannt war, steht „prüfen".</p>
+    <p><b>Fristen-Reihenfolge:</b> Frechen 29.9.2026 → NordArt 31.10. → Grafikbörse Borken 30.11. → dann der Januar-Block (Kunstfonds Stipendium + Publikation + Werkverzeichnung, Kunstpreis Karlsruhe, MV-Stipendien ~15.1.2027). Parallel dauerhaft: Künstlerbund-MV-Mitgliedschaft, XYLON-Kontakt, Sichtbarkeit fürs Land-MV-Ankaufprogramm.</p>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('themebtn');
+    try { var s = localStorage.getItem('olaf-theme'); if (s) root.setAttribute('data-theme', s); } catch (e) {}
+    btn && btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      var dark = cur ? cur === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('olaf-theme', next); } catch (e) {}
+    });
+
+    var now = new Date();
+    function days(iso) { return Math.ceil((new Date(iso + 'T00:00:00') - now) / 86400000); }
+    document.querySelectorAll('[data-deadline]').forEach(function (el) {
+      var d = days(el.getAttribute('data-deadline'));
+      if (isNaN(d) || el.querySelector('small')) return;
+      var t = d > 1 ? 'noch ' + d + ' Tage' : d === 1 ? 'morgen' : d === 0 ? 'heute' : 'abgelaufen';
+      var s = document.createElement('small'); s.textContent = t; el.appendChild(s);
+    });
+
+    var chips = [].slice.call(document.querySelectorAll('.chip'));
+    var items = [].slice.call(document.querySelectorAll('[data-cat]'));
+    var sections = [].slice.call(document.querySelectorAll('[data-section]'));
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        var f = c.getAttribute('data-filter');
+        chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
+        items.forEach(function (it) {
+          var show = f === 'all'
+            || (f === 'ja' ? it.getAttribute('data-verdict') === 'ja' : it.getAttribute('data-cat') === f);
+          it.classList.toggle('hide', !show);
+        });
+        sections.forEach(function (sec) {
+          var any = sec.querySelector('[data-cat]:not(.hide)');
+          sec.style.display = any ? '' : 'none';
+        });
+      });
+    });
+  })();
+</script>
