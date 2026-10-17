@@ -9,9 +9,9 @@
 // alle 325 eingeblendeten Kacheln benannt ~255 ms. So trägt immer nur das eine Bildpaar einen Namen,
 // das gerade wechselt.
 //
-// Der Name leitet sich wie auf haushoppe-its.de (vtStyle in src/lib/urls.ts) aus dem Pfad der
-// Werkseite ab: media-<pfad>, Klasse vt-media, also z. B. media-portfolio-riomaggiore. Die
-// Animationsregeln in global.css hängen an der Klasse.
+// Den Namen liefert vtName('media', pfad) aus src/lib/view-transitions.ts, z. B.
+// media-portfolio-riomaggiore; die Regeln in src/styles/view-transitions.css hängen an der Klasse
+// vt-media.
 //
 // Alte Seite (astro:before-preparation): das angeklickte Werk-Bild, sonst (Zurück-Taste, Navi)
 // das große Bild der Werkseite. Neue Seite (astro:before-swap, noch unsichtbar): das große Bild,
@@ -21,9 +21,9 @@
 // (astro:after-swap, vor dem Erfassen der neuen Seite) steht die Kachel wieder an der Stelle im
 // Fenster, an der sie beim Klick stand; Astros eigene Scroll-Wiederherstellung trifft sie bei
 // langen Galerien nicht zuverlässig.
+import { vtName } from '../lib/view-transitions';
+
 (function () {
-  // Schlüssel wie vtStyle() auf haushoppe-its.de: Pfad ohne Schluss-Slash, Sonderzeichen zu „-".
-  const vtKey = (path) => path.replace(/\/+$/, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-+/, '');
   const FIGURE = '.art-figure img';
   const isWork = (url) => /^\/portfolio\/[^/]+\/?$/.test(url.pathname);
   const samePath = (a, b) => a.replace(/\/+$/, '') === b.replace(/\/+$/, '');
@@ -44,7 +44,7 @@
   // Bei reduzierter Bewegung keine Namen; die Scroll-Korrektur beim Rückweg läuft trotzdem.
   function mark(el, path) {
     if (!el || reduced()) return;
-    el.style.viewTransitionName = 'media-' + vtKey(path);
+    el.style.viewTransitionName = vtName('media', path);
     el.style.viewTransitionClass = 'vt-media';
     el.setAttribute('data-vt-media', '');
   }

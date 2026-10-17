@@ -1,0 +1,77 @@
+/* Seitenübergänge (Astros ClientRouter, View Transitions API). Kopfzeile steht still, nur der
+   Inhalt blendet um. Elemente mit gleichem Namen (vtName in src/lib/view-transitions.ts) wandern
+   von der alten auf die neue Seite: Bilder (Klasse vt-media) und Titel (vt-title). Bei reduzierter
+   Bewegung wechselt die Seite ohne Animation. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Weiches Scrollen für Anker-Links, aber nicht während eines Übergangs: sonst stellt der Router
+     die Scroll-Position beim Zurückgehen sichtbar weich wieder her. */
+  html:not([data-astro-transition]) {
+    scroll-behavior: smooth;
+  }
+  .site-header {
+    view-transition-name: site-header;
+  }
+  .site-main {
+    view-transition-name: main;
+  }
+  ::view-transition-group(site-header) {
+    animation: none;
+  }
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header) {
+    animation-duration: 120ms;
+  }
+  /* Was nur auf einer Seite einen Namen trägt, blendet im Takt des Inhalts aus bzw. ein. */
+  ::view-transition-old(main),
+  ::view-transition-old(*.vt-media):only-child,
+  ::view-transition-old(*.vt-title):only-child {
+    animation: vt-fade-out 160ms ease both;
+  }
+  ::view-transition-new(main),
+  ::view-transition-new(*.vt-media):only-child,
+  ::view-transition-new(*.vt-title):only-child {
+    animation: vt-fade-in 260ms ease both;
+  }
+  ::view-transition-group(*.vt-title) {
+    animation-duration: 420ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Text skaliert als Bild mit: der alte Titel weicht sofort, der neue wächst aus der Vorschau. */
+  ::view-transition-old(*.vt-title),
+  ::view-transition-new(*.vt-title) {
+    animation-duration: 120ms;
+  }
+  ::view-transition-group(*.vt-media),
+  ::view-transition-old(*.vt-media),
+  ::view-transition-new(*.vt-media) {
+    animation-duration: 520ms;
+    animation-delay: 60ms;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Bilder füllen die wandernde Box, statt sich zu verzerren. */
+  ::view-transition-old(*.vt-media),
+  ::view-transition-new(*.vt-media) {
+    height: 100%;
+    object-fit: cover;
+  }
+  @keyframes vt-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes vt-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
