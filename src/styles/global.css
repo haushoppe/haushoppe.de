@@ -2,6 +2,7 @@
    bewusst OHNE @layer und schlagen damit Preflight (base-Layer) — sie sind die maßgebliche
    Typo-/Farb-Quelle. Utilities/Theme kommen aus Tailwind, Layout-CSS aus den Komponenten. */
 @import 'tailwindcss';
+@import './view-transitions.css';
 @plugin '@tailwindcss/typography';
 
 @theme {
@@ -190,12 +191,7 @@ a:hover {
   /* Oben derselbe responsive Abstand wie der Header (clamp), unten bündig. */
   padding-block: clamp(1.25rem, 3vw, 2rem) 0;
 }
-/* Sanftes Scrollen für Anker-Links (z. B. Hero-CTA „Anrufen" → Kontakt-Sektion). */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/* Weiches Scrollen und Seitenübergänge: src/styles/view-transitions.css */
 /* Startseite mobil (Burger-Breite): der Hero schließt bündig an die schwarze
    Header-Linie an — kein Abstand. Nur hier (einzige Seite mit .ohero); alle
    anderen Seiten behalten ihren Abstand. Breakpoint = Burger-Menü (720px). */

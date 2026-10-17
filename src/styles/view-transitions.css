@@ -1,0 +1,90 @@
+/* GETEILT mit dem Schwester-Repo (haushoppe-its.de und haushoppe.de): möglichst synchron halten,
+   aber nicht zwingend. Bewusste Abweichungen einer Seite sind erlaubt.
+
+   Seitenübergänge (Astro ClientRouter, View Transitions API), Doku: docs/view-transitions.md.
+   - Kopfzeile (.site-header) steht still, nur der aktive Link blendet kurz um.
+   - Inhalt (.site-main) blendet aus, die neue Seite blendet ein und steigt minimal auf.
+   - Klasse vt-media: Bild wandert und skaliert (Name aus vtStyle/vtName, src/lib/view-transitions.ts).
+   - Klasse vt-title: Titel wandert und wächst; der Text blendet kurz über, damit er nicht doppelt steht.
+   - Gruppen ohne Gegenstück auf der anderen Seite blenden im Takt des Inhalts aus bzw. ein.
+   Seitenspezifische Sonderregeln stehen NACH dieser Datei, sonst verlieren sie gegen die
+   Klassenregeln (::view-transition-old(name) ist nicht spezifischer als (*.klasse)).
+   Bei reduzierter Bewegung wechselt die Seite ohne Animation. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Weiches Scrollen nur außerhalb eines Seitenwechsels (ClientRouter setzt
+     data-astro-transition): sonst rollt die Seite beim Zurückgehen sichtbar an die gemerkte Stelle. */
+  html:not([data-astro-transition]) {
+    scroll-behavior: smooth;
+  }
+
+  .site-header {
+    view-transition-name: site-header;
+  }
+  .site-main {
+    view-transition-name: main;
+  }
+  ::view-transition-group(site-header) {
+    animation: none;
+  }
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header) {
+    animation-duration: 120ms;
+  }
+
+  ::view-transition-old(main),
+  ::view-transition-old(*.vt-media):only-child,
+  ::view-transition-old(*.vt-title):only-child {
+    animation: vt-fade-out 160ms ease both;
+  }
+  ::view-transition-new(main),
+  ::view-transition-new(*.vt-media):only-child,
+  ::view-transition-new(*.vt-title):only-child {
+    animation: vt-fade-in 260ms ease both;
+  }
+
+  ::view-transition-group(*.vt-title) {
+    animation-duration: 420ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  ::view-transition-old(*.vt-title),
+  ::view-transition-new(*.vt-title) {
+    animation-duration: 120ms;
+  }
+
+  ::view-transition-group(*.vt-media),
+  ::view-transition-old(*.vt-media),
+  ::view-transition-new(*.vt-media) {
+    animation-duration: 520ms;
+    animation-delay: 60ms;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Bilder füllen die wandernde Box, statt sich zu verzerren (Vorschau und großes Bild haben
+     verschiedene Formate). */
+  ::view-transition-old(*.vt-media),
+  ::view-transition-new(*.vt-media) {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @keyframes vt-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes vt-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

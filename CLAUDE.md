@@ -352,3 +352,5 @@ Die **CI** (GitHub Actions) macht dieselben Prüfungen automatisch bei jedem PR.
 - JSON/TS-Struktur kaputt machen (ungültiges JSON = alles bricht).
 - Große, gemischte PRs mit vielen unzusammenhängenden Änderungen.
 - Direkt auf `main` pushen oder `--force` benutzen — immer über einen Pull Request.
+
+> **Für Entwickler (nicht Redaktion):** haushoppe.de und haushoppe-its.de sind Schwester-Repos und halten ihren Code möglichst, aber nicht zwingend synchron. Details in `CLAUDE-admin.md`, Abschnitt 13.
