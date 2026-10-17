@@ -76,7 +76,10 @@
     const sentinel = g.querySelector('.gallery__sentinel');
     const BATCH = parseInt(g.dataset.batch || '36', 10);
     const all = [...grid.querySelectorAll('.gallery__item')];
-    let shown = Math.min(BATCH, all.length); // wie viele Kacheln aktuell eingeblendet sind
+    // data-min-shown: Rückweg von einer Werkseite (view-transitions.js) - mindestens bis zu diesem
+    // Werk einblenden, damit Übergang und Scroll-Position ein Ziel haben.
+    const minShown = parseInt(g.dataset.minShown || '0', 10);
+    let shown = Math.min(Math.max(BATCH, minShown), all.length); // wie viele Kacheln aktuell eingeblendet sind
 
     function render() {
       for (let i = 0; i < all.length; i++) all[i].style.display = i < shown ? '' : 'none';
@@ -104,8 +107,11 @@
     clearTimeout(t);
     t = setTimeout(() => document.querySelectorAll('.gallery[data-gallery]').forEach((g) => layout(g)), 120);
   });
-  // Mehrfach getriggert, damit die Galerie zuverlässig ausgelegt wird: astro:page-load
-  // (Erststart + jeder Client-Wechsel), sofort selbst, und window.load als Sicherheitsnetz.
+  // Mehrfach getriggert, damit die Galerie zuverlässig ausgelegt wird: astro:after-swap (vor dem
+  // Erfassen der neuen Seite durch den Seitenübergang, damit ein Werk-Bild an seine endgültige
+  // Kachel-Position fliegt), astro:page-load (Erststart + jeder Client-Wechsel), sofort selbst, und
+  // window.load als Sicherheitsnetz.
+  document.addEventListener('astro:after-swap', run);
   document.addEventListener('astro:page-load', run);
   run();
   window.addEventListener('load', () => document.querySelectorAll('.gallery[data-gallery]').forEach((g) => layout(g)));

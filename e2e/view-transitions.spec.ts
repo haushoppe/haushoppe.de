@@ -1,0 +1,46 @@
+import { test, expect, type Page } from '@playwright/test';
+import { site } from './helpers/site';
+
+// Seitenübergang: Das angeklickte Werk-Bild der Galerie und das große Bild der Werkseite tragen
+// denselben view-transition-name (art-media, vergeben von src/scripts/view-transitions.js), der
+// Browser morpht zwischen beiden, in beide Richtungen. Geprüft über die tatsächlich laufenden
+// Pseudo-Animationen des Übergangs; ein doppelter Name würde den Übergang abbrechen.
+async function hook(page: Page) {
+  await page.evaluate(() => {
+    (window as any).__vt = [];
+    const orig = document.startViewTransition.bind(document);
+    (document as any).startViewTransition = (arg: any) => {
+      const t = orig(arg);
+      t.ready
+        .then(() =>
+          (window as any).__vt.push(
+            document.getAnimations().map((a: any) => a.effect?.pseudoElement).filter(Boolean),
+          ),
+        )
+        .catch((e: Error) => (window as any).__vt.push(['ABGEBROCHEN: ' + e.message]));
+      return t;
+    };
+  });
+}
+
+test('Werk-Bild morpht von der Galerie in die Werkseite und zurück', async ({ page }, info) => {
+  const s = site(info);
+  await page.goto(s.routes.gallery);
+  await hook(page);
+  const hrefs = await page.locator('.gallery__grid .gallery__link').evaluateAll((els) => els.map((e) => e.getAttribute('href') || ''));
+  // Ordinals zeigen auf der Werkseite eine Inschrift statt eines Bildes, dort gibt es kein Ziel.
+  const idx = hrefs.findIndex((h) => h.startsWith('/portfolio/') && !/johannes-x-olaf/.test(h));
+  const href = hrefs[idx];
+  await page.locator('.gallery__grid .gallery__link').nth(idx).click();
+  await page.waitForURL('**' + href);
+  await expect.poll(() => page.evaluate(() => (window as any).__vt.length)).toBe(1);
+  await page.goBack();
+  await expect.poll(() => page.evaluate(() => (window as any).__vt.length)).toBe(2);
+  const [hin, zurueck] = await page.evaluate(() => (window as any).__vt as string[][]);
+  for (const run of [hin, zurueck]) {
+    expect(run.some((p) => p.startsWith('ABGEBROCHEN'))).toBe(false);
+    expect(run).toContain('::view-transition-group(art-media)');
+    expect(run).toContain('::view-transition-old(art-media)');
+    expect(run).toContain('::view-transition-new(art-media)');
+  }
+});

@@ -190,10 +190,72 @@ a:hover {
   /* Oben derselbe responsive Abstand wie der Header (clamp), unten bündig. */
   padding-block: clamp(1.25rem, 3vw, 2rem) 0;
 }
-/* Sanftes Scrollen für Anker-Links (z. B. Hero-CTA „Anrufen" → Kontakt-Sektion). */
+/* Sanftes Scrollen für Anker-Links (z. B. Hero-CTA „Anrufen" → Kontakt-Sektion). Nicht während
+   eines Seitenübergangs: sonst stellt der Router die Scroll-Position beim Zurückgehen weich wieder
+   her, und die ganze Galerie rollt sichtbar an die gemerkte Stelle. */
 @media (prefers-reduced-motion: no-preference) {
-  html {
+  html:not([data-astro-transition]) {
     scroll-behavior: smooth;
+  }
+}
+
+/* Seitenübergänge (ClientRouter, View Transitions API). Kopfzeile steht still, nur der Inhalt
+   blendet um. Das Werk-Bild (Name art-media, vergeben von src/scripts/view-transitions.js)
+   wandert vom Vorschaubild ins große Bild der Werkseite und zurück. Machart und Zeiten wie auf
+   haushoppe-its.de. Bei reduzierter Bewegung wechselt die Seite ohne Animation. */
+@media (prefers-reduced-motion: no-preference) {
+  .site-header {
+    view-transition-name: site-header;
+  }
+  .site-main {
+    view-transition-name: main;
+  }
+  ::view-transition-group(site-header) {
+    animation: none;
+  }
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header) {
+    animation-duration: 120ms;
+  }
+  ::view-transition-old(main),
+  ::view-transition-old(art-media):only-child {
+    animation: vt-fade-out 160ms ease both;
+  }
+  ::view-transition-new(main),
+  ::view-transition-new(art-media):only-child {
+    animation: vt-fade-in 260ms ease both;
+  }
+  ::view-transition-group(art-media),
+  ::view-transition-old(art-media),
+  ::view-transition-new(art-media) {
+    animation-duration: 520ms;
+    animation-delay: 60ms;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Bilder füllen die wandernde Box, statt sich zu verzerren. */
+  ::view-transition-old(art-media),
+  ::view-transition-new(art-media) {
+    height: 100%;
+    object-fit: cover;
+  }
+  @keyframes vt-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes vt-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 /* Startseite mobil (Burger-Breite): der Hero schließt bündig an die schwarze
