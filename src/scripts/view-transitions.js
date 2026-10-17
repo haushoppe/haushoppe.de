@@ -29,7 +29,10 @@
   const samePath = (a, b) => a.replace(/\/+$/, '') === b.replace(/\/+$/, '');
   let fromThumb = false;
   let pending = null; // Kachel, die nach dem Auslegen ins Fenster gerückt wird
-  const viewTop = new Map(); // Werkseite -> Abstand ihrer Kachel zum Fensterrand beim Klick
+  // Werkseite -> { n: das wievielte Vorschaubild mit diesem Pfad angeklickt wurde, top: sein Abstand
+  // zum Fensterrand }. n trifft beim Rückweg dieselbe Kachel, falls ein Werk mehrfach verlinkt ist.
+  const clicked = new Map();
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function clear(root) {
     root.querySelectorAll('[data-vt-media]').forEach((el) => {
@@ -38,21 +41,23 @@
       el.removeAttribute('data-vt-media');
     });
   }
+  // Bei reduzierter Bewegung keine Namen; die Scroll-Korrektur beim Rückweg läuft trotzdem.
   function mark(el, path) {
-    if (!el) return;
+    if (!el || reduced()) return;
     el.style.viewTransitionName = 'media-' + vtKey(path);
     el.style.viewTransitionClass = 'vt-media';
     el.setAttribute('data-vt-media', '');
   }
-  // Vorschaubild = <img> in einem Link auf eine Werkseite (nicht das große Bild selbst).
-  function thumbFor(root, path) {
+  // Vorschaubilder = <img> in Links auf diese Werkseite (nicht das große Bild selbst), in
+  // Dokumentreihenfolge.
+  function thumbsFor(root, path) {
+    const out = [];
     for (const a of root.querySelectorAll('a[href]')) {
-      const href = a.getAttribute('href') || '';
-      if (!samePath(new URL(href, location.origin).pathname, path)) continue;
+      if (!samePath(new URL(a.getAttribute('href') || '', location.origin).pathname, path)) continue;
       const img = a.querySelector('img');
-      if (img && !img.closest('.art-figure')) return img;
+      if (img && !img.closest('.art-figure')) out.push(img);
     }
-    return null;
+    return out;
   }
 
   document.addEventListener('astro:before-preparation', (e) => {
@@ -63,7 +68,8 @@
     if (img && !img.closest('.art-figure')) {
       mark(img, e.to.pathname);
       fromThumb = true;
-      viewTop.set(e.to.pathname.replace(/\/+$/, ''), img.getBoundingClientRect().top);
+      const path = e.to.pathname.replace(/\/+$/, '');
+      clicked.set(path, { n: Math.max(0, thumbsFor(document, path).indexOf(img)), top: img.getBoundingClientRect().top });
     } else if (isWork(e.from)) {
       mark(document.querySelector(FIGURE), e.from.pathname);
     }
@@ -76,7 +82,9 @@
       return;
     }
     if (!isWork(e.from) || isWork(e.to)) return;
-    const img = thumbFor(doc, e.from.pathname);
+    const path = e.from.pathname.replace(/\/+$/, '');
+    const thumbs = thumbsFor(doc, path);
+    const img = thumbs[(clicked.get(path) || { n: 0 }).n] || thumbs[0];
     if (!img) return;
     const item = img.closest('.gallery__item');
     const g = item && item.closest('.gallery[data-gallery]');
@@ -85,7 +93,7 @@
       g.dataset.minShown = String(items.indexOf(item) + 1);
     }
     mark(img, e.from.pathname);
-    pending = { img, path: e.from.pathname.replace(/\/+$/, '') };
+    pending = { img, path };
   });
 
   // Läuft nach gallery.js (Import-Reihenfolge im BaseLayout), die Galerie ist dann ausgelegt.
@@ -95,7 +103,9 @@
     pending = null;
     if (!img.isConnected) return;
     const r = img.getBoundingClientRect();
-    const top = viewTop.has(path) ? viewTop.get(path) : (innerHeight - r.height) / 2;
+    const c = clicked.get(path);
+    clicked.delete(path);
+    const top = c ? c.top : (innerHeight - r.height) / 2;
     window.scrollTo({ top: window.scrollY + r.top - top, behavior: 'instant' });
   });
 })();
