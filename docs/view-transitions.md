@@ -1,25 +1,56 @@
 # Seitenübergänge (View Transitions)
 
-Die Site nutzt Astros `<ClientRouter />` (in `src/layouts/BaseLayout.astro`). Beim Klick auf einen internen Link lädt der Router die Zielseite per Fetch, tauscht das DOM aus und ruft dabei `document.startViewTransition()` auf. Der Browser fotografiert alte und neue Ansicht und animiert zwischen beiden.
+<!-- gemeinsam:start (Abschnitt geteilt mit dem Schwester-Repo, möglichst synchron halten, nicht zwingend) -->
+## Gemeinsam mit der Schwester-Site
 
-## Bausteine
+haushoppe-its.de und haushoppe.de teilen Code und Verhalten der Seitenübergänge. Beide nutzen Astros `<ClientRouter />`: Beim Klick auf einen internen Link lädt der Router die Zielseite, tauscht das DOM und ruft dabei `document.startViewTransition()` auf. Der Browser fotografiert alte und neue Ansicht und animiert zwischen beiden.
 
-- `src/lib/view-transitions.ts`: `vtKey(href)`, `vtName(part, href)`, `vtStyle(part, href)`. Der Name leitet sich aus dem Pfad der Zielseite ab (`/portfolio/riomaggiore/` → `media-portfolio-riomaggiore`) und benennt damit das Objekt eindeutig. Keine generischen Namen, wo es einen Pfad gibt.
-- `src/styles/view-transitions.css`: alle Animationsregeln. Sie hängen an den Klassen `vt-media` und `vt-title`, nicht an einzelnen Namen.
-- haushoppe-its.de nutzt dieselben beiden Dateien.
+### Geteilte Dateien (mit dem Schwester-Repo geteilt)
 
-## Was sich bewegt
+| Datei | Inhalt |
+|---|---|
+| `src/lib/view-transitions.ts` | `vtKey(href)`, `vtName(part, href)`, `vtStyle(part, href)` |
+| `src/styles/view-transitions.css` | alle gemeinsamen Regeln, wird am Anfang der `global.css` importiert |
+| `scripts/check-view-transitions.mjs` | Prüfung nach dem Build, Teil von `npm run build` |
+| dieser Abschnitt der Doku | zwischen den Markern `gemeinsam:start` und `gemeinsam:end` |
+
+Möglichst in beiden Repos gleich halten, aber nicht zwingend: Bewusste Abweichungen einer Seite sind erlaubt, ein gewisser Drift ist unvermeidbar. Wer eine geteilte Datei ändert, zieht die Änderung nach Möglichkeit im Schwester-Repo nach.
+
+### Was sich bewegt
 
 | Gruppe | Element | Verhalten |
 |---|---|---|
-| `site-header` | `.site-header` | steht still |
-| `main` | `.site-main` | blendet in 160 ms aus, neuer Inhalt in 260 ms ein (8 px Aufstieg) |
-| `media-<pfad>` (Klasse `vt-media`) | Werk-Vorschaubild ↔ großes Bild der Werkseite | wandert und skaliert 520 ms, `object-fit: cover` |
-| `title-<pfad>` (Klasse `vt-title`) | auf haushoppe.de derzeit nicht vergeben | Regeln liegen bereit |
+| `root` | alles ohne eigenen Namen (v. a. der Footer) | Standard-Überblendung des Browsers |
+| `site-header` | `.site-header` | steht still (`animation: none` auf der Gruppe), nur der aktive Navi-Link blendet in 120 ms um |
+| `main` | `.site-main` | alter Inhalt blendet in 160 ms aus, neuer in 260 ms `ease` ein und steigt dabei 8 px auf |
+| Klasse `vt-media` | Vorschaubild ↔ großes Bild der Detailseite | wandert und skaliert 520 ms, `cubic-bezier(0.22, 1, 0.36, 1)`, startet 60 ms versetzt; `object-fit: cover`, damit verschiedene Formate nicht verzerren |
+| Klasse `vt-title` | Titel der Vorschau ↔ `<h1>` der Detailseite | wandert und skaliert 420 ms; alter und neuer Text blenden in 120 ms über, so wächst der Titel, statt doppelt zu stehen |
 
-Was nur auf einer Seite einen Namen trägt, blendet im Takt von `main` aus bzw. ein (`:only-child`).
+Gruppen, die nur auf einer der beiden Seiten vorkommen, blenden im Takt von `main` aus bzw. ein (Regeln mit `:only-child`).
 
-## Nur auf dieser Site: Namen zur Laufzeit
+### Namen
+
+- Jeder Name benennt sein Objekt eindeutig, keine generischen Namen. Schlüssel ist der Pfad der Detailseite: `vtKey()` nimmt nur den Pfad (ohne Query, Hash und Schluss-Slash) und macht aus Sonderzeichen `-`. Ergebnis z. B. `media-blog-2026-10-webmcp`, `title-portfolio-riomaggiore`.
+- Pfad statt Slug, weil Slugs über Bereiche hinweg gleich sein können (ein Talk und ein Blogartikel mit demselben Slug), Pfade nicht.
+- Seitenspezifische Einzelstücke heißen nach ihrem Objekt, z. B. `portrait-johannes-hoppe`.
+
+### Fallstricke
+
+- **Ein doppelter Name auf einer Seite bricht den ganzen Übergang ab**, die Seite wechselt dann hart. `scripts/check-view-transitions.mjs` lässt den Build in diesem Fall scheitern, ebenso wenn zwei Pfade denselben Schlüssel ergeben (`/a-b` und `/a/b`).
+- **Mehrzeilig umbrechende Inline-Elemente kann der Browser nicht fotografieren.** Namen an Block-Elemente oder `inline-block` setzen.
+- **Weiches Scrollen nur außerhalb von Übergängen:** `scroll-behavior: smooth` gilt nur für `html:not([data-astro-transition])`. Sonst stellt der Router die Scrollposition beim Zurückgehen weich wieder her, und die ganze Liste rollt sichtbar an die gemerkte Stelle.
+- **Spezifität:** `::view-transition-old(name)` ist nicht spezifischer als `::view-transition-old(*.vt-media)`. Seitenspezifische Sonderregeln stehen deshalb in der `global.css` nach dem Import der geteilten Datei.
+- **Viele Namen kosten Zeit:** Der Browser erfasst jedes benannte Element einzeln. Gemessen auf haushoppe.de vom Klick bis `transition.ready`: 1 benanntes Bild etwa 33 ms, 37 etwa 34 ms, 325 etwa 255 ms. Lange Listen vergeben den Namen deshalb erst zur Laufzeit an das eine wechselnde Paar.
+- **Reduzierte Bewegung:** Alle Regeln und die per Selektor vergebenen Namen stehen in `@media (prefers-reduced-motion: no-preference)`. Inline-Namen gelten immer, deshalb setzt ein eigener Block unter `reduce` alle `::view-transition-*`-Animationen auf `none`.
+
+### Prüfen
+
+- Chrome DevTools, Panel „Animations“, Wiedergabe auf 10 % oder 25 %.
+- `document.getAnimations().filter(a => a.effect?.pseudoElement)` direkt nach dem Klick (oder nach `transition.ready`) zeigt Name, Dauer und Verzögerung je Gruppe.
+- Aufnahme per Playwright: `recordVideo` im Browser-Kontext, dazu per CDP `Animation.setPlaybackRate` für Zeitlupe.
+<!-- gemeinsam:end -->
+
+## Nur auf dieser Site (haushoppe.de): Namen zur Laufzeit
 
 Die Galerie hat über 300 Werke. Anders als auf haushoppe-its.de stehen die Namen deshalb nicht im HTML, sondern `src/scripts/view-transitions.js` vergibt sie beim Wechsel an genau ein Bildpaar. Gemessen (Klick bis `transition.ready`): 1 benanntes Bild etwa 33 ms, alle 325 eingeblendeten Kacheln benannt etwa 255 ms.
 

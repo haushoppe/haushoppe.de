@@ -157,3 +157,11 @@ Arbeitsweise: auf einem **Branch** entwickeln, lokal `npm run build` + `npm run 
 - **Eine Inhaltsbreite:** `--container` (72rem) für alle Wrapper; nur Galerie-Raster + Ordinal-Bühne sind full-bleed. **Keine runden Ecken** außer echten Kreisen. Details in `CLAUDE.md`.
 - `dist-de`/`dist-art` und `dist-*/pagefind/` sind **gitignored** — beim Build neu erzeugt.
 - Functions laufen nur produktiv → PayPal-Buttons/Widerruf-Versand lokal nicht testbar (Graceful Degradation greift).
+
+## 13. Schwester-Repo haushoppe-its.de
+
+haushoppe.de und **haushoppe-its.de** (`haushoppe-its/haushoppe-its.de`, im HQ als Submodul) sind Schwester-Repos: beide Astro mit ClientRouter, optisch sehr ähnlich. Den Code **möglichst, aber nicht zwingend** synchron halten, damit die beiden Seiten nicht weiter auseinanderdriften. Ganz gleich sind sie nicht, ein gewisser Drift ist also unvermeidbar; wir halten ihn in Grenzen.
+
+- **Geteilt** (Kopfvermerk „GETEILT mit dem Schwester-Repo“): `src/lib/view-transitions.ts`, `src/styles/view-transitions.css`, `scripts/check-view-transitions.mjs` und der Abschnitt zwischen `gemeinsam:start` und `gemeinsam:end` in `docs/view-transitions.md`.
+- Wer eine geteilte Datei oder ein Muster ändert, das es drüben auch gibt, zieht es nach Möglichkeit dort nach oder stimmt es mit der Session des Schwester-Repos ab. Bewusste Abweichungen sind erlaubt.
+- Neues, das beide Seiten brauchen könnten, bevorzugt so bauen, dass es sich teilen lässt.

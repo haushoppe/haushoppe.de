@@ -1,13 +1,23 @@
-/* Seitenübergänge (Astros ClientRouter, View Transitions API). Kopfzeile steht still, nur der
-   Inhalt blendet um. Elemente mit gleichem Namen (vtName in src/lib/view-transitions.ts) wandern
-   von der alten auf die neue Seite: Bilder (Klasse vt-media) und Titel (vt-title). Bei reduzierter
-   Bewegung wechselt die Seite ohne Animation. */
+/* GETEILT mit dem Schwester-Repo (haushoppe-its.de und haushoppe.de): möglichst synchron halten,
+   aber nicht zwingend. Bewusste Abweichungen einer Seite sind erlaubt.
+
+   Seitenübergänge (Astro ClientRouter, View Transitions API), Doku: docs/view-transitions.md.
+   - Kopfzeile (.site-header) steht still, nur der aktive Link blendet kurz um.
+   - Inhalt (.site-main) blendet aus, die neue Seite blendet ein und steigt minimal auf.
+   - Klasse vt-media: Bild wandert und skaliert (Name aus vtStyle/vtName, src/lib/view-transitions.ts).
+   - Klasse vt-title: Titel wandert und wächst; der Text blendet kurz über, damit er nicht doppelt steht.
+   - Gruppen ohne Gegenstück auf der anderen Seite blenden im Takt des Inhalts aus bzw. ein.
+   Seitenspezifische Sonderregeln stehen NACH dieser Datei, sonst verlieren sie gegen die
+   Klassenregeln (::view-transition-old(name) ist nicht spezifischer als (*.klasse)).
+   Bei reduzierter Bewegung wechselt die Seite ohne Animation. */
+
 @media (prefers-reduced-motion: no-preference) {
-  /* Weiches Scrollen für Anker-Links, aber nicht während eines Übergangs: sonst stellt der Router
-     die Scroll-Position beim Zurückgehen sichtbar weich wieder her. */
+  /* Weiches Scrollen nur außerhalb eines Seitenwechsels (ClientRouter setzt
+     data-astro-transition): sonst rollt die Seite beim Zurückgehen sichtbar an die gemerkte Stelle. */
   html:not([data-astro-transition]) {
     scroll-behavior: smooth;
   }
+
   .site-header {
     view-transition-name: site-header;
   }
@@ -21,7 +31,7 @@
   ::view-transition-new(site-header) {
     animation-duration: 120ms;
   }
-  /* Was nur auf einer Seite einen Namen trägt, blendet im Takt des Inhalts aus bzw. ein. */
+
   ::view-transition-old(main),
   ::view-transition-old(*.vt-media):only-child,
   ::view-transition-old(*.vt-title):only-child {
@@ -32,15 +42,16 @@
   ::view-transition-new(*.vt-title):only-child {
     animation: vt-fade-in 260ms ease both;
   }
+
   ::view-transition-group(*.vt-title) {
     animation-duration: 420ms;
     animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
-  /* Text skaliert als Bild mit: der alte Titel weicht sofort, der neue wächst aus der Vorschau. */
   ::view-transition-old(*.vt-title),
   ::view-transition-new(*.vt-title) {
     animation-duration: 120ms;
   }
+
   ::view-transition-group(*.vt-media),
   ::view-transition-old(*.vt-media),
   ::view-transition-new(*.vt-media) {
@@ -49,12 +60,14 @@
     animation-fill-mode: both;
     animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
-  /* Bilder füllen die wandernde Box, statt sich zu verzerren. */
+  /* Bilder füllen die wandernde Box, statt sich zu verzerren (Vorschau und großes Bild haben
+     verschiedene Formate). */
   ::view-transition-old(*.vt-media),
   ::view-transition-new(*.vt-media) {
     height: 100%;
     object-fit: cover;
   }
+
   @keyframes vt-fade-out {
     to {
       opacity: 0;

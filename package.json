@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run data && npm run check && npm run build:de && npm run build:art",
+    "build": "npm run data && npm run check && npm run build:de && npm run build:art && node scripts/check-view-transitions.mjs dist-de && node scripts/check-view-transitions.mjs dist-art",
     "data": "npm run videos",
     "check": "node scripts/check-i18n.mjs && node scripts/check-eu-notice.mjs",
     "build:de": "SITE_LANG=de astro build && node scripts/prune-unreferenced-images.mjs dist-de && pagefind --site dist-de",

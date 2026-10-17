@@ -15,7 +15,10 @@ async function hook(page: Page) {
       t.ready
         .then(() =>
           (window as any).__vt.push(
-            document.getAnimations().map((a: any) => a.effect?.pseudoElement).filter(Boolean),
+            document
+              .getAnimations()
+              .filter((a: any) => a.effect?.pseudoElement)
+              .map((a: any) => `${a.effect.pseudoElement} ${Math.round(a.effect.getTiming().duration)}`),
           ),
         )
         .catch((e: Error) => (window as any).__vt.push(['ABGEBROCHEN: ' + e.message]));
@@ -41,8 +44,10 @@ test('Werk-Bild morpht von der Galerie in die Werkseite und zurück', async ({ p
   for (const run of [hin, zurueck]) {
     expect(run.some((p) => p.startsWith('ABGEBROCHEN'))).toBe(false);
     const name = 'media' + href.replace(/\/+$/, '').replace(/[^a-z0-9]+/gi, '-');
-    expect(run).toContain(`::view-transition-group(${name})`);
-    expect(run).toContain(`::view-transition-old(${name})`);
-    expect(run).toContain(`::view-transition-new(${name})`);
+    // 520 ms = unsere Regel für *.vt-media (src/styles/view-transitions.css), nicht die
+    // Browser-Standardüberblendung; so fällt auch ein fehlender CSS-Import auf.
+    expect(run).toContain(`::view-transition-group(${name}) 520`);
+    expect(run).toContain(`::view-transition-old(${name}) 520`);
+    expect(run).toContain(`::view-transition-new(${name}) 520`);
   }
 });

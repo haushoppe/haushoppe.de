@@ -2,6 +2,7 @@
    bewusst OHNE @layer und schlagen damit Preflight (base-Layer) — sie sind die maßgebliche
    Typo-/Farb-Quelle. Utilities/Theme kommen aus Tailwind, Layout-CSS aus den Komponenten. */
 @import 'tailwindcss';
+@import './view-transitions.css';
 @plugin '@tailwindcss/typography';
 
 @theme {
