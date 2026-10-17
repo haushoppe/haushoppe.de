@@ -2,7 +2,8 @@ import { test, expect, type Page } from '@playwright/test';
 import { site } from './helpers/site';
 
 // Seitenübergang: Das angeklickte Werk-Bild der Galerie und das große Bild der Werkseite tragen
-// denselben view-transition-name (art-media, vergeben von src/scripts/view-transitions.js), der
+// denselben view-transition-name (media-<pfad> mit Klasse vt-media, vergeben von
+// src/scripts/view-transitions.js), der
 // Browser morpht zwischen beiden, in beide Richtungen. Geprüft über die tatsächlich laufenden
 // Pseudo-Animationen des Übergangs; ein doppelter Name würde den Übergang abbrechen.
 async function hook(page: Page) {
@@ -39,8 +40,9 @@ test('Werk-Bild morpht von der Galerie in die Werkseite und zurück', async ({ p
   const [hin, zurueck] = await page.evaluate(() => (window as any).__vt as string[][]);
   for (const run of [hin, zurueck]) {
     expect(run.some((p) => p.startsWith('ABGEBROCHEN'))).toBe(false);
-    expect(run).toContain('::view-transition-group(art-media)');
-    expect(run).toContain('::view-transition-old(art-media)');
-    expect(run).toContain('::view-transition-new(art-media)');
+    const name = 'media' + href.replace(/\/+$/, '').replace(/[^a-z0-9]+/gi, '-');
+    expect(run).toContain(`::view-transition-group(${name})`);
+    expect(run).toContain(`::view-transition-old(${name})`);
+    expect(run).toContain(`::view-transition-new(${name})`);
   }
 });

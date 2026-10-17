@@ -5,7 +5,13 @@
 // Bewusst dynamisch statt fest im HTML: Die Galerie hat über 300 Werke. Ein fester Name je Kachel
 // ließe den Browser bei jedem Wechsel jede benannte Kachel einzeln erfassen, und ein Werk, das
 // doppelt auf der Seite steht (Highlight + Raster), hätte einen doppelten Namen, was den ganzen
-// Übergang abbricht. So trägt immer genau ein Bild pro Seite den Namen NAME.
+// Übergang abbricht. Gemessen auf der Galerie (Klick bis transition.ready): 1 benanntes Bild ~33 ms,
+// alle 325 eingeblendeten Kacheln benannt ~255 ms. So trägt immer nur das eine Bildpaar einen Namen,
+// das gerade wechselt.
+//
+// Der Name leitet sich wie auf haushoppe-its.de (vtStyle in src/lib/urls.ts) aus dem Pfad der
+// Werkseite ab: media-<pfad>, Klasse vt-media, also z. B. media-portfolio-riomaggiore. Die
+// Animationsregeln in global.css hängen an der Klasse.
 //
 // Alte Seite (astro:before-preparation): das angeklickte Werk-Bild, sonst (Zurück-Taste, Navi)
 // das große Bild der Werkseite. Neue Seite (astro:before-swap, noch unsichtbar): das große Bild,
@@ -16,7 +22,8 @@
 // Fenster, an der sie beim Klick stand; Astros eigene Scroll-Wiederherstellung trifft sie bei
 // langen Galerien nicht zuverlässig.
 (function () {
-  const NAME = 'art-media';
+  // Schlüssel wie vtStyle() auf haushoppe-its.de: Pfad ohne Schluss-Slash, Sonderzeichen zu „-".
+  const vtKey = (path) => path.replace(/\/+$/, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-+/, '');
   const FIGURE = '.art-figure img';
   const isWork = (url) => /^\/portfolio\/[^/]+\/?$/.test(url.pathname);
   const samePath = (a, b) => a.replace(/\/+$/, '') === b.replace(/\/+$/, '');
@@ -27,12 +34,14 @@
   function clear(root) {
     root.querySelectorAll('[data-vt-media]').forEach((el) => {
       el.style.viewTransitionName = '';
+      el.style.viewTransitionClass = '';
       el.removeAttribute('data-vt-media');
     });
   }
-  function mark(el) {
+  function mark(el, path) {
     if (!el) return;
-    el.style.viewTransitionName = NAME;
+    el.style.viewTransitionName = 'media-' + vtKey(path);
+    el.style.viewTransitionClass = 'vt-media';
     el.setAttribute('data-vt-media', '');
   }
   // Vorschaubild = <img> in einem Link auf eine Werkseite (nicht das große Bild selbst).
@@ -52,18 +61,18 @@
     const link = e.sourceElement && e.sourceElement.closest ? e.sourceElement.closest('a[href]') : null;
     const img = link && isWork(e.to) ? link.querySelector('img') : null;
     if (img && !img.closest('.art-figure')) {
-      mark(img);
+      mark(img, e.to.pathname);
       fromThumb = true;
       viewTop.set(e.to.pathname.replace(/\/+$/, ''), img.getBoundingClientRect().top);
     } else if (isWork(e.from)) {
-      mark(document.querySelector(FIGURE));
+      mark(document.querySelector(FIGURE), e.from.pathname);
     }
   });
 
   document.addEventListener('astro:before-swap', (e) => {
     const doc = e.newDocument;
     if (fromThumb && isWork(e.to)) {
-      mark(doc.querySelector(FIGURE));
+      mark(doc.querySelector(FIGURE), e.to.pathname);
       return;
     }
     if (!isWork(e.from) || isWork(e.to)) return;
@@ -75,7 +84,7 @@
       const items = [...g.querySelectorAll('.gallery__grid .gallery__item')];
       g.dataset.minShown = String(items.indexOf(item) + 1);
     }
-    mark(img);
+    mark(img, e.from.pathname);
     pending = { img, path: e.from.pathname.replace(/\/+$/, '') };
   });
 

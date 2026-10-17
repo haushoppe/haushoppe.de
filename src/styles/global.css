@@ -200,7 +200,8 @@ a:hover {
 }
 
 /* Seitenübergänge (ClientRouter, View Transitions API). Kopfzeile steht still, nur der Inhalt
-   blendet um. Das Werk-Bild (Name art-media, vergeben von src/scripts/view-transitions.js)
+   blendet um. Das Werk-Bild (Name media-<pfad>, Klasse vt-media, vergeben von
+   src/scripts/view-transitions.js)
    wandert vom Vorschaubild ins große Bild der Werkseite und zurück. Machart und Zeiten wie auf
    haushoppe-its.de. Bei reduzierter Bewegung wechselt die Seite ohne Animation. */
 @media (prefers-reduced-motion: no-preference) {
@@ -218,24 +219,24 @@ a:hover {
     animation-duration: 120ms;
   }
   ::view-transition-old(main),
-  ::view-transition-old(art-media):only-child {
+  ::view-transition-old(*.vt-media):only-child {
     animation: vt-fade-out 160ms ease both;
   }
   ::view-transition-new(main),
-  ::view-transition-new(art-media):only-child {
+  ::view-transition-new(*.vt-media):only-child {
     animation: vt-fade-in 260ms ease both;
   }
-  ::view-transition-group(art-media),
-  ::view-transition-old(art-media),
-  ::view-transition-new(art-media) {
+  ::view-transition-group(*.vt-media),
+  ::view-transition-old(*.vt-media),
+  ::view-transition-new(*.vt-media) {
     animation-duration: 520ms;
     animation-delay: 60ms;
     animation-fill-mode: both;
     animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
   /* Bilder füllen die wandernde Box, statt sich zu verzerren. */
-  ::view-transition-old(art-media),
-  ::view-transition-new(art-media) {
+  ::view-transition-old(*.vt-media),
+  ::view-transition-new(*.vt-media) {
     height: 100%;
     object-fit: cover;
   }
