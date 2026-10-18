@@ -73,3 +73,28 @@ test('Navi-Klick: Kopfzeile ohne Überblendung, Unterstrich bleibt', async ({ pa
   await page.mouse.move(5, 500);
   await expect(active).not.toHaveAttribute('data-hover', '');
 });
+
+// Wandern nur, wenn beide Enden im Bild sind (morphOnlyVisible): Ist das große Bild der Werkseite
+// weggescrollt, fliegt die Galerie-Kachel nicht von außerhalb herein, sondern blendet nur ein.
+test('Werk-Bild außerhalb des Fensters: kein Morph, nur Einblenden', async ({ page }, info) => {
+  const s = site(info);
+  await page.goto(s.routes.gallery);
+  const href = (await page.locator('.gallery__grid .gallery__link').evaluateAll((els) => els.map((e) => e.getAttribute('href') || ''))).find(
+    (h) => h.startsWith('/portfolio/') && !/johannes-x-olaf/.test(h),
+  )!;
+  await page.goto(href);
+  await hook(page);
+  await page.evaluate(() => {
+    const img = document.querySelector('.art-figure img')!;
+    window.scrollTo({ top: img.getBoundingClientRect().bottom + window.scrollY + 10, behavior: 'instant' });
+  });
+  // Seite lang genug, dass das Bild wirklich draußen ist.
+  expect(await page.evaluate(() => document.querySelector('.art-figure img')!.getBoundingClientRect().bottom)).toBeLessThanOrEqual(0);
+  await page.locator(`.mainnav__link[href="${s.routes.gallery}"]`).first().evaluate((a: HTMLElement) => a.click());
+  await page.waitForURL('**' + s.routes.gallery);
+  await expect.poll(() => page.evaluate(() => (window as any).__vt.length)).toBe(1);
+  const [run] = await page.evaluate(() => (window as any).__vt as string[][]);
+  const name = 'media' + href.replace(/\/+$/, '').replace(/[^a-z0-9]+/gi, '-');
+  expect(run.some((p) => p.startsWith('ABGEBROCHEN'))).toBe(false);
+  expect(run.filter((p) => p.includes(name))).toEqual([`::view-transition-new(${name}) 260`]);
+});

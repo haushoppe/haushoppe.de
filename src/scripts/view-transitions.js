@@ -20,8 +20,10 @@
 // data-min-shown vor, bis dorthin einzublenden (gallery.js). Nach dem Auslegen der Galerie
 // (astro:after-swap, vor dem Erfassen der neuen Seite) steht die Kachel wieder an der Stelle im
 // Fenster, an der sie beim Klick stand; Astros eigene Scroll-Wiederherstellung trifft sie bei
-// langen Galerien nicht zuverlässig.
-import { vtName } from '../lib/view-transitions';
+// langen Galerien nicht zuverlässig. Steht eines der beiden Bilder dann außerhalb des Fensters
+// (etwa das große Bild einer weit nach unten gescrollten Werkseite), wandert nichts, das sichtbare
+// Bild blendet nur (morphOnlyVisible).
+import { vtName, morphOnlyVisible } from '../lib/view-transitions';
 
 (function () {
   const FIGURE = '.art-figure img';
@@ -108,4 +110,7 @@ import { vtName } from '../lib/view-transitions';
     const top = c ? c.top : (innerHeight - r.height) / 2;
     window.scrollTo({ top: window.scrollY + r.top - top, behavior: 'instant' });
   });
+
+  // Nach dem Scroll-Listener registriert: entscheidet erst, wenn die Kachel an ihrer Stelle steht.
+  morphOnlyVisible();
 })();
