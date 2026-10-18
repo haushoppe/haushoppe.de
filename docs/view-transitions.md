@@ -9,7 +9,7 @@ haushoppe-its.de und haushoppe.de teilen Code und Verhalten der Seitenübergäng
 
 | Datei | Inhalt |
 |---|---|
-| `src/lib/view-transitions.ts` | `vtKey(href)`, `vtName(part, href)`, `vtStyle(part, href)` |
+| `src/lib/view-transitions.ts` | `vtKey(href)`, `vtName(part, href)`, `vtStyle(part, href)`, `morphOnlyVisible()` |
 | `src/styles/view-transitions.css` | alle gemeinsamen Regeln, wird am Anfang der `global.css` importiert |
 | `scripts/check-view-transitions.mjs` | Prüfung nach dem Build, Teil von `npm run build` |
 | dieser Abschnitt der Doku | zwischen den Markern `gemeinsam:start` und `gemeinsam:end` |
@@ -27,6 +27,8 @@ Möglichst in beiden Repos gleich halten, aber nicht zwingend: Bewusste Abweichu
 | Klasse `vt-title` | Titel der Vorschau ↔ `<h1>` der Detailseite | wandert und skaliert 420 ms; alter und neuer Text blenden in 120 ms über, so wächst der Titel, statt doppelt zu stehen |
 
 Gruppen, die nur auf einer der beiden Seiten vorkommen, blenden im Takt von `main` aus bzw. ein (Regeln mit `:only-child`).
+
+Gewandert wird nur, wenn beide Enden im Bild sind. `morphOnlyVisible()` nimmt jedem `vt-*`-Element außerhalb des Fensters vor dem Übergang den Namen (alte Seite in `astro:after-preparation`, neue Seite in `astro:after-swap`, nach dem Scrollen an die Zielposition). Sein sichtbares Gegenstück blendet dann nur ein bzw. aus, statt quer über den Bildschirm von außerhalb hereinzufliegen. Die Prüfung läuft über `el.style.viewTransitionClass`, nicht über den Text des style-Attributs: Per Skript gesetzte Namen schreibt der Browser mit Leerzeichen (`view-transition-class: vt-media`). Registriert wird die Funktion einmal, nach allen Skripten, die in `astro:after-swap` noch scrollen.
 
 ### Namen
 

@@ -24,3 +24,28 @@ export function vtName(part: VtPart, href: string): string {
 export function vtStyle(part: VtPart, href: string): string {
   return `view-transition-name:${vtName(part, href)};view-transition-class:vt-${part}`;
 }
+
+/**
+ * Wandern nur, wenn beide Enden im Bild sind. Ein Element außerhalb des sichtbaren Bereichs
+ * verliert vor dem Übergang seinen Namen; sein sichtbares Gegenstück hat dann kein Paar mehr und
+ * blendet sanft ein bzw. aus, statt quer über den Bildschirm von außerhalb hereinzufliegen.
+ * Alte Seite: astro:after-preparation (vor dem Schnappschuss). Neue Seite: astro:after-swap
+ * (nach dem Scrollen an die Zielposition). Gilt für die Klassen vt-*, ob per vtStyle im HTML oder
+ * per el.style zur Laufzeit gesetzt (der Browser schreibt das style-Attribut dann mit Leerzeichen,
+ * darum die Prüfung über el.style statt über den Attributtext).
+ * Einmal pro Seitenaufruf registrieren (das document bleibt über Seitenwechsel bestehen), nach
+ * allen Skripten, die in astro:after-swap noch scrollen.
+ */
+export function morphOnlyVisible(): void {
+  const strip = () => {
+    for (const el of document.querySelectorAll<HTMLElement>('[style*="view-transition-class"]')) {
+      if (!el.style.viewTransitionClass.startsWith('vt-')) continue;
+      const r = el.getBoundingClientRect();
+      if (r.bottom <= 0 || r.top >= innerHeight || r.right <= 0 || r.left >= innerWidth) {
+        el.style.viewTransitionName = 'none';
+      }
+    }
+  };
+  document.addEventListener('astro:after-preparation', strip);
+  document.addEventListener('astro:after-swap', strip);
+}
