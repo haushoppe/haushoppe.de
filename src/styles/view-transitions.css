@@ -2,7 +2,8 @@
    aber nicht zwingend. Bewusste Abweichungen einer Seite sind erlaubt.
 
    Seitenübergänge (Astro ClientRouter, View Transitions API), Doku: docs/view-transitions.md.
-   - Kopfzeile (.site-header) steht still, nur der aktive Link blendet kurz um.
+   - Kopfzeile (.site-header) steht still und wechselt ohne Überblendung: ein Überblenden legt
+     den normalen und den fetten aktiven Link übereinander, das flimmert.
    - Inhalt (.site-main) blendet aus, die neue Seite blendet ein und steigt minimal auf.
    - Klasse vt-media: Bild wandert und skaliert (Name aus vtStyle/vtName, src/lib/view-transitions.ts).
    - Klasse vt-title: Titel wandert und wächst; der Text blendet kurz über, damit er nicht doppelt steht.
@@ -24,12 +25,12 @@
   .site-main {
     view-transition-name: main;
   }
-  ::view-transition-group(site-header) {
+  ::view-transition-group(site-header),
+  ::view-transition-new(site-header) {
     animation: none;
   }
-  ::view-transition-old(site-header),
-  ::view-transition-new(site-header) {
-    animation-duration: 120ms;
+  ::view-transition-old(site-header) {
+    display: none;
   }
 
   ::view-transition-old(main),

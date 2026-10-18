@@ -78,6 +78,27 @@ const homeHref = '/';
   </div>
 </header>
 
+<script>
+  // Seitenwechsel per Klick in die Navi: Die Maus steht danach noch auf dem Link, der Browser erkennt
+  // das auf der neuen Seite aber erst bei der nächsten Mausbewegung. Bis dahin fehlte der
+  // Hover-Unterstrich. data-hover hält ihn auf dem Link der neuen Seite, bis die Maus ihn verlässt.
+  let held: Element | null = null;
+  document.addEventListener('astro:before-swap', (e) => {
+    const src = e.sourceElement;
+    const link = src instanceof Element ? src.closest('.mainnav__link') : null;
+    if (!link || !link.matches(':hover') || !matchMedia('(hover: hover)').matches) return;
+    const href = link.getAttribute('href');
+    held = [...e.newDocument.querySelectorAll('.mainnav__link')].find((a) => a.getAttribute('href') === href) || null;
+    held?.setAttribute('data-hover', '');
+  });
+  document.addEventListener('pointermove', () => {
+    if (held && !held.matches(':hover')) {
+      held.removeAttribute('data-hover');
+      held = null;
+    }
+  });
+</script>
+
 <style>
   .site-header {
     /* Luft über dem Logo. */
@@ -190,7 +211,8 @@ const homeHref = '/';
     transition: background-size 0.3s ease;
   }
   .mainnav__link:hover .mainnav__label,
-  .mainnav__link:focus-visible .mainnav__label {
+  .mainnav__link:focus-visible .mainnav__label,
+  .mainnav__link[data-hover] .mainnav__label {
     background-size: 100% 1px;
   }
   .mainnav__link:hover,
@@ -200,6 +222,11 @@ const homeHref = '/';
   /* Aktive Seite markiert — fett. */
   .mainnav__link.is-active {
     font-weight: 700;
+  }
+  /* Nach dem Klick steht die Maus noch auf dem jetzt aktiven Link: der Unterstrich erscheint dort
+     sofort, statt auf der neuen Seite noch einmal von links anzuwachsen. */
+  .mainnav__link.is-active .mainnav__label {
+    transition: none;
   }
   .mainnav__extra {
     display: flex;
