@@ -97,4 +97,18 @@ test('Werk-Bild außerhalb des Fensters: kein Morph, nur Einblenden', async ({ p
   const name = 'media' + href.replace(/\/+$/, '').replace(/[^a-z0-9]+/gi, '-');
   expect(run.some((p) => p.startsWith('ABGEBROCHEN'))).toBe(false);
   expect(run.filter((p) => p.includes(name))).toEqual([`::view-transition-new(${name}) 260`]);
+
+  // Nächster Klick auf eine andere Kachel: Nur dieses Paar wandert. Der zuvor entfernte Name des
+  // großen Bildes darf auf der Galerie keinem Element wieder angehängt werden.
+  const links = page.locator('.gallery__grid .gallery__link');
+  const hrefs = await links.evaluateAll((els) => els.map((e) => e.getAttribute('href') || ''));
+  const idx = hrefs.findIndex((h) => h.startsWith('/portfolio/') && h !== href && !/johannes-x-olaf/.test(h));
+  await links.nth(idx).scrollIntoViewIfNeeded();
+  await links.nth(idx).click();
+  await page.waitForURL('**' + hrefs[idx]);
+  await expect.poll(() => page.evaluate(() => (window as any).__vt.length)).toBe(2);
+  const second = (await page.evaluate(() => (window as any).__vt as string[][]))[1];
+  const other = 'media' + hrefs[idx].replace(/\/+$/, '').replace(/[^a-z0-9]+/gi, '-');
+  expect([...new Set(second.filter((p) => p.includes('media-')).map((p) => p.replace(/^.*\((.*)\).*$/, '$1')))]).toEqual([other]);
+  expect(second).toContain(`::view-transition-group(${other}) 520`);
 });

@@ -28,7 +28,7 @@ Möglichst in beiden Repos gleich halten, aber nicht zwingend: Bewusste Abweichu
 
 Gruppen, die nur auf einer der beiden Seiten vorkommen, blenden im Takt von `main` aus bzw. ein (Regeln mit `:only-child`).
 
-Gewandert wird nur, wenn beide Enden im Bild sind. `morphOnlyVisible()` nimmt jedem `vt-*`-Element außerhalb des Fensters vor dem Übergang den Namen (alte Seite in `astro:after-preparation`, neue Seite in `astro:after-swap`, nach dem Scrollen an die Zielposition). Sein sichtbares Gegenstück blendet dann nur ein bzw. aus, statt quer über den Bildschirm von außerhalb hereinzufliegen. Die Prüfung läuft über `el.style.viewTransitionClass`, nicht über den Text des style-Attributs: Per Skript gesetzte Namen schreibt der Browser mit Leerzeichen (`view-transition-class: vt-media`). Registriert wird die Funktion einmal, nach allen Skripten, die in `astro:after-swap` noch scrollen.
+Gewandert wird nur, wenn beide Enden im Bild sind. `morphOnlyVisible()` nimmt jedem `vt-*`-Element außerhalb des Fensters vor dem Übergang den Namen (alte Seite in `astro:after-preparation`, neue Seite in `astro:after-swap`, nach dem Scrollen an die Zielposition). Sein sichtbares Gegenstück blendet dann nur ein bzw. aus, statt quer über den Bildschirm von außerhalb hereinzufliegen. Die Prüfung läuft über `el.style.viewTransitionClass`, nicht über den Text des style-Attributs: Per Skript gesetzte Namen schreibt der Browser mit Leerzeichen (`view-transition-class: vt-media`). Vor jedem Messen gibt sie die zuletzt entfernten Namen zurück: Ein Element, das beim Ankommen unterhalb des Fensters stand, wandert nach dem Herunterscrollen beim nächsten Wechsel wieder. Zurück kommt ein Name nur, solange das Element noch auf `none` steht; ein Skript, das Namen selbst vergibt oder entfernt, behält das letzte Wort. Registriert wird die Funktion einmal, nach allen Skripten, die in `astro:after-swap` noch scrollen.
 
 ### Namen
 
@@ -43,6 +43,7 @@ Gewandert wird nur, wenn beide Enden im Bild sind. `morphOnlyVisible()` nimmt je
 - **Weiches Scrollen nur außerhalb von Übergängen:** `scroll-behavior: smooth` gilt nur für `html:not([data-astro-transition])`. Sonst stellt der Router die Scrollposition beim Zurückgehen weich wieder her, und die ganze Liste rollt sichtbar an die gemerkte Stelle.
 - **Spezifität:** `::view-transition-old(name)` ist nicht spezifischer als `::view-transition-old(*.vt-media)`. Seitenspezifische Sonderregeln stehen deshalb in der `global.css` nach dem Import der geteilten Datei.
 - **Viele Namen kosten Zeit:** Der Browser erfasst jedes benannte Element einzeln. Gemessen auf haushoppe.de vom Klick bis `transition.ready`: 1 benanntes Bild etwa 33 ms, 37 etwa 34 ms, 325 etwa 255 ms. Lange Listen vergeben den Namen deshalb erst zur Laufzeit an das eine wechselnde Paar.
+- **Hover nach dem Wechsel:** Der Browser erkennt die Maus über einem Element der neuen Seite erst bei der nächsten Mausbewegung. Ein Hover-Effekt auf dem angeklickten Navi-Link fehlt deshalb kurz und baut sich danach neu auf. Die Kopfzeile setzt in `astro:before-swap` `data-hover` auf den Link der neuen Seite und entfernt es, sobald die Maus ihn verlässt.
 - **Reduzierte Bewegung:** Alle Regeln und die per Selektor vergebenen Namen stehen in `@media (prefers-reduced-motion: no-preference)`. Inline-Namen gelten immer, deshalb setzt ein eigener Block unter `reduce` alle `::view-transition-*`-Animationen auf `none`.
 
 ### Prüfen
@@ -67,7 +68,7 @@ Die Galerie hat über 300 Werke. Anders als auf haushoppe-its.de stehen die Name
 - Jeder Name darf pro Seite nur einmal vorkommen, sonst bricht der ganze Übergang ab.
 - Benannte Inline-Elemente dürfen nicht über mehrere Zeilen umbrechen; den Namen an ein Block-Element oder ein Bild setzen.
 - Was per JS ausgelegt wird, muss vor dem Erfassen der neuen Seite stehen (`astro:after-swap`, nicht erst `astro:page-load`).
-- Hover-Zustände: Nach dem Wechsel erkennt der Browser die Maus über einem Element der neuen Seite erst bei der nächsten Mausbewegung. Ein Hover-Effekt auf dem angeklickten Navi-Link fehlt deshalb kurz und baut sich danach neu auf. `Header.astro` setzt in `astro:before-swap` `data-hover` auf den Link der neuen Seite und entfernt es, sobald die Maus ihn verlässt.
+- Hover nach dem Wechsel (siehe oben): `data-hover` setzt `Header.astro`.
 
 ## Prüfen
 
