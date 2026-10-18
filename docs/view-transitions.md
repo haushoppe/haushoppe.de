@@ -43,6 +43,7 @@ Gewandert wird nur, wenn beide Enden im Bild sind. `morphOnlyVisible()` nimmt je
 - **Weiches Scrollen nur außerhalb von Übergängen:** `scroll-behavior: smooth` gilt nur für `html:not([data-astro-transition])`. Sonst stellt der Router die Scrollposition beim Zurückgehen weich wieder her, und die ganze Liste rollt sichtbar an die gemerkte Stelle.
 - **Spezifität:** `::view-transition-old(name)` ist nicht spezifischer als `::view-transition-old(*.vt-media)`. Seitenspezifische Sonderregeln stehen deshalb in der `global.css` nach dem Import der geteilten Datei.
 - **Viele Namen kosten Zeit:** Der Browser erfasst jedes benannte Element einzeln. Gemessen auf haushoppe.de vom Klick bis `transition.ready`: 1 benanntes Bild etwa 33 ms, 37 etwa 34 ms, 325 etwa 255 ms. Lange Listen vergeben den Namen deshalb erst zur Laufzeit an das eine wechselnde Paar.
+- **Hover nach dem Wechsel:** Der Browser erkennt die Maus über einem Element der neuen Seite erst bei der nächsten Mausbewegung. Ein Hover-Effekt auf dem angeklickten Navi-Link fehlt deshalb kurz und baut sich danach neu auf. Die Kopfzeile setzt in `astro:before-swap` `data-hover` auf den Link der neuen Seite und entfernt es, sobald die Maus ihn verlässt.
 - **Reduzierte Bewegung:** Alle Regeln und die per Selektor vergebenen Namen stehen in `@media (prefers-reduced-motion: no-preference)`. Inline-Namen gelten immer, deshalb setzt ein eigener Block unter `reduce` alle `::view-transition-*`-Animationen auf `none`.
 
 ### Prüfen
@@ -67,7 +68,7 @@ Die Galerie hat über 300 Werke. Anders als auf haushoppe-its.de stehen die Name
 - Jeder Name darf pro Seite nur einmal vorkommen, sonst bricht der ganze Übergang ab.
 - Benannte Inline-Elemente dürfen nicht über mehrere Zeilen umbrechen; den Namen an ein Block-Element oder ein Bild setzen.
 - Was per JS ausgelegt wird, muss vor dem Erfassen der neuen Seite stehen (`astro:after-swap`, nicht erst `astro:page-load`).
-- Hover-Zustände: Nach dem Wechsel erkennt der Browser die Maus über einem Element der neuen Seite erst bei der nächsten Mausbewegung. Ein Hover-Effekt auf dem angeklickten Navi-Link fehlt deshalb kurz und baut sich danach neu auf. `Header.astro` setzt in `astro:before-swap` `data-hover` auf den Link der neuen Seite und entfernt es, sobald die Maus ihn verlässt.
+- Hover nach dem Wechsel (siehe oben): `data-hover` setzt `Header.astro`.
 
 ## Prüfen
 
