@@ -21,7 +21,7 @@ Möglichst in beiden Repos gleich halten, aber nicht zwingend: Bewusste Abweichu
 | Gruppe | Element | Verhalten |
 |---|---|---|
 | `root` | alles ohne eigenen Namen (v. a. der Footer) | Standard-Überblendung des Browsers |
-| `site-header` | `.site-header` | steht still (`animation: none` auf der Gruppe), nur der aktive Navi-Link blendet in 120 ms um |
+| `site-header` | `.site-header` | steht still und wechselt ohne Überblendung (alter Schnappschuss ausgeblendet, neuer ohne Animation); ein Überblenden legt den normalen und den fetten aktiven Link übereinander, das flimmert |
 | `main` | `.site-main` | alter Inhalt blendet in 160 ms aus, neuer in 260 ms `ease` ein und steigt dabei 8 px auf |
 | Klasse `vt-media` | Vorschaubild ↔ großes Bild der Detailseite | wandert und skaliert 520 ms, `cubic-bezier(0.22, 1, 0.36, 1)`, startet 60 ms versetzt; `object-fit: cover`, damit verschiedene Formate nicht verzerren |
 | Klasse `vt-title` | Titel der Vorschau ↔ `<h1>` der Detailseite | wandert und skaliert 420 ms; alter und neuer Text blenden in 120 ms über, so wächst der Titel, statt doppelt zu stehen |
@@ -65,8 +65,9 @@ Die Galerie hat über 300 Werke. Anders als auf haushoppe-its.de stehen die Name
 - Jeder Name darf pro Seite nur einmal vorkommen, sonst bricht der ganze Übergang ab.
 - Benannte Inline-Elemente dürfen nicht über mehrere Zeilen umbrechen; den Namen an ein Block-Element oder ein Bild setzen.
 - Was per JS ausgelegt wird, muss vor dem Erfassen der neuen Seite stehen (`astro:after-swap`, nicht erst `astro:page-load`).
+- Hover-Zustände: Nach dem Wechsel erkennt der Browser die Maus über einem Element der neuen Seite erst bei der nächsten Mausbewegung. Ein Hover-Effekt auf dem angeklickten Navi-Link fehlt deshalb kurz und baut sich danach neu auf. `Header.astro` setzt in `astro:before-swap` `data-hover` auf den Link der neuen Seite und entfernt es, sobald die Maus ihn verlässt.
 
 ## Prüfen
 
-- `e2e/view-transitions.spec.ts` prüft den Morph in beide Richtungen über die laufenden Pseudo-Animationen (`document.getAnimations()` nach `transition.ready`) und erkennt abgebrochene Übergänge.
+- `e2e/view-transitions.spec.ts` prüft den Morph in beide Richtungen über die laufenden Pseudo-Animationen (`document.getAnimations()` nach `transition.ready`) und erkennt abgebrochene Übergänge. Ein zweiter Test klickt mit der Maus in die Navi: keine Animation an `site-header`, Unterstrich bleibt stehen.
 - Von Hand: Chrome DevTools, Panel „Animations“, Wiedergabe auf 10 % oder 25 %.

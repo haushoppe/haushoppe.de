@@ -51,3 +51,25 @@ test('Werk-Bild morpht von der Galerie in die Werkseite und zurück', async ({ p
     expect(run).toContain(`::view-transition-new(${name}) 520`);
   }
 });
+
+// Klick in die Navi mit der Maus auf dem Link: Die Kopfzeile wechselt ohne Überblendung (sonst
+// liegen normaler und fetter Link übereinander), und der Hover-Unterstrich bleibt auf dem nun
+// aktiven Link stehen, statt auf der neuen Seite neu anzuwachsen.
+test('Navi-Klick: Kopfzeile ohne Überblendung, Unterstrich bleibt', async ({ page }, info) => {
+  test.skip(!!info.project.use.isMobile, 'nur mit Maus');
+  const s = site(info);
+  await page.goto('/');
+  await hook(page);
+  const link = page.locator(`.mainnav__link[href="${s.routes.gallery}"]`);
+  await link.hover();
+  await link.click();
+  await page.waitForURL('**' + s.routes.gallery);
+  await expect.poll(() => page.evaluate(() => (window as any).__vt.length)).toBe(1);
+  const [run] = await page.evaluate(() => (window as any).__vt as string[][]);
+  expect(run.filter((p) => p.includes('site-header'))).toEqual([]);
+  const active = page.locator('.mainnav__link.is-active');
+  await expect(active).toHaveAttribute('href', s.routes.gallery);
+  await expect(active).toHaveAttribute('data-hover', '');
+  await page.mouse.move(5, 500);
+  await expect(active).not.toHaveAttribute('data-hover', '');
+});
