@@ -33,15 +33,24 @@ export function vtStyle(part: VtPart, href: string): string {
  * (nach dem Scrollen an die Zielposition). Gilt für die Klassen vt-*, ob per vtStyle im HTML oder
  * per el.style zur Laufzeit gesetzt (der Browser schreibt das style-Attribut dann mit Leerzeichen,
  * darum die Prüfung über el.style statt über den Attributtext).
+ * Vor jedem Messen bekommen die zuletzt entfernten Elemente ihren Namen zurück: Ein Element, das
+ * beim Ankommen unterhalb des Fensters stand, ist nach dem Scrollen sichtbar und soll beim nächsten
+ * Wechsel wieder wandern. Das gilt auch, wenn ein neuer Klick einen laufenden Übergang abbricht.
+ * Zurück kommt der Name nur, solange das Element noch auf 'none' steht; hat ein Skript den Namen
+ * inzwischen selbst neu gesetzt oder entfernt, bleibt es dabei.
  * Einmal pro Seitenaufruf registrieren (das document bleibt über Seitenwechsel bestehen), nach
  * allen Skripten, die in astro:after-swap noch scrollen.
  */
 export function morphOnlyVisible(): void {
+  let stripped: [HTMLElement, string][] = [];
   const strip = () => {
+    for (const [el, name] of stripped) if (el.style.viewTransitionName === 'none') el.style.viewTransitionName = name;
+    stripped = [];
     for (const el of document.querySelectorAll<HTMLElement>('[style*="view-transition-class"]')) {
       if (!el.style.viewTransitionClass.startsWith('vt-')) continue;
       const r = el.getBoundingClientRect();
       if (r.bottom <= 0 || r.top >= innerHeight || r.right <= 0 || r.left >= innerWidth) {
+        stripped.push([el, el.style.viewTransitionName]);
         el.style.viewTransitionName = 'none';
       }
     }
