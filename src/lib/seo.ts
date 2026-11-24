@@ -5,7 +5,7 @@ import { personRef } from './person';
 import { WOODCUT_PRICE_EUR, WOODCUT_PRICE_FRAMED_EUR } from './pricing';
 import type { CategoryKey } from './categories';
 
-const GALLERY_NAME = 'HAUS HOPPE – Galerie für Bildende Kunst';
+const GALLERY_NAME = 'HAUS HOPPE - Galerie für Bildende Kunst';
 
 // Kategorie -> schema.org-artform (Kunstform des Werks).
 const ARTFORM: Record<CategoryKey, string> = {

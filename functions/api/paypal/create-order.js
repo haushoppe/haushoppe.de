@@ -65,7 +65,7 @@ export async function onRequestPost({ request, env }) {
           },
         ],
         application_context: {
-          brand_name: 'HAUS HOPPE – Galerie für Bildende Kunst',
+          brand_name: 'HAUS HOPPE - Galerie für Bildende Kunst',
           locale: lang === 'en' ? 'en-US' : 'de-DE',
           shipping_preference: 'GET_FROM_FILE',
           // Nur Freigabe im PayPal-Fenster („Weiter"); die Bestellung gibt danach der eigene Button
