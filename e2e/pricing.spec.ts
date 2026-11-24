@@ -9,7 +9,7 @@ test('Holzschnitt zeigt beide Preise: 785 € ungerahmt, 1.000 € gerahmt', asy
   await expect(price).toBeVisible();
   await expect(price).toContainText('785 €');
   await expect(price).toContainText(en ? '1,000 €' : '1.000 €');
-  await expect(price).toContainText(en ? 'incl. 7% VAT · free shipping' : 'inkl. 7 % MwSt · versandkostenfrei');
+  await expect(price).toContainText(en ? 'incl. 7% VAT, free shipping' : 'inkl. 7 % MwSt, versandkostenfrei');
   // Vorauswahl: ungerahmt; die gerahmte Variante ist wählbar (HALBE-Museumsrahmen).
   await expect(price.locator('input[value="unframed"]')).toBeChecked();
   await expect(price.locator('input[value="framed"]')).not.toBeChecked();

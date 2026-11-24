@@ -3,7 +3,8 @@
 import type { CollectionEntry } from 'astro:content';
 
 // Eyebrow-Zeile der REVEALED-Collection (Detailseiten + Kategorie-Logo), sprachneutral.
-export const REVEALED_EYEBROW = 'Bitcoin Ordinals · Glitch Art · Johannes × Olaf';
+// Teile der Dachzeile, beim Anzeigen nur durch Abstand getrennt.
+export const REVEALED_EYEBROW = ['Bitcoin Ordinals', 'Glitch Art', 'Johannes × Olaf'];
 
 export interface Ordinal {
   iframe: string;

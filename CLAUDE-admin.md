@@ -51,7 +51,7 @@ src/
 │   ├── index.astro            # Startseite            → Home.astro
 │   ├── videos.astro           # Videos                → VideosGallery.astro
 │   ├── vita.astro             # Vita                  → Vita.astro + vita-<lang>.mdx
-│   ├── [slug].astro           # slug-abweichende Seiten: werke↔artwork · kunst-erwerben↔buy-fine-art · kontakt↔contact
+│   ├── [slug].astro           # slug-abweichende Seiten: werke↔artwork, kunst-erwerben↔buy-fine-art, kontakt↔contact
 │   ├── [slug]/[category].astro# Galerie-Kategorieseiten (z. B. /werke/holzschnitte/)
 │   ├── portfolio/[slug].astro # Werk-Detailseiten (Slug = sprachspezifisch)
 │   ├── 404.astro  robots.txt.ts

@@ -32,7 +32,7 @@ const HL_SIZES = '(max-width: 720px) 100vw, 700px';
 const highlightItems = items.filter((it) => it.highlight);
 const gridItems = items.filter((it) => !it.highlight);
 
-// Grid-Kacheln mit vorberechneten Bild-URLs (u=URL · t=Titel · c=Kategorien · w/h=Maße · n=Nummer).
+// Grid-Kacheln mit vorberechneten Bild-URLs (u=URL, t=Titel, c=Kategorien, w/h=Maße, n=Nummer).
 const data = await Promise.all(
   gridItems.map(async (it) => {
     const [a2, a4, p2, p4] = await Promise.all([
@@ -76,7 +76,7 @@ const hlData = await Promise.all(
       <div class="gallery__logo-mark">
         <iframe src="https://ordinals.com/content/d279c3692719664d36a34621577fe1ee2939950e8a914a9bf150bb723d8feb80i0" title="REVEALED" loading="lazy" tabindex="-1" referrerpolicy="no-referrer" allow="accelerometer; gyroscope" sandbox="allow-scripts allow-same-origin"></iframe>
       </div>
-      <p class="gallery__logo-eyebrow">{REVEALED_EYEBROW}</p>
+      <p class="gallery__logo-eyebrow">{REVEALED_EYEBROW.map((w) => <span>{w}</span>)}</p>
     </div>
   )}
 
@@ -229,6 +229,10 @@ const hlData = await Promise.all(
   }
   /* Eyebrow unter der Wortmarke, im Stil der Detailseiten (ordinal-eyebrow). */
   .gallery__logo-eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1.5em;
     margin: 0;
     font-size: var(--fs-2xs);
     letter-spacing: 0.22em;

@@ -131,7 +131,7 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
             sandbox="allow-scripts allow-same-origin"
           />
         </div>
-        <p class="ordinal-eyebrow">{t.eyebrow}</p>
+        <p class="ordinal-eyebrow">{t.eyebrow.map((w) => <span>{w}</span>)}</p>
         {title && (
           <h1 class="ordinal-title" itemprop="headline">
             {title}
@@ -483,6 +483,10 @@ const contactHref = lang === 'en' ? '/contact/' : '/kontakt/';
     background: #000;
   }
   .ordinal-eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1.5em;
     margin: 0 0 0.9rem;
     font-size: var(--fs-2xs);
     letter-spacing: 0.22em;

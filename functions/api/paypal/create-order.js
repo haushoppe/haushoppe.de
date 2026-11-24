@@ -33,7 +33,7 @@ export async function onRequestPost({ request, env }) {
     ? lang === 'en'
       ? 'Test order, will not be shipped'
       : 'Testbestellung, wird nicht versendet'
-    : `${lang === 'en' ? 'Woodcut' : 'Holzschnitt'}: ${name} · ${variantLabel}`.slice(0, 127);
+    : `${lang === 'en' ? 'Woodcut' : 'Holzschnitt'}: ${name} (${variantLabel})`.slice(0, 127);
 
   try {
     const token = await accessToken(env);

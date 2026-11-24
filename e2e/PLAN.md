@@ -50,7 +50,7 @@ Ziel: **alles**, was wir in die Seite programmiert haben, gegen Regressionen abs
 
 ### 7. Werk-Detail (`artwork.spec`)
 - `h1` = Werktitel; großes Bild als `<picture>` mit `source[type=image/avif]` + `webp`.
-- **ArtworkMeta**-Beschriftung: `Künstler · „Titel" · Jahr`, Technik+Maße-Zeile, **Werk-Nummer** (Badge).
+- **ArtworkMeta**-Beschriftung: `Künstler, „Titel", Jahr`, Technik+Maße-Zeile, **Werk-Nummer** (Badge).
 - **Prev/Next-Navigation** (zyklisch) mit Titeln; Links funktionieren.
 - **Lightbox:** Klick aufs Bild öffnet Overlay; Vor/Zurück = `CarouselArrow` (`.lightbox__nav`), sichtbar nur auf Werk-Detail; Schließen per Klick + `Esc`; Pfeiltasten blättern.
 - Neue **Nummern-Vergabe**: Plovdiv `2015-10`, wintermärchen `2015-11`, porträt 1 `2016-10`, porträt 2 `2016-11` als Badge.
@@ -67,7 +67,7 @@ Ziel: **alles**, was wir in die Seite programmiert haben, gegen Regressionen abs
 - **Ordinals:** kein Anker vorhanden.
 
 ### 10. Holzschnitt-Preis (`pricing.spec`)
-- Genau **31** Holzschnitt-Detailseiten (de wie en) mit Preis-Block (`data-testid="artwork-price"` in der Kaufbox): zwei Varianten-Karten „785 €" ungerahmt / „1.000 €" gerahmt (HALBE-Museumsrahmen) + Notiz „inkl. 7 % MwSt · versandkostenfrei" (EN „incl. 7% VAT · free shipping"); Vorauswahl ungerahmt.
+- Genau **31** Holzschnitt-Detailseiten (de wie en) mit Preis-Block (`data-testid="artwork-price"` in der Kaufbox): zwei Varianten-Karten „785 €" ungerahmt / „1.000 €" gerahmt (HALBE-Museumsrahmen) + Notiz „inkl. 7 % MwSt, versandkostenfrei" (EN „incl. 7% VAT, free shipping"); Vorauswahl ungerahmt.
 - **Gemälde/Aquarelle/Zeichnungen/Ordinals:** kein Preis-Markup.
 - Holzschnitt-Mail enthält Zeile `Preis: 785 € ungerahmt oder 1.000 € gerahmt (…)` und fragt nach **Verfügbarkeit**; Nicht-Holzschnitt-Mail fragt nach „Verfügbarkeit und Preis" ohne Preis-Zeile.
 
