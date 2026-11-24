@@ -106,7 +106,7 @@ Ziel: **alles**, was wir in die Seite programmiert haben, gegen Regressionen abs
 - EN `_redirects` vorhanden (gen-en-redirects), Stichprobe.
 
 ### 18. Content-Regeln (`content-rules.spec`)
-- **Keine Gedankenstriche** (– / —) im sichtbaren Text der Kernseiten (Ausnahme: seitenweiter Markenname „HAUS HOPPE – Galerie …" in og/JSON-LD/Logo).
+- **Keine Gedankenstriche** (– / —) im sichtbaren Text der Kernseiten (der Galeriename schreibt sich mit Bindestrich: „HAUS HOPPE - Galerie …").
 - Echte Umlaute (keine „ae/oe/ue"-Transliteration) — Stichprobe auf bekannten Umlaut-Wörtern.
 
 ### 19. Link- & Bild-Integrität (`integrity.spec`)

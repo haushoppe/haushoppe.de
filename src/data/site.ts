@@ -50,5 +50,5 @@ export const logo = {
   src: '/logo.svg',
   width: 285,
   height: 48,
-  alt: 'HAUS HOPPE – Galerie für Bildende Kunst',
+  alt: 'HAUS HOPPE - Galerie für Bildende Kunst',
 };
