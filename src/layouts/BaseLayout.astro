@@ -63,12 +63,12 @@ const xDefaultHref = dePath ? DE_ORIGIN + dePath : canonical;
 // SEO/Social: Beschreibung nie leer, OG-Bild absolut, Locale je Sprache, Default-JSON-LD = Galerie.
 const defaultDesc =
   lang === 'en'
-    ? 'HAUS HOPPE – fine art gallery on the Baltic coast. Paintings and multi-coloured woodcuts by Olaf Hoppe.'
-    : 'HAUS HOPPE – Galerie für Bildende Kunst an der Ostseeküste. Gemälde und mehrfarbige Holzschnitte von Olaf Hoppe.';
+    ? 'HAUS HOPPE - Gallery for Fine Art on the Baltic coast. Paintings and multi-coloured woodcuts by Olaf Hoppe.'
+    : 'HAUS HOPPE - Galerie für Bildende Kunst an der Ostseeküste. Gemälde und mehrfarbige Holzschnitte von Olaf Hoppe.';
 // Description auf ~160 Zeichen begrenzen (SERP-Snippet-Grenze), sauber am Wort abschneiden.
 const rawDesc = description || defaultDesc;
 const metaDesc = rawDesc.length <= 160 ? rawDesc : rawDesc.slice(0, 157).replace(/\s+\S*$/, '') + '…';
-const siteName = lang === 'en' ? 'HAUS HOPPE – Fine Art Gallery' : 'HAUS HOPPE – Galerie für Bildende Kunst';
+const siteName = lang === 'en' ? 'HAUS HOPPE - Gallery for Fine Art' : 'HAUS HOPPE - Galerie für Bildende Kunst';
 // Titel: Seiten übergeben den ROHEN Titel; hier den Marken-Suffix nur anhängen, solange der
 // Gesamttitel die SERP-Grenze (~62 Zeichen) hält. Titel, die die Marke schon tragen
 // (Startseite, Default), bleiben unangetastet.

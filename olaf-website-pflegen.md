@@ -5,7 +5,7 @@ claude.ai-Projekt-Chat. Der Projekt-Chat ist read-only und kann nur „Patch-Dat
 niemals Pull Requests. claude.ai/code ist im Claude-Pro-Abo enthalten (Research Preview).
 -->
 
-# HAUS HOPPE — Website ändern (für Olaf)
+# HAUS HOPPE: Website ändern (für Olaf)
 
 **Nutze Claude Code im Web: https://claude.ai/code** (in deinem Claude-Pro-Abo). Du beschreibst die Änderung auf Deutsch, Claude macht sie und **pusht einen Branch**; dann klickst du **„Create PR"** — Johannes prüft und gibt frei. (Ein Klick, nicht vollautomatisch.)
 
