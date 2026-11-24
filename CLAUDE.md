@@ -38,7 +38,8 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
    - Die Werk-**Bilder** liegen im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv").
 
    **NIEMALS anfassen:** `src/components/`, `src/lib/`, `src/layouts/`, `src/pages/`, `scripts/`, `astro.config.mjs`, `package.json`, `src/content.config.ts`.
-3. **Echte Umlaute** schreiben: `ä ö ü ß Ä Ö Ü` — niemals `ae/oe/ue/ss`. Typografische Zeichen benutzen: Anführungszeichen `„ "`, Gedankenstrich `–`, Maß-Kreuz `×` (nicht `x`).
+3. **Echte Umlaute** schreiben: `ä ö ü ß Ä Ö Ü` — niemals `ae/oe/ue/ss`. Typografische Zeichen benutzen: Anführungszeichen `„ "`, Maß-Kreuz `×` (nicht `x`).
+   **Verboten: der Gedankenstrich `–` bzw. `—`** in eigenen Texten. Stattdessen Komma, Punkt oder Doppelpunkt; Bindestriche in Wörtern wie „Farb-Holzschnitt“ bleiben. In Seitentiteln ist das Trennzeichen `|` (z. B. „Kontakt | HAUS HOPPE“), der Build bricht bei einem Gedankenstrich im Seitentitel ab. Ausnahme: Olafs Werktitel bleiben wörtlich, auch wenn sie einen Gedankenstrich enthalten (etwa „TUI – schöne Ferien“).
    **Verboten: der Mittelpunkt `·` als Trennzeichen**, nirgends (Texte, Titel, Bildunterschriften, Metadaten, Code). Er gilt als typisches Merkmal maschinell geschriebener Texte. Stattdessen: im Fließtext Komma oder Satzende; zwischen Name und Zusatz Klammern, z. B. „Wasser (2014)“; bei Metadaten wie Dachzeile oder Datum nur Abstand, kein Zeichen; in Seitentiteln `|`. `npm run check` bricht bei einem Fund ab (`scripts/check-typography.mjs`).
 4. **Vor jedem PR prüfen:** `npm install` (einmal), dann `npm run check`. Muss **grün** sein.
 5. **Gültiges Markdown/Frontmatter.** In den Werk-Dateien auf Anführungszeichen und Einrückung im Kopf (zwischen den `---`) achten — ein kaputtes Zeichen bricht den Build. Nichts an der Struktur ändern, nur die Text-Werte.
@@ -341,6 +342,7 @@ npm run build:de   # baut die deutsche Seite (findet Tippfehler/kaputtes Markdow
   - „*Werk … : kein Bild*" → das Werk-Bild fehlt im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv").
   - „*Werk … : keine Nummer*" → **jedes** Werk braucht eine **Nummer** `Jahr-laufende Nummer-Technik` (z. B. `2025-01-A`) — sie ist die **letzte Zeile** der Bildunterschrift im `content` und steuert Sortierung + Anzeige in der Galerie. **Pflichtfeld** — ohne Nummer bricht der Build ab. Ist die Nummer unbekannt: Olaf fragen (Sammel-Issue #5), keine erfinden.
   - „*check-typography: … Mittelpunkt*" → den `·` an der genannten Stelle ersetzen (siehe goldene Regel 3).
+- **`npm run build` meldet „*check-typography: … Seitentitel mit Gedankenstrich*"?** Im genannten Titel den `–` ersetzen (siehe goldene Regel 3). Steht er in einem Werktitel, gehört der Titel in Anführungszeichen.
 - **`npm run build:de` bricht ab?** Meist ein Markdown-/JSON-Fehler (fehlendes Komma, kaputte Klammer) in der gerade geänderten Datei. Fehlermeldung lesen, Datei korrigieren.
 
 Die **CI** (GitHub Actions) macht dieselben Prüfungen automatisch bei jedem PR. Ist der grüne Haken da, passt's; ist er rot, sagt der Log genau, was fehlt — dann nachbessern und erneut committen.
