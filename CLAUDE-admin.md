@@ -67,7 +67,7 @@ src/
 ├── styles/global.css          # Tailwind-Import + Design-Tokens + Basis-Layout
 └── artwork-originals/         # Master-Archiv (Nachlass, versioniert) — Abschnitt 7
 functions/api/                 # Cloudflare Pages Functions (Kauf + Widerruf) — Abschnitt 8
-public/                        # media/ (Seitenbilder), logo.svg, Favicons, og-default.png, _headers, _redirects, ayg-plugin/, wp-content/…/flags/
+public/                        # media/ (Seitenbilder), logo.svg, Favicons, og-default.png, _headers, _redirects, ayg-plugin/, flags/ (Sprachflaggen)
 dist-de/  dist-art/            # zwei Build-Outputs (gitignored)
 ```
 
