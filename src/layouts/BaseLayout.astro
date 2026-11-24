@@ -72,7 +72,9 @@ const siteName = lang === 'en' ? 'HAUS HOPPE – Fine Art Gallery' : 'HAUS HOPPE
 // Titel: Seiten übergeben den ROHEN Titel; hier den Marken-Suffix nur anhängen, solange der
 // Gesamttitel die SERP-Grenze (~62 Zeichen) hält. Titel, die die Marke schon tragen
 // (Startseite, Default), bleiben unangetastet.
-const pageTitle = /HAUS HOPPE/i.test(title) ? title : `${title} – HAUS HOPPE`.length <= 62 ? `${title} – HAUS HOPPE` : title;
+// Trennzeichen „|“ wie auf haushoppe-its.de; ein Gedankenstrich ist in Seitentiteln verboten
+// (scripts/check-typography.mjs prüft die gebauten Titel).
+const pageTitle = /HAUS HOPPE/i.test(title) ? title : `${title} | HAUS HOPPE`.length <= 62 ? `${title} | HAUS HOPPE` : title;
 const ogLocale = lang === 'en' ? 'en_US' : 'de_DE';
 const ogImageIsDefault = !image;
 const ogImage = image ? new URL(image, SELF_ORIGIN).href : SELF_ORIGIN + '/og-default.png';

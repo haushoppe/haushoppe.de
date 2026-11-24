@@ -10,7 +10,7 @@ const t =
     : { title: 'Seite nicht gefunden', text: 'Die gewünschte Seite existiert nicht (mehr) oder wurde verschoben.', works: 'Zu den Werken', worksHref: '/werke/', home: 'Startseite', homeHref: '/' };
 ---
 
-<BaseLayout title={`${t.title} - HAUS HOPPE`} description={t.text}>
+<BaseLayout title={t.title} description={t.text}>
   <section class="notfound">
     <p class="notfound__code" aria-hidden="true">404</p>
     <h1 class="notfound__title">{t.title}</h1>

@@ -14,9 +14,9 @@ de:
   dimensions: "115 cm × 65 cm"
   edition: ""
 en:
-  title: "\"Found object – The Wedding Song\""
+  title: "\"Found object - The Wedding Song\""
   slug: "fundstueck-the-wedding-song"
-  captionTitle: "Found object – The Wedding Song"
+  captionTitle: "Found object - The Wedding Song"
   technique: "Acrylic on canvas"
   dimensions: "115 cm × 65 cm"
   edition: ""
