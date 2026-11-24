@@ -36,7 +36,7 @@ const t =
   lang === 'en'
     ? {
         heading: 'Buy this woodcut',
-        note: 'incl. 7% VAT · free shipping within Germany · delivery within 7 days',
+        note: 'incl. 7% VAT, free shipping within Germany, delivery within 7 days',
         legend: 'Choose your version',
         unframed: 'Unframed',
         unframedDesc: 'The woodcut, numbered and hand-signed',
@@ -62,7 +62,7 @@ const t =
       }
     : {
         heading: 'Diesen Holzschnitt kaufen',
-        note: 'inkl. 7 % MwSt · versandkostenfrei innerhalb Deutschlands · Lieferung innerhalb von 7 Tagen',
+        note: 'inkl. 7 % MwSt, versandkostenfrei innerhalb Deutschlands, Lieferung innerhalb von 7 Tagen',
         legend: 'Ausführung wählen',
         unframed: 'Ungerahmt',
         unframedDesc: 'Der Holzschnitt, nummeriert und handsigniert',
@@ -140,7 +140,7 @@ const t =
   </div>
   <p class="wc-buy__fineprint">{t.secure} {t.dachNote} {t.contract}</p>
   <p class="wc-buy__links">
-    <a href={t.hrefWithdrawal}>{t.withdrawal}</a> · <a href={t.hrefTerms}>{t.terms}</a> · <a href={t.hrefPrivacy}>{t.privacy}</a>
+    <a href={t.hrefWithdrawal}>{t.withdrawal}</a> <a href={t.hrefTerms}>{t.terms}</a> <a href={t.hrefPrivacy}>{t.privacy}</a>
   </p>
   <p class="wc-buy__status" data-testid="paypal-status" role="status" hidden></p>
 </section>
@@ -437,7 +437,11 @@ const t =
     line-height: 1.5;
     color: #6a6a6a;
   }
+  /* Rechtslinks nur durch Abstand getrennt, ohne Trennzeichen. */
   .wc-buy__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
     margin: 0.5rem 0 0;
     font-size: var(--fs-xs);
   }

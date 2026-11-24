@@ -1,6 +1,6 @@
 ---
 // Konsistente Werk-Beschriftung aus strukturierten Feldern (aus der artworks-Collection, bereits
-// für die aktive Sprache aufgelöst). Pflicht: Titel · Jahr · Technik · Maße · interne Nummer;
+// für die aktive Sprache aufgelöst). Pflicht: Titel, Jahr, Technik, Maße, interne Nummer;
 // optional: Auflage (nur Drucke). Der Preis steht separat im Kaufteil (ArtworkBody).
 export interface ArtworkMetaData {
   artist: string;
@@ -26,7 +26,7 @@ const techLine = [meta.technique, dimensions].filter(Boolean).join(', ');
 ---
 
 <figcaption class="art-meta">
-  <span class="art-meta__title">{meta.artist} · „{meta.title}“ · {meta.year}</span>
+  <span class="art-meta__title">{meta.artist}, „{meta.title}“, {meta.year}</span>
   {techLine && <span class="art-meta__tech">{techLine}</span>}
   {edition && <span class="art-meta__edition">{edition}</span>}
   {meta.number && <span class="art-meta__num" data-testid="artwork-number">{meta.number}</span>}

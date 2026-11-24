@@ -8,5 +8,5 @@ test('Adresse, Telefon, Öffnungszeiten', async ({ page }, info) => {
   await expect(main).toContainText('Boiensdorf');
   await expect(main).toContainText('Zum Breitling');
   await expect(main).toContainText(lang === 'en' ? /opening hours/i : /Öffnungszeiten/i);
-  // Telefon ist auf der Kontakt-Seite obfuskiert (·········) -> nicht per Text prüfbar.
+  // Telefon ist auf der Kontakt-Seite obfuskiert (Platzhalterpunkte) -> nicht per Text prüfbar.
 });

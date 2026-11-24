@@ -39,6 +39,7 @@ Diese Website (Astro, statisch) gehört der Kunstgalerie **HAUS HOPPE**. Sie ist
 
    **NIEMALS anfassen:** `src/components/`, `src/lib/`, `src/layouts/`, `src/pages/`, `scripts/`, `astro.config.mjs`, `package.json`, `src/content.config.ts`.
 3. **Echte Umlaute** schreiben: `ä ö ü ß Ä Ö Ü` — niemals `ae/oe/ue/ss`. Typografische Zeichen benutzen: Anführungszeichen `„ "`, Gedankenstrich `–`, Maß-Kreuz `×` (nicht `x`).
+   **Verboten: der Mittelpunkt `·` als Trennzeichen**, nirgends (Texte, Titel, Bildunterschriften, Metadaten, Code). Er gilt als typisches Merkmal maschinell geschriebener Texte. Stattdessen: im Fließtext Komma oder Satzende; zwischen Name und Zusatz Klammern, z. B. „Wasser (2014)“; bei Metadaten wie Dachzeile oder Datum nur Abstand, kein Zeichen; in Seitentiteln `|`. `npm run check` bricht bei einem Fund ab (`scripts/check-typography.mjs`).
 4. **Vor jedem PR prüfen:** `npm install` (einmal), dann `npm run check`. Muss **grün** sein.
 5. **Gültiges Markdown/Frontmatter.** In den Werk-Dateien auf Anführungszeichen und Einrückung im Kopf (zwischen den `---`) achten — ein kaputtes Zeichen bricht den Build. Nichts an der Struktur ändern, nur die Text-Werte.
 6. **Ein PR = eine Sache.** Kleine, klare Änderung, aussagekräftiger Titel, 1–2 Sätze Beschreibung.
@@ -57,7 +58,7 @@ Der Nachlass besteht aus zwei Teilen:
 
 ### So wird ein Werk-Bild in bester Auflösung abgelegt
 1. **Beste verfügbare Originaldatei nehmen** — höchste Auflösung, unbeschnitten, farbecht, unkomprimiert oder nur gering komprimiert. Liegen mehrere Fassungen vor, immer die **größte/beste**.
-2. Ablage unter `src/artwork-originals/<jahr>/<monat>/<sprechender-name>.<endung>`. Der **Dateiname trägt die Metadaten** (Titel · Jahr · Technik · Maße) — bewusst so lassen.
+2. Ablage unter `src/artwork-originals/<jahr>/<monat>/<sprechender-name>.<endung>`. Der **Dateiname trägt die Metadaten** (Titel, Jahr, Technik, Maße) — bewusst so lassen.
 3. **Format:** **AVIF** (visuell verlustfrei, Qualität 80) für große Fotos; bereits kleine oder verlustfreie Quellen **verlustfrei** ablegen. **Kein BMP** (nicht web-tauglich → nach AVIF wandeln).
 4. **Volle Auflösung behalten.**
 
@@ -163,7 +164,7 @@ Wir verlassen uns NIE auf das Autoplay des Browsers. Jedes `<video autoplay>` wi
 
 ## 📋 Rezepte (finde deine Aufgabe und folge den Schritten)
 
-### A) Text auf einer Seite ändern (Startseite · Kontakt · Kunst Erwerben · Vita)
+### A) Text auf einer Seite ändern (Startseite, Kontakt, Kunst Erwerben, Vita)
 
 Jede Seite hat **zwei** Dateien in `src/content/pages/`:
 
@@ -339,6 +340,7 @@ npm run build:de   # baut die deutsche Seite (findet Tippfehler/kaputtes Markdow
   - „*Werk … : fehlt EN-Übersetzung*" → im `en:`-Block der Werk-Datei die fehlenden Felder ergänzen (Titel, Slug, Technik, Maße).
   - „*Werk … : kein Bild*" → das Werk-Bild fehlt im Archiv `src/artwork-originals/` (siehe „🗄️ Langzeit-Archiv").
   - „*Werk … : keine Nummer*" → **jedes** Werk braucht eine **Nummer** `Jahr-laufende Nummer-Technik` (z. B. `2025-01-A`) — sie ist die **letzte Zeile** der Bildunterschrift im `content` und steuert Sortierung + Anzeige in der Galerie. **Pflichtfeld** — ohne Nummer bricht der Build ab. Ist die Nummer unbekannt: Olaf fragen (Sammel-Issue #5), keine erfinden.
+  - „*check-typography: … Mittelpunkt*" → den `·` an der genannten Stelle ersetzen (siehe goldene Regel 3).
 - **`npm run build:de` bricht ab?** Meist ein Markdown-/JSON-Fehler (fehlendes Komma, kaputte Klammer) in der gerade geänderten Datei. Fehlermeldung lesen, Datei korrigieren.
 
 Die **CI** (GitHub Actions) macht dieselben Prüfungen automatisch bei jedem PR. Ist der grüne Haken da, passt's; ist er rot, sagt der Log genau, was fehlt — dann nachbessern und erneut committen.
